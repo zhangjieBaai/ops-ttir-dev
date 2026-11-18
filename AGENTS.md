@@ -8,3 +8,5 @@
 - 本轮 FP16、N/stride 都为 16 的倍数、无别名。新增范围/dtype 必须单独声明和验证，不能外推现有结论。
 - Python 参考计算仅用于测试；候选 launch 仅使用从 TTIR 编译的 kernel。
 - 提交前 `pre-commit run --all-files`。教程提取文件为冻结源码，已排除格式化。
+
+- 每次主实验先运行 `verify_pipeline.py`：baseline.ttir 与 optimized.ttir 同用 Triton 3.7.0 原生后端，baseline 的 LLVM/PTX/cubin 必须与教程源码路径一致。禁止混入独立 llc 路径。`common.compile_ir` 会拒绝系统环境、FlagTree/FlagPrism 或错误 Triton 版本。

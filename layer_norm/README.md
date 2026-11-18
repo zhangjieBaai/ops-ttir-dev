@@ -9,6 +9,7 @@
 - [实验契约、假设和预算](optimization_plan.md)
 - [教程来源与哈希](upstream/provenance.json)
 - [baseline 流程证据](results/baseline_pipeline.json)
+- [两版原生编译链与无 FlagTree 环境核查](results/native_pipeline_check.json)
 - [正确性结果](results/accuracy_full.json)
 - [首轮筛选](results/screening.json)
 - [失败候选记录](results/failed_candidates.json)
@@ -54,3 +55,35 @@ pre-commit run --all-files
 原始教程提取文件保留上游排版，pre-commit 对其做路径排除；其他 Python 文件运行 black/isort/flake8。不要格式化教程后覆盖已冻结的 baseline。
 
 计时指标为预分配输出的 CUDA graph replay kernel 时间，包含 Y、Mean、Rstd 的设备写出；没有输出分配和 CPU launch 时间。缓存由重复 graph 调用自然形成，未锁 GPU 时钟。不能直接与旧 LLVM 实验包含分配的加速比横向比较。
+
+## 两版共用原生编译链
+
+```mermaid
+flowchart LR
+    A[baseline.ttir] --> C[同一 triton.compile 入口与编译选项]
+    B[optimized.ttir] --> C
+    C --> D[TTGIR]
+    D --> E[LLVM IR / Triton LLVM O3]
+    E --> F[Triton 内置 LLVM → PTX]
+    F --> G[Triton 调用 ptxas → 各自 cubin]
+    G --> H[同一 common.launch / CUDA kernel]
+```
+
+两份 TTIR 是教程 `make_ttir` 阶段后的 IR；文件入口从 `make_ttgir` 继续，两版都不额外重复 `make_ttir`。
+教程源码走到同一阶段后也使用相同后端。核查已确认源码 baseline 与文件 baseline 的 LLVM IR、PTX、cubin
+字节一致，TTGIR 只存在解析造成的局部 SSA 命名差异，统一解析后也一致。
+
+`verify_pipeline.py` 检查源码、baseline、optimized 的完整后端选项/目标一致，并记录编译器、libtriton、ptxas 哈希。
+`run_experiment.sh` 已将它接入前置流程；`common.compile_ir` 会拒绝错误环境和 kernel override/编译阶段替换。
+当前优化 cubin 与首轮测量版本字节一致，因此原有性能数据仍对应这条统一的原生链；本次没有重新计时。
+
+环境核查：Python 为 `/root/venvs/ir-ops-dev/bin/python`，Triton 为 **3.7.0**，隔离系统 site-packages。
+没有安装 FlagTree/FlagPrism 包，没有可导入模块或 Triton Python 源码标记；362 个安装文件通过 pip wheel RECORD 哈希校验。
+该校验确认文件符合本地安装记录，并不声称完成远程 wheel 的独立来源证明。系统 Python 环境已验证会被拒绝。
+
+```bash
+CUDA_VISIBLE_DEVICES=7 /root/venvs/ir-ops-dev/bin/python layer_norm/verify_pipeline.py \
+  --output layer_norm/results/new_pipeline_check.json
+```
+
+新增完整数值复核见 `results/native_pipeline_accuracy.json`：baseline/optimized 各 142 个用例，共 284 次通过。

@@ -11,6 +11,7 @@ if [[ -e "$RESULTS_DIR/full_benchmark.json" ]]; then
 fi
 
 "$PYTHON_BIN" layer_norm/export_baseline.py --verify
+"$PYTHON_BIN" layer_norm/verify_pipeline.py --output "$RESULTS_DIR/native_pipeline_check.json"
 "$PYTHON_BIN" layer_norm/make_candidates.py
 "$PYTHON_BIN" layer_norm/validate.py baseline canonical arithmetic single_tile \
     tile_dispatch_v2 tile_dispatch_math_v2 --suite full \

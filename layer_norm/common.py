@@ -6,6 +6,7 @@ from pathlib import Path
 
 import torch
 import triton
+from environment import check_environment
 
 ROOT = Path(__file__).resolve().parent
 OPTIONS = dict(num_warps=8, num_ctas=1, num_stages=3, enable_fp_fusion=True)
@@ -24,6 +25,9 @@ def save_json(path, data):
 
 
 def compile_ir(name):
+    check_environment()
+    assert not triton.knobs.compilation.override, "Disable kernel overrides"
+    assert triton.knobs.runtime.add_stages_inspection_hook is None
     path = ROOT / "ir" / f"{name}.ttir"
     ck = triton.compile(str(path), options=OPTIONS)
     out = ROOT / "artifacts" / name
