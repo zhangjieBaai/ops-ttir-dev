@@ -15,6 +15,6 @@ mkdir -p "$RESULTS_DIR"
 "$PYTHON_BIN" layer_norm/verify_pipeline.py --output "$RESULTS_DIR/pipeline.json"
 "$PYTHON_BIN" layer_norm/validate.py baseline optimized --suite full \
     --output "$RESULTS_DIR/accuracy.json" > "$RESULTS_DIR/accuracy.log" 2>&1
-"$PYTHON_BIN" layer_norm/benchmark.py optimized --full --rounds 7 --rep 20 --seed 42 \
+"$PYTHON_BIN" layer_norm/benchmark.py optimized --full --rounds 7 --rep 20 --seed 42 --stabilize-ms 100 \
     --validation "$RESULTS_DIR/accuracy.json" --output "$RESULTS_DIR/benchmark.json" \
     | tee "$RESULTS_DIR/benchmark.log"

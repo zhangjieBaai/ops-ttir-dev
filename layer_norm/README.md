@@ -31,11 +31,13 @@ CUDA_VISIBLE_DEVICES=3 RESULTS_DIR=layer_norm/results/runs/manual_01 \
 - `validate.py`：数值、压力、边界、stride padding 检查；`--suite smoke|full|sanitizer`。
 - `benchmark.py`：预分配输出的 CUDA graph 配对计时；`--full` 跑 30 个 shape。
 - `verify_pipeline.py`：确认环境、Triton 编译选项、baseline 下游产物和教程源码编译一致。
-- `run_experiment.sh`：完整首轮实验流程。
+- `run_experiment.sh`：复现历史首轮候选搜索；当前版本复测使用 `test_performance.sh`。
+- `make_round2.py`、`finish_round2.py`：第二轮候选生成、证据验收及选择；计划见 `optimization_plan_v2.md`。
 
 ## 当前结果
 
-- [最新性能复测](results/perf_recheck_20261118T120303Z/report.md)：几何平均 1.293×，算术平均 1.314×。
+- [第二轮优化报告](report_round2.md)：当前推荐版本及完整复测、LLIR 对照、NCU 分析。
+- [第一轮性能复测](results/perf_recheck_20261118T120303Z/report.md)：历史版本，几何平均 1.293×，算术平均 1.314×。
 - [正确性与环境/编译链核查](results/native_pipeline_accuracy.json)、[pipeline 核查](results/native_pipeline_check.json)。
 - [优化方法与完整首轮报告](report.md)。
 - [TTIR 与 LLIR 的对照分析](llir_comparison.md)、[baseline 一致性核查](baseline_audit.md)。

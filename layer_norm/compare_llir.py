@@ -20,6 +20,8 @@ OLD = Path("/root/ir-ops-dev/layer_norm/ir_opt")
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--ttir-name", default="optimized")
+    parser.add_argument("--stabilize-ms", type=int, default=0)
     parser.add_argument("--rounds", type=int, default=3)
     parser.add_argument("--rep", type=int, default=10)
     parser.add_argument("--output", type=Path, required=True)
@@ -34,7 +36,7 @@ def main():
     old_base = old.make_kernel_from_cubin(str(OLD / "baseline.cubin"))
     old_opt = old.make_kernel_from_cubin(str(OLD / "opt_cached.cubin"))
     new_base = compile_ir("baseline")
-    new_opt = compile_ir("tile_dispatch_math_v2")
+    new_opt = compile_ir(args.ttir_name)
 
     def legacy(fn, ts):
         x, y, w, b, mean, rstd = ts[:6]
@@ -50,9 +52,11 @@ def main():
         "llir_baseline": OLD / "baseline.cubin",
         "llir_optimized": OLD / "opt_cached.cubin",
         "ttir_baseline": ROOT / "artifacts/baseline/kernel.cubin",
-        "ttir_optimized": ROOT / "artifacts/tile_dispatch_math_v2/kernel.cubin",
+        "ttir_optimized": ROOT / f"artifacts/{args.ttir_name}/kernel.cubin",
     }
     result = dict(
+        ttir_name=args.ttir_name,
+        stabilization_rep_ms=args.stabilize_ms,
         rounds=args.rounds,
         rep_ms=args.rep,
         visible_devices=os.environ["CUDA_VISIBLE_DEVICES"],
@@ -99,6 +103,14 @@ def main():
             )
             assert passed, (label, n, error)
     print("Accuracy: 120 kernel cases PASS", flush=True)
+    if args.stabilize_ms:
+        warm_ts = allocate(4096, 8192)
+        for fn in functions.values():
+            triton.testing.do_bench_cudagraph(
+                lambda: fn(warm_ts), rep=args.stabilize_ms
+            )
+        del warm_ts
+        torch.cuda.synchronize()
     for n in range(1024, 15873, 512):
         ts = allocate(4096, n)
         ts[0].mul_(0.5).add_(-2.3)

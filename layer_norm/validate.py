@@ -8,6 +8,14 @@ from common import EPS, ROOT, allocate, compile_ir, launch, save_json, sha256
 
 
 def cases(suite):
+    if suite == "round2-boundaries":
+        return [
+            (257, n, pad, d, EPS)
+            for edge in [1024, 2048, 3072, 4096, 6144, 8192, 10240, 12288, 14336, 16384]
+            for n in [edge - 16, edge, edge + 16]
+            for pad in [0, 16]
+            for d in ["normal", "offset"]
+        ]
     if suite == "smoke":
         return [
             (17, n, 0, "normal", EPS)
@@ -96,7 +104,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("names", nargs="+")
     parser.add_argument(
-        "--suite", choices=["smoke", "full", "sanitizer"], default="full"
+        "--suite",
+        choices=["smoke", "full", "sanitizer", "round2-boundaries"],
+        default="full",
     )
     parser.add_argument("--output", type=str, required=True)
     args = parser.parse_args()

@@ -1,5 +1,7 @@
 # LayerNorm TTIR 首轮实验报告
 
+> 历史报告：本文记录第一轮 `tile_dispatch_math_v2.ttir`，其中 optimized.ttir 指当时的版本。当前默认版本与最新结果见 [第二轮报告](report_round2.md)。
+
 推荐 TTIR：`ir/optimized.ttir`，与 `tile_dispatch_math_v2.ttir` 字节一致。
 
 H100 上 30 个 shape 的加速比：算术平均 **1.314×**，几何平均 **1.293×**；独立进程、更换随机种子的 5 轮复测分别为 **1.316× / 1.294×**。

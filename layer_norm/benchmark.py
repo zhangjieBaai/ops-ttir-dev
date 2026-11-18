@@ -23,6 +23,12 @@ def main():
         "--rep", type=int, default=30, help="Target milliseconds per graph measurement"
     )
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument(
+        "--stabilize-ms",
+        type=int,
+        default=0,
+        help="Untimed graph warmup per kernel before the matrix",
+    )
     parser.add_argument("--validation", type=str, required=True)
     parser.add_argument("--output", type=str, required=True)
     args = parser.parse_args()
@@ -50,6 +56,7 @@ def main():
     )
     result = dict(
         timer="CUDA graph replay; preallocated output; no allocation or CPU launch in timed graph",
+        stabilization_rep_ms=args.stabilize_ms,
         rounds=args.rounds,
         rep_ms=args.rep,
         seed=args.seed,
@@ -71,6 +78,15 @@ def main():
             for name, ck in kernels.items()
         },
     )
+    if args.stabilize_ms:
+        warm_tensors = allocate(4096, 8192)
+        for ck in kernels.values():
+            triton.testing.do_bench_cudagraph(
+                lambda: launch(ck, warm_tensors, EPS), rep=args.stabilize_ms
+            )
+        torch.cuda.synchronize()
+        del warm_tensors
+        print("Untimed stabilization complete", flush=True)
     ns = (
         list(range(1024, 15873, 512))
         if args.full

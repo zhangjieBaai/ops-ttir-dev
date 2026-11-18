@@ -1,0 +1,107 @@
+module {
+  tt.func public @_layer_norm_fwd_fused(%X: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %Y: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %W: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %B: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %Mean: !tt.ptr<f32> {tt.divisibility = 16 : i32}, %Rstd: !tt.ptr<f32> {tt.divisibility = 16 : i32}, %stride: i32 {tt.divisibility = 16 : i32}, %N: i32 {tt.divisibility = 16 : i32}, %eps: f32) attributes {noinline = false} {
+    %v0 = arith.constant 0 : i32
+    %v1 = arith.constant 8192 : i32
+    %v2 = arith.constant 1.0 : f32
+    %v3 = arith.constant dense<0.0> : tensor<8192xf16>
+    %v4 = arith.constant dense<0.0> : tensor<8192xf32>
+    %v5 = tt.get_program_id x : i32
+    %v6 = arith.muli %v5, %stride : i32
+    %v7 = tt.addptr %X, %v6 : !tt.ptr<f16>, i32
+    %v8 = tt.addptr %Y, %v6 : !tt.ptr<f16>, i32
+    %v9 = tt.make_range {end = 8192 : i32, start = 0 : i32} : tensor<8192xi32>
+    %v10 = tt.splat %N : i32 -> tensor<8192xi32>
+    %v11 = arith.sitofp %N : i32 to f32
+    %v12 = arith.divf %v2, %v11 : f32
+    %v13 = arith.constant dense<0.0> : tensor<2048xf32>
+    %acc_result14 = scf.for %off14 = %v0 to %N step %v1 iter_args(%acc14 = %v13) -> (tensor<2048xf32>) : i32 {
+    %v15 = tt.splat %off14 : i32 -> tensor<8192xi32>
+    %v16 = arith.addi %v15, %v9 : tensor<8192xi32>
+    %v17 = arith.cmpi slt, %v16, %v10 : tensor<8192xi32>
+    %v18 = tt.splat %v7 : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+    %v19 = tt.addptr %v18, %v16 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+    %v20 = tt.load %v19, %v17, %v3 : tensor<8192x!tt.ptr<f16>>
+    %v21 = arith.extf %v20 : tensor<8192xf16> to tensor<8192xf32>
+    %v22 = tt.reshape %v21 : tensor<8192xf32> -> tensor<4x2048xf32>
+    %fold23 = "tt.reduce"(%v22) <{axis = 0 : i32}> ({
+    ^bb0(%fl: f32, %fr: f32):
+      %fs = arith.addf %fl, %fr : f32
+      tt.reduce.return %fs : f32
+    }) : (tensor<4x2048xf32>) -> tensor<2048xf32>
+    %v24 = arith.addf %acc14, %fold23 : tensor<2048xf32>
+      scf.yield %v24 : tensor<2048xf32>
+    }
+    %v25 = "tt.reduce"(%acc_result14) <{axis = 0 : i32}> ({
+    ^bb0(%lhs: f32, %rhs: f32):
+      %sum = arith.addf %lhs, %rhs : f32
+      tt.reduce.return %sum : f32
+    }) : (tensor<2048xf32>) -> f32
+    %v26 = arith.mulf %v25, %v12 : f32
+    %v27 = arith.constant dense<0.0> : tensor<2048xf32>
+    %acc_result28 = scf.for %off28 = %v0 to %N step %v1 iter_args(%acc28 = %v27) -> (tensor<2048xf32>) : i32 {
+    %v29 = tt.splat %off28 : i32 -> tensor<8192xi32>
+    %v30 = arith.addi %v29, %v9 : tensor<8192xi32>
+    %v31 = arith.cmpi slt, %v30, %v10 : tensor<8192xi32>
+    %v32 = tt.splat %v7 : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+    %v33 = tt.addptr %v32, %v30 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+    %v34 = tt.load %v33, %v31, %v3 : tensor<8192x!tt.ptr<f16>>
+    %v35 = arith.extf %v34 : tensor<8192xf16> to tensor<8192xf32>
+    %v36 = tt.splat %v26 : f32 -> tensor<8192xf32>
+    %v37 = arith.subf %v35, %v36 : tensor<8192xf32>
+    %v38 = arith.select %v31, %v37, %v4 : tensor<8192xi1>, tensor<8192xf32>
+    %v39 = arith.mulf %v38, %v38 : tensor<8192xf32>
+    %v40 = tt.reshape %v39 : tensor<8192xf32> -> tensor<4x2048xf32>
+    %fold41 = "tt.reduce"(%v40) <{axis = 0 : i32}> ({
+    ^bb0(%fl: f32, %fr: f32):
+      %fs = arith.addf %fl, %fr : f32
+      tt.reduce.return %fs : f32
+    }) : (tensor<4x2048xf32>) -> tensor<2048xf32>
+    %v42 = arith.addf %acc28, %fold41 : tensor<2048xf32>
+      scf.yield %v42 : tensor<2048xf32>
+    }
+    %v43 = "tt.reduce"(%acc_result28) <{axis = 0 : i32}> ({
+    ^bb0(%lhs: f32, %rhs: f32):
+      %sum = arith.addf %lhs, %rhs : f32
+      tt.reduce.return %sum : f32
+    }) : (tensor<2048xf32>) -> f32
+    %v44 = arith.mulf %v43, %v12 : f32
+    %v45 = arith.addf %v44, %eps : f32
+    %v46 = math.rsqrt %v45 : f32
+    %v47 = tt.addptr %Mean, %v5 : !tt.ptr<f32>, i32
+    %v48 = tt.addptr %Rstd, %v5 : !tt.ptr<f32>, i32
+    tt.store %v47, %v26 : !tt.ptr<f32>
+    tt.store %v48, %v46 : !tt.ptr<f32>
+    %v49 = arith.constant 2048 : i32
+    %v50 = arith.constant dense<0.0> : tensor<2048xf16>
+    %v51 = tt.make_range {end = 2048 : i32, start = 0 : i32} : tensor<2048xi32>
+    %v52 = tt.splat %N : i32 -> tensor<2048xi32>
+    scf.for %outoff53 = %v0 to %N step %v49 : i32 {
+    %v54 = tt.splat %outoff53 : i32 -> tensor<2048xi32>
+    %v55 = arith.addi %v54, %v51 : tensor<2048xi32>
+    %v56 = arith.cmpi slt, %v55, %v52 : tensor<2048xi32>
+    %v57 = tt.splat %v7 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %v58 = tt.addptr %v57, %v55 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %v59 = tt.load %v58, %v56, %v50 : tensor<2048x!tt.ptr<f16>>
+    %v60 = arith.extf %v59 : tensor<2048xf16> to tensor<2048xf32>
+    %v61 = tt.splat %W : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %v62 = tt.addptr %v61, %v55 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %v63 = tt.load %v62, %v56, %v50 : tensor<2048x!tt.ptr<f16>>
+    %v64 = arith.extf %v63 : tensor<2048xf16> to tensor<2048xf32>
+    %v65 = tt.splat %B : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %v66 = tt.addptr %v65, %v55 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %v67 = tt.load %v66, %v56, %v50 : tensor<2048x!tt.ptr<f16>>
+    %v68 = arith.extf %v67 : tensor<2048xf16> to tensor<2048xf32>
+    %v69 = tt.splat %v26 : f32 -> tensor<2048xf32>
+    %v70 = tt.splat %v46 : f32 -> tensor<2048xf32>
+    %v71 = arith.subf %v60, %v69 : tensor<2048xf32>
+    %v72 = arith.mulf %v71, %v70 : tensor<2048xf32>
+    %v73 = arith.mulf %v72, %v64 : tensor<2048xf32>
+    %v74 = arith.addf %v73, %v68 : tensor<2048xf32>
+    %v75 = arith.truncf %v74 : tensor<2048xf32> to tensor<2048xf16>
+    %v76 = tt.splat %v8 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %v77 = tt.addptr %v76, %v55 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    tt.store %v77, %v75, %v56 : tensor<2048x!tt.ptr<f16>>
+    }
+    tt.return
+  }
+}
