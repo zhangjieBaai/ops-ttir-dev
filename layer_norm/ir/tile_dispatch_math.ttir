@@ -1,0 +1,547 @@
+module {
+  tt.func public @_layer_norm_fwd_fused(%X: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %Y: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %W: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %B: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %Mean: !tt.ptr<f32> {tt.divisibility = 16 : i32}, %Rstd: !tt.ptr<f32> {tt.divisibility = 16 : i32}, %stride: i32 {tt.divisibility = 16 : i32}, %N: i32 {tt.divisibility = 16 : i32}, %eps: f32) attributes {noinline = false} {
+    %cst = arith.constant dense<0.000000e+00> : tensor<8192xf16>
+    %c8192_i32 = arith.constant 8192 : i32
+    %c0_i32 = arith.constant 0 : i32
+    %rstd = arith.constant 1.000000e+00 : f32
+    %cst_0 = arith.constant dense<0.000000e+00> : tensor<8192xf32>
+    %limit0 = arith.constant 1024 : i32
+    %fits0 = arith.cmpi sle, %N, %limit0 : i32
+    scf.if %fits0 {
+      %row = tt.get_program_id x : i32
+      %Y_1 = arith.muli %row, %stride : i32
+      %Y_2 = tt.addptr %Y, %Y_1 : !tt.ptr<f16>, i32
+      %X_3 = tt.addptr %X, %Y_1 : !tt.ptr<f16>, i32
+      %p1t0_cols = tt.make_range {end = 1024 : i32, start = 0 : i32} : tensor<1024xi32>
+      %p1t0_cols_11 = tt.splat %c0_i32 : i32 -> tensor<1024xi32>
+      %p1t0_cols_12 = arith.addi %p1t0_cols_11, %p1t0_cols : tensor<1024xi32>
+      %p1t0_a = tt.splat %N : i32 -> tensor<1024xi32>
+      %p1t0_a_13 = arith.cmpi slt, %p1t0_cols_12, %p1t0_a : tensor<1024xi32>
+      %p1t0_a_14 = tt.splat %X_3 : !tt.ptr<f16> -> tensor<1024x!tt.ptr<f16>>
+      %p1t0_a_15 = tt.addptr %p1t0_a_14, %p1t0_cols_12 : tensor<1024x!tt.ptr<f16>>, tensor<1024xi32>
+      %p1t0_a_16 = tt.load %p1t0_a_15, %p1t0_a_13, %cst : tensor<1024x!tt.ptr<f16>>
+      %p1t0_a_17 = arith.extf %p1t0_a_16 : tensor<1024xf16> to tensor<1024xf32>
+      %_mean = arith.addf %cst_0, %p1t0_a_17 : tensor<1024xf32>
+      %mean = "tt.reduce"(%_mean) <{axis = 0 : i32}> ({
+      ^bb0(%mean_10: f32, %mean_11: f32):
+        %mean_12 = arith.addf %mean_10, %mean_11 : f32
+        tt.reduce.return %mean_12 : f32
+      }) : (tensor<1024xf32>) -> f32
+      %mean_4 = arith.sitofp %N : i32 to f32
+      %recip_n = arith.divf %rstd, %mean_4 : f32
+      %mean_5 = arith.mulf %mean, %recip_n : f32
+      %p2t0_cols = tt.make_range {end = 1024 : i32, start = 0 : i32} : tensor<1024xi32>
+      %p2t0_cols_11 = tt.splat %c0_i32 : i32 -> tensor<1024xi32>
+      %p2t0_cols_12 = arith.addi %p2t0_cols_11, %p2t0_cols : tensor<1024xi32>
+      %p2t0_x = tt.splat %N : i32 -> tensor<1024xi32>
+      %p2t0_x_13 = arith.cmpi slt, %p2t0_cols_12, %p2t0_x : tensor<1024xi32>
+      %p2t0_x_14 = tt.splat %X_3 : !tt.ptr<f16> -> tensor<1024x!tt.ptr<f16>>
+      %p2t0_x_15 = tt.addptr %p2t0_x_14, %p2t0_cols_12 : tensor<1024x!tt.ptr<f16>>, tensor<1024xi32>
+      %p2t0_x_16 = tt.load %p2t0_x_15, %p2t0_x_13, %cst : tensor<1024x!tt.ptr<f16>>
+      %p2t0_x_17 = arith.extf %p2t0_x_16 : tensor<1024xf16> to tensor<1024xf32>
+      %p2t0_x_18 = tt.splat %mean_5 : f32 -> tensor<1024xf32>
+      %p2t0_x_19 = arith.subf %p2t0_x_17, %p2t0_x_18 : tensor<1024xf32>
+      %p2t0_x_20 = arith.select %p2t0_x_13, %p2t0_x_19, %cst_0 : tensor<1024xi1>, tensor<1024xf32>
+      %p2t0__var_21 = arith.mulf %p2t0_x_20, %p2t0_x_20 : tensor<1024xf32>
+      %_var = arith.addf %cst_0, %p2t0__var_21 : tensor<1024xf32>
+      %var = "tt.reduce"(%_var) <{axis = 0 : i32}> ({
+      ^bb0(%var_10: f32, %var_11: f32):
+        %var_12 = arith.addf %var_10, %var_11 : f32
+        tt.reduce.return %var_12 : f32
+      }) : (tensor<1024xf32>) -> f32
+      %var_6 = arith.mulf %var, %recip_n : f32
+      %rstd_7 = arith.addf %var_6, %eps : f32
+      %rstd_9 = math.rsqrt %rstd_7 : f32
+      %0 = tt.addptr %Mean, %row : !tt.ptr<f32>, i32
+      tt.store %0, %mean_5 : !tt.ptr<f32>
+      %1 = tt.addptr %Rstd, %row : !tt.ptr<f32>, i32
+      tt.store %1, %rstd_9 : !tt.ptr<f32>
+      %p3t0_cols = tt.make_range {end = 1024 : i32, start = 0 : i32} : tensor<1024xi32>
+      %p3t0_cols_10 = tt.splat %c0_i32 : i32 -> tensor<1024xi32>
+      %p3t0_cols_11 = arith.addi %p3t0_cols_10, %p3t0_cols : tensor<1024xi32>
+      %p3t0_mask = tt.splat %N : i32 -> tensor<1024xi32>
+      %p3t0_mask_12 = arith.cmpi slt, %p3t0_cols_11, %p3t0_mask : tensor<1024xi32>
+      %p3t0_w = tt.splat %W : !tt.ptr<f16> -> tensor<1024x!tt.ptr<f16>>
+      %p3t0_w_13 = tt.addptr %p3t0_w, %p3t0_cols_11 : tensor<1024x!tt.ptr<f16>>, tensor<1024xi32>
+      %p3t0_w_14 = tt.load %p3t0_w_13, %p3t0_mask_12 : tensor<1024x!tt.ptr<f16>>
+      %p3t0_b = tt.splat %B : !tt.ptr<f16> -> tensor<1024x!tt.ptr<f16>>
+      %p3t0_b_15 = tt.addptr %p3t0_b, %p3t0_cols_11 : tensor<1024x!tt.ptr<f16>>, tensor<1024xi32>
+      %p3t0_b_16 = tt.load %p3t0_b_15, %p3t0_mask_12 : tensor<1024x!tt.ptr<f16>>
+      %p3t0_x = tt.splat %X_3 : !tt.ptr<f16> -> tensor<1024x!tt.ptr<f16>>
+      %p3t0_x_17 = tt.addptr %p3t0_x, %p3t0_cols_11 : tensor<1024x!tt.ptr<f16>>, tensor<1024xi32>
+      %p3t0_x_18 = tt.load %p3t0_x_17, %p3t0_mask_12, %cst : tensor<1024x!tt.ptr<f16>>
+      %p3t0_x_19 = arith.extf %p3t0_x_18 : tensor<1024xf16> to tensor<1024xf32>
+      %p3t0_x_hat = tt.splat %mean_5 : f32 -> tensor<1024xf32>
+      %p3t0_x_hat_20 = arith.subf %p3t0_x_19, %p3t0_x_hat : tensor<1024xf32>
+      %p3t0_x_hat_21 = tt.splat %rstd_9 : f32 -> tensor<1024xf32>
+      %p3t0_x_hat_22 = arith.mulf %p3t0_x_hat_20, %p3t0_x_hat_21 : tensor<1024xf32>
+      %p3t0_y = arith.extf %p3t0_w_14 : tensor<1024xf16> to tensor<1024xf32>
+      %p3t0_y_23 = arith.mulf %p3t0_x_hat_22, %p3t0_y : tensor<1024xf32>
+      %p3t0_y_24 = arith.extf %p3t0_b_16 : tensor<1024xf16> to tensor<1024xf32>
+      %p3t0_y_25 = arith.addf %p3t0_y_23, %p3t0_y_24 : tensor<1024xf32>
+      %p3t0_2 = tt.splat %Y_2 : !tt.ptr<f16> -> tensor<1024x!tt.ptr<f16>>
+      %p3t0_3 = tt.addptr %p3t0_2, %p3t0_cols_11 : tensor<1024x!tt.ptr<f16>>, tensor<1024xi32>
+      %p3t0_4 = arith.truncf %p3t0_y_25 : tensor<1024xf32> to tensor<1024xf16>
+      tt.store %p3t0_3, %p3t0_4, %p3t0_mask_12 : tensor<1024x!tt.ptr<f16>>
+    } else {
+      %limit1 = arith.constant 2048 : i32
+      %fits1 = arith.cmpi sle, %N, %limit1 : i32
+      scf.if %fits1 {
+        %row = tt.get_program_id x : i32
+        %Y_1 = arith.muli %row, %stride : i32
+        %Y_2 = tt.addptr %Y, %Y_1 : !tt.ptr<f16>, i32
+        %X_3 = tt.addptr %X, %Y_1 : !tt.ptr<f16>, i32
+        %p1t0_cols = tt.make_range {end = 2048 : i32, start = 0 : i32} : tensor<2048xi32>
+        %p1t0_cols_11 = tt.splat %c0_i32 : i32 -> tensor<2048xi32>
+        %p1t0_cols_12 = arith.addi %p1t0_cols_11, %p1t0_cols : tensor<2048xi32>
+        %p1t0_a = tt.splat %N : i32 -> tensor<2048xi32>
+        %p1t0_a_13 = arith.cmpi slt, %p1t0_cols_12, %p1t0_a : tensor<2048xi32>
+        %p1t0_a_14 = tt.splat %X_3 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+        %p1t0_a_15 = tt.addptr %p1t0_a_14, %p1t0_cols_12 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+        %p1t0_a_16 = tt.load %p1t0_a_15, %p1t0_a_13, %cst : tensor<2048x!tt.ptr<f16>>
+        %p1t0_a_17 = arith.extf %p1t0_a_16 : tensor<2048xf16> to tensor<2048xf32>
+        %_mean = arith.addf %cst_0, %p1t0_a_17 : tensor<2048xf32>
+        %mean = "tt.reduce"(%_mean) <{axis = 0 : i32}> ({
+        ^bb0(%mean_10: f32, %mean_11: f32):
+          %mean_12 = arith.addf %mean_10, %mean_11 : f32
+          tt.reduce.return %mean_12 : f32
+        }) : (tensor<2048xf32>) -> f32
+        %mean_4 = arith.sitofp %N : i32 to f32
+        %recip_n = arith.divf %rstd, %mean_4 : f32
+        %mean_5 = arith.mulf %mean, %recip_n : f32
+        %p2t0_cols = tt.make_range {end = 2048 : i32, start = 0 : i32} : tensor<2048xi32>
+        %p2t0_cols_11 = tt.splat %c0_i32 : i32 -> tensor<2048xi32>
+        %p2t0_cols_12 = arith.addi %p2t0_cols_11, %p2t0_cols : tensor<2048xi32>
+        %p2t0_x = tt.splat %N : i32 -> tensor<2048xi32>
+        %p2t0_x_13 = arith.cmpi slt, %p2t0_cols_12, %p2t0_x : tensor<2048xi32>
+        %p2t0_x_14 = tt.splat %X_3 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+        %p2t0_x_15 = tt.addptr %p2t0_x_14, %p2t0_cols_12 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+        %p2t0_x_16 = tt.load %p2t0_x_15, %p2t0_x_13, %cst : tensor<2048x!tt.ptr<f16>>
+        %p2t0_x_17 = arith.extf %p2t0_x_16 : tensor<2048xf16> to tensor<2048xf32>
+        %p2t0_x_18 = tt.splat %mean_5 : f32 -> tensor<2048xf32>
+        %p2t0_x_19 = arith.subf %p2t0_x_17, %p2t0_x_18 : tensor<2048xf32>
+        %p2t0_x_20 = arith.select %p2t0_x_13, %p2t0_x_19, %cst_0 : tensor<2048xi1>, tensor<2048xf32>
+        %p2t0__var_21 = arith.mulf %p2t0_x_20, %p2t0_x_20 : tensor<2048xf32>
+        %_var = arith.addf %cst_0, %p2t0__var_21 : tensor<2048xf32>
+        %var = "tt.reduce"(%_var) <{axis = 0 : i32}> ({
+        ^bb0(%var_10: f32, %var_11: f32):
+          %var_12 = arith.addf %var_10, %var_11 : f32
+          tt.reduce.return %var_12 : f32
+        }) : (tensor<2048xf32>) -> f32
+        %var_6 = arith.mulf %var, %recip_n : f32
+        %rstd_7 = arith.addf %var_6, %eps : f32
+        %rstd_9 = math.rsqrt %rstd_7 : f32
+        %0 = tt.addptr %Mean, %row : !tt.ptr<f32>, i32
+        tt.store %0, %mean_5 : !tt.ptr<f32>
+        %1 = tt.addptr %Rstd, %row : !tt.ptr<f32>, i32
+        tt.store %1, %rstd_9 : !tt.ptr<f32>
+        %p3t0_cols = tt.make_range {end = 2048 : i32, start = 0 : i32} : tensor<2048xi32>
+        %p3t0_cols_10 = tt.splat %c0_i32 : i32 -> tensor<2048xi32>
+        %p3t0_cols_11 = arith.addi %p3t0_cols_10, %p3t0_cols : tensor<2048xi32>
+        %p3t0_mask = tt.splat %N : i32 -> tensor<2048xi32>
+        %p3t0_mask_12 = arith.cmpi slt, %p3t0_cols_11, %p3t0_mask : tensor<2048xi32>
+        %p3t0_w = tt.splat %W : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+        %p3t0_w_13 = tt.addptr %p3t0_w, %p3t0_cols_11 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+        %p3t0_w_14 = tt.load %p3t0_w_13, %p3t0_mask_12 : tensor<2048x!tt.ptr<f16>>
+        %p3t0_b = tt.splat %B : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+        %p3t0_b_15 = tt.addptr %p3t0_b, %p3t0_cols_11 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+        %p3t0_b_16 = tt.load %p3t0_b_15, %p3t0_mask_12 : tensor<2048x!tt.ptr<f16>>
+        %p3t0_x = tt.splat %X_3 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+        %p3t0_x_17 = tt.addptr %p3t0_x, %p3t0_cols_11 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+        %p3t0_x_18 = tt.load %p3t0_x_17, %p3t0_mask_12, %cst : tensor<2048x!tt.ptr<f16>>
+        %p3t0_x_19 = arith.extf %p3t0_x_18 : tensor<2048xf16> to tensor<2048xf32>
+        %p3t0_x_hat = tt.splat %mean_5 : f32 -> tensor<2048xf32>
+        %p3t0_x_hat_20 = arith.subf %p3t0_x_19, %p3t0_x_hat : tensor<2048xf32>
+        %p3t0_x_hat_21 = tt.splat %rstd_9 : f32 -> tensor<2048xf32>
+        %p3t0_x_hat_22 = arith.mulf %p3t0_x_hat_20, %p3t0_x_hat_21 : tensor<2048xf32>
+        %p3t0_y = arith.extf %p3t0_w_14 : tensor<2048xf16> to tensor<2048xf32>
+        %p3t0_y_23 = arith.mulf %p3t0_x_hat_22, %p3t0_y : tensor<2048xf32>
+        %p3t0_y_24 = arith.extf %p3t0_b_16 : tensor<2048xf16> to tensor<2048xf32>
+        %p3t0_y_25 = arith.addf %p3t0_y_23, %p3t0_y_24 : tensor<2048xf32>
+        %p3t0_2 = tt.splat %Y_2 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+        %p3t0_3 = tt.addptr %p3t0_2, %p3t0_cols_11 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+        %p3t0_4 = arith.truncf %p3t0_y_25 : tensor<2048xf32> to tensor<2048xf16>
+        tt.store %p3t0_3, %p3t0_4, %p3t0_mask_12 : tensor<2048x!tt.ptr<f16>>
+      } else {
+        %limit2 = arith.constant 4096 : i32
+        %fits2 = arith.cmpi sle, %N, %limit2 : i32
+        scf.if %fits2 {
+          %row = tt.get_program_id x : i32
+          %Y_1 = arith.muli %row, %stride : i32
+          %Y_2 = tt.addptr %Y, %Y_1 : !tt.ptr<f16>, i32
+          %X_3 = tt.addptr %X, %Y_1 : !tt.ptr<f16>, i32
+          %p1t0_cols = tt.make_range {end = 4096 : i32, start = 0 : i32} : tensor<4096xi32>
+          %p1t0_cols_11 = tt.splat %c0_i32 : i32 -> tensor<4096xi32>
+          %p1t0_cols_12 = arith.addi %p1t0_cols_11, %p1t0_cols : tensor<4096xi32>
+          %p1t0_a = tt.splat %N : i32 -> tensor<4096xi32>
+          %p1t0_a_13 = arith.cmpi slt, %p1t0_cols_12, %p1t0_a : tensor<4096xi32>
+          %p1t0_a_14 = tt.splat %X_3 : !tt.ptr<f16> -> tensor<4096x!tt.ptr<f16>>
+          %p1t0_a_15 = tt.addptr %p1t0_a_14, %p1t0_cols_12 : tensor<4096x!tt.ptr<f16>>, tensor<4096xi32>
+          %p1t0_a_16 = tt.load %p1t0_a_15, %p1t0_a_13, %cst : tensor<4096x!tt.ptr<f16>>
+          %p1t0_a_17 = arith.extf %p1t0_a_16 : tensor<4096xf16> to tensor<4096xf32>
+          %_mean = arith.addf %cst_0, %p1t0_a_17 : tensor<4096xf32>
+          %mean = "tt.reduce"(%_mean) <{axis = 0 : i32}> ({
+          ^bb0(%mean_10: f32, %mean_11: f32):
+            %mean_12 = arith.addf %mean_10, %mean_11 : f32
+            tt.reduce.return %mean_12 : f32
+          }) : (tensor<4096xf32>) -> f32
+          %mean_4 = arith.sitofp %N : i32 to f32
+          %recip_n = arith.divf %rstd, %mean_4 : f32
+          %mean_5 = arith.mulf %mean, %recip_n : f32
+          %p2t0_cols = tt.make_range {end = 4096 : i32, start = 0 : i32} : tensor<4096xi32>
+          %p2t0_cols_11 = tt.splat %c0_i32 : i32 -> tensor<4096xi32>
+          %p2t0_cols_12 = arith.addi %p2t0_cols_11, %p2t0_cols : tensor<4096xi32>
+          %p2t0_x = tt.splat %N : i32 -> tensor<4096xi32>
+          %p2t0_x_13 = arith.cmpi slt, %p2t0_cols_12, %p2t0_x : tensor<4096xi32>
+          %p2t0_x_14 = tt.splat %X_3 : !tt.ptr<f16> -> tensor<4096x!tt.ptr<f16>>
+          %p2t0_x_15 = tt.addptr %p2t0_x_14, %p2t0_cols_12 : tensor<4096x!tt.ptr<f16>>, tensor<4096xi32>
+          %p2t0_x_16 = tt.load %p2t0_x_15, %p2t0_x_13, %cst : tensor<4096x!tt.ptr<f16>>
+          %p2t0_x_17 = arith.extf %p2t0_x_16 : tensor<4096xf16> to tensor<4096xf32>
+          %p2t0_x_18 = tt.splat %mean_5 : f32 -> tensor<4096xf32>
+          %p2t0_x_19 = arith.subf %p2t0_x_17, %p2t0_x_18 : tensor<4096xf32>
+          %p2t0_x_20 = arith.select %p2t0_x_13, %p2t0_x_19, %cst_0 : tensor<4096xi1>, tensor<4096xf32>
+          %p2t0__var_21 = arith.mulf %p2t0_x_20, %p2t0_x_20 : tensor<4096xf32>
+          %_var = arith.addf %cst_0, %p2t0__var_21 : tensor<4096xf32>
+          %var = "tt.reduce"(%_var) <{axis = 0 : i32}> ({
+          ^bb0(%var_10: f32, %var_11: f32):
+            %var_12 = arith.addf %var_10, %var_11 : f32
+            tt.reduce.return %var_12 : f32
+          }) : (tensor<4096xf32>) -> f32
+          %var_6 = arith.mulf %var, %recip_n : f32
+          %rstd_7 = arith.addf %var_6, %eps : f32
+          %rstd_9 = math.rsqrt %rstd_7 : f32
+          %0 = tt.addptr %Mean, %row : !tt.ptr<f32>, i32
+          tt.store %0, %mean_5 : !tt.ptr<f32>
+          %1 = tt.addptr %Rstd, %row : !tt.ptr<f32>, i32
+          tt.store %1, %rstd_9 : !tt.ptr<f32>
+          %p3t0_cols = tt.make_range {end = 4096 : i32, start = 0 : i32} : tensor<4096xi32>
+          %p3t0_cols_10 = tt.splat %c0_i32 : i32 -> tensor<4096xi32>
+          %p3t0_cols_11 = arith.addi %p3t0_cols_10, %p3t0_cols : tensor<4096xi32>
+          %p3t0_mask = tt.splat %N : i32 -> tensor<4096xi32>
+          %p3t0_mask_12 = arith.cmpi slt, %p3t0_cols_11, %p3t0_mask : tensor<4096xi32>
+          %p3t0_w = tt.splat %W : !tt.ptr<f16> -> tensor<4096x!tt.ptr<f16>>
+          %p3t0_w_13 = tt.addptr %p3t0_w, %p3t0_cols_11 : tensor<4096x!tt.ptr<f16>>, tensor<4096xi32>
+          %p3t0_w_14 = tt.load %p3t0_w_13, %p3t0_mask_12 : tensor<4096x!tt.ptr<f16>>
+          %p3t0_b = tt.splat %B : !tt.ptr<f16> -> tensor<4096x!tt.ptr<f16>>
+          %p3t0_b_15 = tt.addptr %p3t0_b, %p3t0_cols_11 : tensor<4096x!tt.ptr<f16>>, tensor<4096xi32>
+          %p3t0_b_16 = tt.load %p3t0_b_15, %p3t0_mask_12 : tensor<4096x!tt.ptr<f16>>
+          %p3t0_x = tt.splat %X_3 : !tt.ptr<f16> -> tensor<4096x!tt.ptr<f16>>
+          %p3t0_x_17 = tt.addptr %p3t0_x, %p3t0_cols_11 : tensor<4096x!tt.ptr<f16>>, tensor<4096xi32>
+          %p3t0_x_18 = tt.load %p3t0_x_17, %p3t0_mask_12, %cst : tensor<4096x!tt.ptr<f16>>
+          %p3t0_x_19 = arith.extf %p3t0_x_18 : tensor<4096xf16> to tensor<4096xf32>
+          %p3t0_x_hat = tt.splat %mean_5 : f32 -> tensor<4096xf32>
+          %p3t0_x_hat_20 = arith.subf %p3t0_x_19, %p3t0_x_hat : tensor<4096xf32>
+          %p3t0_x_hat_21 = tt.splat %rstd_9 : f32 -> tensor<4096xf32>
+          %p3t0_x_hat_22 = arith.mulf %p3t0_x_hat_20, %p3t0_x_hat_21 : tensor<4096xf32>
+          %p3t0_y = arith.extf %p3t0_w_14 : tensor<4096xf16> to tensor<4096xf32>
+          %p3t0_y_23 = arith.mulf %p3t0_x_hat_22, %p3t0_y : tensor<4096xf32>
+          %p3t0_y_24 = arith.extf %p3t0_b_16 : tensor<4096xf16> to tensor<4096xf32>
+          %p3t0_y_25 = arith.addf %p3t0_y_23, %p3t0_y_24 : tensor<4096xf32>
+          %p3t0_2 = tt.splat %Y_2 : !tt.ptr<f16> -> tensor<4096x!tt.ptr<f16>>
+          %p3t0_3 = tt.addptr %p3t0_2, %p3t0_cols_11 : tensor<4096x!tt.ptr<f16>>, tensor<4096xi32>
+          %p3t0_4 = arith.truncf %p3t0_y_25 : tensor<4096xf32> to tensor<4096xf16>
+          tt.store %p3t0_3, %p3t0_4, %p3t0_mask_12 : tensor<4096x!tt.ptr<f16>>
+        } else {
+          %limit3 = arith.constant 8192 : i32
+          %fits3 = arith.cmpi sle, %N, %limit3 : i32
+          scf.if %fits3 {
+            %row = tt.get_program_id x : i32
+            %Y_1 = arith.muli %row, %stride : i32
+            %Y_2 = tt.addptr %Y, %Y_1 : !tt.ptr<f16>, i32
+            %X_3 = tt.addptr %X, %Y_1 : !tt.ptr<f16>, i32
+            %p1t0_cols = tt.make_range {end = 8192 : i32, start = 0 : i32} : tensor<8192xi32>
+            %p1t0_cols_11 = tt.splat %c0_i32 : i32 -> tensor<8192xi32>
+            %p1t0_cols_12 = arith.addi %p1t0_cols_11, %p1t0_cols : tensor<8192xi32>
+            %p1t0_a = tt.splat %N : i32 -> tensor<8192xi32>
+            %p1t0_a_13 = arith.cmpi slt, %p1t0_cols_12, %p1t0_a : tensor<8192xi32>
+            %p1t0_a_14 = tt.splat %X_3 : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+            %p1t0_a_15 = tt.addptr %p1t0_a_14, %p1t0_cols_12 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+            %p1t0_a_16 = tt.load %p1t0_a_15, %p1t0_a_13, %cst : tensor<8192x!tt.ptr<f16>>
+            %p1t0_a_17 = arith.extf %p1t0_a_16 : tensor<8192xf16> to tensor<8192xf32>
+            %_mean = arith.addf %cst_0, %p1t0_a_17 : tensor<8192xf32>
+            %mean = "tt.reduce"(%_mean) <{axis = 0 : i32}> ({
+            ^bb0(%mean_10: f32, %mean_11: f32):
+              %mean_12 = arith.addf %mean_10, %mean_11 : f32
+              tt.reduce.return %mean_12 : f32
+            }) : (tensor<8192xf32>) -> f32
+            %mean_4 = arith.sitofp %N : i32 to f32
+            %recip_n = arith.divf %rstd, %mean_4 : f32
+            %mean_5 = arith.mulf %mean, %recip_n : f32
+            %p2t0_cols = tt.make_range {end = 8192 : i32, start = 0 : i32} : tensor<8192xi32>
+            %p2t0_cols_11 = tt.splat %c0_i32 : i32 -> tensor<8192xi32>
+            %p2t0_cols_12 = arith.addi %p2t0_cols_11, %p2t0_cols : tensor<8192xi32>
+            %p2t0_x = tt.splat %N : i32 -> tensor<8192xi32>
+            %p2t0_x_13 = arith.cmpi slt, %p2t0_cols_12, %p2t0_x : tensor<8192xi32>
+            %p2t0_x_14 = tt.splat %X_3 : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+            %p2t0_x_15 = tt.addptr %p2t0_x_14, %p2t0_cols_12 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+            %p2t0_x_16 = tt.load %p2t0_x_15, %p2t0_x_13, %cst : tensor<8192x!tt.ptr<f16>>
+            %p2t0_x_17 = arith.extf %p2t0_x_16 : tensor<8192xf16> to tensor<8192xf32>
+            %p2t0_x_18 = tt.splat %mean_5 : f32 -> tensor<8192xf32>
+            %p2t0_x_19 = arith.subf %p2t0_x_17, %p2t0_x_18 : tensor<8192xf32>
+            %p2t0_x_20 = arith.select %p2t0_x_13, %p2t0_x_19, %cst_0 : tensor<8192xi1>, tensor<8192xf32>
+            %p2t0__var_21 = arith.mulf %p2t0_x_20, %p2t0_x_20 : tensor<8192xf32>
+            %_var = arith.addf %cst_0, %p2t0__var_21 : tensor<8192xf32>
+            %var = "tt.reduce"(%_var) <{axis = 0 : i32}> ({
+            ^bb0(%var_10: f32, %var_11: f32):
+              %var_12 = arith.addf %var_10, %var_11 : f32
+              tt.reduce.return %var_12 : f32
+            }) : (tensor<8192xf32>) -> f32
+            %var_6 = arith.mulf %var, %recip_n : f32
+            %rstd_7 = arith.addf %var_6, %eps : f32
+            %rstd_9 = math.rsqrt %rstd_7 : f32
+            %0 = tt.addptr %Mean, %row : !tt.ptr<f32>, i32
+            tt.store %0, %mean_5 : !tt.ptr<f32>
+            %1 = tt.addptr %Rstd, %row : !tt.ptr<f32>, i32
+            tt.store %1, %rstd_9 : !tt.ptr<f32>
+            %p3t0_cols = tt.make_range {end = 8192 : i32, start = 0 : i32} : tensor<8192xi32>
+            %p3t0_cols_10 = tt.splat %c0_i32 : i32 -> tensor<8192xi32>
+            %p3t0_cols_11 = arith.addi %p3t0_cols_10, %p3t0_cols : tensor<8192xi32>
+            %p3t0_mask = tt.splat %N : i32 -> tensor<8192xi32>
+            %p3t0_mask_12 = arith.cmpi slt, %p3t0_cols_11, %p3t0_mask : tensor<8192xi32>
+            %p3t0_w = tt.splat %W : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+            %p3t0_w_13 = tt.addptr %p3t0_w, %p3t0_cols_11 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+            %p3t0_w_14 = tt.load %p3t0_w_13, %p3t0_mask_12 : tensor<8192x!tt.ptr<f16>>
+            %p3t0_b = tt.splat %B : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+            %p3t0_b_15 = tt.addptr %p3t0_b, %p3t0_cols_11 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+            %p3t0_b_16 = tt.load %p3t0_b_15, %p3t0_mask_12 : tensor<8192x!tt.ptr<f16>>
+            %p3t0_x = tt.splat %X_3 : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+            %p3t0_x_17 = tt.addptr %p3t0_x, %p3t0_cols_11 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+            %p3t0_x_18 = tt.load %p3t0_x_17, %p3t0_mask_12, %cst : tensor<8192x!tt.ptr<f16>>
+            %p3t0_x_19 = arith.extf %p3t0_x_18 : tensor<8192xf16> to tensor<8192xf32>
+            %p3t0_x_hat = tt.splat %mean_5 : f32 -> tensor<8192xf32>
+            %p3t0_x_hat_20 = arith.subf %p3t0_x_19, %p3t0_x_hat : tensor<8192xf32>
+            %p3t0_x_hat_21 = tt.splat %rstd_9 : f32 -> tensor<8192xf32>
+            %p3t0_x_hat_22 = arith.mulf %p3t0_x_hat_20, %p3t0_x_hat_21 : tensor<8192xf32>
+            %p3t0_y = arith.extf %p3t0_w_14 : tensor<8192xf16> to tensor<8192xf32>
+            %p3t0_y_23 = arith.mulf %p3t0_x_hat_22, %p3t0_y : tensor<8192xf32>
+            %p3t0_y_24 = arith.extf %p3t0_b_16 : tensor<8192xf16> to tensor<8192xf32>
+            %p3t0_y_25 = arith.addf %p3t0_y_23, %p3t0_y_24 : tensor<8192xf32>
+            %p3t0_2 = tt.splat %Y_2 : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+            %p3t0_3 = tt.addptr %p3t0_2, %p3t0_cols_11 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+            %p3t0_4 = arith.truncf %p3t0_y_25 : tensor<8192xf32> to tensor<8192xf16>
+            tt.store %p3t0_3, %p3t0_4, %p3t0_mask_12 : tensor<8192x!tt.ptr<f16>>
+          } else {
+            %limit4 = arith.constant 16384 : i32
+            %fits4 = arith.cmpi sle, %N, %limit4 : i32
+            scf.if %fits4 {
+              %row = tt.get_program_id x : i32
+              %Y_1 = arith.muli %row, %stride : i32
+              %Y_2 = tt.addptr %Y, %Y_1 : !tt.ptr<f16>, i32
+              %X_3 = tt.addptr %X, %Y_1 : !tt.ptr<f16>, i32
+              %p1t0_cols = tt.make_range {end = 8192 : i32, start = 0 : i32} : tensor<8192xi32>
+              %p1t0_cols_11 = tt.splat %c0_i32 : i32 -> tensor<8192xi32>
+              %p1t0_cols_12 = arith.addi %p1t0_cols_11, %p1t0_cols : tensor<8192xi32>
+              %p1t0_a = tt.splat %N : i32 -> tensor<8192xi32>
+              %p1t0_a_13 = arith.cmpi slt, %p1t0_cols_12, %p1t0_a : tensor<8192xi32>
+              %p1t0_a_14 = tt.splat %X_3 : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+              %p1t0_a_15 = tt.addptr %p1t0_a_14, %p1t0_cols_12 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+              %p1t0_a_16 = tt.load %p1t0_a_15, %p1t0_a_13, %cst : tensor<8192x!tt.ptr<f16>>
+              %p1t0_a_17 = arith.extf %p1t0_a_16 : tensor<8192xf16> to tensor<8192xf32>
+              %p1t0__mean_18 = arith.addf %cst_0, %p1t0_a_17 : tensor<8192xf32>
+              %offset_1_1 = arith.constant 8192 : i32
+              %p1t1_cols = tt.make_range {end = 8192 : i32, start = 0 : i32} : tensor<8192xi32>
+              %p1t1_cols_11 = tt.splat %offset_1_1 : i32 -> tensor<8192xi32>
+              %p1t1_cols_12 = arith.addi %p1t1_cols_11, %p1t1_cols : tensor<8192xi32>
+              %p1t1_a = tt.splat %N : i32 -> tensor<8192xi32>
+              %p1t1_a_13 = arith.cmpi slt, %p1t1_cols_12, %p1t1_a : tensor<8192xi32>
+              %p1t1_a_14 = tt.splat %X_3 : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+              %p1t1_a_15 = tt.addptr %p1t1_a_14, %p1t1_cols_12 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+              %p1t1_a_16 = tt.load %p1t1_a_15, %p1t1_a_13, %cst : tensor<8192x!tt.ptr<f16>>
+              %p1t1_a_17 = arith.extf %p1t1_a_16 : tensor<8192xf16> to tensor<8192xf32>
+              %_mean = arith.addf %p1t0__mean_18, %p1t1_a_17 : tensor<8192xf32>
+              %mean = "tt.reduce"(%_mean) <{axis = 0 : i32}> ({
+              ^bb0(%mean_10: f32, %mean_11: f32):
+                %mean_12 = arith.addf %mean_10, %mean_11 : f32
+                tt.reduce.return %mean_12 : f32
+              }) : (tensor<8192xf32>) -> f32
+              %mean_4 = arith.sitofp %N : i32 to f32
+              %recip_n = arith.divf %rstd, %mean_4 : f32
+              %mean_5 = arith.mulf %mean, %recip_n : f32
+              %p2t0_cols = tt.make_range {end = 8192 : i32, start = 0 : i32} : tensor<8192xi32>
+              %p2t0_cols_11 = tt.splat %c0_i32 : i32 -> tensor<8192xi32>
+              %p2t0_cols_12 = arith.addi %p2t0_cols_11, %p2t0_cols : tensor<8192xi32>
+              %p2t0_x = tt.splat %N : i32 -> tensor<8192xi32>
+              %p2t0_x_13 = arith.cmpi slt, %p2t0_cols_12, %p2t0_x : tensor<8192xi32>
+              %p2t0_x_14 = tt.splat %X_3 : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+              %p2t0_x_15 = tt.addptr %p2t0_x_14, %p2t0_cols_12 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+              %p2t0_x_16 = tt.load %p2t0_x_15, %p2t0_x_13, %cst : tensor<8192x!tt.ptr<f16>>
+              %p2t0_x_17 = arith.extf %p2t0_x_16 : tensor<8192xf16> to tensor<8192xf32>
+              %p2t0_x_18 = tt.splat %mean_5 : f32 -> tensor<8192xf32>
+              %p2t0_x_19 = arith.subf %p2t0_x_17, %p2t0_x_18 : tensor<8192xf32>
+              %p2t0_x_20 = arith.select %p2t0_x_13, %p2t0_x_19, %cst_0 : tensor<8192xi1>, tensor<8192xf32>
+              %p2t0__var_21 = arith.mulf %p2t0_x_20, %p2t0_x_20 : tensor<8192xf32>
+              %p2t0__var_22 = arith.addf %cst_0, %p2t0__var_21 : tensor<8192xf32>
+              %offset_2_1 = arith.constant 8192 : i32
+              %p2t1_cols = tt.make_range {end = 8192 : i32, start = 0 : i32} : tensor<8192xi32>
+              %p2t1_cols_11 = tt.splat %offset_2_1 : i32 -> tensor<8192xi32>
+              %p2t1_cols_12 = arith.addi %p2t1_cols_11, %p2t1_cols : tensor<8192xi32>
+              %p2t1_x = tt.splat %N : i32 -> tensor<8192xi32>
+              %p2t1_x_13 = arith.cmpi slt, %p2t1_cols_12, %p2t1_x : tensor<8192xi32>
+              %p2t1_x_14 = tt.splat %X_3 : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+              %p2t1_x_15 = tt.addptr %p2t1_x_14, %p2t1_cols_12 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+              %p2t1_x_16 = tt.load %p2t1_x_15, %p2t1_x_13, %cst : tensor<8192x!tt.ptr<f16>>
+              %p2t1_x_17 = arith.extf %p2t1_x_16 : tensor<8192xf16> to tensor<8192xf32>
+              %p2t1_x_18 = tt.splat %mean_5 : f32 -> tensor<8192xf32>
+              %p2t1_x_19 = arith.subf %p2t1_x_17, %p2t1_x_18 : tensor<8192xf32>
+              %p2t1_x_20 = arith.select %p2t1_x_13, %p2t1_x_19, %cst_0 : tensor<8192xi1>, tensor<8192xf32>
+              %p2t1__var_21 = arith.mulf %p2t1_x_20, %p2t1_x_20 : tensor<8192xf32>
+              %_var = arith.addf %p2t0__var_22, %p2t1__var_21 : tensor<8192xf32>
+              %var = "tt.reduce"(%_var) <{axis = 0 : i32}> ({
+              ^bb0(%var_10: f32, %var_11: f32):
+                %var_12 = arith.addf %var_10, %var_11 : f32
+                tt.reduce.return %var_12 : f32
+              }) : (tensor<8192xf32>) -> f32
+              %var_6 = arith.mulf %var, %recip_n : f32
+              %rstd_7 = arith.addf %var_6, %eps : f32
+              %rstd_9 = math.rsqrt %rstd_7 : f32
+              %0 = tt.addptr %Mean, %row : !tt.ptr<f32>, i32
+              tt.store %0, %mean_5 : !tt.ptr<f32>
+              %1 = tt.addptr %Rstd, %row : !tt.ptr<f32>, i32
+              tt.store %1, %rstd_9 : !tt.ptr<f32>
+              %p3t0_cols = tt.make_range {end = 8192 : i32, start = 0 : i32} : tensor<8192xi32>
+              %p3t0_cols_10 = tt.splat %c0_i32 : i32 -> tensor<8192xi32>
+              %p3t0_cols_11 = arith.addi %p3t0_cols_10, %p3t0_cols : tensor<8192xi32>
+              %p3t0_mask = tt.splat %N : i32 -> tensor<8192xi32>
+              %p3t0_mask_12 = arith.cmpi slt, %p3t0_cols_11, %p3t0_mask : tensor<8192xi32>
+              %p3t0_w = tt.splat %W : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+              %p3t0_w_13 = tt.addptr %p3t0_w, %p3t0_cols_11 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+              %p3t0_w_14 = tt.load %p3t0_w_13, %p3t0_mask_12 : tensor<8192x!tt.ptr<f16>>
+              %p3t0_b = tt.splat %B : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+              %p3t0_b_15 = tt.addptr %p3t0_b, %p3t0_cols_11 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+              %p3t0_b_16 = tt.load %p3t0_b_15, %p3t0_mask_12 : tensor<8192x!tt.ptr<f16>>
+              %p3t0_x = tt.splat %X_3 : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+              %p3t0_x_17 = tt.addptr %p3t0_x, %p3t0_cols_11 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+              %p3t0_x_18 = tt.load %p3t0_x_17, %p3t0_mask_12, %cst : tensor<8192x!tt.ptr<f16>>
+              %p3t0_x_19 = arith.extf %p3t0_x_18 : tensor<8192xf16> to tensor<8192xf32>
+              %p3t0_x_hat = tt.splat %mean_5 : f32 -> tensor<8192xf32>
+              %p3t0_x_hat_20 = arith.subf %p3t0_x_19, %p3t0_x_hat : tensor<8192xf32>
+              %p3t0_x_hat_21 = tt.splat %rstd_9 : f32 -> tensor<8192xf32>
+              %p3t0_x_hat_22 = arith.mulf %p3t0_x_hat_20, %p3t0_x_hat_21 : tensor<8192xf32>
+              %p3t0_y = arith.extf %p3t0_w_14 : tensor<8192xf16> to tensor<8192xf32>
+              %p3t0_y_23 = arith.mulf %p3t0_x_hat_22, %p3t0_y : tensor<8192xf32>
+              %p3t0_y_24 = arith.extf %p3t0_b_16 : tensor<8192xf16> to tensor<8192xf32>
+              %p3t0_y_25 = arith.addf %p3t0_y_23, %p3t0_y_24 : tensor<8192xf32>
+              %p3t0_2 = tt.splat %Y_2 : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+              %p3t0_3 = tt.addptr %p3t0_2, %p3t0_cols_11 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+              %p3t0_4 = arith.truncf %p3t0_y_25 : tensor<8192xf32> to tensor<8192xf16>
+              tt.store %p3t0_3, %p3t0_4, %p3t0_mask_12 : tensor<8192x!tt.ptr<f16>>
+              %offset_3_1 = arith.constant 8192 : i32
+              %p3t1_cols = tt.make_range {end = 8192 : i32, start = 0 : i32} : tensor<8192xi32>
+              %p3t1_cols_10 = tt.splat %offset_3_1 : i32 -> tensor<8192xi32>
+              %p3t1_cols_11 = arith.addi %p3t1_cols_10, %p3t1_cols : tensor<8192xi32>
+              %p3t1_mask = tt.splat %N : i32 -> tensor<8192xi32>
+              %p3t1_mask_12 = arith.cmpi slt, %p3t1_cols_11, %p3t1_mask : tensor<8192xi32>
+              %p3t1_w = tt.splat %W : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+              %p3t1_w_13 = tt.addptr %p3t1_w, %p3t1_cols_11 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+              %p3t1_w_14 = tt.load %p3t1_w_13, %p3t1_mask_12 : tensor<8192x!tt.ptr<f16>>
+              %p3t1_b = tt.splat %B : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+              %p3t1_b_15 = tt.addptr %p3t1_b, %p3t1_cols_11 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+              %p3t1_b_16 = tt.load %p3t1_b_15, %p3t1_mask_12 : tensor<8192x!tt.ptr<f16>>
+              %p3t1_x = tt.splat %X_3 : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+              %p3t1_x_17 = tt.addptr %p3t1_x, %p3t1_cols_11 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+              %p3t1_x_18 = tt.load %p3t1_x_17, %p3t1_mask_12, %cst : tensor<8192x!tt.ptr<f16>>
+              %p3t1_x_19 = arith.extf %p3t1_x_18 : tensor<8192xf16> to tensor<8192xf32>
+              %p3t1_x_hat = tt.splat %mean_5 : f32 -> tensor<8192xf32>
+              %p3t1_x_hat_20 = arith.subf %p3t1_x_19, %p3t1_x_hat : tensor<8192xf32>
+              %p3t1_x_hat_21 = tt.splat %rstd_9 : f32 -> tensor<8192xf32>
+              %p3t1_x_hat_22 = arith.mulf %p3t1_x_hat_20, %p3t1_x_hat_21 : tensor<8192xf32>
+              %p3t1_y = arith.extf %p3t1_w_14 : tensor<8192xf16> to tensor<8192xf32>
+              %p3t1_y_23 = arith.mulf %p3t1_x_hat_22, %p3t1_y : tensor<8192xf32>
+              %p3t1_y_24 = arith.extf %p3t1_b_16 : tensor<8192xf16> to tensor<8192xf32>
+              %p3t1_y_25 = arith.addf %p3t1_y_23, %p3t1_y_24 : tensor<8192xf32>
+              %p3t1_2 = tt.splat %Y_2 : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+              %p3t1_3 = tt.addptr %p3t1_2, %p3t1_cols_11 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+              %p3t1_4 = arith.truncf %p3t1_y_25 : tensor<8192xf32> to tensor<8192xf16>
+              tt.store %p3t1_3, %p3t1_4, %p3t1_mask_12 : tensor<8192x!tt.ptr<f16>>
+            } else {
+              %row = tt.get_program_id x : i32
+              %Y_1 = arith.muli %row, %stride : i32
+              %Y_2 = tt.addptr %Y, %Y_1 : !tt.ptr<f16>, i32
+              %X_3 = tt.addptr %X, %Y_1 : !tt.ptr<f16>, i32
+              %_mean = scf.for %off = %c0_i32 to %N step %c8192_i32 iter_args(%_mean_10 = %cst_0) -> (tensor<8192xf32>)  : i32 {
+                %cols = tt.make_range {end = 8192 : i32, start = 0 : i32} : tensor<8192xi32>
+                %cols_11 = tt.splat %off : i32 -> tensor<8192xi32>
+                %cols_12 = arith.addi %cols_11, %cols : tensor<8192xi32>
+                %a = tt.splat %N : i32 -> tensor<8192xi32>
+                %a_13 = arith.cmpi slt, %cols_12, %a : tensor<8192xi32>
+                %a_14 = tt.splat %X_3 : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+                %a_15 = tt.addptr %a_14, %cols_12 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+                %a_16 = tt.load %a_15, %a_13, %cst : tensor<8192x!tt.ptr<f16>>
+                %a_17 = arith.extf %a_16 : tensor<8192xf16> to tensor<8192xf32>
+                %_mean_18 = arith.addf %_mean_10, %a_17 : tensor<8192xf32>
+                scf.yield %_mean_18 : tensor<8192xf32>
+              }
+              %mean = "tt.reduce"(%_mean) <{axis = 0 : i32}> ({
+              ^bb0(%mean_10: f32, %mean_11: f32):
+                %mean_12 = arith.addf %mean_10, %mean_11 : f32
+                tt.reduce.return %mean_12 : f32
+              }) : (tensor<8192xf32>) -> f32
+              %mean_4 = arith.sitofp %N : i32 to f32
+              %recip_n = arith.divf %rstd, %mean_4 : f32
+              %mean_5 = arith.mulf %mean, %recip_n : f32
+              %_var = scf.for %off = %c0_i32 to %N step %c8192_i32 iter_args(%_var_10 = %cst_0) -> (tensor<8192xf32>)  : i32 {
+                %cols = tt.make_range {end = 8192 : i32, start = 0 : i32} : tensor<8192xi32>
+                %cols_11 = tt.splat %off : i32 -> tensor<8192xi32>
+                %cols_12 = arith.addi %cols_11, %cols : tensor<8192xi32>
+                %x = tt.splat %N : i32 -> tensor<8192xi32>
+                %x_13 = arith.cmpi slt, %cols_12, %x : tensor<8192xi32>
+                %x_14 = tt.splat %X_3 : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+                %x_15 = tt.addptr %x_14, %cols_12 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+                %x_16 = tt.load %x_15, %x_13, %cst : tensor<8192x!tt.ptr<f16>>
+                %x_17 = arith.extf %x_16 : tensor<8192xf16> to tensor<8192xf32>
+                %x_18 = tt.splat %mean_5 : f32 -> tensor<8192xf32>
+                %x_19 = arith.subf %x_17, %x_18 : tensor<8192xf32>
+                %x_20 = arith.select %x_13, %x_19, %cst_0 : tensor<8192xi1>, tensor<8192xf32>
+                %_var_21 = arith.mulf %x_20, %x_20 : tensor<8192xf32>
+                %_var_22 = arith.addf %_var_10, %_var_21 : tensor<8192xf32>
+                scf.yield %_var_22 : tensor<8192xf32>
+              }
+              %var = "tt.reduce"(%_var) <{axis = 0 : i32}> ({
+              ^bb0(%var_10: f32, %var_11: f32):
+                %var_12 = arith.addf %var_10, %var_11 : f32
+                tt.reduce.return %var_12 : f32
+              }) : (tensor<8192xf32>) -> f32
+              %var_6 = arith.mulf %var, %recip_n : f32
+              %rstd_7 = arith.addf %var_6, %eps : f32
+              %rstd_9 = math.rsqrt %rstd_7 : f32
+              %0 = tt.addptr %Mean, %row : !tt.ptr<f32>, i32
+              tt.store %0, %mean_5 : !tt.ptr<f32>
+              %1 = tt.addptr %Rstd, %row : !tt.ptr<f32>, i32
+              tt.store %1, %rstd_9 : !tt.ptr<f32>
+              scf.for %off = %c0_i32 to %N step %c8192_i32  : i32 {
+                %cols = tt.make_range {end = 8192 : i32, start = 0 : i32} : tensor<8192xi32>
+                %cols_10 = tt.splat %off : i32 -> tensor<8192xi32>
+                %cols_11 = arith.addi %cols_10, %cols : tensor<8192xi32>
+                %mask = tt.splat %N : i32 -> tensor<8192xi32>
+                %mask_12 = arith.cmpi slt, %cols_11, %mask : tensor<8192xi32>
+                %w = tt.splat %W : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+                %w_13 = tt.addptr %w, %cols_11 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+                %w_14 = tt.load %w_13, %mask_12 : tensor<8192x!tt.ptr<f16>>
+                %b = tt.splat %B : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+                %b_15 = tt.addptr %b, %cols_11 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+                %b_16 = tt.load %b_15, %mask_12 : tensor<8192x!tt.ptr<f16>>
+                %x = tt.splat %X_3 : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+                %x_17 = tt.addptr %x, %cols_11 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+                %x_18 = tt.load %x_17, %mask_12, %cst : tensor<8192x!tt.ptr<f16>>
+                %x_19 = arith.extf %x_18 : tensor<8192xf16> to tensor<8192xf32>
+                %x_hat = tt.splat %mean_5 : f32 -> tensor<8192xf32>
+                %x_hat_20 = arith.subf %x_19, %x_hat : tensor<8192xf32>
+                %x_hat_21 = tt.splat %rstd_9 : f32 -> tensor<8192xf32>
+                %x_hat_22 = arith.mulf %x_hat_20, %x_hat_21 : tensor<8192xf32>
+                %y = arith.extf %w_14 : tensor<8192xf16> to tensor<8192xf32>
+                %y_23 = arith.mulf %x_hat_22, %y : tensor<8192xf32>
+                %y_24 = arith.extf %b_16 : tensor<8192xf16> to tensor<8192xf32>
+                %y_25 = arith.addf %y_23, %y_24 : tensor<8192xf32>
+                %2 = tt.splat %Y_2 : !tt.ptr<f16> -> tensor<8192x!tt.ptr<f16>>
+                %3 = tt.addptr %2, %cols_11 : tensor<8192x!tt.ptr<f16>>, tensor<8192xi32>
+                %4 = arith.truncf %y_25 : tensor<8192xf32> to tensor<8192xf16>
+                tt.store %3, %4, %mask_12 : tensor<8192x!tt.ptr<f16>>
+              }
+            }
+          }
+        }
+      }
+    }
+    tt.return
+  }
+}

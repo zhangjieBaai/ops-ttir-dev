@@ -35,8 +35,15 @@ def compile_ir(name):
         else:
             dest.write_text(value)
     ck._init_handles()
-    save_json(out / "metadata.json", dict(ck.metadata._asdict(), n_regs=ck.n_regs, n_spills=ck.n_spills,
-                                         input_sha256=sha256(path)))
+    save_json(
+        out / "metadata.json",
+        dict(
+            ck.metadata._asdict(),
+            n_regs=ck.n_regs,
+            n_spills=ck.n_spills,
+            input_sha256=sha256(path),
+        ),
+    )
     return ck
 
 
@@ -54,4 +61,6 @@ def allocate(m, n, pad=0):
 
 def launch(ck, tensors, eps=EPS):
     x, y, w, b, mean, rstd = tensors[:6]
+    assert x.shape[1] > 0 and x.shape[1] % 16 == 0 and x.stride(0) % 16 == 0
+    assert y.stride() == x.stride()
     ck[(x.shape[0], 1, 1)](x, y, w, b, mean, rstd, x.stride(0), x.shape[1], eps)
