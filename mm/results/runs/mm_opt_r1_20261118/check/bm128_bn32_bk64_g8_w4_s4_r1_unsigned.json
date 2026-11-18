@@ -1,0 +1,492 @@
+{
+  "ttir_path": "ir/bm128_bn32_bk64_g8_w4_s4/r1_unsigned.ttir",
+  "ttir_sha256": "eaa2d5e361b475209939d8c0549cfca4d4b5a8fe0620d65dde008355d82f2328",
+  "artifacts": {
+    "hash": "2a53b51622967cd6db7bf86f0ecde07ac442a825ee7818e6a46c1a529842dbbf",
+    "stages": {
+      "ttir": "44690508fe078323cf926af4c0a0c6f3da4f48dca0b6c34530f817b22ae5271c",
+      "ttgir": "741c7fbf4f51915754a32cd1124596021e3099fa928065ddf6cb2dd62bfa304b",
+      "llir": "b1ad66345280fc36c5e324a7ea39ca494bcf7e9e21c8ef6f8005b7c079a47835",
+      "ptx": "743b145edcdd4ee59a899d332bf6954d010ae6fa216da07a629edcc27f9dd24f",
+      "cubin": "82e05a5f38fbb213de9764c65f6a66f7ed0e3a34ec21189333ab5539ef997283"
+    },
+    "metadata": {
+      "allowed_dot_input_precisions": [
+        "tf32",
+        "tf32x3",
+        "ieee",
+        "bf16x3",
+        "bf16x6"
+      ],
+      "arch": "sm90",
+      "backend_name": "cuda",
+      "debug": false,
+      "default_dot_input_precision": "tf32",
+      "deprecated_fp8_dot_operand_dtypes": [
+        "fp8e4b15"
+      ],
+      "enable_fp_fusion": true,
+      "enable_reflect_ftz": true,
+      "extern_libs": [
+        [
+          "libdevice",
+          "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+        ]
+      ],
+      "global_scratch_align": 1,
+      "global_scratch_size": 0,
+      "hash": "2a53b51622967cd6db7bf86f0ecde07ac442a825ee7818e6a46c1a529842dbbf",
+      "instrumentation_mode": "",
+      "ir_override": null,
+      "launch_cooperative_grid": false,
+      "launch_pdl": false,
+      "max_num_imprecise_acc_default": 1073741824,
+      "maxnreg": null,
+      "name": "matmul_kernel",
+      "num_ctas": 1,
+      "num_stages": 4,
+      "num_warps": 4,
+      "profile_scratch_align": 1,
+      "profile_scratch_size": 0,
+      "ptx_options": null,
+      "ptx_version": null,
+      "sanitize_overflow": true,
+      "shared": 81920,
+      "supported_fp8_dtypes": [
+        "fp8e4b15",
+        "fp8e4nv",
+        "fp8e5"
+      ],
+      "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+      "tensordesc_meta": [],
+      "tmem_size": 0,
+      "triton_version": "3.7.0",
+      "warp_size": 32
+    },
+    "n_regs": 72,
+    "n_spills": 0
+  },
+  "executable_sections": {
+    ".text.matmul_kernel": "1083a203c2603e26cdb198710cafd1e953b97175ca5240b23b1104afe74ac288"
+  },
+  "accuracy": {
+    "passed": true,
+    "seed": 42,
+    "suite": "full",
+    "cases": [
+      {
+        "shape": [
+          384,
+          384,
+          384
+        ],
+        "padding": 0,
+        "distribution": "normal",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.03125
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          512,
+          512,
+          512
+        ],
+        "padding": 0,
+        "distribution": "normal",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.0625
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          640,
+          640,
+          640
+        ],
+        "padding": 0,
+        "distribution": "normal",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.0625
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          16,
+          16,
+          16
+        ],
+        "padding": 0,
+        "distribution": "normal",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.0,
+          "cpu_fp64": 0.0
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          16,
+          16,
+          16
+        ],
+        "padding": 16,
+        "distribution": "normal",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.0,
+          "cpu_fp64": 0.0
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          48,
+          80,
+          48
+        ],
+        "padding": 0,
+        "distribution": "normal",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.0001220703125,
+          "cpu_fp64": 1.52587890625e-05
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          48,
+          80,
+          48
+        ],
+        "padding": 16,
+        "distribution": "normal",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.0,
+          "cpu_fp64": 0.00048828125
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          112,
+          240,
+          16
+        ],
+        "padding": 0,
+        "distribution": "normal",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.0001220703125,
+          "cpu_fp64": 0.0
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          112,
+          240,
+          16
+        ],
+        "padding": 16,
+        "distribution": "normal",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.0078125,
+          "cpu_fp64": 0.0078125
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          144,
+          272,
+          80
+        ],
+        "padding": 0,
+        "distribution": "normal",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.0078125,
+          "cpu_fp64": 0.015625
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          144,
+          272,
+          80
+        ],
+        "padding": 16,
+        "distribution": "normal",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.015625,
+          "cpu_fp64": 0.0078125
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          1008,
+          1040,
+          496
+        ],
+        "padding": 0,
+        "distribution": "normal",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.0625
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          1008,
+          1040,
+          496
+        ],
+        "padding": 16,
+        "distribution": "normal",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.0625
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          144,
+          272,
+          80
+        ],
+        "padding": 16,
+        "distribution": "zero",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.0,
+          "cpu_fp64": 0.0
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          144,
+          272,
+          80
+        ],
+        "padding": 16,
+        "distribution": "constant",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.0,
+          "cpu_fp64": 0.0
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          144,
+          272,
+          80
+        ],
+        "padding": 16,
+        "distribution": "alternating",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.0,
+          "cpu_fp64": 0.0
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          144,
+          272,
+          80
+        ],
+        "padding": 16,
+        "distribution": "large",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.125,
+          "cpu_fp64": 0.125
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          144,
+          272,
+          80
+        ],
+        "padding": 16,
+        "distribution": "small",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 5.960464477539063e-08,
+          "cpu_fp64": 5.960464477539063e-08
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          112,
+          16,
+          48
+        ],
+        "padding": 16,
+        "distribution": "normal",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.0,
+          "cpu_fp64": 3.0517578125e-05
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          128,
+          32,
+          64
+        ],
+        "padding": 16,
+        "distribution": "normal",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.00390625,
+          "cpu_fp64": 3.0517578125e-05
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          144,
+          48,
+          80
+        ],
+        "padding": 16,
+        "distribution": "normal",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.015625,
+          "cpu_fp64": 0.015625
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          1008,
+          48,
+          80
+        ],
+        "padding": 16,
+        "distribution": "normal",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.0078125
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          1024,
+          48,
+          80
+        ],
+        "padding": 16,
+        "distribution": "normal",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.00390625
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          1040,
+          48,
+          80
+        ],
+        "padding": 16,
+        "distribution": "normal",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.015625
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          144,
+          48,
+          48
+        ],
+        "padding": 16,
+        "distribution": "normal",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 1.52587890625e-05,
+          "cpu_fp64": 7.62939453125e-06
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          144,
+          48,
+          64
+        ],
+        "padding": 16,
+        "distribution": "normal",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.001953125,
+          "cpu_fp64": 0.001953125
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          144,
+          48,
+          128
+        ],
+        "padding": 16,
+        "distribution": "normal",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.0078125,
+          "cpu_fp64": 0.0078125
+        },
+        "passed": true
+      },
+      {
+        "shape": [
+          144,
+          48,
+          192
+        ],
+        "padding": 16,
+        "distribution": "normal",
+        "errors": {
+          "native_fp16": 0.0,
+          "native_fp32": 0.015625,
+          "cpu_fp64": 0.015625
+        },
+        "passed": true
+      }
+    ]
+  },
+  "status": "PASS"
+}

@@ -1,0 +1,34 @@
+{
+  "trigger": "Refuted contiguity repair premise and invalid big-family A/A observations",
+  "branch": "six-family-MM-TTIR-r1",
+  "evidence_refs": [
+    "/root/ops-ttir-dev/mm/results/runs/mm_opt_r1_20261118/screen.json",
+    "/root/ops-ttir-dev/mm/results/runs/mm_opt_r1_20261118/followup_screen.json",
+    "/root/ops-ttir-dev/mm/results/runs/mm_opt_r1_20261118/check/summary.json"
+  ],
+  "gains": {
+    "performance": "Only bm128_bn32 unsigned shows repeat screening signal ~1.047x; other functional candidates regress or are neutral/invalid",
+    "information": "Cache/unroll produce baseline executable bytes. Wrap variants spill/inflate register state. K branch doubles shared budget."
+  },
+  "cost": {
+    "tokens": null,
+    "wall": "See stage logs; no per-model token estimate"
+  },
+  "directions_compared": [
+    "index signedness",
+    "wrap replacement with contiguous16",
+    "K aligned loop branch",
+    "cache hint",
+    "unroll hint"
+  ],
+  "research": {
+    "requested": false,
+    "why": "Current compile and timing evidence resolves bounded local hypotheses; no need to spend external research to justify stopping refuted branches."
+  },
+  "decision": "diagnose_first",
+  "next_experiment": "Remeasure big family without severe-regression wrap variants, then freeze per-family finalist or baseline fallback and run complete31 plus independent repeat.",
+  "supports_if": "A/A within2%, baseline drift<10%, finalist full/repeat geomean>=1.02 with CI lower>1 and worstpoint>=.95",
+  "refutes_if": "No reproducible gain or invalid timing persists; retain baseline and report limits.",
+  "budget_cap": "No new TTIR files beyond48 already generated; only validity repair/final validation remaining",
+  "next_check": "big_group_recheck.json then full31"
+}

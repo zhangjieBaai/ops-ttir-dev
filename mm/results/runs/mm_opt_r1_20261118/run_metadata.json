@@ -1,0 +1,42 @@
+{
+  "commands": [
+    "/root/venvs/ir-ops-dev/bin/python mm/make_round1.py",
+    "CUDA_VISIBLE_DEVICES=6 PYTHONNOUSERSITE=1 LD_LIBRARY_PATH= KERNELFORGE_PLATFORM=h100 /root/venvs/ir-ops-dev/bin/python mm/verify_pipeline.py --output mm/results/runs/mm_opt_r1_20261118/pipeline.json",
+    "mm/experiment_round1.py check --output mm/results/runs/mm_opt_r1_20261118/check",
+    "mm/experiment_round1.py bench --output mm/results/runs/mm_opt_r1_20261118/screen.json",
+    "/root/venvs/ir-ops-dev/bin/python mm/make_round1_followup.py",
+    "mm/experiment_round1.py check --names r1_canonical r1_unsigned r1_wrap16 r1_wrap16_unsigned --output mm/results/runs/mm_opt_r1_20261118/followup_check",
+    "mm/experiment_round1.py bench --names r1_canonical r1_unsigned r1_wrap16 r1_wrap16_unsigned --output mm/results/runs/mm_opt_r1_20261118/followup_screen.json",
+    "mm/experiment_round1.py bench --names r1_canonical r1_unsigned --families bm128_bn256_bk64_g8_w8_s3 --rounds 5 --output mm/results/runs/mm_opt_r1_20261118/big_group_recheck.json",
+    "mm/experiment_round1.py bench --full --rounds 7 --selection mm/results/runs/mm_opt_r1_20261118/finalists.json --output mm/results/runs/mm_opt_r1_20261118/full.json",
+    "mm/experiment_round1.py check --seed 123 --names r1_canonical r1_unsigned --output mm/results/runs/mm_opt_r1_20261118/repeat_check",
+    "mm/experiment_round1.py bench --full --rounds 5 --seed 123 --selection mm/results/runs/mm_opt_r1_20261118/finalists.json --output mm/results/runs/mm_opt_r1_20261118/repeat.json",
+    "/root/venvs/ir-ops-dev/bin/python mm/finalize_round1.py",
+    "compute-sanitizer --tool memcheck/racecheck --error-exitcode 99 /root/venvs/ir-ops-dev/bin/python mm/experiment_round1.py sanitize --selection mm/results/runs/mm_opt_r1_20261118/selected_names.json",
+    "CUDA_VISIBLE_DEVICES=6 PYTHONNOUSERSITE=1 LD_LIBRARY_PATH= /root/venvs/ir-ops-dev/bin/python mm/check_round1_dispatch.py --output mm/results/runs/mm_opt_r1_20261118/dispatch_final.json"
+  ],
+  "command_notes": "Abbreviated common prefixes in this list: all GPU calls used CUDA_VISIBLE_DEVICES=6 PYTHONNOUSERSITE=1 LD_LIBRARY_PATH= and specified venv python. check/bench use pipeline.json; bench validates corresponding check/summary.json. See JSON pipeline/validation hashes for exact bindings. test_optimized.sh supplies fully expanded replay commands.",
+  "script_hashes": {
+    "make_round1.py": "961012238f195b0742db0929b717d0d0ddc6e41796e2fbbba2b7ac13cb7b0f6e",
+    "experiment_round1.py": "665127c22bea5a776231f62ff9bfab630cf7fbdcb9add7a8fcf9a535fc9ccbcd",
+    "make_round1_followup.py": "73c154b1315157cb53d6c073d0b9195211fab191558b36ff4d96a3355d575640",
+    "finalize_round1.py": "cc62098967d616bf73b02c6662f24dabf0da107678dbda00176a2a458391c3ca",
+    "check_round1_dispatch.py": "7468e26724ff5010d737ada2877bdabb4bc8afdca24dd9ce2a0f90138991cb79"
+  },
+  "git_head_before_archive": "0bb762a6e4875378d99b7e3c48c30289b7097e25",
+  "review_dispositions": [
+    {
+      "id": "MM-R1-PLAN-AA-IDENTITY",
+      "action": "adopted",
+      "evidence": "check/summary.json and followup_check/summary.json include identical executable_sections for canonical and baseline in every family"
+    },
+    {
+      "id": "MM-R1-PLAN-VALIDITY-AGGREGATION",
+      "action": "adopted",
+      "evidence": "finalize_round1.py refuses accepting a candidate unless all required primary and repeat rows and controls valid; invalid observations retained and big group conservative baseline fallback"
+    }
+  ],
+  "workflow_review": "/root/KernelForge-workspace/runs/mm-ttir-six-r1/advisors/review/mm-six-r1/",
+  "framework_adapter": "matmul not registered; local existing TTIR adapter used; not KernelForge CLI qualification",
+  "doc_gate_status": "NO_BASELINE: framework managed-doc gate checked nothing. No KernelForge managed documentation edited; local mm docs checked by targeted link scan and final review."
+}

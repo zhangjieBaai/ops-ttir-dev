@@ -1,0 +1,18 @@
+{
+  "decision": "Two bounded followups per family; cease cache hint and unroll hint trials with unchanged executable sections.",
+  "observations": [
+    "Canonical, cache_cg and unroll2 have executable ELF sections identical to baseline in all six groups.",
+    "wrap_select is correct but changed contiguous-lane analysis: register counts increased and big groups spilled; catastrophic regressions retained.",
+    "k_aligned duplicated-loop lowering roughly doubles static shared memory; largest group rejected at 294912>232448; remaining groups regress.",
+    "unsigned has a positive valid screening signal only in bm128_bn32; other results are regression/noise or invalid.",
+    "Screen big group has invalid A/A and baseline drift with no foreign processes observed; original invalid measurements cannot select a candidate."
+  ],
+  "new_hypotheses": [
+    "Replace masked-out offset fallback with index & 15, preserve safe contiguous16 chunks under existing multiple16 contract; add proven tt.contiguity hint.",
+    "Combine contiguous16 wrap with unsigned group/index arithmetic; test as separate candidate."
+  ],
+  "validation_exposure": "Only 12 tuning points have candidate performance exposure; all correctness points checked. Remaining 19 performance points still unexposed.",
+  "new_files_budget": 12,
+  "total_candidate_files": 48,
+  "profiler": "Not run; compiler/ISA evidence answered current questions; no hardware-cause proof claimed."
+}
