@@ -3,12 +3,12 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 : "${CUDA_VISIBLE_DEVICES:?Set CUDA_VISIBLE_DEVICES to one idle GPU first}"
 PYTHON_BIN="${PYTHON_BIN:-/root/venvs/ir-ops-dev/bin/python}"
-RESULTS_DIR="${RESULTS_DIR:-layer_norm/results/reruns/$(date -u +%Y%m%dT%H%M%SZ)}"
-mkdir -p "$RESULTS_DIR"
-if [[ -e "$RESULTS_DIR/full_benchmark.json" ]]; then
+RESULTS_DIR="${RESULTS_DIR:-layer_norm/results/runs/$(date -u +%Y%m%dT%H%M%SZ)_full}"
+if [[ -e "$RESULTS_DIR" ]]; then
     echo "Use a new RESULTS_DIR to preserve existing evidence" >&2
     exit 2
 fi
+mkdir -p "$RESULTS_DIR"
 
 "$PYTHON_BIN" layer_norm/export_baseline.py --verify
 "$PYTHON_BIN" layer_norm/verify_pipeline.py --output "$RESULTS_DIR/native_pipeline_check.json"
