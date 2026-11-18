@@ -1,5 +1,7 @@
 # 为什么本轮 TTIR 加速比低于 LLIR
 
+> 后续核查：两轮计算 IR 相同，旧教程原生 cubin 与当前 baseline 的机器指令相同；差异来自旧 LLIR 实验的独立 llc 重编译。统一当前 baseline 后，LLIR/TTIR 的几何平均加速为 1.412×/1.295×。详见 [baseline 一致性核查](baseline_audit.md)。下面各自 baseline 比值不应当作纯优化效果对照。
+
 结论：本轮 TTIR 只做了范围特化、展开和简单算术变换，没有迁移 LLIR 成熟版的寄存器/规约/同步/输出调度优化；同时两轮 baseline 编译结果不同。不是 TTIR 优化能力上限的比较。
 
 ## 同 GPU、同计时协议的四版本对照

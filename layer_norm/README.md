@@ -4,6 +4,7 @@
 
 - [首轮完整报告](report.md)
 - [与 LLIR 的同条件对照及差距分析](llir_comparison.md)
+- [Baseline 一致性核查与共同参考修正](baseline_audit.md)
 - [推荐优化 TTIR](ir/optimized.ttir)
 - [实验契约、假设和预算](optimization_plan.md)
 - [教程来源与哈希](upstream/provenance.json)

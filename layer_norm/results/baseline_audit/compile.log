@@ -1,0 +1,18 @@
+loc("/root/ir-ops-dev/layer_norm/ir_opt/baseline.llir":1:1): error: unexpected character
+  [compile] stripped nocreateundeforpoison (compile-only)
+  [compile] old_ir_legacy_backend.cubin: 55248 B  
+  [compile] stripped nocreateundeforpoison (compile-only)
+  [compile] current_ir_legacy_backend.cubin: 55248 B  
+Traceback (most recent call last):
+  File "/root/ops-ttir-dev/layer_norm/audit_baseline.py", line 83, in <module>
+    main()
+  File "/root/ops-ttir-dev/layer_norm/audit_baseline.py", line 45, in main
+    native = triton.compile(str(old_ir), target=GPUTarget('cuda', 90, 32), options=OPTIONS)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/compiler/compiler.py", line 240, in compile
+    src = IRSource(src, context, backend)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/compiler/compiler.py", line 107, in __init__
+    self.module = ir.parse_mlir_module(self.path, context)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Parse MLIR file failed.
