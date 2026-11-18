@@ -82,6 +82,18 @@ LayerNorm 示例：[`layer_norm/export_baseline.py`](layer_norm/export_baseline.
 
 若教程带 autotune，先记录每个测试用例或分组选择的配置，再冻结配置。正式 baseline/候选比较时不能让一边重新调参；若研究目标包含调参，必须作为单独因素报告。
 
+### Autotune 的逐 shape 基线与执行映射
+
+- 对带 autotune 的原始实现，必须先对冻结测试集中的每个 shape 按原始 autotune key 和候选配置集完成选择，保存全部配置计时、获选配置及失败记录，再建立基线。不能用一个代表 shape 的获选配置替代全部 shape 的选择；若单独研究固定配置，应明确另建实验组。
+- 冻结 `shape → 配置组 → TTIR 文件路径及 SHA256 → 完整编译选项` 的映射。key 必须覆盖影响选择或编译特化的 dtype、layout/stride 等契约信息；同一配置下不同 shape 的 TTIR 也必须实际核对，不能假定相同。
+- 不同获选配置对应不同 TTIR 时，必须分别保存不可变的 `ir/<配置组>/baseline.ttir`。只有实际 TTIR 内容和完整编译配置均相同的用例才能共用编译产物；即使 TTIR 相同，不同编译选项也须保留各自的分组和产物。
+- 每次测试、独立进程复测及每轮计时必须按同一冻结映射选择该 shape 对应的 TTIR/kernel，预热与正式测量使用同一组。常规被测执行必须启动该 TTIR 经原生文件入口编译出的 `CompiledKernel`；源码调用仅用于导出与 pipeline 对照，不得作为缺失映射或编译失败时的回退。
+- 允许在计时前一次编译/加载每组 kernel 并复用，也允许编译缓存命中；“每次走对应 TTIR”不要求每次启动都重新编译。正式验证与性能测试不得重新 autotune。未映射的输入必须拒绝，或另建并验证分组，不能临时猜测配置。
+- 每组 baseline 与其候选必须共享该组配置、签名、grid 规则、launcher 和计时流程；禁止通过改变 shape 到配置组的映射制造“仅改 TTIR”的收益。每点结果必须记录实际组名、TTIR 路径与哈希，并关联实际 cubin 哈希和资源记录。
+- 修改测试集、配置或映射时，必须归档旧 manifest、协议与证据，使用新的实验标识重新验证；不能把不同映射下的样本合并成同一轮结果。
+
+MM 示例：官方教程的性能集为 `M=N=K=256…4096，步长128`，共31点。本次逐点 autotune 实测获选6份不同 TTIR，已冻结为6组 baseline，31点每次测试均按 [`mm/baseline.json`](mm/baseline.json) 的映射执行。6组是该次实测结果，不是所有设备或重新调参后的固定数量。入口见 [`mm/common.py`](mm/common.py)、[`mm/benchmark.py`](mm/benchmark.py)，选择证据见 [`mm/autotune_ttir_report.md`](mm/autotune_ttir_report.md)。
+
 ## 4. 从 TTIR 开始的统一编译链
 
 ```mermaid
@@ -116,6 +128,8 @@ optimized = triton.compile(str(optimized_path), options=OPTIONS)
 
 这些参数为 LayerNorm 示例，不应原样强加给所有新算子。正式核查必须比较后端解析后的完整 options，而不只比较手写的四个字段；同时核对 target、extern libs、ptxas 选项、浮点选项、调试/插桩状态等。
 
+多配置实验中，上述一致性要求针对每一组的 baseline/候选分别成立；不同组可使用各自冻结的 options，不能把一组的编译选项或加载 metadata 套给其他组。
+
 当前冻结文件是 `make_ttir` 阶段结束后的 TTIR。Triton 3.7.0 的 TTIR 文件入口从 `make_ttgir` 继续，**不会再次执行 make_ttir**。源码路径到达同一 TTIR 截点后，使用相同的后续编译阶段。不得宣称文件入口仍完整执行了 Python 前端。
 
 必须禁止可能替换编译阶段或产物的 override、`ir_override` 和 stage inspection 修改钩子。禁用只对某个版本生效的编译环境设置。编译缓存命中允许使用，但必须保存实际输入和产物哈希；缓存命中本身不代表这次重新执行过所有编译阶段。
@@ -136,6 +150,7 @@ LayerNorm 已确认旧独立 llc baseline 与当前原生 baseline 的机器码�
 - TTGIR 若仅因 MLIR 解析打印出现 SSA 局部变量重命名，可以统一 parser round trip 后比较；不要把任意代码差异都当作命名差异忽略。
 - 源码 baseline 与文件 baseline 在相同输入上的全部输出一致。LayerNorm 已验证 Y/Mean/Rstd 逐位一致。
 - 记录两版实际输入 TTIR、各阶段产物、Triton 后端源码、`libtriton.so`、ptxas 的哈希。
+- 存在逐 shape 映射时，逐点验证源码按所属配置生成的 TTIR 与对应组 baseline 一致，并检查该点实际启动的 kernel/编译选项及产物哈希属于该组；不能只检查一组或一个代表点后宣称全部分组通过。
 
 若只能证明 `.text` 一致、完整 cubin 因调试信息不同而不一致，须明确记录区别及证据，不得写为“cubin 字节一致”。若出现实质代码差异，先定位，不能跳过并直接报告优化收益。
 
@@ -211,6 +226,7 @@ LayerNorm 示例：
 - 先预热并同步，再测量；不在同一 GPU 并发跑正确性、profiling 或其他性能任务。
 - LayerNorm 使用完整 30 shape、每点 7 轮、`rep=20ms`。每轮获得一对耗时，取配对加速比中位数，再对各 shape 汇总算术/几何平均。
 - 新算子根据耗时和变异度设定次数，不将“30 shape / 7 轮”视为所有算子的唯一配置。
+- 以官方教程性能集为依据时，必须保存并核对其完整 shape 列表；增删测试点须明确记录为新的测试协议。当前 MM 主性能集固定为官方31个方阵点，额外矩形、边界或压力用例用于正确性验证，不混入这31点的性能汇总。
 - 选定候选后用独立进程或不同种子复测，保留负结果和性能退步。
 - 报告 registers、spill、shared 等资源变化；若用 occupancy，应区分理论值和实际 profiler 值。资源变化不是未经消融的性能因果证明。
 - 固定配置的实验只证明该配置下的收益，不等于胜过教程 autotune 或所有应用场景。
@@ -243,6 +259,8 @@ CUDA graph replay 计时不包含 Python launch、输出分配、编译或加载
 ```
 
 这是建议结构，公共工具可逐步抽取；不要直接复制带 LayerNorm 参数和签名的脚本而不修改契约。若把 artifacts 排除出 Git，必须保留重建脚本、输入与产物哈希、资源记录和工具链指纹。
+
+多配置算子还须保存冻结映射（如 `baseline.json`），并将每组文件放入 `ir/<配置组>/baseline.ttir`；该组候选与 `optimized.ttir` 也放在所属组目录。历史单配置原件可保留，但必须明确标记为历史文件，常规测试不得再使用它替代逐 shape 映射。
 
 当前 LayerNorm 从仓库根目录运行：
 
