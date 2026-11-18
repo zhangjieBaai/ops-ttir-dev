@@ -1,5 +1,5 @@
 {
-  "experiment": "mm-fp16-sm90-fixed-v2",
+  "experiment": "mm-fp16-sm90-fixed-v3-official31",
   "meta": {
     "BLOCK_SIZE_M": 64,
     "BLOCK_SIZE_N": 128,
@@ -132,12 +132,13 @@
   },
   "source_sha256": "50ccd205e79d5275b8da09b3bc72cf86b0dc95bc2ef4531548509226b0fcc7b3",
   "upstream_sha256": "f88a9506694c58d483ad3cdb4aa672c23df0300803bcfaca13b9396184825008",
-  "contract_sha256": "a42239ec0a48eb51f45cf2b1a6ed9204f992c3f91fce0631d5d7c3f3969563fa",
-  "common_sha256": "f2338b2e46b01a722b54774afd540d471bd75e6998c01a31091f0a0d7fc14ed2",
+  "contract_sha256": "47fde0cf06084360c353b6214c75d00b7bb0e44ff4ab9caeff2309c1df6101a5",
+  "common_sha256": "dab29c60c29fa10b58a5867a451664d845d37ac7712b28d61b0ba2d6a26081ff",
   "protocol_sha256": {
     "validate.py": "15d259bec47d0eff7a3c18e851be1f94cdb5cd4d8b30e436aa6e480f1c2ceb35",
     "benchmark.py": "a3ae05c63c65edea2f2585c55c6d3eac55de0b22468fed6e6071b6f6bdb75f0a",
-    "verify_pipeline.py": "4a14d7f7b15f674637d3c4bcb937d4b6fdaf45ef699ccfc6c4ff62d97e5ea8b0"
+    "verify_pipeline.py": "4a14d7f7b15f674637d3c4bcb937d4b6fdaf45ef699ccfc6c4ff62d97e5ea8b0",
+    "export_baseline.py": "c67b859662b8ab5417fe57744a354df130db8c9ea7600132fd40bc32ef36a0b9"
   },
   "ttir_sha256": "af7b105bfb513f99fb5662f5a3ee0f385ebdb1a9ebed671934e7113c1bed7ee1",
   "source_metadata": {
@@ -194,8 +195,167 @@
     "warp_size": 32
   },
   "setup_revision": {
-    "parent_manifest_sha256": "644c8e5c2f82e91fb2673c30e4a61fb143ff81715f2db8a9139073e84561474e",
-    "archived_manifest": "setup_attempts/v1/baseline.json",
-    "reason": "Fix pipeline signature assertion: Triton 3.7 uses named SSA arguments, not %arg. Source, TTIR, options, numerical tests and benchmark unchanged. First attempt failed before validation/benchmark; full failure log retained."
-  }
+    "parent_manifest_sha256": "b5114226697ffc174e545301a2eb670db7c9aab6fe9d871de9a549084727f4cf",
+    "archived_manifest": "setup_attempts/v2/baseline.json",
+    "reason": "User requested exact official performance shapes: M=N=K=256..4096 step 128 (31 squares). Only performance shape matrix and matching correctness coverage/contract changed. Kernel source, baseline TTIR, compile options, launcher and timer unchanged; no autotune rerun.",
+    "archive": "setup_attempts/v2/"
+  },
+  "performance_shapes": [
+    [
+      256,
+      256,
+      256
+    ],
+    [
+      384,
+      384,
+      384
+    ],
+    [
+      512,
+      512,
+      512
+    ],
+    [
+      640,
+      640,
+      640
+    ],
+    [
+      768,
+      768,
+      768
+    ],
+    [
+      896,
+      896,
+      896
+    ],
+    [
+      1024,
+      1024,
+      1024
+    ],
+    [
+      1152,
+      1152,
+      1152
+    ],
+    [
+      1280,
+      1280,
+      1280
+    ],
+    [
+      1408,
+      1408,
+      1408
+    ],
+    [
+      1536,
+      1536,
+      1536
+    ],
+    [
+      1664,
+      1664,
+      1664
+    ],
+    [
+      1792,
+      1792,
+      1792
+    ],
+    [
+      1920,
+      1920,
+      1920
+    ],
+    [
+      2048,
+      2048,
+      2048
+    ],
+    [
+      2176,
+      2176,
+      2176
+    ],
+    [
+      2304,
+      2304,
+      2304
+    ],
+    [
+      2432,
+      2432,
+      2432
+    ],
+    [
+      2560,
+      2560,
+      2560
+    ],
+    [
+      2688,
+      2688,
+      2688
+    ],
+    [
+      2816,
+      2816,
+      2816
+    ],
+    [
+      2944,
+      2944,
+      2944
+    ],
+    [
+      3072,
+      3072,
+      3072
+    ],
+    [
+      3200,
+      3200,
+      3200
+    ],
+    [
+      3328,
+      3328,
+      3328
+    ],
+    [
+      3456,
+      3456,
+      3456
+    ],
+    [
+      3584,
+      3584,
+      3584
+    ],
+    [
+      3712,
+      3712,
+      3712
+    ],
+    [
+      3840,
+      3840,
+      3840
+    ],
+    [
+      3968,
+      3968,
+      3968
+    ],
+    [
+      4096,
+      4096,
+      4096
+    ]
+  ],
+  "performance_shape_source": "upstream/03-matrix-multiplication.py.txt:411; x_vals=[128 * i for i in range(2, 33)]"
 }

@@ -12,15 +12,8 @@ from triton.backends.nvidia.compiler import CUDABackend
 
 ROOT = Path(__file__).resolve().parent
 SEED_SHAPE = (1024, 1024, 1024)
-PERF_SHAPES = [
-    (n, n, n) for n in [128, 256, 384, 512, 768, 1024, 1536, 2048, 3072, 4096]
-] + [
-    (256, 1024, 512),
-    (1024, 256, 768),
-    (128, 2048, 512),
-    (2048, 128, 1024),
-    (272, 400, 528),
-]
+# Official tutorial 03: x_vals=[128 * i for i in range(2, 33)].
+PERF_SHAPES = [(n, n, n) for n in range(256, 4097, 128)]
 ATOL, RTOL = 1e-2, 1e-3
 
 

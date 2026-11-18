@@ -7,6 +7,7 @@ import json
 import torch
 import triton
 from common import (
+    PERF_SHAPES,
     ROOT,
     SEED_SHAPE,
     allocate,
@@ -38,6 +39,23 @@ def verify_extraction():
         ROOT / "upstream/03-matrix-multiplication.py.txt"
     )
     assert provenance["tutorial_sha256"] == sha256(ROOT / "tutorial.py")
+    # Read the actual frozen tutorial's Benchmark x_vals, rather than testing
+    # against a second hand-written list that could drift from the source.
+    x_vals = [
+        kw.value
+        for node in ast.walk(ast.parse(text))
+        if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute)
+        and node.func.attr == "Benchmark"
+        for kw in node.keywords
+        if kw.arg == "x_vals"
+    ]
+    assert len(x_vals) == 1
+    official_sizes = eval(
+        compile(ast.Expression(x_vals[0]), "<frozen tutorial x_vals>", "eval"),
+        {"__builtins__": {}, "range": range},
+    )
+    assert PERF_SHAPES == [(n, n, n) for n in official_sizes]
 
 
 def main():

@@ -15,8 +15,8 @@ CUDA_VISIBLE_DEVICES=6 bash mm/test_accuracy.sh
 CUDA_VISIBLE_DEVICES=6 bash mm/test_performance.sh
 ```
 
-性能入口依次校验冻结 baseline、pipeline 一致性、完整正确性、15 shape × 5 轮 CUDA graph kernel 计时、独立进程 seed=123 正确性与计时、memcheck/racecheck。每次写独立 `results/runs/` 目录，失败日志也保留。显式清空外部 Python 和动态库路径；不会把 JIT、加载、分配计入 kernel 时间。时钟未锁定，未主动清缓存。
+性能入口依次校验冻结 baseline、pipeline 一致性、完整正确性、31 个官方方阵 shape（M=N=K=256…4096，步长128）× 5 轮 CUDA graph kernel 计时、独立进程 seed=123 正确性与计时、memcheck/racecheck。每次写独立 `results/runs/` 目录，失败日志也保留。显式清空外部 Python 和动态库路径；不会把 JIT、加载、分配计入 kernel 时间。时钟未锁定，未主动清缓存。
 
-本轮限定 FP16、正 16 倍数 M/N/K 和行 stride、列 stride=1、指针对齐、无别名；支持行尾 padding。转置、融合激活、其他 dtype、空矩阵或不满足 IR 前提的输入不在本组范围内。15 个性能 shape 及数值协议在契约和 common.py/validate.py 中。
+本轮限定 FP16、正 16 倍数 M/N/K 和行 stride、列 stride=1、指针对齐、无别名；支持行尾 padding。转置、融合激活、其他 dtype、空矩阵或不满足 IR 前提的输入不在本组范围内。31 个性能 shape 及数值协议在契约和 common.py/validate.py 中。
 
 已完成实验和数值、性能结果见 [baseline_report.md](baseline_report.md)。正式结果来自 GPU 6；GPU 7 的受干扰运行另行保留并标记，不参与本轮报告。入口在每个 GPU 进程前后检查已有 compute process，发现占用则终止；这不是系统级设备预约或连续的独占证明。
