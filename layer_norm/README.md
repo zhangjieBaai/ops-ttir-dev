@@ -3,6 +3,7 @@
 从官方 Triton v3.7.0 教程前向实现导出并冻结 `ir/baseline.ttir`；在 TTIR 层直接改 IR，再通过官方 Triton 后端生成 cubin 并执行。没有手工修改下游 TTGIR/LLVM/PTX/cubin，也没有 Python kernel 替代优化候选。
 
 - [首轮完整报告](report.md)
+- [与 LLIR 的同条件对照及差距分析](llir_comparison.md)
 - [推荐优化 TTIR](ir/optimized.ttir)
 - [实验契约、假设和预算](optimization_plan.md)
 - [教程来源与哈希](upstream/provenance.json)
