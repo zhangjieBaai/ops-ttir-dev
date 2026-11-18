@@ -1,0 +1,196 @@
+{
+  "experiment": "mm-fp16-sm90-fixed-v1",
+  "meta": {
+    "BLOCK_SIZE_M": 64,
+    "BLOCK_SIZE_N": 128,
+    "BLOCK_SIZE_K": 64,
+    "GROUP_SIZE_M": 8,
+    "ACTIVATION": ""
+  },
+  "options": {
+    "num_warps": 4,
+    "num_stages": 4,
+    "num_ctas": 1,
+    "enable_fp_fusion": true
+  },
+  "runtime_arg_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    8,
+    10
+  ],
+  "representative_shape": [
+    1024,
+    1024,
+    1024
+  ],
+  "selection_scope": "One group: tutorial autotune at 1024^3; fixed across all tests; not per-shape best",
+  "autotune_candidates": [
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 8, num_ctas: 1, num_stages: 3, maxnreg: None",
+    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
+    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 32, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
+    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 32, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 2, num_ctas: 1, num_stages: 5, maxnreg: None",
+    "BLOCK_SIZE_M: 32, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 2, num_ctas: 1, num_stages: 5, maxnreg: None",
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 8, num_ctas: 1, num_stages: 3, maxnreg: None",
+    "BLOCK_SIZE_M: 256, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 8, num_ctas: 1, num_stages: 3, maxnreg: None",
+    "BLOCK_SIZE_M: 256, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
+    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
+    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 32, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None"
+  ],
+  "autotune_timings": {
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 8, num_ctas: 1, num_stages: 3, maxnreg: None": [
+      0.01724799908697605,
+      0.017055999487638474,
+      0.01744000054895878
+    ],
+    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
+      0.015359999611973763,
+      0.015072000212967396,
+      0.015744000673294067
+    ],
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
+      0.015519999898970127,
+      0.015296000055968761,
+      0.015744000673294067
+    ],
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
+      0.015039999969303608,
+      0.014655999839305878,
+      0.01548799965530634
+    ],
+    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
+      0.014368000440299511,
+      0.014175999909639359,
+      0.014592000283300877
+    ],
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 32, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
+      0.01539199985563755,
+      0.015168000012636185,
+      0.015647999942302704
+    ],
+    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 32, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 2, num_ctas: 1, num_stages: 5, maxnreg: None": [
+      0.017055999487638474,
+      0.016831999644637108,
+      0.017311999574303627
+    ],
+    "BLOCK_SIZE_M: 32, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 2, num_ctas: 1, num_stages: 5, maxnreg: None": [
+      0.015440000221133232,
+      0.015135999768972397,
+      0.015776000916957855
+    ],
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 8, num_ctas: 1, num_stages: 3, maxnreg: None": [
+      Infinity,
+      Infinity,
+      Infinity
+    ],
+    "BLOCK_SIZE_M: 256, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 8, num_ctas: 1, num_stages: 3, maxnreg: None": [
+      Infinity,
+      Infinity,
+      Infinity
+    ],
+    "BLOCK_SIZE_M: 256, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
+      Infinity,
+      Infinity,
+      Infinity
+    ],
+    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
+      Infinity,
+      Infinity,
+      Infinity
+    ],
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
+      Infinity,
+      Infinity,
+      Infinity
+    ],
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
+      0.011615999974310398,
+      0.01142400037497282,
+      0.011839999817311764
+    ],
+    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
+      0.011455999687314034,
+      0.011231999844312668,
+      0.011680000461637974
+    ],
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 32, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
+      0.013472000136971474,
+      0.013183999806642532,
+      0.01375999953597784
+    ]
+  },
+  "source_sha256": "50ccd205e79d5275b8da09b3bc72cf86b0dc95bc2ef4531548509226b0fcc7b3",
+  "upstream_sha256": "f88a9506694c58d483ad3cdb4aa672c23df0300803bcfaca13b9396184825008",
+  "contract_sha256": "a42239ec0a48eb51f45cf2b1a6ed9204f992c3f91fce0631d5d7c3f3969563fa",
+  "common_sha256": "f2338b2e46b01a722b54774afd540d471bd75e6998c01a31091f0a0d7fc14ed2",
+  "protocol_sha256": {
+    "validate.py": "15d259bec47d0eff7a3c18e851be1f94cdb5cd4d8b30e436aa6e480f1c2ceb35",
+    "benchmark.py": "a3ae05c63c65edea2f2585c55c6d3eac55de0b22468fed6e6071b6f6bdb75f0a",
+    "verify_pipeline.py": "b9adfe8b001a147b29ce9d1f8c8aa8548041b4c5cc56d299a7d4eeb0f5849da0"
+  },
+  "ttir_sha256": "af7b105bfb513f99fb5662f5a3ee0f385ebdb1a9ebed671934e7113c1bed7ee1",
+  "source_metadata": {
+    "allowed_dot_input_precisions": [
+      "tf32",
+      "tf32x3",
+      "ieee",
+      "bf16x3",
+      "bf16x6"
+    ],
+    "arch": "sm90",
+    "backend_name": "cuda",
+    "debug": false,
+    "default_dot_input_precision": "tf32",
+    "deprecated_fp8_dot_operand_dtypes": [
+      "fp8e4b15"
+    ],
+    "enable_fp_fusion": true,
+    "enable_reflect_ftz": true,
+    "extern_libs": [
+      [
+        "libdevice",
+        "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+      ]
+    ],
+    "global_scratch_align": 1,
+    "global_scratch_size": 0,
+    "hash": "c6165b0dfdd656633dc01ca6c16d3f3039473623a565d003fe7a6dc27b8f0740",
+    "instrumentation_mode": "",
+    "ir_override": null,
+    "launch_cooperative_grid": false,
+    "launch_pdl": false,
+    "max_num_imprecise_acc_default": 1073741824,
+    "maxnreg": null,
+    "name": "matmul_kernel",
+    "num_ctas": 1,
+    "num_stages": 4,
+    "num_warps": 4,
+    "profile_scratch_align": 1,
+    "profile_scratch_size": 0,
+    "ptx_options": null,
+    "ptx_version": null,
+    "sanitize_overflow": true,
+    "shared": 98304,
+    "supported_fp8_dtypes": [
+      "fp8e4b15",
+      "fp8e4nv",
+      "fp8e5"
+    ],
+    "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+    "tensordesc_meta": [],
+    "tmem_size": 0,
+    "triton_version": "3.7.0",
+    "warp_size": 32
+  }
+}

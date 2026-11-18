@@ -1,0 +1,285 @@
++ date -u --iso-8601=seconds
+2026-11-18T12:45:52+00:00
++ git rev-parse HEAD
+da13b35fd5961ff3758eecf39893dafa70e082eb
++ git status --short
+ M .gitignore
+ M .pre-commit-config.yaml
+ M README.md
+AM layer_norm/make_round2.py
+AM layer_norm/optimization_plan_v2.md
+AM layer_norm/profile_ttir.py
+?? layer_norm/ir/r2_affine.ttir
+?? layer_norm/ir/r2_affine_v2.ttir
+?? layer_norm/ir/r2_delay.ttir
+?? layer_norm/ir/r2_delay_affine.ttir
+?? layer_norm/ir/r2_delay_affine_v2.ttir
+?? layer_norm/ir/r2_fine1024.ttir
+?? layer_norm/ir/r2_fine1024_reload.ttir
+?? layer_norm/ir/r2_fine2048_ca.ttir
+?? layer_norm/ir/r2_fine2048_delay.ttir
+?? layer_norm/ir/r2_fine2048_reload.ttir
+?? layer_norm/ir/r2_fine2048_stream.ttir
+?? layer_norm/ir/r2_fold2048.ttir
+?? layer_norm/ir/r2_loop1024.ttir
+?? layer_norm/ir/r2_loop2048.ttir
+?? layer_norm/ir/r2_loop4096.ttir
+?? layer_norm/ir/r2_mixed_stream.ttir
+?? layer_norm/results/round2/
+?? mm/
++ nvidia-smi
+Wed Nov 18 20:45:52 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 580.126.20             Driver Version: 580.126.20     CUDA Version: 13.0     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA H100 80GB HBM3          On  |   00000000:19:00.0 Off |                    0 |
+| N/A   29C    P0             74W /  700W |      98MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   1  NVIDIA H100 80GB HBM3          On  |   00000000:3B:00.0 Off |                    0 |
+| N/A   30C    P0             73W /  700W |     130MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   2  NVIDIA H100 80GB HBM3          On  |   00000000:4C:00.0 Off |                    0 |
+| N/A   28C    P0             70W /  700W |     112MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   3  NVIDIA H100 80GB HBM3          On  |   00000000:5D:00.0 Off |                    0 |
+| N/A   30C    P0             73W /  700W |     124MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   4  NVIDIA H100 80GB HBM3          On  |   00000000:9B:00.0 Off |                    0 |
+| N/A   29C    P0             72W /  700W |     120MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   5  NVIDIA H100 80GB HBM3          On  |   00000000:BB:00.0 Off |                    0 |
+| N/A   29C    P0             71W /  700W |     126MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   6  NVIDIA H100 80GB HBM3          On  |   00000000:CB:00.0 Off |                    0 |
+| N/A   30C    P0             70W /  700W |     130MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   7  NVIDIA H100 80GB HBM3          On  |   00000000:DB:00.0 Off |                    0 |
+| N/A   30C    P0            129W /  700W |     599MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    7   N/A  N/A          947939      C   ...t/venvs/ir-ops-dev/bin/python        520MiB |
++-----------------------------------------------------------------------------------------+
++ /root/venvs/ir-ops-dev/bin/python mm/export_baseline.py
+{
+  "experiment": "mm-fp16-sm90-fixed-v1",
+  "meta": {
+    "BLOCK_SIZE_M": 64,
+    "BLOCK_SIZE_N": 128,
+    "BLOCK_SIZE_K": 64,
+    "GROUP_SIZE_M": 8,
+    "ACTIVATION": ""
+  },
+  "options": {
+    "num_warps": 4,
+    "num_stages": 4,
+    "num_ctas": 1,
+    "enable_fp_fusion": true
+  },
+  "runtime_arg_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    8,
+    10
+  ],
+  "representative_shape": [
+    1024,
+    1024,
+    1024
+  ],
+  "selection_scope": "One group: tutorial autotune at 1024^3; fixed across all tests; not per-shape best",
+  "autotune_candidates": [
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 8, num_ctas: 1, num_stages: 3, maxnreg: None",
+    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
+    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 32, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
+    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 32, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 2, num_ctas: 1, num_stages: 5, maxnreg: None",
+    "BLOCK_SIZE_M: 32, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 2, num_ctas: 1, num_stages: 5, maxnreg: None",
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 8, num_ctas: 1, num_stages: 3, maxnreg: None",
+    "BLOCK_SIZE_M: 256, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 8, num_ctas: 1, num_stages: 3, maxnreg: None",
+    "BLOCK_SIZE_M: 256, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
+    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
+    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 32, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None"
+  ],
+  "autotune_timings": {
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 8, num_ctas: 1, num_stages: 3, maxnreg: None": [
+      0.01724799908697605,
+      0.017055999487638474,
+      0.01744000054895878
+    ],
+    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
+      0.015359999611973763,
+      0.015072000212967396,
+      0.015744000673294067
+    ],
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
+      0.015519999898970127,
+      0.015296000055968761,
+      0.015744000673294067
+    ],
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
+      0.015039999969303608,
+      0.014655999839305878,
+      0.01548799965530634
+    ],
+    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
+      0.014368000440299511,
+      0.014175999909639359,
+      0.014592000283300877
+    ],
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 32, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
+      0.01539199985563755,
+      0.015168000012636185,
+      0.015647999942302704
+    ],
+    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 32, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 2, num_ctas: 1, num_stages: 5, maxnreg: None": [
+      0.017055999487638474,
+      0.016831999644637108,
+      0.017311999574303627
+    ],
+    "BLOCK_SIZE_M: 32, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 2, num_ctas: 1, num_stages: 5, maxnreg: None": [
+      0.015440000221133232,
+      0.015135999768972397,
+      0.015776000916957855
+    ],
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 8, num_ctas: 1, num_stages: 3, maxnreg: None": [
+      Infinity,
+      Infinity,
+      Infinity
+    ],
+    "BLOCK_SIZE_M: 256, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 8, num_ctas: 1, num_stages: 3, maxnreg: None": [
+      Infinity,
+      Infinity,
+      Infinity
+    ],
+    "BLOCK_SIZE_M: 256, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
+      Infinity,
+      Infinity,
+      Infinity
+    ],
+    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
+      Infinity,
+      Infinity,
+      Infinity
+    ],
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
+      Infinity,
+      Infinity,
+      Infinity
+    ],
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
+      0.011615999974310398,
+      0.01142400037497282,
+      0.011839999817311764
+    ],
+    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
+      0.011455999687314034,
+      0.011231999844312668,
+      0.011680000461637974
+    ],
+    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 32, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
+      0.013472000136971474,
+      0.013183999806642532,
+      0.01375999953597784
+    ]
+  },
+  "source_sha256": "50ccd205e79d5275b8da09b3bc72cf86b0dc95bc2ef4531548509226b0fcc7b3",
+  "upstream_sha256": "f88a9506694c58d483ad3cdb4aa672c23df0300803bcfaca13b9396184825008",
+  "contract_sha256": "a42239ec0a48eb51f45cf2b1a6ed9204f992c3f91fce0631d5d7c3f3969563fa",
+  "common_sha256": "f2338b2e46b01a722b54774afd540d471bd75e6998c01a31091f0a0d7fc14ed2",
+  "protocol_sha256": {
+    "validate.py": "15d259bec47d0eff7a3c18e851be1f94cdb5cd4d8b30e436aa6e480f1c2ceb35",
+    "benchmark.py": "a3ae05c63c65edea2f2585c55c6d3eac55de0b22468fed6e6071b6f6bdb75f0a",
+    "verify_pipeline.py": "b9adfe8b001a147b29ce9d1f8c8aa8548041b4c5cc56d299a7d4eeb0f5849da0"
+  },
+  "ttir_sha256": "af7b105bfb513f99fb5662f5a3ee0f385ebdb1a9ebed671934e7113c1bed7ee1",
+  "source_metadata": {
+    "allowed_dot_input_precisions": [
+      "tf32",
+      "tf32x3",
+      "ieee",
+      "bf16x3",
+      "bf16x6"
+    ],
+    "arch": "sm90",
+    "backend_name": "cuda",
+    "debug": false,
+    "default_dot_input_precision": "tf32",
+    "deprecated_fp8_dot_operand_dtypes": [
+      "fp8e4b15"
+    ],
+    "enable_fp_fusion": true,
+    "enable_reflect_ftz": true,
+    "extern_libs": [
+      [
+        "libdevice",
+        "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+      ]
+    ],
+    "global_scratch_align": 1,
+    "global_scratch_size": 0,
+    "hash": "c6165b0dfdd656633dc01ca6c16d3f3039473623a565d003fe7a6dc27b8f0740",
+    "instrumentation_mode": "",
+    "ir_override": null,
+    "launch_cooperative_grid": false,
+    "launch_pdl": false,
+    "max_num_imprecise_acc_default": 1073741824,
+    "maxnreg": null,
+    "name": "matmul_kernel",
+    "num_ctas": 1,
+    "num_stages": 4,
+    "num_warps": 4,
+    "profile_scratch_align": 1,
+    "profile_scratch_size": 0,
+    "ptx_options": null,
+    "ptx_version": null,
+    "sanitize_overflow": true,
+    "shared": 98304,
+    "supported_fp8_dtypes": [
+      "fp8e4b15",
+      "fp8e4nv",
+      "fp8e5"
+    ],
+    "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+    "tensordesc_meta": [],
+    "tmem_size": 0,
+    "triton_version": "3.7.0",
+    "warp_size": 32
+  }
+}
++ /root/venvs/ir-ops-dev/bin/python mm/verify_pipeline.py --output mm/results/runs/baseline_20261118T124552Z_xb6jlW/pipeline.json
+Traceback (most recent call last):
+  File "/root/ops-ttir-dev/mm/verify_pipeline.py", line 178, in <module>
+    main()
+  File "/root/ops-ttir-dev/mm/verify_pipeline.py", line 99, in main
+    assert entry.count("%arg") == 9, entry
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: matmul_kernel(%a_ptr: !tt.ptr<f16> {tt.divisibility = 16 : i32} loc("a_ptr"(#loc)), %b_ptr: !tt.ptr<f16> {tt.divisibility = 16 : i32} loc("b_ptr"(#loc)), %c_ptr: !tt.ptr<f16> {tt.divisibility = 16 : i32} loc("c_ptr"(#loc)), %M: i32 {tt.divisibility = 16 : i32} loc("M"(#loc)), %N: i32 {tt.divisibility = 16 : i32} loc("N"(#loc)), %K: i32 {tt.divisibility = 16 : i32} loc("K"(#loc)), %stride_am: i32 {tt.divisibility = 16 : i32} loc("stride_am"(#loc)), %stride_bk: i32 {tt.divisibility = 16 : i32} loc("stride_bk"(#loc)), %stride_cm: i32 {tt.divisibility = 16 : i32} loc("stride_cm"(#loc))) attributes {noinline = false}
++ status=1
++ echo exit_status=1

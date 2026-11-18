@@ -1,0 +1,210 @@
++ date -u --iso-8601=seconds
+2026-11-18T12:47:00+00:00
++ git rev-parse HEAD
+da13b35fd5961ff3758eecf39893dafa70e082eb
++ git status --short
+ M .gitignore
+ M .pre-commit-config.yaml
+ M README.md
+AM layer_norm/make_round2.py
+A  layer_norm/optimization_plan_v2.md
+A  layer_norm/profile_ttir.py
+?? layer_norm/ir/r2_affine.ttir
+?? layer_norm/ir/r2_affine_v2.ttir
+?? layer_norm/ir/r2_delay.ttir
+?? layer_norm/ir/r2_delay_affine.ttir
+?? layer_norm/ir/r2_delay_affine_v2.ttir
+?? layer_norm/ir/r2_fine1024.ttir
+?? layer_norm/ir/r2_fine1024_reload.ttir
+?? layer_norm/ir/r2_fine2048_ca.ttir
+?? layer_norm/ir/r2_fine2048_delay.ttir
+?? layer_norm/ir/r2_fine2048_reload.ttir
+?? layer_norm/ir/r2_fine2048_stream.ttir
+?? layer_norm/ir/r2_fold2048.ttir
+?? layer_norm/ir/r2_loop1024.ttir
+?? layer_norm/ir/r2_loop2048.ttir
+?? layer_norm/ir/r2_loop4096.ttir
+?? layer_norm/ir/r2_mixed_stream.ttir
+?? layer_norm/results/round2/
+?? mm/
++ nvidia-smi
+Wed Nov 18 20:47:00 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 580.126.20             Driver Version: 580.126.20     CUDA Version: 13.0     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA H100 80GB HBM3          On  |   00000000:19:00.0 Off |                    0 |
+| N/A   29C    P0             74W /  700W |      98MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   1  NVIDIA H100 80GB HBM3          On  |   00000000:3B:00.0 Off |                    0 |
+| N/A   30C    P0             73W /  700W |     130MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   2  NVIDIA H100 80GB HBM3          On  |   00000000:4C:00.0 Off |                    0 |
+| N/A   28C    P0             70W /  700W |     112MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   3  NVIDIA H100 80GB HBM3          On  |   00000000:5D:00.0 Off |                    0 |
+| N/A   30C    P0             73W /  700W |     124MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   4  NVIDIA H100 80GB HBM3          On  |   00000000:9B:00.0 Off |                    0 |
+| N/A   29C    P0             72W /  700W |     120MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   5  NVIDIA H100 80GB HBM3          On  |   00000000:BB:00.0 Off |                    0 |
+| N/A   29C    P0             71W /  700W |     126MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   6  NVIDIA H100 80GB HBM3          On  |   00000000:CB:00.0 Off |                    0 |
+| N/A   30C    P0             70W /  700W |     130MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   7  NVIDIA H100 80GB HBM3          On  |   00000000:DB:00.0 Off |                    0 |
+| N/A   28C    P0             73W /  700W |      72MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
++ /root/venvs/ir-ops-dev/bin/python mm/export_baseline.py
+PASS: frozen source/config/TTIR unchanged; no autotune rerun
++ /root/venvs/ir-ops-dev/bin/python mm/verify_pipeline.py --output mm/results/runs/baseline_20261118T124700Z_gO2bUH/pipeline.json
+PASS: environment/RECORD; source TTIR; full options/target; LLIR/PTX/cubin bytes; normalized TTGIR; bitwise output
++ /root/venvs/ir-ops-dev/bin/python mm/validate.py --pipeline mm/results/runs/baseline_20261118T124700Z_gO2bUH/pipeline.json --output mm/results/runs/baseline_20261118T124700Z_gO2bUH/accuracy.json
+(128, 128, 128) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.0078125} passed=True
+(256, 256, 256) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.03125, 'cpu_fp64': 0.03125} passed=True
+(384, 384, 384) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.03125} passed=True
+(512, 512, 512) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.03125} passed=True
+(768, 768, 768) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1024, 1024, 1024) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1536, 1536, 1536) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(2048, 2048, 2048) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(3072, 3072, 3072) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(4096, 4096, 4096) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.25} passed=True
+(256, 1024, 512) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.03125} passed=True
+(1024, 256, 768) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(128, 2048, 512) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(2048, 128, 1024) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(272, 400, 528) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.03125} passed=True
+(16, 16, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.0078125} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 6.103515625e-05, 'cpu_fp64': 6.103515625e-05} passed=True
+(112, 240, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.00390625} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.001953125, 'cpu_fp64': 0.001953125} passed=True
+(144, 272, 80) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.00390625} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.015625} passed=True
+(1008, 1040, 496) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(144, 272, 80) pad=16 zero: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 constant: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 alternating: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 large: {'native_fp16': 0.0, 'native_fp32': 0.125, 'cpu_fp64': 0.0625} passed=True
+(144, 272, 80) pad=16 small: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 112, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 9.5367431640625e-07, 'cpu_fp64': 3.0517578125e-05} passed=True
+(64, 128, 64) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.001953125, 'cpu_fp64': 0.00390625} passed=True
+(80, 144, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.015625} passed=True
+(496, 144, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625} passed=True
+(512, 144, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125} passed=True
+(528, 144, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625} passed=True
+PASS: 36 correctness cases
++ /root/venvs/ir-ops-dev/bin/python mm/benchmark.py --pipeline mm/results/runs/baseline_20261118T124700Z_gO2bUH/pipeline.json --validation mm/results/runs/baseline_20261118T124700Z_gO2bUH/accuracy.json --output mm/results/runs/baseline_20261118T124700Z_gO2bUH/benchmark.json
+ 128x 128x 128:     2.784 us,     1.51 TFLOPS
+ 256x 256x 256:     3.198 us,    10.49 TFLOPS
+ 384x 384x 384:     3.640 us,    31.11 TFLOPS
+ 512x 512x 512:     4.038 us,    66.48 TFLOPS
+ 768x 768x 768:     4.913 us,   184.41 TFLOPS
+1024x1024x1024:     5.992 us,   358.39 TFLOPS
+1536x1536x1536:    17.923 us,   404.38 TFLOPS
+2048x2048x2048:    36.915 us,   465.39 TFLOPS
+3072x3072x3072:   137.672 us,   421.16 TFLOPS
+4096x4096x4096:   333.200 us,   412.48 TFLOPS
+ 256x1024x 512:     4.039 us,    66.46 TFLOPS
+1024x 256x 768:     4.884 us,    82.45 TFLOPS
+ 128x2048x 512:     4.037 us,    66.49 TFLOPS
+2048x 128x1024:     5.590 us,    96.04 TFLOPS
+ 272x 400x 528:     4.615 us,    24.89 TFLOPS
++ /root/venvs/ir-ops-dev/bin/python mm/validate.py --seed 123 --pipeline mm/results/runs/baseline_20261118T124700Z_gO2bUH/pipeline.json --output mm/results/runs/baseline_20261118T124700Z_gO2bUH/accuracy_repeat.json
+(128, 128, 128) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.015625} passed=True
+(256, 256, 256) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.015625} passed=True
+(384, 384, 384) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.03125} passed=True
+(512, 512, 512) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(768, 768, 768) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1024, 1024, 1024) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1536, 1536, 1536) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(2048, 2048, 2048) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(3072, 3072, 3072) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.25} passed=True
+(4096, 4096, 4096) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.25} passed=True
+(256, 1024, 512) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.03125} passed=True
+(1024, 256, 768) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(128, 2048, 512) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(2048, 128, 1024) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(272, 400, 528) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.03125} passed=True
+(16, 16, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 9.5367431640625e-07, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.0} passed=True
+(112, 240, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.00390625} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.001953125, 'cpu_fp64': 0.00390625} passed=True
+(144, 272, 80) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.0078125} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.00390625} passed=True
+(1008, 1040, 496) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.03125} passed=True
+(144, 272, 80) pad=16 zero: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 constant: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 alternating: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 large: {'native_fp16': 0.0, 'native_fp32': 0.25, 'cpu_fp64': 0.25} passed=True
+(144, 272, 80) pad=16 small: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 112, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.001953125, 'cpu_fp64': 1.9073486328125e-06} passed=True
+(64, 128, 64) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.000244140625} passed=True
+(80, 144, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.00048828125} passed=True
+(496, 144, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625} passed=True
+(512, 144, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625} passed=True
+(528, 144, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625} passed=True
+PASS: 36 correctness cases
++ /root/venvs/ir-ops-dev/bin/python mm/benchmark.py --seed 123 --pipeline mm/results/runs/baseline_20261118T124700Z_gO2bUH/pipeline.json --validation mm/results/runs/baseline_20261118T124700Z_gO2bUH/accuracy_repeat.json --output mm/results/runs/baseline_20261118T124700Z_gO2bUH/benchmark_repeat.json
+ 128x 128x 128:     2.783 us,     1.51 TFLOPS
+ 256x 256x 256:     3.199 us,    10.49 TFLOPS
+ 384x 384x 384:     3.638 us,    31.13 TFLOPS
+ 512x 512x 512:     4.037 us,    66.50 TFLOPS
+ 768x 768x 768:     4.910 us,   184.52 TFLOPS
+1024x1024x1024:     5.994 us,   358.26 TFLOPS
+1536x1536x1536:    17.938 us,   404.04 TFLOPS
+2048x2048x2048:    36.729 us,   467.75 TFLOPS
+3072x3072x3072:   137.191 us,   422.64 TFLOPS
+4096x4096x4096:   599.291 us,   229.34 TFLOPS
+ 256x1024x 512:     7.284 us,    36.85 TFLOPS
+1024x 256x 768:     9.304 us,    43.28 TFLOPS
+ 128x2048x 512:     7.560 us,    35.51 TFLOPS
+2048x 128x1024:    10.450 us,    51.38 TFLOPS
+ 272x 400x 528:     8.690 us,    13.22 TFLOPS
++ for TOOL in memcheck racecheck
++ compute-sanitizer --tool memcheck --error-exitcode 99 --log-file mm/results/runs/baseline_20261118T124700Z_gO2bUH/memcheck.log /root/venvs/ir-ops-dev/bin/python mm/validate.py --suite sanitizer --pipeline mm/results/runs/baseline_20261118T124700Z_gO2bUH/pipeline.json --output mm/results/runs/baseline_20261118T124700Z_gO2bUH/memcheck_accuracy.json
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 3.0517578125e-05, 'cpu_fp64': 3.0517578125e-05} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00048828125, 'cpu_fp64': 0.0009765625} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.0078125} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+PASS: 5 correctness cases
++ for TOOL in memcheck racecheck
++ compute-sanitizer --tool racecheck --error-exitcode 99 --log-file mm/results/runs/baseline_20261118T124700Z_gO2bUH/racecheck.log /root/venvs/ir-ops-dev/bin/python mm/validate.py --suite sanitizer --pipeline mm/results/runs/baseline_20261118T124700Z_gO2bUH/pipeline.json --output mm/results/runs/baseline_20261118T124700Z_gO2bUH/racecheck_accuracy.json
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 3.0517578125e-05, 'cpu_fp64': 3.0517578125e-05} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00048828125, 'cpu_fp64': 0.0009765625} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.0078125} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+PASS: 5 correctness cases
++ echo 'Baseline complete: mm/results/runs/baseline_20261118T124700Z_gO2bUH'
+Baseline complete: mm/results/runs/baseline_20261118T124700Z_gO2bUH
++ status=0
++ echo exit_status=0
