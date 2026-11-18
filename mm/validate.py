@@ -11,7 +11,9 @@ from common import (
     ROOT,
     RTOL,
     allocate,
+    baseline_hashes,
     compile_ir,
+    config_for_shape,
     frozen,
     launch,
     save_json,
@@ -19,7 +21,7 @@ from common import (
 )
 
 
-def cases(suite):
+def family_cases(suite, config):
     edges = [
         (16, 16, 16),
         (48, 80, 48),
@@ -29,14 +31,14 @@ def cases(suite):
     ]
     if suite == "sanitizer":
         return [(shape, 16, "normal") for shape in edges]
-    result = [(shape, 0, "normal") for shape in PERF_SHAPES]
+    result = []
     result += [(shape, pad, "normal") for shape in edges for pad in [0, 16]]
     result += [
         ((144, 272, 80), 16, distribution)
         for distribution in ["zero", "constant", "alternating", "large", "small"]
     ]
     # Cover both sides of every tile/group boundary for any selected tutorial config.
-    meta = frozen()["meta"]
+    meta = config["meta"]
     bm, bn, bk, group = [
         meta[key]
         for key in ["BLOCK_SIZE_M", "BLOCK_SIZE_N", "BLOCK_SIZE_K", "GROUP_SIZE_M"]
@@ -50,6 +52,18 @@ def cases(suite):
     return result
 
 
+def cases(suite, manifest):
+    result = []
+    if suite == "full":
+        result += [
+            (config_for_shape(shape, manifest)[0], shape, 0, "normal")
+            for shape in PERF_SHAPES
+        ]
+    for name, config in manifest["families"].items():
+        result += [(name, *case) for case in family_cases(suite, config)]
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--suite", choices=["full", "sanitizer"], default="full")
@@ -60,26 +74,28 @@ def main():
     assert not args.output.exists()
     config = frozen()
     pipeline = json.loads(args.pipeline.read_text())
-    assert pipeline["passed"] and pipeline["baseline_sha256"] == config["ttir_sha256"]
+    assert pipeline["passed"] and pipeline["baseline_hashes"] == baseline_hashes(config)
     assert pipeline["config_sha256"] == sha256(ROOT / "baseline.json")
     torch.backends.cuda.matmul.allow_tf32 = False
     torch.backends.cuda.matmul.allow_fp16_reduced_precision_reduction = False
     torch.manual_seed(args.seed)
-    ck = compile_ir()
+    kernels = {name: compile_ir(name) for name in config["families"]}
     result = dict(
         passed=True,
         suite=args.suite,
         seed=args.seed,
         atol=ATOL,
         rtol=RTOL,
-        baseline_sha256=config["ttir_sha256"],
+        baseline_hashes=baseline_hashes(config),
         config_sha256=sha256(ROOT / "baseline.json"),
         validator_sha256=sha256(__file__),
         pipeline_sha256=sha256(args.pipeline),
         device_uuid=str(torch.cuda.get_device_properties(0).uuid),
         records=[],
     )
-    for shape, pad, distribution in cases(args.suite):
+    for family_id, shape, pad, distribution in cases(args.suite, config):
+        family = config["families"][family_id]
+        ck = kernels[family_id]
         ts = allocate(*shape, pad=pad)
         a, b, c, storage = ts
         if distribution == "zero":
@@ -107,7 +123,7 @@ def main():
                 torch.mm(a.cpu().double(), b.cpu().double()).half().cuda()
             )
         storage.fill_(float("nan"))
-        launch(ck, ts, config)
+        launch(ck, ts, family)
         errors = {
             key: (c.float() - ref.float()).abs().max().item()
             for key, ref in refs.items()
@@ -121,6 +137,8 @@ def main():
         )
         row = dict(
             shape=shape,
+            family=family_id,
+            ttir_sha256=family["ttir_sha256"],
             padding=pad,
             distribution=distribution,
             max_abs_errors=errors,

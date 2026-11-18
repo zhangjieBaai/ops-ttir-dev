@@ -1,0 +1,679 @@
++ date -u --iso-8601=seconds
+2026-11-18T13:55:15+00:00
++ git rev-parse HEAD
+4aed18b57f3b94c7b08af36ceaba5361591644d9
++ git status --short
+ M AGENTS.md
+ M README.md
+ M mm/baseline.json
+ M mm/benchmark.py
+ M mm/common.py
+ M mm/diagnose_autotune.py
+ M mm/export_baseline.py
+ M mm/optimization_plan.md
+ M mm/validate.py
+ M mm/verify_pipeline.py
+?? mm/freeze_baselines.py
+?? mm/ir/bm128_bn128_bk32_g8_w4_s4/
+?? mm/ir/bm128_bn256_bk64_g8_w8_s3/
+?? mm/ir/bm128_bn32_bk64_g8_w4_s4/
+?? mm/ir/bm32_bn64_bk32_g8_w2_s5/
+?? mm/ir/bm64_bn128_bk64_g8_w4_s4/
+?? mm/ir/bm64_bn256_bk32_g8_w4_s4/
+?? mm/results/runs/baseline_20261118T135515Z_fg6zev/
+?? mm/setup_attempts/v3/
++ nvidia-smi
+Wed Nov 18 21:55:15 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 580.126.20             Driver Version: 580.126.20     CUDA Version: 13.0     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA H100 80GB HBM3          On  |   00000000:19:00.0 Off |                    0 |
+| N/A   30C    P0             74W /  700W |      98MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   1  NVIDIA H100 80GB HBM3          On  |   00000000:3B:00.0 Off |                    0 |
+| N/A   30C    P0             73W /  700W |     130MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   2  NVIDIA H100 80GB HBM3          On  |   00000000:4C:00.0 Off |                    0 |
+| N/A   28C    P0             70W /  700W |     112MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   3  NVIDIA H100 80GB HBM3          On  |   00000000:5D:00.0 Off |                    0 |
+| N/A   30C    P0             73W /  700W |     124MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   4  NVIDIA H100 80GB HBM3          On  |   00000000:9B:00.0 Off |                    0 |
+| N/A   29C    P0             72W /  700W |     120MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   5  NVIDIA H100 80GB HBM3          On  |   00000000:BB:00.0 Off |                    0 |
+| N/A   29C    P0             71W /  700W |     126MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   6  NVIDIA H100 80GB HBM3          On  |   00000000:CB:00.0 Off |                    0 |
+| N/A   29C    P0             70W /  700W |     130MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   7  NVIDIA H100 80GB HBM3          On  |   00000000:DB:00.0 Off |                    0 |
+| N/A   28C    P0             73W /  700W |      72MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
++ run_step /root/venvs/ir-ops-dev/bin/python mm/export_baseline.py
++ ensure_idle
++ local occupants
+++ nvidia-smi -i 6 --query-compute-apps=pid,process_name --format=csv,noheader
++ occupants=
++ [[ -n '' ]]
++ /root/venvs/ir-ops-dev/bin/python mm/export_baseline.py
+PASS: (256, 256, 256) -> bm32_bn64_bk32_g8_w2_s5; frozen tutorial TTIR/cubin unchanged
+PASS: (384, 384, 384) -> bm128_bn32_bk64_g8_w4_s4; frozen tutorial TTIR/cubin unchanged
+PASS: (512, 512, 512) -> bm128_bn32_bk64_g8_w4_s4; frozen tutorial TTIR/cubin unchanged
+PASS: (640, 640, 640) -> bm128_bn32_bk64_g8_w4_s4; frozen tutorial TTIR/cubin unchanged
+PASS: (768, 768, 768) -> bm64_bn128_bk64_g8_w4_s4; frozen tutorial TTIR/cubin unchanged
+PASS: (896, 896, 896) -> bm64_bn128_bk64_g8_w4_s4; frozen tutorial TTIR/cubin unchanged
+PASS: (1024, 1024, 1024) -> bm64_bn128_bk64_g8_w4_s4; frozen tutorial TTIR/cubin unchanged
+PASS: (1152, 1152, 1152) -> bm64_bn128_bk64_g8_w4_s4; frozen tutorial TTIR/cubin unchanged
+PASS: (1280, 1280, 1280) -> bm64_bn128_bk64_g8_w4_s4; frozen tutorial TTIR/cubin unchanged
+PASS: (1408, 1408, 1408) -> bm64_bn128_bk64_g8_w4_s4; frozen tutorial TTIR/cubin unchanged
+PASS: (1536, 1536, 1536) -> bm128_bn256_bk64_g8_w8_s3; frozen tutorial TTIR/cubin unchanged
+PASS: (1664, 1664, 1664) -> bm128_bn256_bk64_g8_w8_s3; frozen tutorial TTIR/cubin unchanged
+PASS: (1792, 1792, 1792) -> bm128_bn256_bk64_g8_w8_s3; frozen tutorial TTIR/cubin unchanged
+PASS: (1920, 1920, 1920) -> bm128_bn256_bk64_g8_w8_s3; frozen tutorial TTIR/cubin unchanged
+PASS: (2048, 2048, 2048) -> bm128_bn256_bk64_g8_w8_s3; frozen tutorial TTIR/cubin unchanged
+PASS: (2176, 2176, 2176) -> bm64_bn256_bk32_g8_w4_s4; frozen tutorial TTIR/cubin unchanged
+PASS: (2304, 2304, 2304) -> bm128_bn128_bk32_g8_w4_s4; frozen tutorial TTIR/cubin unchanged
+PASS: (2432, 2432, 2432) -> bm128_bn128_bk32_g8_w4_s4; frozen tutorial TTIR/cubin unchanged
+PASS: (2560, 2560, 2560) -> bm128_bn256_bk64_g8_w8_s3; frozen tutorial TTIR/cubin unchanged
+PASS: (2688, 2688, 2688) -> bm128_bn256_bk64_g8_w8_s3; frozen tutorial TTIR/cubin unchanged
+PASS: (2816, 2816, 2816) -> bm128_bn256_bk64_g8_w8_s3; frozen tutorial TTIR/cubin unchanged
+PASS: (2944, 2944, 2944) -> bm128_bn256_bk64_g8_w8_s3; frozen tutorial TTIR/cubin unchanged
+PASS: (3072, 3072, 3072) -> bm128_bn256_bk64_g8_w8_s3; frozen tutorial TTIR/cubin unchanged
+PASS: (3200, 3200, 3200) -> bm128_bn256_bk64_g8_w8_s3; frozen tutorial TTIR/cubin unchanged
+PASS: (3328, 3328, 3328) -> bm128_bn256_bk64_g8_w8_s3; frozen tutorial TTIR/cubin unchanged
+PASS: (3456, 3456, 3456) -> bm128_bn256_bk64_g8_w8_s3; frozen tutorial TTIR/cubin unchanged
+PASS: (3584, 3584, 3584) -> bm128_bn256_bk64_g8_w8_s3; frozen tutorial TTIR/cubin unchanged
+PASS: (3712, 3712, 3712) -> bm128_bn256_bk64_g8_w8_s3; frozen tutorial TTIR/cubin unchanged
+PASS: (3840, 3840, 3840) -> bm128_bn256_bk64_g8_w8_s3; frozen tutorial TTIR/cubin unchanged
+PASS: (3968, 3968, 3968) -> bm128_bn256_bk64_g8_w8_s3; frozen tutorial TTIR/cubin unchanged
+PASS: (4096, 4096, 4096) -> bm128_bn256_bk64_g8_w8_s3; frozen tutorial TTIR/cubin unchanged
+PASS: all 31 shapes match six frozen baseline TTIRs; no autotune rerun
++ ensure_idle
++ local occupants
+++ nvidia-smi -i 6 --query-compute-apps=pid,process_name --format=csv,noheader
++ occupants=
++ [[ -n '' ]]
++ run_step /root/venvs/ir-ops-dev/bin/python mm/verify_pipeline.py --output mm/results/runs/baseline_20261118T135515Z_fg6zev/pipeline.json
++ ensure_idle
++ local occupants
+++ nvidia-smi -i 6 --query-compute-apps=pid,process_name --format=csv,noheader
++ occupants=
++ [[ -n '' ]]
++ /root/venvs/ir-ops-dev/bin/python mm/verify_pipeline.py --output mm/results/runs/baseline_20261118T135515Z_fg6zev/pipeline.json
+PASS pipeline: (256, 256, 256) -> bm32_bn64_bk32_g8_w2_s5
+PASS pipeline: (384, 384, 384) -> bm128_bn32_bk64_g8_w4_s4
+PASS pipeline: (512, 512, 512) -> bm128_bn32_bk64_g8_w4_s4
+PASS pipeline: (640, 640, 640) -> bm128_bn32_bk64_g8_w4_s4
+PASS pipeline: (768, 768, 768) -> bm64_bn128_bk64_g8_w4_s4
+PASS pipeline: (896, 896, 896) -> bm64_bn128_bk64_g8_w4_s4
+PASS pipeline: (1024, 1024, 1024) -> bm64_bn128_bk64_g8_w4_s4
+PASS pipeline: (1152, 1152, 1152) -> bm64_bn128_bk64_g8_w4_s4
+PASS pipeline: (1280, 1280, 1280) -> bm64_bn128_bk64_g8_w4_s4
+PASS pipeline: (1408, 1408, 1408) -> bm64_bn128_bk64_g8_w4_s4
+PASS pipeline: (1536, 1536, 1536) -> bm128_bn256_bk64_g8_w8_s3
+PASS pipeline: (1664, 1664, 1664) -> bm128_bn256_bk64_g8_w8_s3
+PASS pipeline: (1792, 1792, 1792) -> bm128_bn256_bk64_g8_w8_s3
+PASS pipeline: (1920, 1920, 1920) -> bm128_bn256_bk64_g8_w8_s3
+PASS pipeline: (2048, 2048, 2048) -> bm128_bn256_bk64_g8_w8_s3
+PASS pipeline: (2176, 2176, 2176) -> bm64_bn256_bk32_g8_w4_s4
+PASS pipeline: (2304, 2304, 2304) -> bm128_bn128_bk32_g8_w4_s4
+PASS pipeline: (2432, 2432, 2432) -> bm128_bn128_bk32_g8_w4_s4
+PASS pipeline: (2560, 2560, 2560) -> bm128_bn256_bk64_g8_w8_s3
+PASS pipeline: (2688, 2688, 2688) -> bm128_bn256_bk64_g8_w8_s3
+PASS pipeline: (2816, 2816, 2816) -> bm128_bn256_bk64_g8_w8_s3
+PASS pipeline: (2944, 2944, 2944) -> bm128_bn256_bk64_g8_w8_s3
+PASS pipeline: (3072, 3072, 3072) -> bm128_bn256_bk64_g8_w8_s3
+PASS pipeline: (3200, 3200, 3200) -> bm128_bn256_bk64_g8_w8_s3
+PASS pipeline: (3328, 3328, 3328) -> bm128_bn256_bk64_g8_w8_s3
+PASS pipeline: (3456, 3456, 3456) -> bm128_bn256_bk64_g8_w8_s3
+PASS pipeline: (3584, 3584, 3584) -> bm128_bn256_bk64_g8_w8_s3
+PASS pipeline: (3712, 3712, 3712) -> bm128_bn256_bk64_g8_w8_s3
+PASS pipeline: (3840, 3840, 3840) -> bm128_bn256_bk64_g8_w8_s3
+PASS pipeline: (3968, 3968, 3968) -> bm128_bn256_bk64_g8_w8_s3
+PASS pipeline: (4096, 4096, 4096) -> bm128_bn256_bk64_g8_w8_s3
+PASS: environment/RECORD; source TTIR; full options/target; LLIR/PTX/cubin bytes; normalized TTGIR; bitwise output
++ ensure_idle
++ local occupants
+++ nvidia-smi -i 6 --query-compute-apps=pid,process_name --format=csv,noheader
++ occupants=
++ [[ -n '' ]]
++ run_step /root/venvs/ir-ops-dev/bin/python mm/validate.py --pipeline mm/results/runs/baseline_20261118T135515Z_fg6zev/pipeline.json --output mm/results/runs/baseline_20261118T135515Z_fg6zev/accuracy.json
++ ensure_idle
++ local occupants
+++ nvidia-smi -i 6 --query-compute-apps=pid,process_name --format=csv,noheader
++ occupants=
++ [[ -n '' ]]
++ /root/venvs/ir-ops-dev/bin/python mm/validate.py --pipeline mm/results/runs/baseline_20261118T135515Z_fg6zev/pipeline.json --output mm/results/runs/baseline_20261118T135515Z_fg6zev/accuracy.json
+(256, 256, 256) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.03125} passed=True
+(384, 384, 384) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.03125} passed=True
+(512, 512, 512) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(640, 640, 640) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(768, 768, 768) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(896, 896, 896) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1024, 1024, 1024) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1152, 1152, 1152) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1280, 1280, 1280) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1408, 1408, 1408) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(1536, 1536, 1536) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(1664, 1664, 1664) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(1792, 1792, 1792) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(1920, 1920, 1920) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(2048, 2048, 2048) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(2176, 2176, 2176) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(2304, 2304, 2304) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(2432, 2432, 2432) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(2560, 2560, 2560) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(2688, 2688, 2688) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(2816, 2816, 2816) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(2944, 2944, 2944) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(3072, 3072, 3072) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(3200, 3200, 3200) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(3328, 3328, 3328) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.25} passed=True
+(3456, 3456, 3456) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(3584, 3584, 3584) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(3712, 3712, 3712) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.25} passed=True
+(3840, 3840, 3840) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.25} passed=True
+(3968, 3968, 3968) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(4096, 4096, 4096) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.25} passed=True
+(16, 16, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 3.814697265625e-06, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0009765625, 'cpu_fp64': 3.0517578125e-05} passed=True
+(112, 240, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.001953125, 'cpu_fp64': 0.00390625} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.0001220703125} passed=True
+(144, 272, 80) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.0078125} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.0078125} passed=True
+(1008, 1040, 496) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(144, 272, 80) pad=16 zero: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 constant: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 alternating: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 large: {'native_fp16': 0.0, 'native_fp32': 0.25, 'cpu_fp64': 0.125} passed=True
+(144, 272, 80) pad=16 small: {'native_fp16': 0.0, 'native_fp32': 5.960464477539063e-08, 'cpu_fp64': 5.960464477539063e-08} passed=True
+(16, 48, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(32, 64, 32) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0001220703125, 'cpu_fp64': 0.0001220703125} passed=True
+(240, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0009765625, 'cpu_fp64': 0.0009765625} passed=True
+(256, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.00390625} passed=True
+(272, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.001953125, 'cpu_fp64': 0.001953125} passed=True
+(16, 16, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0009765625, 'cpu_fp64': 0.00048828125} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00048828125, 'cpu_fp64': 0.0} passed=True
+(112, 240, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.0078125} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00048828125, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.0078125} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.0078125} passed=True
+(1008, 1040, 496) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(144, 272, 80) pad=16 zero: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 constant: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 alternating: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 large: {'native_fp16': 0.0, 'native_fp32': 0.25, 'cpu_fp64': 0.25} passed=True
+(144, 272, 80) pad=16 small: {'native_fp16': 0.0, 'native_fp32': 5.960464477539063e-08, 'cpu_fp64': 5.960464477539063e-08} passed=True
+(112, 16, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(128, 32, 64) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 7.62939453125e-06} passed=True
+(144, 48, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.000244140625, 'cpu_fp64': 6.103515625e-05} passed=True
+(1008, 48, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625} passed=True
+(1024, 48, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625} passed=True
+(1040, 48, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625} passed=True
+(16, 16, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0001220703125, 'cpu_fp64': 0.0001220703125} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.000244140625} passed=True
+(112, 240, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.00390625} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.001953125, 'cpu_fp64': 1.52587890625e-05} passed=True
+(144, 272, 80) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.015625} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.0078125} passed=True
+(1008, 1040, 496) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(144, 272, 80) pad=16 zero: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 constant: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 alternating: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 large: {'native_fp16': 0.0, 'native_fp32': 0.25, 'cpu_fp64': 0.25} passed=True
+(144, 272, 80) pad=16 small: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 112, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.001953125, 'cpu_fp64': 0.000244140625} passed=True
+(64, 128, 64) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.000244140625, 'cpu_fp64': 3.814697265625e-06} passed=True
+(80, 144, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.00390625} passed=True
+(496, 144, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125} passed=True
+(512, 144, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125} passed=True
+(528, 144, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625} passed=True
+(16, 16, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0001220703125, 'cpu_fp64': 1.52587890625e-05} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.001953125, 'cpu_fp64': 0.001953125} passed=True
+(112, 240, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0009765625, 'cpu_fp64': 0.0078125} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.0078125} passed=True
+(144, 272, 80) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.015625} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.0078125} passed=True
+(1008, 1040, 496) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(144, 272, 80) pad=16 zero: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 constant: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 alternating: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 large: {'native_fp16': 0.0, 'native_fp32': 0.25, 'cpu_fp64': 0.125} passed=True
+(144, 272, 80) pad=16 small: {'native_fp16': 0.0, 'native_fp32': 5.960464477539063e-08, 'cpu_fp64': 0.0} passed=True
+(112, 240, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.0078125} passed=True
+(128, 256, 64) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.001953125} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.0078125} passed=True
+(1008, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625} passed=True
+(1024, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625} passed=True
+(1040, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625} passed=True
+(16, 16, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.000244140625, 'cpu_fp64': 0.000244140625} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.00390625} passed=True
+(112, 240, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.001953125, 'cpu_fp64': 0.001953125} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.001953125, 'cpu_fp64': 0.00048828125} passed=True
+(144, 272, 80) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.001953125} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.015625} passed=True
+(1008, 1040, 496) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(144, 272, 80) pad=16 zero: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 constant: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 alternating: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 large: {'native_fp16': 0.0, 'native_fp32': 0.25, 'cpu_fp64': 0.25} passed=True
+(144, 272, 80) pad=16 small: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00048828125, 'cpu_fp64': 0.0} passed=True
+(64, 256, 32) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.001953125, 'cpu_fp64': 0.000244140625} passed=True
+(80, 272, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.00390625} passed=True
+(496, 272, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625} passed=True
+(512, 272, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125} passed=True
+(528, 272, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125} passed=True
+(16, 16, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 1.52587890625e-05, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 3.0517578125e-05} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.00390625} passed=True
+(112, 240, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.00390625} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0009765625, 'cpu_fp64': 0.0009765625} passed=True
+(144, 272, 80) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.015625} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.00390625} passed=True
+(1008, 1040, 496) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(144, 272, 80) pad=16 zero: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 constant: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 alternating: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 large: {'native_fp16': 0.0, 'native_fp32': 0.125, 'cpu_fp64': 0.125} passed=True
+(144, 272, 80) pad=16 small: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(112, 112, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.001953125, 'cpu_fp64': 0.0} passed=True
+(128, 128, 32) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.001953125} passed=True
+(144, 144, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.0078125} passed=True
+(1008, 144, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125} passed=True
+(1024, 144, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125} passed=True
+(1040, 144, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125} passed=True
+PASS: 157 correctness cases
++ ensure_idle
++ local occupants
+++ nvidia-smi -i 6 --query-compute-apps=pid,process_name --format=csv,noheader
++ occupants=
++ [[ -n '' ]]
++ run_step /root/venvs/ir-ops-dev/bin/python mm/benchmark.py --pipeline mm/results/runs/baseline_20261118T135515Z_fg6zev/pipeline.json --validation mm/results/runs/baseline_20261118T135515Z_fg6zev/accuracy.json --output mm/results/runs/baseline_20261118T135515Z_fg6zev/benchmark.json
++ ensure_idle
++ local occupants
+++ nvidia-smi -i 6 --query-compute-apps=pid,process_name --format=csv,noheader
++ occupants=
++ [[ -n '' ]]
++ /root/venvs/ir-ops-dev/bin/python mm/benchmark.py --pipeline mm/results/runs/baseline_20261118T135515Z_fg6zev/pipeline.json --validation mm/results/runs/baseline_20261118T135515Z_fg6zev/accuracy.json --output mm/results/runs/baseline_20261118T135515Z_fg6zev/benchmark.json
+ 256x 256x 256:     2.994 us,    11.21 TFLOPS
+ 384x 384x 384:     3.444 us,    32.88 TFLOPS
+ 512x 512x 512:     3.862 us,    69.51 TFLOPS
+ 640x 640x 640:     4.484 us,   116.91 TFLOPS
+ 768x 768x 768:     4.959 us,   182.68 TFLOPS
+ 896x 896x 896:     5.571 us,   258.23 TFLOPS
+1024x1024x1024:     5.980 us,   359.13 TFLOPS
+1152x1152x1152:     9.789 us,   312.34 TFLOPS
+1280x1280x1280:    10.649 us,   393.87 TFLOPS
+1408x1408x1408:    11.947 us,   467.26 TFLOPS
+1536x1536x1536:    18.001 us,   402.62 TFLOPS
+1664x1664x1664:    19.747 us,   466.64 TFLOPS
+1792x1792x1792:    22.114 us,   520.44 TFLOPS
+1920x1920x1920:    24.940 us,   567.60 TFLOPS
+2048x2048x2048:    27.357 us,   628.00 TFLOPS
+2176x2176x2176:    46.087 us,   447.13 TFLOPS
+2304x2304x2304:    51.428 us,   475.64 TFLOPS
+2432x2432x2432:    56.802 us,   506.47 TFLOPS
+2560x2560x2560:    63.292 us,   530.15 TFLOPS
+2688x2688x2688:    69.984 us,   555.04 TFLOPS
+2816x2816x2816:    75.357 us,   592.65 TFLOPS
+2944x2944x2944:   105.517 us,   483.64 TFLOPS
+3072x3072x3072:   112.442 us,   515.66 TFLOPS
+3200x3200x3200:   123.219 us,   531.86 TFLOPS
+3328x3328x3328:   129.505 us,   569.24 TFLOPS
+3456x3456x3456:   139.581 us,   591.46 TFLOPS
+3584x3584x3584:   147.489 us,   624.27 TFLOPS
+3712x3712x3712:   189.256 us,   540.51 TFLOPS
+3840x3840x3840:   198.161 us,   571.49 TFLOPS
+3968x3968x3968:   210.483 us,   593.65 TFLOPS
+4096x4096x4096:   220.542 us,   623.19 TFLOPS
++ ensure_idle
++ local occupants
+++ nvidia-smi -i 6 --query-compute-apps=pid,process_name --format=csv,noheader
++ occupants=
++ [[ -n '' ]]
++ run_step /root/venvs/ir-ops-dev/bin/python mm/validate.py --seed 123 --pipeline mm/results/runs/baseline_20261118T135515Z_fg6zev/pipeline.json --output mm/results/runs/baseline_20261118T135515Z_fg6zev/accuracy_repeat.json
++ ensure_idle
++ local occupants
+++ nvidia-smi -i 6 --query-compute-apps=pid,process_name --format=csv,noheader
++ occupants=
++ [[ -n '' ]]
++ /root/venvs/ir-ops-dev/bin/python mm/validate.py --seed 123 --pipeline mm/results/runs/baseline_20261118T135515Z_fg6zev/pipeline.json --output mm/results/runs/baseline_20261118T135515Z_fg6zev/accuracy_repeat.json
+(256, 256, 256) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.03125, 'cpu_fp64': 0.03125} passed=True
+(384, 384, 384) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.03125} passed=True
+(512, 512, 512) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(640, 640, 640) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(768, 768, 768) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(896, 896, 896) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1024, 1024, 1024) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1152, 1152, 1152) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1280, 1280, 1280) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(1408, 1408, 1408) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(1536, 1536, 1536) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(1664, 1664, 1664) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(1792, 1792, 1792) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(1920, 1920, 1920) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(2048, 2048, 2048) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(2176, 2176, 2176) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(2304, 2304, 2304) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(2432, 2432, 2432) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(2560, 2560, 2560) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(2688, 2688, 2688) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(2816, 2816, 2816) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(2944, 2944, 2944) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(3072, 3072, 3072) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(3200, 3200, 3200) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(3328, 3328, 3328) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.125} passed=True
+(3456, 3456, 3456) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.25} passed=True
+(3584, 3584, 3584) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.25} passed=True
+(3712, 3712, 3712) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.25} passed=True
+(3840, 3840, 3840) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.25} passed=True
+(3968, 3968, 3968) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.25} passed=True
+(4096, 4096, 4096) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.25} passed=True
+(16, 16, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 1.52587890625e-05, 'cpu_fp64': 1.52587890625e-05} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00048828125, 'cpu_fp64': 0.00048828125} passed=True
+(112, 240, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.00048828125, 'cpu_fp64': 0.0009765625} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.001953125, 'cpu_fp64': 0.001953125} passed=True
+(144, 272, 80) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.0078125} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.00048828125} passed=True
+(1008, 1040, 496) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.03125} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(144, 272, 80) pad=16 zero: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 constant: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 alternating: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 large: {'native_fp16': 0.0, 'native_fp32': 0.125, 'cpu_fp64': 0.125} passed=True
+(144, 272, 80) pad=16 small: {'native_fp16': 0.0, 'native_fp32': 5.960464477539063e-08, 'cpu_fp64': 5.960464477539063e-08} passed=True
+(16, 48, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(32, 64, 32) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0009765625, 'cpu_fp64': 0.00390625} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0009765625, 'cpu_fp64': 0.00048828125} passed=True
+(240, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 6.103515625e-05} passed=True
+(256, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0001220703125, 'cpu_fp64': 0.001953125} passed=True
+(272, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.0078125} passed=True
+(16, 16, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 4.76837158203125e-07, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0009765625, 'cpu_fp64': 1.52587890625e-05} passed=True
+(112, 240, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.001953125, 'cpu_fp64': 0.001953125} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.00390625} passed=True
+(144, 272, 80) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.0078125} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.0078125} passed=True
+(1008, 1040, 496) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(144, 272, 80) pad=16 zero: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 constant: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 alternating: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 large: {'native_fp16': 0.0, 'native_fp32': 0.25, 'cpu_fp64': 0.25} passed=True
+(144, 272, 80) pad=16 small: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(112, 16, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 1.52587890625e-05, 'cpu_fp64': 1.52587890625e-05} passed=True
+(128, 32, 64) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.00390625} passed=True
+(144, 48, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0009765625, 'cpu_fp64': 7.62939453125e-06} passed=True
+(1008, 48, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625} passed=True
+(1024, 48, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125} passed=True
+(1040, 48, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125} passed=True
+(16, 16, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 9.5367431640625e-07, 'cpu_fp64': 0.0} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.00048828125, 'cpu_fp64': 0.0009765625} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 7.62939453125e-06} passed=True
+(112, 240, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 9.5367431640625e-07, 'cpu_fp64': 0.00390625} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.00390625} passed=True
+(144, 272, 80) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.015625} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.001953125} passed=True
+(1008, 1040, 496) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(144, 272, 80) pad=16 zero: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 constant: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 alternating: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 large: {'native_fp16': 0.0, 'native_fp32': 0.125, 'cpu_fp64': 0.125} passed=True
+(144, 272, 80) pad=16 small: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 112, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0001220703125, 'cpu_fp64': 0.0001220703125} passed=True
+(64, 128, 64) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.00390625} passed=True
+(80, 144, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0009765625, 'cpu_fp64': 0.001953125} passed=True
+(496, 144, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625} passed=True
+(512, 144, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125} passed=True
+(528, 144, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625} passed=True
+(16, 16, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 1.9073486328125e-06, 'cpu_fp64': 9.5367431640625e-07} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00048828125, 'cpu_fp64': 0.00048828125} passed=True
+(112, 240, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.0078125} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.001953125} passed=True
+(144, 272, 80) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.0078125} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.0078125} passed=True
+(1008, 1040, 496) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(144, 272, 80) pad=16 zero: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 constant: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 alternating: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 large: {'native_fp16': 0.0, 'native_fp32': 0.125, 'cpu_fp64': 0.125} passed=True
+(144, 272, 80) pad=16 small: {'native_fp16': 0.0, 'native_fp32': 5.960464477539063e-08, 'cpu_fp64': 5.960464477539063e-08} passed=True
+(112, 240, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.0078125} passed=True
+(128, 256, 64) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.0078125} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.015625} passed=True
+(1008, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625} passed=True
+(1024, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625} passed=True
+(1040, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625} passed=True
+(16, 16, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 4.76837158203125e-07} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.0078125} passed=True
+(112, 240, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0009765625, 'cpu_fp64': 1.52587890625e-05} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0001220703125, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.015625} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.0078125} passed=True
+(1008, 1040, 496) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(144, 272, 80) pad=16 zero: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 constant: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 alternating: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 large: {'native_fp16': 0.0, 'native_fp32': 0.125, 'cpu_fp64': 0.125} passed=True
+(144, 272, 80) pad=16 small: {'native_fp16': 0.0, 'native_fp32': 5.960464477539063e-08, 'cpu_fp64': 0.0} passed=True
+(48, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.00390625} passed=True
+(64, 256, 32) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 6.103515625e-05} passed=True
+(80, 272, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.00390625} passed=True
+(496, 272, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125} passed=True
+(512, 272, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125} passed=True
+(528, 272, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625} passed=True
+(16, 16, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 4.76837158203125e-07, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.00390625} passed=True
+(112, 240, 16) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.001953125, 'cpu_fp64': 0.001953125} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.00390625} passed=True
+(144, 272, 80) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.015625} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.0078125} passed=True
+(1008, 1040, 496) pad=0 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(144, 272, 80) pad=16 zero: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 constant: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 alternating: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(144, 272, 80) pad=16 large: {'native_fp16': 0.0, 'native_fp32': 0.25, 'cpu_fp64': 0.25} passed=True
+(144, 272, 80) pad=16 small: {'native_fp16': 0.0, 'native_fp32': 5.960464477539063e-08, 'cpu_fp64': 5.960464477539063e-08} passed=True
+(112, 112, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0009765625, 'cpu_fp64': 0.0009765625} passed=True
+(128, 128, 32) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.000244140625} passed=True
+(144, 144, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.0078125} passed=True
+(1008, 144, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125} passed=True
+(1024, 144, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625} passed=True
+(1040, 144, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125} passed=True
+PASS: 157 correctness cases
++ ensure_idle
++ local occupants
+++ nvidia-smi -i 6 --query-compute-apps=pid,process_name --format=csv,noheader
++ occupants=
++ [[ -n '' ]]
++ run_step /root/venvs/ir-ops-dev/bin/python mm/benchmark.py --seed 123 --pipeline mm/results/runs/baseline_20261118T135515Z_fg6zev/pipeline.json --validation mm/results/runs/baseline_20261118T135515Z_fg6zev/accuracy_repeat.json --output mm/results/runs/baseline_20261118T135515Z_fg6zev/benchmark_repeat.json
++ ensure_idle
++ local occupants
+++ nvidia-smi -i 6 --query-compute-apps=pid,process_name --format=csv,noheader
++ occupants=
++ [[ -n '' ]]
++ /root/venvs/ir-ops-dev/bin/python mm/benchmark.py --seed 123 --pipeline mm/results/runs/baseline_20261118T135515Z_fg6zev/pipeline.json --validation mm/results/runs/baseline_20261118T135515Z_fg6zev/accuracy_repeat.json --output mm/results/runs/baseline_20261118T135515Z_fg6zev/benchmark_repeat.json
+ 256x 256x 256:     2.998 us,    11.19 TFLOPS
+ 384x 384x 384:     3.446 us,    32.86 TFLOPS
+ 512x 512x 512:     3.865 us,    69.45 TFLOPS
+ 640x 640x 640:     4.502 us,   116.47 TFLOPS
+ 768x 768x 768:     4.923 us,   184.04 TFLOPS
+ 896x 896x 896:     5.526 us,   260.33 TFLOPS
+1024x1024x1024:     6.044 us,   355.30 TFLOPS
+1152x1152x1152:     9.541 us,   320.47 TFLOPS
+1280x1280x1280:    10.063 us,   416.82 TFLOPS
+1408x1408x1408:    11.660 us,   478.77 TFLOPS
+1536x1536x1536:    18.039 us,   401.79 TFLOPS
+1664x1664x1664:    19.849 us,   464.24 TFLOPS
+1792x1792x1792:    22.026 us,   522.52 TFLOPS
+1920x1920x1920:    25.319 us,   559.09 TFLOPS
+2048x2048x2048:    27.504 us,   624.63 TFLOPS
+2176x2176x2176:    45.966 us,   448.30 TFLOPS
+2304x2304x2304:    51.180 us,   477.95 TFLOPS
+2432x2432x2432:    56.771 us,   506.75 TFLOPS
+2560x2560x2560:    64.065 us,   523.76 TFLOPS
+2688x2688x2688:    70.531 us,   550.73 TFLOPS
+2816x2816x2816:    74.327 us,   600.87 TFLOPS
+2944x2944x2944:   106.039 us,   481.26 TFLOPS
+3072x3072x3072:   112.115 us,   517.17 TFLOPS
+3200x3200x3200:   122.726 us,   534.00 TFLOPS
+3328x3328x3328:   129.692 us,   568.42 TFLOPS
+3456x3456x3456:   139.795 us,   590.56 TFLOPS
+3584x3584x3584:   146.558 us,   628.24 TFLOPS
+3712x3712x3712:   189.379 us,   540.16 TFLOPS
+3840x3840x3840:   195.986 us,   577.83 TFLOPS
+3968x3968x3968:   209.848 us,   595.44 TFLOPS
+4096x4096x4096:   216.761 us,   634.06 TFLOPS
++ ensure_idle
++ local occupants
+++ nvidia-smi -i 6 --query-compute-apps=pid,process_name --format=csv,noheader
++ occupants=
++ [[ -n '' ]]
++ for TOOL in memcheck racecheck
++ run_step compute-sanitizer --tool memcheck --error-exitcode 99 --log-file mm/results/runs/baseline_20261118T135515Z_fg6zev/memcheck.log /root/venvs/ir-ops-dev/bin/python mm/validate.py --suite sanitizer --pipeline mm/results/runs/baseline_20261118T135515Z_fg6zev/pipeline.json --output mm/results/runs/baseline_20261118T135515Z_fg6zev/memcheck_accuracy.json
++ ensure_idle
++ local occupants
+++ nvidia-smi -i 6 --query-compute-apps=pid,process_name --format=csv,noheader
++ occupants=
++ [[ -n '' ]]
++ compute-sanitizer --tool memcheck --error-exitcode 99 --log-file mm/results/runs/baseline_20261118T135515Z_fg6zev/memcheck.log /root/venvs/ir-ops-dev/bin/python mm/validate.py --suite sanitizer --pipeline mm/results/runs/baseline_20261118T135515Z_fg6zev/pipeline.json --output mm/results/runs/baseline_20261118T135515Z_fg6zev/memcheck_accuracy.json
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 3.0517578125e-05, 'cpu_fp64': 3.0517578125e-05} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00048828125, 'cpu_fp64': 0.0009765625} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.0078125} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.00048828125} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.00390625} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.015625} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.03125} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 7.62939453125e-06, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 3.814697265625e-06, 'cpu_fp64': 0.00048828125} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.001953125, 'cpu_fp64': 0.001953125} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.0078125} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0009765625, 'cpu_fp64': 0.001953125} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 3.0517578125e-05, 'cpu_fp64': 3.0517578125e-05} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0009765625, 'cpu_fp64': 6.103515625e-05} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.015625} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.000244140625, 'cpu_fp64': 0.00390625} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.00390625} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.015625} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0009765625, 'cpu_fp64': 0.000244140625} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.001953125, 'cpu_fp64': 0.001953125} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.0078125} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+PASS: 30 correctness cases
++ ensure_idle
++ local occupants
+++ nvidia-smi -i 6 --query-compute-apps=pid,process_name --format=csv,noheader
++ occupants=
++ [[ -n '' ]]
++ for TOOL in memcheck racecheck
++ run_step compute-sanitizer --tool racecheck --error-exitcode 99 --log-file mm/results/runs/baseline_20261118T135515Z_fg6zev/racecheck.log /root/venvs/ir-ops-dev/bin/python mm/validate.py --suite sanitizer --pipeline mm/results/runs/baseline_20261118T135515Z_fg6zev/pipeline.json --output mm/results/runs/baseline_20261118T135515Z_fg6zev/racecheck_accuracy.json
++ ensure_idle
++ local occupants
+++ nvidia-smi -i 6 --query-compute-apps=pid,process_name --format=csv,noheader
++ occupants=
++ [[ -n '' ]]
++ compute-sanitizer --tool racecheck --error-exitcode 99 --log-file mm/results/runs/baseline_20261118T135515Z_fg6zev/racecheck.log /root/venvs/ir-ops-dev/bin/python mm/validate.py --suite sanitizer --pipeline mm/results/runs/baseline_20261118T135515Z_fg6zev/pipeline.json --output mm/results/runs/baseline_20261118T135515Z_fg6zev/racecheck_accuracy.json
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 3.0517578125e-05, 'cpu_fp64': 3.0517578125e-05} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00048828125, 'cpu_fp64': 0.0009765625} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.0078125} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.00048828125} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.00390625} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.015625} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.03125} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 7.62939453125e-06, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 3.814697265625e-06, 'cpu_fp64': 0.00048828125} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.001953125, 'cpu_fp64': 0.001953125} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.0078125} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0009765625, 'cpu_fp64': 0.001953125} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 3.0517578125e-05, 'cpu_fp64': 3.0517578125e-05} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0009765625, 'cpu_fp64': 6.103515625e-05} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.015625} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.000244140625, 'cpu_fp64': 0.00390625} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.00390625, 'cpu_fp64': 0.00390625} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0078125, 'cpu_fp64': 0.015625} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+(16, 16, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0, 'cpu_fp64': 0.0} passed=True
+(48, 80, 48) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0009765625, 'cpu_fp64': 0.000244140625} passed=True
+(112, 240, 16) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.001953125, 'cpu_fp64': 0.001953125} passed=True
+(144, 272, 80) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.015625, 'cpu_fp64': 0.0078125} passed=True
+(1008, 1040, 496) pad=16 normal: {'native_fp16': 0.0, 'native_fp32': 0.0625} passed=True
+PASS: 30 correctness cases
++ ensure_idle
++ local occupants
+++ nvidia-smi -i 6 --query-compute-apps=pid,process_name --format=csv,noheader
++ occupants=
++ [[ -n '' ]]
++ echo 'Baseline complete: mm/results/runs/baseline_20261118T135515Z_fg6zev'
+Baseline complete: mm/results/runs/baseline_20261118T135515Z_fg6zev
++ status=0
++ echo exit_status=0

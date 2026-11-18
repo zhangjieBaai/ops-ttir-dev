@@ -1,25 +1,21 @@
-"""One-time official autotune setup, then immutable source/TTIR/config freeze."""
+"""Verify six frozen per-shape autotune baselines against tutorial compilation."""
 
 import argparse
 import ast
 import json
 
 import torch
-import triton
 from common import (
     PERF_SHAPES,
     ROOT,
-    SEED_SHAPE,
     allocate,
+    config_for_shape,
     digest,
+    frozen,
     gate,
-    grid,
     launch_source,
-    runtime_args,
-    save_json,
     sha256,
 )
-from tutorial import get_cuda_autotune_config, matmul_kernel
 
 
 def verify_extraction():
@@ -60,64 +56,25 @@ def verify_extraction():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--verify", action="store_true")
-    args = parser.parse_args()
+    parser.add_argument(
+        "--verify", action="store_true", help="Verify immutable six-family export"
+    )
+    parser.parse_args()
     gate()
     verify_extraction()
+    manifest = frozen()
     torch.manual_seed(42)
-    tensors = allocate(*SEED_SHAPE)
-    if (ROOT / "baseline.json").exists():
-        from common import frozen
-
-        config = frozen()
+    for shape in PERF_SHAPES:
+        family_id, config = config_for_shape(shape, manifest)
+        tensors = allocate(*shape)
         ck = launch_source(tensors, config)
-        assert ck.asm["ttir"] == (ROOT / "ir/baseline.ttir").read_text()
-        print("PASS: frozen source/config/TTIR unchanged; no autotune rerun")
-        return
-    assert not args.verify, "No baseline frozen yet"
-    assert not (
-        ROOT / "ir/baseline.ttir"
-    ).exists(), "Partial freeze exists; investigate instead of overwriting"
-    configs = get_cuda_autotune_config()
-    tuner = triton.autotune(configs=configs, key=["M", "N", "K"], cache_results=False)(
-        matmul_kernel
-    )
-    tuner[lambda meta: grid(tensors, meta)](*runtime_args(tensors), ACTIVATION="")
-    selected = tuner.best_config
-    config = dict(
-        experiment="mm-fp16-sm90-fixed-v1",
-        meta=dict(selected.kwargs, ACTIVATION=""),
-        options=dict(
-            num_warps=selected.num_warps,
-            num_stages=selected.num_stages,
-            num_ctas=1,
-            enable_fp_fusion=True,
-        ),
-        # Source @jit specializes the three literal unit column strides.
-        runtime_arg_indices=[0, 1, 2, 3, 4, 5, 6, 8, 10],
-        representative_shape=SEED_SHAPE,
-        selection_scope=(
-            "One group: tutorial autotune at 1024^3; fixed across all tests; not per-shape best"
-        ),
-        autotune_candidates=[str(c) for c in configs],
-        autotune_timings={str(c): value for c, value in tuner.configs_timings.items()},
-        source_sha256=sha256(ROOT / "tutorial.py"),
-        upstream_sha256=sha256(ROOT / "upstream/03-matrix-multiplication.py.txt"),
-        contract_sha256=sha256(ROOT / "optimization_plan.md"),
-        common_sha256=sha256(ROOT / "common.py"),
-        protocol_sha256={
-            name: sha256(ROOT / name)
-            for name in ["validate.py", "benchmark.py", "verify_pipeline.py"]
-        },
-    )
-    ck = launch_source(tensors, config)
-    baseline = ROOT / "ir/baseline.ttir"
-    with baseline.open("x") as f:
-        f.write(ck.asm["ttir"])
-    config["ttir_sha256"] = digest(ck.asm["ttir"])
-    config["source_metadata"] = ck.metadata._asdict()
-    save_json(ROOT / "baseline.json", config)
-    print(json.dumps(config, indent=2, default=str))
+        assert ck.asm["ttir"] == (ROOT / config["ttir_path"]).read_text()
+        assert digest(ck.asm["cubin"]) == config["autotune_cubin_sha256"]
+        print(
+            f"PASS: {shape} -> {family_id}; frozen tutorial TTIR/cubin unchanged",
+            flush=True,
+        )
+    print("PASS: all 31 shapes match six frozen baseline TTIRs; no autotune rerun")
 
 
 if __name__ == "__main__":

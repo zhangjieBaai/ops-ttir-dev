@@ -13,10 +13,12 @@ from pathlib import Path
 
 import torch
 from common import (
+    PERF_SHAPES,
     ROOT,
-    SEED_SHAPE,
     allocate,
+    baseline_hashes,
     compile_ir,
+    config_for_shape,
     dump_kernel,
     frozen,
     gate,
@@ -45,27 +47,18 @@ def snapshot():
     )
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, required=True)
-    args = parser.parse_args()
-    assert not args.output.exists()
-    target = gate()
-    environment = verify_distribution_files()
-    verify_extraction()
-    config = frozen()
-    backend = CUDABackend(target)
+def verify_shape(shape, family_id, config, backend, target):
     options = backend.parse_options(config["options"])
     stages = {}
     backend.add_stages(stages, options, Language.TRITON)
     assert list(stages) == ["ttir", "ttgir", "llir", "ptx", "cubin"]
     torch.manual_seed(42)
-    tensors = allocate(*SEED_SHAPE)
+    tensors = allocate(*shape)
     source = launch_source(tensors, config)
-    source_info = dump_kernel(source, "tutorial")
-    assert source.asm["ttir"] == (ROOT / "ir/baseline.ttir").read_text()
+    source_info = dump_kernel(source, f"{family_id}/tutorial")
+    assert source.asm["ttir"] == (ROOT / config["ttir_path"]).read_text()
     reference = tensors[2].clone()
-    baseline = compile_ir()
+    baseline = compile_ir(family_id)
     actual_options = [
         {key: ck.metadata._asdict()[key] for key in vars(options)}
         for ck in [source, baseline]
@@ -92,13 +85,45 @@ def main():
     torch.testing.assert_close(tensors[2], reference, rtol=0, atol=0)
     # Freeze and inspect the actual entry assumptions, not only Python intent.
     entry = (
-        (ROOT / "ir/baseline.ttir")
+        (ROOT / config["ttir_path"])
         .read_text()
         .split("tt.func public @", 1)[1]
         .split(" {\n", 1)[0]
     )
     assert len(re.findall(r"%[a-zA-Z_][a-zA-Z_0-9]*:", entry)) == 9, entry
     assert entry.count("tt.divisibility = 16") == 9, entry
+    return dict(
+        shape=shape,
+        actual_options=actual_options[0],
+        entry_signature=entry,
+        tutorial_vs_file_byte_identical=identical,
+        ttgir_parser_normalized_identical=True,
+        source_vs_file_output_bitwise=True,
+        source=source_info,
+        baseline=dump_kernel(baseline, f"{family_id}/baseline"),
+        ttir_sha256=config["ttir_sha256"],
+    )
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, required=True)
+    args = parser.parse_args()
+    assert not args.output.exists()
+    target = gate()
+    environment = verify_distribution_files()
+    verify_extraction()
+    config = frozen()
+    backend = CUDABackend(target)
+    families = {}
+    shape_records = []
+    for shape in PERF_SHAPES:
+        family_id, family = config_for_shape(shape, config)
+        record = verify_shape(shape, family_id, family, backend, target)
+        families.setdefault(family_id, record)
+        shape_records.append(dict(family=family_id, **record))
+        print(f"PASS pipeline: {shape} -> {family_id}", flush=True)
+    options = backend.parse_options(next(iter(config["families"].values()))["options"])
     torch.cuda.synchronize()
     libraries = sorted(
         {
@@ -132,19 +157,14 @@ def main():
         torch=torch.__version__,
         torch_path=torch.__file__,
         target=str(target),
-        actual_options=actual_options[0],
-        baseline_sha256=config["ttir_sha256"],
+        families=families,
+        shape_records=shape_records,
+        baseline_hashes=baseline_hashes(config),
         config_sha256=sha256(ROOT / "baseline.json"),
         source_sha256=config["source_sha256"],
         contract_sha256=config["contract_sha256"],
-        entry_signature=entry,
-        tutorial_vs_file_byte_identical=identical,
-        ttgir_parser_normalized_identical=True,
-        source_vs_file_output_bitwise=True,
         input_stage="TTIR after make_ttir; file entry resumes at make_ttgir",
-        downstream_stages=list(stages)[1:],
-        source=source_info,
-        baseline=dump_kernel(baseline, "baseline"),
+        downstream_stages=["ttgir", "llir", "ptx", "cubin"],
         toolchain={str(p): sha256(p) for p in tool_paths},
         ptxas_version=subprocess.check_output([ptxas, "--version"], text=True),
         paths={

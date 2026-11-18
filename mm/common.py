@@ -48,24 +48,46 @@ def gate():
 def frozen():
     data = json.loads((ROOT / "baseline.json").read_text())
     assert sha256(ROOT / "tutorial.py") == data["source_sha256"]
-    assert sha256(ROOT / "ir/baseline.ttir") == data["ttir_sha256"]
     assert sha256(ROOT / "optimization_plan.md") == data["contract_sha256"]
     assert sha256(ROOT / "common.py") == data["common_sha256"]
     for name, expected in data["protocol_sha256"].items():
         assert sha256(ROOT / name) == expected, f"Frozen protocol changed: {name}"
+    assert len(data["families"]) == 6
+    assigned = []
+    for family in data["families"].values():
+        assert sha256(ROOT / family["ttir_path"]) == family["ttir_sha256"]
+        assigned.extend(family["square_sizes"])
+    assert sorted(assigned) == [shape[0] for shape in PERF_SHAPES]
     return data
 
 
-def compile_ir(name="baseline"):
+def config_for_shape(shape, manifest):
+    m, n, k = shape
+    assert m == n == k, "Automatic dispatch supports only the 31 frozen square shapes"
+    family_id = manifest["shape_to_family"][str(m)]
+    config = manifest["families"][family_id]
+    assert m in config["square_sizes"]
+    return family_id, config
+
+
+def baseline_hashes(manifest):
+    return {
+        name: config["ttir_sha256"] for name, config in manifest["families"].items()
+    }
+
+
+def compile_ir(family_id, name="baseline"):
     target = gate()
-    config = frozen()
-    path = ROOT / "ir" / f"{name}.ttir"
+    config = frozen()["families"][family_id]
+    path = ROOT / config["ttir_path"]
+    if name != "baseline":
+        path = path.with_name(f"{name}.ttir")
     options = config["options"]
     assert CUDABackend(target).parse_options(options).ir_override is None
     ck = triton.compile(str(path), options=options)
     assert ck.src.ext == "ttir" and ck.src.src == path.read_text()
     ck._init_handles()
-    dump_kernel(ck, name)
+    dump_kernel(ck, f"{family_id}/{name}")
     return ck
 
 
@@ -139,7 +161,8 @@ def launch(ck, tensors, config):
     ck[grid(tensors, config["meta"])](*[args[i] for i in config["runtime_arg_indices"]])
 
 
-def matmul(a, b, ck, config):
+def matmul(a, b, kernels, manifest):
+    family_id, config = config_for_shape((a.shape[0], b.shape[1], a.shape[1]), manifest)
     c = torch.empty((a.shape[0], b.shape[1]), device=a.device, dtype=torch.float16)
-    launch(ck, (a, b, c), config)
+    launch(kernels[family_id], (a, b, c), config)
     return c

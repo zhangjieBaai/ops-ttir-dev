@@ -1,204 +1,275 @@
 {
-  "experiment": "mm-fp16-sm90-fixed-v3-official31",
-  "meta": {
-    "BLOCK_SIZE_M": 64,
-    "BLOCK_SIZE_N": 128,
-    "BLOCK_SIZE_K": 64,
-    "GROUP_SIZE_M": 8,
-    "ACTIVATION": ""
-  },
-  "options": {
-    "num_warps": 4,
-    "num_stages": 4,
-    "num_ctas": 1,
-    "enable_fp_fusion": true
-  },
-  "runtime_arg_indices": [
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    8,
-    10
-  ],
-  "representative_shape": [
-    1024,
-    1024,
-    1024
-  ],
-  "selection_scope": "One group: tutorial autotune at 1024^3; fixed across all tests; not per-shape best",
-  "autotune_candidates": [
-    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 8, num_ctas: 1, num_stages: 3, maxnreg: None",
-    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
-    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
-    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
-    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
-    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 32, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
-    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 32, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 2, num_ctas: 1, num_stages: 5, maxnreg: None",
-    "BLOCK_SIZE_M: 32, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 2, num_ctas: 1, num_stages: 5, maxnreg: None",
-    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 8, num_ctas: 1, num_stages: 3, maxnreg: None",
-    "BLOCK_SIZE_M: 256, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 8, num_ctas: 1, num_stages: 3, maxnreg: None",
-    "BLOCK_SIZE_M: 256, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
-    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
-    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
-    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
-    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
-    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 32, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None"
-  ],
-  "autotune_timings": {
-    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 8, num_ctas: 1, num_stages: 3, maxnreg: None": [
-      0.01724799908697605,
-      0.017055999487638474,
-      0.01744000054895878
-    ],
-    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
-      0.015359999611973763,
-      0.015072000212967396,
-      0.015744000673294067
-    ],
-    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
-      0.015519999898970127,
-      0.015296000055968761,
-      0.015744000673294067
-    ],
-    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
-      0.015039999969303608,
-      0.014655999839305878,
-      0.01548799965530634
-    ],
-    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
-      0.014368000440299511,
-      0.014175999909639359,
-      0.014592000283300877
-    ],
-    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 32, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
-      0.01539199985563755,
-      0.015168000012636185,
-      0.015647999942302704
-    ],
-    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 32, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 2, num_ctas: 1, num_stages: 5, maxnreg: None": [
-      0.017055999487638474,
-      0.016831999644637108,
-      0.017311999574303627
-    ],
-    "BLOCK_SIZE_M: 32, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 8, num_warps: 2, num_ctas: 1, num_stages: 5, maxnreg: None": [
-      0.015440000221133232,
-      0.015135999768972397,
-      0.015776000916957855
-    ],
-    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 8, num_ctas: 1, num_stages: 3, maxnreg: None": [
-      Infinity,
-      Infinity,
-      Infinity
-    ],
-    "BLOCK_SIZE_M: 256, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 8, num_ctas: 1, num_stages: 3, maxnreg: None": [
-      Infinity,
-      Infinity,
-      Infinity
-    ],
-    "BLOCK_SIZE_M: 256, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
-      Infinity,
-      Infinity,
-      Infinity
-    ],
-    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 256, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
-      Infinity,
-      Infinity,
-      Infinity
-    ],
-    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 128, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
-      Infinity,
-      Infinity,
-      Infinity
-    ],
-    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 64, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
-      0.011615999974310398,
-      0.01142400037497282,
-      0.011839999817311764
-    ],
-    "BLOCK_SIZE_M: 64, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
-      0.011455999687314034,
-      0.011231999844312668,
-      0.011680000461637974
-    ],
-    "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 32, BLOCK_SIZE_K: 64, GROUP_SIZE_M: 8, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None": [
-      0.013472000136971474,
-      0.013183999806642532,
-      0.01375999953597784
-    ]
-  },
+  "experiment": "mm-fp16-sm90-autotuned-six-v4",
+  "schema_version": 4,
   "source_sha256": "50ccd205e79d5275b8da09b3bc72cf86b0dc95bc2ef4531548509226b0fcc7b3",
   "upstream_sha256": "f88a9506694c58d483ad3cdb4aa672c23df0300803bcfaca13b9396184825008",
-  "contract_sha256": "47fde0cf06084360c353b6214c75d00b7bb0e44ff4ab9caeff2309c1df6101a5",
-  "common_sha256": "dab29c60c29fa10b58a5867a451664d845d37ac7712b28d61b0ba2d6a26081ff",
+  "contract_sha256": "45f5122d8201b39475ca9daa2cb2f1d2526f5e98db93298f431cee9ebbde301b",
+  "common_sha256": "977d5bce66b4c0bc52d6c046fc2d68c8b3762ae429abe5c07227d3fc80da98b8",
   "protocol_sha256": {
-    "validate.py": "15d259bec47d0eff7a3c18e851be1f94cdb5cd4d8b30e436aa6e480f1c2ceb35",
-    "benchmark.py": "a3ae05c63c65edea2f2585c55c6d3eac55de0b22468fed6e6071b6f6bdb75f0a",
-    "verify_pipeline.py": "4a14d7f7b15f674637d3c4bcb937d4b6fdaf45ef699ccfc6c4ff62d97e5ea8b0",
-    "export_baseline.py": "c67b859662b8ab5417fe57744a354df130db8c9ea7600132fd40bc32ef36a0b9"
+    "common.py": "977d5bce66b4c0bc52d6c046fc2d68c8b3762ae429abe5c07227d3fc80da98b8",
+    "export_baseline.py": "9de44d99fa647cbfab324aeb21e6ade291b6742f34b671ce9be3c6e1f930ec37",
+    "verify_pipeline.py": "78113e1c21c01047affb84cc2226c85ac4481a564c1bf13967198a43671922a8",
+    "validate.py": "d4f387e262fa2a0a3a7e1c2bca3bccfe2773dacdfeccfdedf474906c3892732b",
+    "benchmark.py": "9b9618ace371bcc05c9d41afaa5d298d0c205177e0072808d287ff9416071f3a",
+    "freeze_baselines.py": "8070cad62739366dfe73fff73ff28e773d3a1bfb54cb1654c727d3d095a2fc8b",
+    "environment.py": "33a8b01f382a1497a1ea88bde7553c6195746e8d14bbcfb8a793b319249e11e9",
+    "run_baseline.sh": "7ecc3bf4838643cf22d6da42a4b5412863335c7169eb7beee02630ba15f52f81",
+    "test_accuracy.sh": "e42210c01ba4ea5858ef45de29aeb4cff39b2d286b0676d5439f03158f616aa7",
+    "device_guard.sh": "a1437cd2a6f11e146c218a20c214491cd217d20d2849f7a6037f6ab0e1628751"
   },
-  "ttir_sha256": "af7b105bfb513f99fb5662f5a3ee0f385ebdb1a9ebed671934e7113c1bed7ee1",
-  "source_metadata": {
-    "allowed_dot_input_precisions": [
-      "tf32",
-      "tf32x3",
-      "ieee",
-      "bf16x3",
-      "bf16x6"
-    ],
-    "arch": "sm90",
-    "backend_name": "cuda",
-    "debug": false,
-    "default_dot_input_precision": "tf32",
-    "deprecated_fp8_dot_operand_dtypes": [
-      "fp8e4b15"
-    ],
-    "enable_fp_fusion": true,
-    "enable_reflect_ftz": true,
-    "extern_libs": [
-      [
-        "libdevice",
-        "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
-      ]
-    ],
-    "global_scratch_align": 1,
-    "global_scratch_size": 0,
-    "hash": "c6165b0dfdd656633dc01ca6c16d3f3039473623a565d003fe7a6dc27b8f0740",
-    "instrumentation_mode": "",
-    "ir_override": null,
-    "launch_cooperative_grid": false,
-    "launch_pdl": false,
-    "max_num_imprecise_acc_default": 1073741824,
-    "maxnreg": null,
-    "name": "matmul_kernel",
-    "num_ctas": 1,
-    "num_stages": 4,
-    "num_warps": 4,
-    "profile_scratch_align": 1,
-    "profile_scratch_size": 0,
-    "ptx_options": null,
-    "ptx_version": null,
-    "sanitize_overflow": true,
-    "shared": 98304,
-    "supported_fp8_dtypes": [
-      "fp8e4b15",
-      "fp8e4nv",
-      "fp8e5"
-    ],
-    "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
-    "tensordesc_meta": [],
-    "tmem_size": 0,
-    "triton_version": "3.7.0",
-    "warp_size": 32
+  "selection_source": "results/runs/autotune_count_20261118T135029Z/summary.json",
+  "selection_sha256": "d83b28b7e34b03c259f45ddb1c367fe40b2f220e88b80c61a0c268db365e7911",
+  "shape_to_family": {
+    "256": "bm32_bn64_bk32_g8_w2_s5",
+    "384": "bm128_bn32_bk64_g8_w4_s4",
+    "512": "bm128_bn32_bk64_g8_w4_s4",
+    "640": "bm128_bn32_bk64_g8_w4_s4",
+    "768": "bm64_bn128_bk64_g8_w4_s4",
+    "896": "bm64_bn128_bk64_g8_w4_s4",
+    "1024": "bm64_bn128_bk64_g8_w4_s4",
+    "1152": "bm64_bn128_bk64_g8_w4_s4",
+    "1280": "bm64_bn128_bk64_g8_w4_s4",
+    "1408": "bm64_bn128_bk64_g8_w4_s4",
+    "1536": "bm128_bn256_bk64_g8_w8_s3",
+    "1664": "bm128_bn256_bk64_g8_w8_s3",
+    "1792": "bm128_bn256_bk64_g8_w8_s3",
+    "1920": "bm128_bn256_bk64_g8_w8_s3",
+    "2048": "bm128_bn256_bk64_g8_w8_s3",
+    "2560": "bm128_bn256_bk64_g8_w8_s3",
+    "2688": "bm128_bn256_bk64_g8_w8_s3",
+    "2816": "bm128_bn256_bk64_g8_w8_s3",
+    "2944": "bm128_bn256_bk64_g8_w8_s3",
+    "3072": "bm128_bn256_bk64_g8_w8_s3",
+    "3200": "bm128_bn256_bk64_g8_w8_s3",
+    "3328": "bm128_bn256_bk64_g8_w8_s3",
+    "3456": "bm128_bn256_bk64_g8_w8_s3",
+    "3584": "bm128_bn256_bk64_g8_w8_s3",
+    "3712": "bm128_bn256_bk64_g8_w8_s3",
+    "3840": "bm128_bn256_bk64_g8_w8_s3",
+    "3968": "bm128_bn256_bk64_g8_w8_s3",
+    "4096": "bm128_bn256_bk64_g8_w8_s3",
+    "2176": "bm64_bn256_bk32_g8_w4_s4",
+    "2304": "bm128_bn128_bk32_g8_w4_s4",
+    "2432": "bm128_bn128_bk32_g8_w4_s4"
   },
-  "setup_revision": {
-    "parent_manifest_sha256": "b5114226697ffc174e545301a2eb670db7c9aab6fe9d871de9a549084727f4cf",
-    "archived_manifest": "setup_attempts/v2/baseline.json",
-    "reason": "User requested exact official performance shapes: M=N=K=256..4096 step 128 (31 squares). Only performance shape matrix and matching correctness coverage/contract changed. Kernel source, baseline TTIR, compile options, launcher and timer unchanged; no autotune rerun.",
-    "archive": "setup_attempts/v2/"
+  "families": {
+    "bm32_bn64_bk32_g8_w2_s5": {
+      "ttir_path": "ir/bm32_bn64_bk32_g8_w2_s5/baseline.ttir",
+      "ttir_sha256": "eb3f6b0c90f865be57b3fee83f343280cee3a08192b20b873a9bc46d85e0f592",
+      "meta": {
+        "BLOCK_SIZE_M": 32,
+        "BLOCK_SIZE_N": 64,
+        "BLOCK_SIZE_K": 32,
+        "GROUP_SIZE_M": 8,
+        "ACTIVATION": ""
+      },
+      "options": {
+        "num_warps": 2,
+        "num_stages": 5,
+        "num_ctas": 1,
+        "enable_fp_fusion": true
+      },
+      "runtime_arg_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        10
+      ],
+      "square_sizes": [
+        256
+      ],
+      "autotune_cubin_sha256": "ee34429b17242cb0a7dd145feff416f561a8e063c48d123cae992c1bb57dbac6"
+    },
+    "bm128_bn32_bk64_g8_w4_s4": {
+      "ttir_path": "ir/bm128_bn32_bk64_g8_w4_s4/baseline.ttir",
+      "ttir_sha256": "9998ed02ee842a0ac45ab45ffe0f768fa238b8f4859c64699cf8758cee86b15e",
+      "meta": {
+        "BLOCK_SIZE_M": 128,
+        "BLOCK_SIZE_N": 32,
+        "BLOCK_SIZE_K": 64,
+        "GROUP_SIZE_M": 8,
+        "ACTIVATION": ""
+      },
+      "options": {
+        "num_warps": 4,
+        "num_stages": 4,
+        "num_ctas": 1,
+        "enable_fp_fusion": true
+      },
+      "runtime_arg_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        10
+      ],
+      "square_sizes": [
+        384,
+        512,
+        640
+      ],
+      "autotune_cubin_sha256": "54cf95da9b645ab2d04b7d474c307c973301a228937fda9d3c50dffc147e18a6"
+    },
+    "bm64_bn128_bk64_g8_w4_s4": {
+      "ttir_path": "ir/bm64_bn128_bk64_g8_w4_s4/baseline.ttir",
+      "ttir_sha256": "af7b105bfb513f99fb5662f5a3ee0f385ebdb1a9ebed671934e7113c1bed7ee1",
+      "meta": {
+        "BLOCK_SIZE_M": 64,
+        "BLOCK_SIZE_N": 128,
+        "BLOCK_SIZE_K": 64,
+        "GROUP_SIZE_M": 8,
+        "ACTIVATION": ""
+      },
+      "options": {
+        "num_warps": 4,
+        "num_stages": 4,
+        "num_ctas": 1,
+        "enable_fp_fusion": true
+      },
+      "runtime_arg_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        10
+      ],
+      "square_sizes": [
+        768,
+        896,
+        1024,
+        1152,
+        1280,
+        1408
+      ],
+      "autotune_cubin_sha256": "a9d7a79bfb26e22870e81782fa1825e96ba2cf7cdc29df8628e00bfb0bd7ddd2"
+    },
+    "bm128_bn256_bk64_g8_w8_s3": {
+      "ttir_path": "ir/bm128_bn256_bk64_g8_w8_s3/baseline.ttir",
+      "ttir_sha256": "f72ab9f12b9e6f9c8adb5a77ff8adfd2a92eb8a836bae549498bbf5b41da261f",
+      "meta": {
+        "BLOCK_SIZE_M": 128,
+        "BLOCK_SIZE_N": 256,
+        "BLOCK_SIZE_K": 64,
+        "GROUP_SIZE_M": 8,
+        "ACTIVATION": ""
+      },
+      "options": {
+        "num_warps": 8,
+        "num_stages": 3,
+        "num_ctas": 1,
+        "enable_fp_fusion": true
+      },
+      "runtime_arg_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        10
+      ],
+      "square_sizes": [
+        1536,
+        1664,
+        1792,
+        1920,
+        2048,
+        2560,
+        2688,
+        2816,
+        2944,
+        3072,
+        3200,
+        3328,
+        3456,
+        3584,
+        3712,
+        3840,
+        3968,
+        4096
+      ],
+      "autotune_cubin_sha256": "dd0915d0e3c5c0d423f6d074973ae3dc27cb40151db5724e90eeabfd12562d26"
+    },
+    "bm64_bn256_bk32_g8_w4_s4": {
+      "ttir_path": "ir/bm64_bn256_bk32_g8_w4_s4/baseline.ttir",
+      "ttir_sha256": "9260dfaf694f7805a9e3b279bc73f3d8d5687524b32610fd602f85046ed6717c",
+      "meta": {
+        "BLOCK_SIZE_M": 64,
+        "BLOCK_SIZE_N": 256,
+        "BLOCK_SIZE_K": 32,
+        "GROUP_SIZE_M": 8,
+        "ACTIVATION": ""
+      },
+      "options": {
+        "num_warps": 4,
+        "num_stages": 4,
+        "num_ctas": 1,
+        "enable_fp_fusion": true
+      },
+      "runtime_arg_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        10
+      ],
+      "square_sizes": [
+        2176
+      ],
+      "autotune_cubin_sha256": "dfc735bf03004d3b7f47c322483ffe142e61882d390f05d7745d401ee29a63be"
+    },
+    "bm128_bn128_bk32_g8_w4_s4": {
+      "ttir_path": "ir/bm128_bn128_bk32_g8_w4_s4/baseline.ttir",
+      "ttir_sha256": "f62a60ac319823742da2ce90d555701c0372bd25244b9f2a8d41ec25a0964d17",
+      "meta": {
+        "BLOCK_SIZE_M": 128,
+        "BLOCK_SIZE_N": 128,
+        "BLOCK_SIZE_K": 32,
+        "GROUP_SIZE_M": 8,
+        "ACTIVATION": ""
+      },
+      "options": {
+        "num_warps": 4,
+        "num_stages": 4,
+        "num_ctas": 1,
+        "enable_fp_fusion": true
+      },
+      "runtime_arg_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        10
+      ],
+      "square_sizes": [
+        2304,
+        2432
+      ],
+      "autotune_cubin_sha256": "b30561f7fef90b768b7e7b603542c089a11b7e15381f4bcde9b3a0e2c48a2250"
+    }
   },
   "performance_shapes": [
     [
@@ -357,5 +428,10 @@
       4096
     ]
   ],
-  "performance_shape_source": "upstream/03-matrix-multiplication.py.txt:411; x_vals=[128 * i for i in range(2, 33)]"
+  "historical_baseline": {
+    "manifest": "setup_attempts/v3/baseline.json",
+    "sha256": "7b225c07ab9444f1d49c4be2fae0a62b2220cb90bc0ec19c53e392460e3a49c2",
+    "ttir_path": "ir/baseline.ttir",
+    "ttir_sha256": "af7b105bfb513f99fb5662f5a3ee0f385ebdb1a9ebed671934e7113c1bed7ee1"
+  }
 }

@@ -11,7 +11,9 @@ from common import (
     PERF_SHAPES,
     ROOT,
     allocate,
+    baseline_hashes,
     compile_ir,
+    config_for_shape,
     dump_kernel,
     frozen,
     launch,
@@ -33,7 +35,7 @@ def main():
     validation = json.loads(args.validation.read_text())
     pipeline = json.loads(args.pipeline.read_text())
     for record in [validation, pipeline]:
-        assert record["passed"] and record["baseline_sha256"] == config["ttir_sha256"]
+        assert record["passed"] and record["baseline_hashes"] == baseline_hashes(config)
         assert record["config_sha256"] == sha256(ROOT / "baseline.json")
     assert validation["suite"] == "full"
     assert validation["validator_sha256"] == sha256(ROOT / "validate.py")
@@ -41,9 +43,13 @@ def main():
     device_uuid = str(torch.cuda.get_device_properties(0).uuid)
     assert validation["device_uuid"] == pipeline["torch_device_uuid"] == device_uuid
     torch.manual_seed(args.seed)
-    ck = compile_ir()
-    info = dump_kernel(ck, "baseline")
-    assert info["stages"]["cubin"] == pipeline["baseline"]["stages"]["cubin"]
+    kernels = {name: compile_ir(name) for name in config["families"]}
+    info = {name: dump_kernel(ck, f"{name}/baseline") for name, ck in kernels.items()}
+    for name, value in info.items():
+        assert (
+            value["stages"]["cubin"]
+            == pipeline["families"][name]["baseline"]["stages"]["cubin"]
+        )
     result = dict(
         passed=True,
         timer="triton.testing.do_bench_cudagraph; kernel only; preallocated output",
@@ -51,7 +57,7 @@ def main():
         rounds=5,
         rep_ms=20,
         records=[],
-        baseline_sha256=config["ttir_sha256"],
+        baseline_hashes=baseline_hashes(config),
         config_sha256=sha256(ROOT / "baseline.json"),
         validation_sha256=sha256(args.validation),
         pipeline_sha256=sha256(args.pipeline),
@@ -63,18 +69,22 @@ def main():
         cache="no explicit flush; graph repeated-input cache state",
     )
     for m, n, k in PERF_SHAPES:
+        family_id, family = config_for_shape((m, n, k), config)
+        ck = kernels[family_id]
         ts = allocate(m, n, k)
         for _ in range(10):
-            launch(ck, ts, config)
+            launch(ck, ts, family)
         torch.cuda.synchronize()
         samples = [
-            triton.testing.do_bench_cudagraph(lambda: launch(ck, ts, config), rep=20)
+            triton.testing.do_bench_cudagraph(lambda: launch(ck, ts, family), rep=20)
             * 1000
             for _ in range(5)
         ]
         median = statistics.median(samples)
         row = dict(
             shape=[m, n, k],
+            family=family_id,
+            ttir_sha256=family["ttir_sha256"],
             samples_us=samples,
             median_us=median,
             min_us=min(samples),

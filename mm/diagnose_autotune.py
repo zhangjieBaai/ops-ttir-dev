@@ -22,7 +22,10 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     gate()
-    config = frozen()
+    frozen()
+    config = json.loads(
+        (Path(__file__).parent / "setup_attempts/v3/baseline.json").read_text()
+    )
     tensors = allocate(*SEED_SHAPE)
     records = []
     for candidate in get_cuda_autotune_config():

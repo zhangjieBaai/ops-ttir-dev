@@ -1,24 +1,33 @@
-# MM TTIR baseline
+# MM：六组 autotune baseline
 
-目前仅建立并运行官方教程 baseline，尚未开始优化。契约见 [optimization_plan.md](optimization_plan.md)。
+当前使用官方31个方阵点逐shape autotune实测选出的 **6份不同baseline TTIR**。已冻结选择，不在正常验证或性能测试中重新调参；尚未开始TTIR优化。
 
-使用官方 Triton v3.7.0 tutorial 03 的 FP16 MM，原始计算体不变。完整快照、来源及 SHA256 在 [upstream/provenance.json](upstream/provenance.json)。网页的 main 版本可能继续变化，本实验固定 v3.7.0，与指定编译器版本一致。当前网络无法重新获取源码，沿用本机已有官方快照并核对其历史来源 hash，未宣称本次进行了独立远程校验。
+- [baseline.json](baseline.json)：31个shape到6组配置的映射、每组TTIR/编译选项/来源hash。
+- [common.py](common.py)：`config_for_shape` 选择配置组，`compile_ir(family_id)` 编译该组TTIR，`launch` 使用该组grid和签名；`matmul(a,b,kernels,manifest)` 提供同样的自动dispatch。
+- [export_baseline.py](export_baseline.py)：逐31点核查源码生成的TTIR/cubin与已冻结组一致，不重新autotune。
+- [freeze_baselines.py](freeze_baselines.py)：从保存的autotune证据确定性重建六组；已有组只检查，不隐式覆盖。
 
-只在 `1024³` 上执行一次官方 16 配置 autotune，选择后冻结；整个 shape 矩阵共享该配置。这是固定配置实验组，不代表教程逐 shape autotune 的最佳性能。冻结记录在 `baseline.json`，包含全部初始选择时间；已有 baseline 的运行只校验，不重新调参或覆盖。
+| 配置组（BM×BN×BK） | warps / stages | baseline文件 | shape数 |
+|---|---|---|---:|
+| 32×64×32 | 2 / 5 | [baseline.ttir](ir/bm32_bn64_bk32_g8_w2_s5/baseline.ttir) | 1 |
+| 128×32×64 | 4 / 4 | [baseline.ttir](ir/bm128_bn32_bk64_g8_w4_s4/baseline.ttir) | 3 |
+| 64×128×64 | 4 / 4 | [baseline.ttir](ir/bm64_bn128_bk64_g8_w4_s4/baseline.ttir) | 6 |
+| 128×256×64 | 8 / 3 | [baseline.ttir](ir/bm128_bn256_bk64_g8_w8_s3/baseline.ttir) | 18 |
+| 64×256×32 | 4 / 4 | [baseline.ttir](ir/bm64_bn256_bk32_g8_w4_s4/baseline.ttir) | 1 |
+| 128×128×32 | 4 / 4 | [baseline.ttir](ir/bm128_bn128_bk32_g8_w4_s4/baseline.ttir) | 2 |
 
-编译流程为：教程源码 → make_ttir → 冻结 `ir/baseline.ttir` → `triton.compile(文件)` → make_ttgir/LLVM/PTX/cubin → 原生 CompiledKernel。产物写 `artifacts/`，hash/资源与完整环境记录保留在每个结果目录中。没有候选，也没有 `optimized.ttir`。
+所有组GROUP_M=8、CTAs=1，无activation；M/N/K和行stride为运行时参数，tile大小为编译期常量。31个性能shape为 `M=N=K=256…4096，步长128`，与官方教程一致。自动dispatch只接受冻结的31点，其他shape不会自动套用配置。配置选择来自 [autotune统计报告](autotune_ttir_report.md) 的实际记录，可能随重新测量波动；本轮使用其固定映射，不重复选优。
 
-从仓库根目录运行（先用 `nvidia-smi` 确认设备空闲）：
+源码是官方Triton v3.7.0 tutorial 03提取函数，计算体不变。来源、快照SHA256及本次未远程独立核验的限制见 [upstream/provenance.json](upstream/provenance.json)。同组baseline与未来候选均须使用相同原生TTIR编译、加载、启动和计时流程。
 
 ```bash
+# 在仓库根目录运行；先确认设备空闲
 CUDA_VISIBLE_DEVICES=6 bash mm/test_accuracy.sh
 CUDA_VISIBLE_DEVICES=6 bash mm/test_performance.sh
 ```
 
-性能入口依次校验冻结 baseline、pipeline 一致性、完整正确性、31 个官方方阵 shape（M=N=K=256…4096，步长128）× 5 轮 CUDA graph kernel 计时、独立进程 seed=123 正确性与计时、memcheck/racecheck。每次写独立 `results/runs/` 目录，失败日志也保留。显式清空外部 Python 和动态库路径；不会把 JIT、加载、分配计入 kernel 时间。时钟未锁定，未主动清缓存。
+性能入口验证全部31点源码/TTIR的完整options、target、LLVM/PTX/cubin字节一致、输出逐位一致，然后验证每组准确性，计时31点×5轮（rep=20ms CUDA graph），用seed=123独立进程复测，最后对6组分别执行memcheck/racecheck。每次写新的results/runs目录。计时不含编译、加载、分配和Python launch；未锁定/核实锁频，未主动清缓存。设备进程前后检查不等于系统级预约或连续独占证明。
 
-本轮限定 FP16、正 16 倍数 M/N/K 和行 stride、列 stride=1、指针对齐、无别名；支持行尾 padding。转置、融合激活、其他 dtype、空矩阵或不满足 IR 前提的输入不在本组范围内。31 个性能 shape 及数值协议在契约和 common.py/validate.py 中。
+本轮FP16、SM90，M/N/K与行stride均为正16倍数、列stride=1、指针对齐、无别名；支持行尾padding。每组另外执行边界与压力正确性用例，不把额外用例当作自动性能dispatch范围。容差和完整协议见 [optimization_plan.md](optimization_plan.md)。当前实验报告见 [baseline_report.md](baseline_report.md)。
 
-已完成实验和数值、性能结果见 [baseline_report.md](baseline_report.md)。正式结果来自 GPU 6；GPU 7 的受干扰运行另行保留并标记，不参与本轮报告。入口在每个 GPU 进程前后检查已有 compute process，发现占用则终止；这不是系统级设备预约或连续的独占证明。
-
-另行完成了官方31个shape逐点autotune的TTIR数量统计，见 [autotune_ttir_report.md](autotune_ttir_report.md)：本次获选6份不同TTIR，全部候选共16份（11份可执行、5份shared-memory超限）。该统计不替换上述固定配置基线。
+旧单配置文件 `ir/baseline.ttir` 保留原字节，**仅为历史基线，不参与当前dispatch**。旧manifest/代码/契约/报告存于setup_attempts/v3，旧原始结果保留；当前6份活跃baseline位于上表的子目录。

@@ -1,56 +1,60 @@
-# MM 官方 31 点 baseline；未开始优化
+# MM 六组 autotune baseline 已跑通
 
-性能 shape 已按用户要求严格对齐官方教程：**M=N=K=256…4096，步长128，共31个方阵点**。原文位于 [教程快照第411行](upstream/03-matrix-multiplication.py.txt#L411)，`x_vals=[128 * i for i in range(2, 33)]`。export_baseline.verify_extraction 从该快照读取实际 x_vals，与 PERF_SHAPES 逐项核对。本轮没有矩形或128³性能点。
+当前活跃实验 `mm-fp16-sm90-autotuned-six-v4`：31个官方方阵点各自使用已冻结的获选配置，共6份不同baseline.ttir。固定映射来自 [autotune统计](autotune_ttir_report.md) 的实测记录，未重新调参。旧单配置manifest/源码入口/契约/报告保存在setup_attempts/v3，旧root ir/baseline.ttir仅为历史原件。
 
-正式证据：[完整运行日志](results/runs/baseline_20261118T130140Z_RWeNZh/run.log)。实验标识 `mm-fp16-sm90-fixed-v3-official31`，GPU6 H100 80GB HBM3 / SM90，UUID `c93dcf8b-2363-d1c2-02b4-4572cef79c41`；指定 venv、Triton 3.7.0、PyTorch 2.12.0+cu130。
+六组路径、完整SHA256、配置和31点映射见 [baseline.json](baseline.json)。所有组均为官方教程原始计算体，不存在优化候选或手工IR改写；源码、编译器、加载、启动和计时仍走Triton原生流程。代码新增按shape选择配置组的dispatch，编译/验证/benchmark都读取同一映射。
 
-按要求更新测试矩阵及对应正确性覆盖，源码、TTIR、编译配置、launcher、计时方法保持不变，不重新 autotune、不生成优化候选。配置仍为代表点1024³选择的 `BLOCK_M=64, BLOCK_N=128, BLOCK_K=64, GROUP_M=8, warps=4, stages=4, CTAs=1`；本轮只对齐官方 shape，不代表逐 shape autotune 最优。源码快照来自本机已有 v3.7.0 官方快照，本次未完成独立远程来源核验，来源限制见 upstream/provenance.json。
+| 配置组 | shape数 | registers | spills | shared bytes |
+|---|---:|---:|---:|---:|
+| [bm32_bn64_bk32_g8_w2_s5](ir/bm32_bn64_bk32_g8_w2_s5/baseline.ttir) | 1 | 95 | 0 | 24576 |
+| [bm128_bn32_bk64_g8_w4_s4](ir/bm128_bn32_bk64_g8_w4_s4/baseline.ttir) | 3 | 72 | 0 | 81920 |
+| [bm64_bn128_bk64_g8_w4_s4](ir/bm64_bn128_bk64_g8_w4_s4/baseline.ttir) | 6 | 124 | 0 | 98304 |
+| [bm128_bn256_bk64_g8_w8_s3](ir/bm128_bn256_bk64_g8_w8_s3/baseline.ttir) | 18 | 210 | 0 | 147456 |
+| [bm64_bn256_bk32_g8_w4_s4](ir/bm64_bn256_bk32_g8_w4_s4/baseline.ttir) | 1 | 212 | 0 | 81920 |
+| [bm128_bn128_bk32_g8_w4_s4](ir/bm128_bn128_bk32_g8_w4_s4/baseline.ttir) | 2 | 174 | 0 | 65536 |
 
-- 源码 SHA256：`50ccd205e79d5275b8da09b3bc72cf86b0dc95bc2ef4531548509226b0fcc7b3`
-- TTIR SHA256：`af7b105bfb513f99fb5662f5a3ee0f385ebdb1a9ebed671934e7113c1bed7ee1`
-- cubin SHA256：`a9d7a79bfb26e22870e81782fa1825e96ba2cf7cdc29df8628e00bfb0bd7ddd2`
-- 资源：124 registers，0 spills，98304 bytes shared memory。
+正式证据：[本轮GPU6运行](results/runs/baseline_20261118T135515Z_fg6zev/run.log)。环境是指定venv、Python3.12.3、官方Triton3.7.0、PyTorch2.12.0+cu130、H100 SM90，物理GPU6，UUID `c93dcf8b-2363-d1c2-02b4-4572cef79c41`。源码来自本机已有官方v3.7.0快照，未作本次独立远程来源核验，限制见upstream/provenance.json。
 
-源码/TTIR文件 pipeline 核查通过：完整 target/options 一致，LLVM IR、PTX、cubin 字节一致；TTGIR 相同 parser round trip 后一致；代表输入输出逐位一致。环境路径、wheel RECORD、动态库映射和工具 hash 保存在 [pipeline.json](results/runs/baseline_20261118T130140Z_RWeNZh/pipeline.json)。TTIR文件入口从 make_ttgir 继续，不重复 Python 前端。
+**31点pipeline逐项通过**：每点源码产生的TTIR与对应组baseline字节一致；解析后的完整编译options和target一致；LLVM IR、PTX、cubin字节一致；TTGIR相同parser round trip后相同；源码/文件路径输出逐位一致。每组均核查9参数signature和全部tt.divisibility=16。环境RECORD、实际模块/动态库路径、toolchain hash及逐点产物hash/完整options保存在 [pipeline.json](results/runs/baseline_20261118T135515Z_fg6zev/pipeline.json)。文件入口从make_ttgir继续，不重新运行Python前端或make_ttir。
 
-首轮 seed=42 与独立进程 seed=123 各 **52 个正确性用例通过**，覆盖全部31性能点及21个边界、padding、压力用例。与 native ATen FP16 的观测最大绝对误差为0；与 FP32/CPU FP64 的最大绝对误差可达0.25，按冻结的 `atol=1e-2, rtol=1e-3` 判定通过，不代表所有绝对误差小于1e-2。CPU FP64仅检查小尺寸。memcheck/racecheck各5个边界用例通过，分别为0 errors、0 hazards / 0 errors / 0 warnings。
+**正确性**：seed=42、seed=123独立进程各157用例，共314次全部通过。每轮包括31个官方性能点按冻结映射dispatch，以及每组21个边界/padding/压力用例。额外组级用例验证IR可执行范围，不为额外shape新增自动dispatch。参考native ATen FP16和禁TF32的FP32结果，小尺寸另用CPU FP64；固定atol=1e-2、rtol=1e-3。输入不修改、输出sentinel、有限性、padding canary均通过，逐项实际误差见accuracy*.json，不将相对容差判定误写为绝对误差上限。
 
-每点5轮、rep=20ms的 CUDA graph kernel 计时，独立进程 seed=123 重复，共 **310个原始时间样本**。预分配输出，编译、加载、Python launch和分配不计入时间。全部样本见 [benchmark.json](results/runs/baseline_20261118T130140Z_RWeNZh/benchmark.json) 与 [benchmark_repeat.json](results/runs/baseline_20261118T130140Z_RWeNZh/benchmark_repeat.json)；两轮逐点中位数最大相对偏差 2.78%。时钟未锁定/核实锁频，未主动清缓存，进程前后检查不等于连续独占证明。这里只报告 baseline，不计算优化加速比。
+**内存与同步检查**：[memcheck](results/runs/baseline_20261118T135515Z_fg6zev/memcheck.log)与[racecheck](results/runs/baseline_20261118T135515Z_fg6zev/racecheck.log)各对6组×5边界用例执行，均退出0；memcheck 0 errors，racecheck 0 hazards / 0 errors / 0 warnings。
 
-| M=N=K | 首轮中位数 µs | 独立复测 µs | 首轮 TFLOPS |
-|---:|---:|---:|---:|
-| 256 | 3.220 | 3.220 | 10.42 |
-| 384 | 3.606 | 3.607 | 31.41 |
-| 512 | 4.072 | 4.075 | 65.92 |
-| 640 | 4.492 | 4.514 | 116.72 |
-| 768 | 4.923 | 4.924 | 184.03 |
-| 896 | 5.536 | 5.536 | 259.89 |
-| 1024 | 5.981 | 5.982 | 359.07 |
-| 1152 | 9.542 | 9.277 | 320.43 |
-| 1280 | 10.061 | 10.069 | 416.90 |
-| 1408 | 11.646 | 11.598 | 479.37 |
-| 1536 | 17.836 | 17.833 | 406.34 |
-| 1664 | 21.718 | 21.787 | 424.29 |
-| 1792 | 26.051 | 26.195 | 441.79 |
-| 1920 | 31.519 | 31.741 | 449.12 |
-| 2048 | 36.583 | 36.734 | 469.61 |
-| 2176 | 49.630 | 49.928 | 415.20 |
-| 2304 | 58.499 | 58.352 | 418.15 |
-| 2432 | 67.929 | 67.474 | 423.51 |
-| 2560 | 78.428 | 78.266 | 427.84 |
-| 2688 | 93.524 | 93.698 | 415.33 |
-| 2816 | 104.552 | 104.578 | 427.17 |
-| 2944 | 116.429 | 116.025 | 438.31 |
-| 3072 | 136.990 | 136.542 | 423.26 |
-| 3200 | 153.919 | 152.055 | 425.78 |
-| 3328 | 172.254 | 170.530 | 427.97 |
-| 3456 | 200.153 | 197.444 | 412.47 |
-| 3584 | 215.789 | 213.765 | 426.68 |
-| 3712 | 241.436 | 241.334 | 423.69 |
-| 3840 | 284.566 | 284.765 | 397.96 |
-| 3968 | 307.332 | 306.567 | 406.57 |
-| 4096 | 327.281 | 326.919 | 419.94 |
+**性能**：31点各5轮、rep=20ms CUDA graph kernel时间，seed=123独立进程重复，共310个原始样本。每点记录所属family和实际TTIR hash；每组自己编译加载、使用真实metadata，不复制其他组资源。计时不包含分配、Python launch、编译和模块加载。两轮逐点中位数最大相对偏差5.51%。未锁定/核实锁频、无主动cache flush，进程前后检查不是连续独占证明。该表是新的分组baseline，不与历史单配置计时混为TTIR优化收益。
 
-旧15点结果保留在原 results/runs 目录，不并入本轮31点结果。旧报告、manifest、common.py及契约归档在 [setup_attempts/v2](setup_attempts/v2/)，新 manifest 记录父 hash 和改动原因。更早的签名检查失败、GPU7受干扰复测及5个 autotune shared-memory OutOfResources 记录也保持原样。
+| M=N=K | BM×BN×BK | 首轮中位数 µs | 独立复测 µs | 首轮 TFLOPS |
+|---:|---|---:|---:|---:|
+| 256 | 32×64×32 | 2.994 | 2.998 | 11.21 |
+| 384 | 128×32×64 | 3.444 | 3.446 | 32.88 |
+| 512 | 128×32×64 | 3.862 | 3.865 | 69.51 |
+| 640 | 128×32×64 | 4.484 | 4.502 | 116.91 |
+| 768 | 64×128×64 | 4.959 | 4.923 | 182.68 |
+| 896 | 64×128×64 | 5.571 | 5.526 | 258.23 |
+| 1024 | 64×128×64 | 5.980 | 6.044 | 359.13 |
+| 1152 | 64×128×64 | 9.789 | 9.541 | 312.34 |
+| 1280 | 64×128×64 | 10.649 | 10.063 | 393.87 |
+| 1408 | 64×128×64 | 11.947 | 11.660 | 467.26 |
+| 1536 | 128×256×64 | 18.001 | 18.039 | 402.62 |
+| 1664 | 128×256×64 | 19.747 | 19.849 | 466.64 |
+| 1792 | 128×256×64 | 22.114 | 22.026 | 520.44 |
+| 1920 | 128×256×64 | 24.940 | 25.319 | 567.60 |
+| 2048 | 128×256×64 | 27.357 | 27.504 | 628.00 |
+| 2176 | 64×256×32 | 46.087 | 45.966 | 447.13 |
+| 2304 | 128×128×32 | 51.428 | 51.180 | 475.64 |
+| 2432 | 128×128×32 | 56.802 | 56.771 | 506.47 |
+| 2560 | 128×256×64 | 63.292 | 64.065 | 530.15 |
+| 2688 | 128×256×64 | 69.984 | 70.531 | 555.04 |
+| 2816 | 128×256×64 | 75.357 | 74.327 | 592.65 |
+| 2944 | 128×256×64 | 105.517 | 106.039 | 483.64 |
+| 3072 | 128×256×64 | 112.442 | 112.115 | 515.66 |
+| 3200 | 128×256×64 | 123.219 | 122.726 | 531.86 |
+| 3328 | 128×256×64 | 129.505 | 129.692 | 569.24 |
+| 3456 | 128×256×64 | 139.581 | 139.795 | 591.46 |
+| 3584 | 128×256×64 | 147.489 | 146.558 | 624.27 |
+| 3712 | 128×256×64 | 189.256 | 189.379 | 540.51 |
+| 3840 | 128×256×64 | 198.161 | 195.986 | 571.49 |
+| 3968 | 128×256×64 | 210.483 | 209.848 | 593.65 |
+| 4096 | 128×256×64 | 220.542 | 216.761 | 623.19 |
 
-复现：先确认GPU空闲，再运行 `CUDA_VISIBLE_DEVICES=6 bash mm/test_performance.sh`。
+复现：先确认设备空闲，再从仓库根目录执行 `CUDA_VISIBLE_DEVICES=6 bash mm/test_performance.sh`。六份baseline对应同一份官方Python计算源码，但具有各自固定tile/warps/stages；后续每组候选必须与所属baseline保持相同配置和启动约定。
