@@ -48,9 +48,9 @@
 | 算子 | 冻结 baseline | 最优版本 | 收益（A 级） | 备注 |
 |---|---|---|---|---|
 | layer_norm | ✅ | `r2_mixed_stream` | 几何 1.440× / 算术 1.499× | 第二轮完整矩阵、独立复测与 sanitizer 已有记录；相对 parent 部分点回退 |
-| mm | ✅ | — | — | 已完成 15 shape 基线计时、独立复测、正确性和 sanitizer；无优化候选 |
+| mm | ✅，31点映射到6组 | 128×32×64组 `r1_unsigned`；其余baseline | 该组3点几何1.0510× / 复测1.0507× | 无整体31点可靠加速结论；见[T14](techniques.md#t14-将已证明非负的整数索引除余改为无符号运算) |
 
-当前选择以 [`selection.json`](../layer_norm/results/selection.json) 和候选哈希为准；第一轮 `tile_dispatch_math_v2` 的 1.293× 是历史结果。第二轮 `full_stable.json` 的 `optimized` 标签指第一轮 parent，不能按今天的 `ir/optimized.ttir` 重解释旧样本。MM 的基线耗时不是加速比。
+LayerNorm当前选择以 [`selection.json`](../layer_norm/results/selection.json) 和候选哈希为准；第一轮 `tile_dispatch_math_v2` 的 1.293× 是历史结果。第二轮 `full_stable.json` 的 `optimized` 标签指第一轮 parent，不能按今天的 `ir/optimized.ttir` 重解释旧样本。MM当前选择以 [`round1_selection.json`](../mm/results/round1_selection.json) 为准；上述A级收益只限128×32×64组的384³、512³、640³三点，不能推广到其他组或全部31点。
 
 ## 第二轮经验入口
 

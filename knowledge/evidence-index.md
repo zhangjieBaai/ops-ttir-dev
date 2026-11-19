@@ -180,7 +180,7 @@ CTA/SM 由 `cuOccupancyMaxActiveBlocksPerMultiprocessor` 实测，非手算。
 
 ## MM 基线证据
 
-路径相对本仓库根目录。入口为 [`mm/baseline_report.md`](../mm/baseline_report.md)，原始记录在 `mm/results/runs/baseline_20261118T124859Z_Vh0qLn/`。
+以下为已归档的15点单配置阶段，不代表当前六组基线或优化状态。路径相对本仓库根目录。历史报告为 [`setup_attempts/v2/baseline_report.md`](../mm/setup_attempts/v2/baseline_report.md)，原始记录在 `mm/results/runs/baseline_20261118T124859Z_Vh0qLn/`。当前六组基线见 [`mm/baseline_report.md`](../mm/baseline_report.md)。
 
 | 事实 | 已有证据与范围 | 不支持的推论 |
 |---|---|---|
@@ -191,7 +191,24 @@ CTA/SM 由 `cuOccupancyMaxActiveBlocksPerMultiprocessor` 实测，非手算。
 | 资源负结果 | `autotune_failures.json`：5 个 Infinity 配置诊断为 shared-memory OutOfResources | Infinity 本身不能证明算术错误或具体失败原因 |
 | 干扰运行 | GPU7 的 `baseline_20261118T124700Z_gO2bUH/performance_status.json` 被拒绝 | 不与正式 GPU6 数据混合 |
 
-这些是已有记录的核对，本次没有新跑 MM 性能。配置和来源限制见 `mm/baseline.json`、`mm/upstream/provenance.json`，不能从 LayerNorm 的 tile/warp 经验推出 MM 最优配置。
+这些是历史记录的核对，本次知识整理没有新跑 MM 性能。该阶段配置见 `mm/setup_attempts/v2/baseline.json`，来源限制见 `mm/upstream/provenance.json`，不能从 LayerNorm 的 tile/warp 经验推出 MM 最优配置。
+
+## MM 无符号索引改写的分组证据
+
+对应 [T14](techniques.md#t14-将已证明非负的整数索引除余改为无符号运算)。以下路径相对 `mm/results/runs/mm_opt_r1_20261118/`，条目限定 `family=bm128_bn32_bk64_g8_w4_s4`、`name=r1_unsigned`，不借用其他组或全部31点的等级。环境为H100 SM90、官方Triton3.7.0、FP16，固定128×32×64、group8、warps4、stages4、CTAs1。
+
+| 结论 | 数字或范围 | 等级 | 原始证据 |
+|---|---|---|---|
+| 改动内容 | 5处divsi→divui、4处remsi→remui，其余TTIR不变 | C，静态差异 | [baseline](../mm/ir/bm128_bn32_bk64_g8_w4_s4/baseline.ttir)、[optimized](../mm/ir/bm128_bn32_bk64_g8_w4_s4/optimized.ttir)；[选择哈希](../mm/results/round1_selection.json) |
+| 所属3点主测 | 384³/512³/640³，7轮/点；几何1.050996625×，95%区间[1.049417554, 1.051658295] | A，仅此组完整3点 | [full.json](../mm/results/runs/mm_opt_r1_20261118/full.json)：对应records及summary |
+| 独立进程复测 | 同3点，seed123，5轮/点；几何1.050697060×，95%区间[1.049259904, 1.051455595] | A，仅此组完整3点 | [repeat.json](../mm/results/runs/mm_opt_r1_20261118/repeat.json)：对应records及summary |
+| 数值正确性 | seed42/123各28项全部通过；native FP16最大绝对误差0 | 按实际覆盖记录PASS | [check/summary.json](../mm/results/runs/mm_opt_r1_20261118/check/summary.json)、[repeat_check/summary.json](../mm/results/runs/mm_opt_r1_20261118/repeat_check/summary.json)：该组r1_unsigned.accuracy |
+| 最终内存/同步检查 | 该组memcheck/racecheck各10项通过；整次日志0 errors/0 hazards | 按工具范围记录PASS | [memcheck记录](../mm/results/runs/mm_opt_r1_20261118/memcheck_accuracy.json)、[racecheck记录](../mm/results/runs/mm_opt_r1_20261118/racecheck_accuracy.json)及同目录工具log |
+| 资源 | baseline/candidate均72 registers、0 spills、81920 bytes shared | C | check/summary.json中对应artifacts；full.json的resources |
+| 其他组反例 | 32×64×32：0.97919×；64×128×64：0.94719×；128×128×32：0.87402× | B，初筛 | [screen.json](../mm/results/runs/mm_opt_r1_20261118/screen.json)：各组r1_unsigned，必须同时看逐点valid标记 |
+| 最终选择与限制 | 仅1组候选，5组baseline fallback；全31点收益不确定 | 不授予全域A级性能结论 | [round1_selection.json](../mm/results/round1_selection.json)、[outcome.json](../mm/results/runs/mm_opt_r1_20261118/outcome.json)、[报告](../mm/report_round1.md) |
+
+计时口径为预分配输出的 CUDA graph kernel 时间，rep=20ms，同轮随机baseline/candidate顺序；未锁定/核实锁频，无主动cache flush。区间是对保存配对轮次的条件bootstrap，不覆盖选择偏差或所有跨进程误差。PTX符号处理变化是静态线索，不将其升级为逐条指令的因果归因；精确TTIR/cubin/编译产物hash以原始记录和选择文件为准。
 
 ## KernelForge 知识核查
 
