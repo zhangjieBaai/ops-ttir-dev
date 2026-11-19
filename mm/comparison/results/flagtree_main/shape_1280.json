@@ -1,0 +1,347 @@
+{
+  "n": 1280,
+  "input_hashes": [
+    "fc19ad9871b645d6a845ea80b3aaf74ced9f3bd3383212ba924a1c814f6196a1",
+    "653ba92b828652ff486f53e8af857f6f7a03940580ffa784d2c0e930b5120fc1"
+  ],
+  "correctness": {
+    "tutorial": {
+      "passed": true,
+      "atol": 0.01,
+      "rtol": 0.001,
+      "max_abs_errors": {
+        "native_fp16": 0.0,
+        "native_fp32": 0.0625
+      }
+    },
+    "flaggems": {
+      "passed": true,
+      "atol": 0.01,
+      "rtol": 0.001,
+      "max_abs_errors": {
+        "native_fp16": 0.0,
+        "native_fp32": 0.0625
+      }
+    }
+  },
+  "prepare_seconds": 4.7880172953009605,
+  "pairs": [
+    {
+      "round": 0,
+      "order": [
+        "tutorial",
+        "flaggems"
+      ],
+      "tutorial_us": 10.753688721573674,
+      "other_us": 9.460624325566176,
+      "speedup": 1.1366785480016526
+    },
+    {
+      "round": 1,
+      "order": [
+        "tutorial",
+        "flaggems"
+      ],
+      "tutorial_us": 10.74710752417035,
+      "other_us": 9.422193860715153,
+      "speedup": 1.1406162601874799
+    },
+    {
+      "round": 2,
+      "order": [
+        "flaggems",
+        "tutorial"
+      ],
+      "tutorial_us": 10.693344562257565,
+      "other_us": 9.37472383181254,
+      "speedup": 1.1406570213802318
+    },
+    {
+      "round": 3,
+      "order": [
+        "flaggems",
+        "tutorial"
+      ],
+      "tutorial_us": 10.718477848503326,
+      "other_us": 9.427643396768225,
+      "speedup": 1.136920160999895
+    },
+    {
+      "round": 4,
+      "order": [
+        "flaggems",
+        "tutorial"
+      ],
+      "tutorial_us": 10.711896011274156,
+      "other_us": 9.395648793476383,
+      "speedup": 1.140091147160766
+    }
+  ],
+  "controls": [
+    {
+      "round": 0,
+      "order": [
+        "control",
+        "tutorial"
+      ],
+      "tutorial_us": 10.840831230537944,
+      "other_us": 10.810804521132363,
+      "speedup": 1.0027774722359364
+    },
+    {
+      "round": 1,
+      "order": [
+        "control",
+        "tutorial"
+      ],
+      "tutorial_us": 10.698000536936153,
+      "other_us": 10.69145632506611,
+      "speedup": 1.0006120973299681
+    },
+    {
+      "round": 2,
+      "order": [
+        "tutorial",
+        "control"
+      ],
+      "tutorial_us": 10.762554454651365,
+      "other_us": 10.74285006119033,
+      "speedup": 1.0018341867706242
+    },
+    {
+      "round": 3,
+      "order": [
+        "tutorial",
+        "control"
+      ],
+      "tutorial_us": 10.795861890339308,
+      "other_us": 10.755210374695023,
+      "speedup": 1.0037797043691428
+    },
+    {
+      "round": 4,
+      "order": [
+        "tutorial",
+        "control"
+      ],
+      "tutorial_us": 10.972758646934263,
+      "other_us": 10.804939346928752,
+      "speedup": 1.0155317206896874
+    }
+  ],
+  "control_speedup": 1.0027774722359364,
+  "baseline_drift": 1.0056431511174806,
+  "valid": true,
+  "tutorial_us": 10.718477848503326,
+  "tutorial_config": {
+    "BLOCK_SIZE_M": 64,
+    "BLOCK_SIZE_N": 128,
+    "BLOCK_SIZE_K": 64,
+    "GROUP_SIZE_M": 8,
+    "num_warps": 4,
+    "num_ctas": 1,
+    "num_stages": 4
+  },
+  "tutorial_kernel": {
+    "stages": {
+      "source": "b97d7f2f8103a361f23334b0171c71b57f5ad85476a6e6ea7ba9c72917e40f10",
+      "ttir": "c1a483ec8a93703f3b0c94ab1fc6d64f8aeea2062ad7405c6c65f2143e9b8c54",
+      "ttgir": "d4933f9387e762069713d7c41be2ebe6da7b2e8cc18513cf235cba1199602fb8",
+      "llir": "7fc4e0d3b43fc9c9d0b3c24ce7a4d4fb774983486169026c686fd16e258cc02e",
+      "ptx": "0eee4cd6802ee499622dc8ed992b18e43ec525d9059511e73fc58fbf5ad71df6",
+      "cubin": "94f1c5b8ce27a4b9673be3cacc1537192e9bb028c4d8faa6b8e251d4086629d3"
+    },
+    "metadata": {
+      "allowed_dot_input_precisions": [
+        "tf32",
+        "tf32x3",
+        "ieee",
+        "bf16x3",
+        "bf16x6"
+      ],
+      "arch": "sm90",
+      "backend_name": "cuda",
+      "cluster_dims": [
+        1,
+        1,
+        1
+      ],
+      "debug": false,
+      "default_dot_input_precision": "tf32",
+      "deprecated_fp8_dot_operand_dtypes": [
+        "fp8e4b15"
+      ],
+      "enable_fp_fusion": true,
+      "enable_reflect_ftz": true,
+      "extern_libs": [
+        [
+          "libdevice",
+          "/usr/local/lib/python3.12/dist-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+        ],
+        [
+          "libflagcx",
+          "/usr/local/lib/python3.12/dist-packages/triton/backends/nvidia/lib/libflagcx_device.bc"
+        ]
+      ],
+      "global_scratch_align": 1,
+      "global_scratch_size": 0,
+      "hash": "124ffdcccc14d34786b6fdf4ab464487bfb8239f3589e310bfe1a99f33e39401",
+      "instrumentation_mode": "",
+      "ir_override": null,
+      "kernel_init_hooks": [],
+      "launch_cooperative_grid": false,
+      "launch_pdl": false,
+      "max_num_imprecise_acc_default": 1073741824,
+      "maxnreg": null,
+      "name": "matmul_kernel",
+      "num_ctas": 1,
+      "num_stages": 4,
+      "num_warps": 4,
+      "profile_scratch_align": 1,
+      "profile_scratch_size": 0,
+      "ptx_options": null,
+      "ptx_version": null,
+      "sanitize_overflow": true,
+      "shared": 98304,
+      "supported_fp8_dtypes": [
+        "fp8e4b15",
+        "fp8e4nv",
+        "fp8e5"
+      ],
+      "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+      "tensordesc_meta": [],
+      "tle_node_buffer_bindings": "",
+      "tmem_size": 0,
+      "triton_version": "3.6.0",
+      "warp_size": 32
+    },
+    "n_regs": 126,
+    "n_spills": 0
+  },
+  "flaggems_kernels": [
+    {
+      "name": "mm_kernel_general_host_tma",
+      "constants": {
+        "num_warps": 4,
+        "num_stages": 4,
+        "num_ctas": 1,
+        "BLOCK_M": 64,
+        "BLOCK_N": 128,
+        "BLOCK_K": 64,
+        "GROUP_M": 8
+      },
+      "stages": {
+        "source": "888082058fcfdf4c2374587b5734ae4a8e5e85350aae6bd6a5077a97c0968863",
+        "ttir": "c0971c2eed6e495f292cdacfb60fe24711531bbc2a65248b0a3e66901b66fda7",
+        "ttgir": "bcb166999705ce06ef71660c8042051d8544c6609ce278c792fd2a84f5477838",
+        "llir": "82f68ccd830541fef1c2a25d3d5d0abe5dbf5e3ce37f8e44b743b7957758a114",
+        "ptx": "fe5e66128695ce7c51f5f86403c3b83c75779130cbee10d83e5786f128e12639",
+        "cubin": "db34c0ce447138fa8d957a67783d8f86a16755386c4a17f9e9f984f9d16b5fe1"
+      },
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "cluster_dims": [
+          1,
+          1,
+          1
+        ],
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/usr/local/lib/python3.12/dist-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ],
+          [
+            "libflagcx",
+            "/usr/local/lib/python3.12/dist-packages/triton/backends/nvidia/lib/libflagcx_device.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "a556d21f93a562a3425a0479813377534f93ad5f98faa05cfbb5bf20de94feec",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "kernel_init_hooks": [],
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "mm_kernel_general_host_tma",
+        "num_ctas": 1,
+        "num_stages": 4,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 98336,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [
+          {
+            "swizzle": 3,
+            "elem_size": 2,
+            "elem_type": 6,
+            "block_size": [
+              64,
+              64
+            ],
+            "fp4_padded": false
+          },
+          {
+            "swizzle": 3,
+            "elem_size": 2,
+            "elem_type": 6,
+            "block_size": [
+              64,
+              64
+            ],
+            "fp4_padded": false
+          },
+          {
+            "swizzle": 3,
+            "elem_size": 2,
+            "elem_type": 6,
+            "block_size": [
+              64,
+              64
+            ],
+            "fp4_padded": false
+          }
+        ],
+        "tle_node_buffer_bindings": "",
+        "tmem_size": 0,
+        "triton_version": "3.6.0",
+        "warp_size": 32
+      },
+      "n_regs": 90,
+      "n_spills": 0
+    }
+  ],
+  "fg_prepare_seconds": 3.4976264890283346,
+  "tle_available": true,
+  "ws_available": true,
+  "flaggems_tuning_mode": "TuningMode.DEFAULT",
+  "flaggems_config_count": 340,
+  "flaggems_us": 9.422193860715153,
+  "speedup": 1.140091147160766
+}

@@ -4,6 +4,8 @@
 
 TTIR首轮优化已完成六组各8个候选的尝试：仅128×32×64组保留无符号索引改写，所属3点主测/独立复测几何平均约1.0510×/1.0507×；其他五组继续baseline。大组部分A/A控制无效，因此没有31点整体可靠加速结论。完整结果、负结果与限制见 [report_round1.md](report_round1.md)，冻结选择见 [round1_selection.json](results/round1_selection.json)。`ir/<family>/optimized.ttir` 对应最终选择，baseline副本均明确标记fallback。
 
+另有用户授权的 [FlagGems Hopper / FlagTree 与教程对比](comparison/report.md)：同FlagTree环境配对主比较与原upstream环境参照分别报告，不属于纯TTIR改写收益实验，也不替换上述冻结基线。
+
 优化版实际入口为 `optimized.load_kernels()` / `optimized.matmul()`，完整重放执行 `CUDA_VISIBLE_DEVICES=6 bash mm/test_optimized.sh`。原基线验证入口和下面的六份baseline保持不变；[optimization_plan.md](optimization_plan.md)是原基线阶段的冻结契约，用户授权后的优化计划见 [optimization_round1.md](optimization_round1.md)。
 
 - [baseline.json](baseline.json)：31个shape到6组配置的映射、每组TTIR/编译选项/来源hash。

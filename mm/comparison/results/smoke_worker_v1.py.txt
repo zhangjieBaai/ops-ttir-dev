@@ -1,0 +1,443 @@
+"""Source-native Hopper MM comparison; deliberately separate from pure TTIR experiments."""
+
+import argparse
+import hashlib
+import importlib
+import importlib.metadata
+import importlib.util
+import inspect
+import json
+import math
+import os
+import random
+import statistics
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+import numpy as np
+import torch
+import triton
+import triton.testing
+from triton._C import libtriton
+
+ROOT = Path(__file__).resolve().parents[1]
+FG = Path("/root/FlagGems")
+MM_SOURCE = FG / "src/flag_gems/runtime/backend/_nvidia/hopper/ops/mm.py"
+SHAPES = [(n, n, n) for n in range(256, 4097, 128)]
+ATOL, RTOL = 1e-2, 1e-3
+
+
+def sha(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def digest(value):
+    return hashlib.sha256(
+        value if isinstance(value, bytes) else value.encode()
+    ).hexdigest()
+
+
+def write(path, data):
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("x") as f:
+        f.write(json.dumps(data, indent=2, default=str) + "\n")
+
+
+def snapshot():
+    return subprocess.check_output(
+        [
+            "nvidia-smi",
+            "--query-gpu=index,uuid,name,driver_version,clocks.sm,clocks.mem,"
+            "temperature.gpu,power.draw,power.limit,utilization.gpu,memory.used",
+            "--format=csv",
+        ],
+        text=True,
+    )
+
+
+def idle():
+    raw = subprocess.check_output(
+        [
+            "nvidia-smi",
+            "-i",
+            os.environ["CUDA_VISIBLE_DEVICES"],
+            "--query-compute-apps=pid,process_name",
+            "--format=csv,noheader",
+        ],
+        text=True,
+    )
+    others = [
+        line for line in raw.splitlines() if int(line.split(",", 1)[0]) != os.getpid()
+    ]
+    assert not others, others
+
+
+def data(n, seed):
+    rng = np.random.default_rng(seed + n)
+    arrays = [
+        rng.standard_normal((n, n), dtype=np.float32).astype(np.float16)
+        for _ in range(2)
+    ]
+    hashes = [digest(x.tobytes()) for x in arrays]
+    a, b = [torch.from_numpy(x).cuda() for x in arrays]
+    return a, b, torch.full_like(a, float("nan")), hashes
+
+
+def tutorial_module():
+    spec = importlib.util.spec_from_file_location(
+        "frozen_mm_tutorial", ROOT / "tutorial.py"
+    )
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def call_args(a, b, c):
+    n = a.shape[0]
+    return (a, b, c, n, n, n, n, 1, n, 1, n, 1)
+
+
+def grid(n, meta):
+    return (
+        triton.cdiv(n, meta["BLOCK_SIZE_M"]) * triton.cdiv(n, meta["BLOCK_SIZE_N"]),
+    )
+
+
+def artifact(ck, out):
+    ck._init_handles()
+    stage_hashes = {k: digest(v) for k, v in ck.asm.items()}
+    directory = Path(out) / "artifacts" / digest(ck.asm["cubin"])
+    directory.mkdir(parents=True, exist_ok=True)
+    for name, value in ck.asm.items():
+        raw = value if isinstance(value, bytes) else value.encode()
+        path = directory / f"kernel.{name}"
+        if path.exists():
+            assert path.read_bytes() == raw
+        else:
+            path.write_bytes(raw)
+    return dict(
+        stages=stage_hashes,
+        metadata=ck.metadata._asdict(),
+        n_regs=ck.n_regs,
+        n_spills=ck.n_spills,
+    )
+
+
+def references(a, b, n):
+    refs = {
+        "native_fp16": torch.mm(a, b),
+        "native_fp32": torch.mm(a.float(), b.float()).half(),
+    }
+    if n in [256, 1024, 4096]:
+        refs["cpu_fp64"] = torch.mm(a.cpu().double(), b.cpu().double()).half().cuda()
+    return refs
+
+
+def accuracy(run, a, b, c, n):
+    before = [a.clone(), b.clone()]
+    refs = references(a, b, n)
+    c.fill_(float("nan"))
+    run()
+    errors = {
+        name: (c.float() - ref.float()).abs().max().item() for name, ref in refs.items()
+    }
+    passed = bool(torch.isfinite(c).all()) and all(
+        torch.equal(x, y) for x, y in zip([a, b], before)
+    )
+    passed &= all(torch.allclose(c, ref, atol=ATOL, rtol=RTOL) for ref in refs.values())
+    return dict(passed=passed, atol=ATOL, rtol=RTOL, max_abs_errors=errors)
+
+
+def load_fg():
+    import flag_gems
+    from flag_gems.utils.libentry import LibEntry
+
+    assert Path(flag_gems.__file__).is_relative_to(FG / "src")
+    module = importlib.import_module("flag_gems.runtime.backend._nvidia.hopper.ops.mm")
+    assert Path(module.__file__).resolve() == MM_SOURCE
+    return module, LibEntry
+
+
+def capture_fg(module, entry_class, a, b, c):
+    captures = []
+    original = entry_class.run
+
+    def capture(entry, *args, **kwargs):
+        result = original(entry, *args, **kwargs)
+        ck, constants = result
+        captures.append((ck, constants, entry.jit_function.__name__))
+        return result
+
+    entry_class.run = capture
+    try:
+        module.mm_out(a, b, out=c)
+    finally:
+        entry_class.run = original
+    assert captures, "No actual FlagGems compiled kernel captured"
+    return captures
+
+
+def environment(mode):
+    records = []
+    for name in ["flagtree", "triton", "torch"]:
+        try:
+            dist = importlib.metadata.distribution(name)
+            records.append(
+                dict(
+                    name=dist.metadata["Name"],
+                    version=dist.version,
+                    location=str(dist.locate_file("")),
+                )
+            )
+        except importlib.metadata.PackageNotFoundError:
+            pass
+    props = torch.cuda.get_device_properties(0)
+    return dict(
+        python=sys.executable,
+        prefix=sys.prefix,
+        torch=torch.__version__,
+        torch_path=torch.__file__,
+        triton=triton.__version__,
+        triton_path=triton.__file__,
+        libtriton_path=libtriton.__file__,
+        libtriton_sha256=sha(libtriton.__file__),
+        distributions=records,
+        mode=mode,
+        gpu=str(props),
+        gpu_uuid=str(props.uuid),
+        gpu_before=snapshot(),
+        visible_devices=os.environ["CUDA_VISIBLE_DEVICES"],
+        source_sha256=sha(MM_SOURCE),
+        tutorial_sha256=sha(ROOT / "tutorial.py"),
+        flaggems_commit=subprocess.check_output(
+            ["git", "-C", str(FG), "rev-parse", "HEAD"], text=True
+        ).strip(),
+        flaggems_status=subprocess.check_output(
+            ["git", "-C", str(FG), "status", "--short"], text=True
+        ),
+        timer_source_sha256=sha(inspect.getfile(triton.testing.do_bench_cudagraph)),
+        worker_sha256=sha(__file__),
+        command=subprocess.list2cmdline([sys.executable, *sys.argv]),
+        variables={
+            k: v
+            for k, v in os.environ.items()
+            if k.startswith(("TRITON", "CUDA", "FLAG", "USE_", "PYTHON", "LD_"))
+        },
+        clocks="not locked or verified",
+        cache="No explicit cache flush; repeated-input CUDA graph",
+        metric="preallocated-output CUDA graph device sequence; JIT/tuning/loading/host time excluded",
+    )
+
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument("mode", choices=["flagtree", "upstream"])
+    p.add_argument("--output", type=Path, required=True)
+    p.add_argument("--frozen", type=Path)
+    p.add_argument("--seed", type=int, default=20261119)
+    p.add_argument("--rounds", type=int, default=5)
+    p.add_argument("--sizes", type=int, nargs="+", default=[n for n, _, _ in SHAPES])
+    args = p.parse_args()
+    args.output.mkdir(parents=True, exist_ok=False)
+    idle()
+    assert os.environ.get("CUDA_VISIBLE_DEVICES")
+    torch.set_num_threads(4)
+    torch.backends.cuda.matmul.allow_tf32 = False
+    torch.backends.cuda.matmul.allow_fp16_reduced_precision_reduction = False
+    assert triton.runtime.driver.active.get_current_target().arch == 90
+    if args.mode == "flagtree":
+        assert importlib.metadata.version("flagtree") == "0.7.0"
+        assert Path(triton.__file__).is_relative_to(
+            "/usr/local/lib/python3.12/dist-packages"
+        )
+        fg, entry_class = load_fg()
+        tutor = tutorial_module()
+        tuner = triton.autotune(
+            configs=tutor.get_cuda_autotune_config(),
+            key=["M", "N", "K"],
+            cache_results=False,
+        )(tutor.matmul_kernel)
+    else:
+        assert sys.prefix == "/root/venvs/ir-ops-dev" and triton.__version__ == "3.7.0"
+        sys.path.insert(0, str(ROOT))
+        from common import compile_ir, config_for_shape, frozen, launch
+
+        manifest = frozen()
+        kernels = {name: compile_ir(name) for name in manifest["families"]}
+    env = environment(args.mode)
+    write(args.output / "environment.json", env)
+    frozen_records = (
+        {row["n"]: row for row in json.loads(args.frozen.read_text())["records"]}
+        if args.frozen
+        else {}
+    )
+    records = []
+    rng = random.Random(args.seed)
+    for n in args.sizes:
+        idle()
+        print("START", args.mode, n, flush=True)
+        a, b, c, hashes = data(n, args.seed)
+        began = time.monotonic()
+        if args.mode == "flagtree":
+            captures = capture_fg(fg, entry_class, a, b, c)
+            torch.cuda.synchronize()
+            fg_seconds = time.monotonic() - began
+            fg_info = [
+                dict(name=name, constants=const, **artifact(ck, args.output))
+                for ck, const, name in captures
+            ]
+            if frozen_records:
+                meta = frozen_records[n]["tutorial_config"]
+                native = tutor.matmul_kernel[grid(n, meta)](
+                    *call_args(a, b, c), **meta, ACTIVATION=""
+                )
+                assert [v["stages"]["cubin"] for v in fg_info] == [
+                    v["stages"]["cubin"] for v in frozen_records[n]["flaggems_kernels"]
+                ]
+            else:
+                native = tuner[lambda meta: grid(n, meta)](
+                    *call_args(a, b, c), ACTIVATION=""
+                )
+                meta = {
+                    k: v
+                    for k, v in tuner.best_config.all_kwargs().items()
+                    if v is not None
+                }
+            tutorial_info = artifact(native, args.output)
+            if frozen_records:
+                assert (
+                    tutorial_info["stages"]["cubin"]
+                    == frozen_records[n]["tutorial_kernel"]["stages"]["cubin"]
+                )
+
+            def fg_call():
+                return fg.mm_out(a, b, out=c)
+
+            def tutor_call():
+                return tutor.matmul_kernel[grid(n, meta)](
+                    *call_args(a, b, c), **meta, ACTIVATION=""
+                )
+
+            functions = {
+                "tutorial": tutor_call,
+                "flaggems": fg_call,
+                "control": tutor_call,
+            }
+            correctness = {
+                name: accuracy(fn, a, b, c, n)
+                for name, fn in functions.items()
+                if name != "control"
+            }
+            extra = dict(
+                tutorial_config=meta,
+                tutorial_kernel=tutorial_info,
+                flaggems_kernels=fg_info,
+                fg_prepare_seconds=fg_seconds,
+                tle_available=fg.HAS_TLE,
+                ws_available=fg.HAS_TLE_WARP_SPECIALIZATION,
+                flaggems_tuning_mode=str(
+                    fg.mm_kernel_general_host_tma.fn._flagtune_mode
+                ),
+                flaggems_config_count=len(fg.mm_kernel_general_host_tma.fn.configs),
+            )
+        else:
+            family, config = config_for_shape((n, n, n), manifest)
+            ck = kernels[family]
+
+            def fn():
+                return launch(ck, (a, b, c), config)
+
+            functions = {"tutorial": fn, "control": fn}
+            correctness = {"tutorial": accuracy(fn, a, b, c, n)}
+            extra = dict(
+                family=family,
+                tutorial_config=config,
+                tutorial_kernel=artifact(ck, args.output),
+            )
+        assert all(v["passed"] for v in correctness.values()), correctness
+        for fn in functions.values():
+            for _ in range(10):
+                fn()
+        torch.cuda.synchronize()
+        pairs = []
+        controls = []
+        for turn in range(args.rounds):
+            # Always measure an A/A control alongside actual paired comparisons.
+            group = ["flaggems", "control"] if args.mode == "flagtree" else ["control"]
+            rng.shuffle(group)
+            for name in group:
+                order = ["tutorial", name]
+                rng.shuffle(order)
+                times = {}
+                for label in order:
+                    times[label] = (
+                        triton.testing.do_bench_cudagraph(functions[label], rep=20)
+                        * 1000
+                    )
+                row = dict(
+                    round=turn,
+                    order=order,
+                    tutorial_us=times["tutorial"],
+                    other_us=times[name],
+                    speedup=times["tutorial"] / times[name],
+                )
+                (controls if name == "control" else pairs).append(row)
+        idle()
+        control_ratio = statistics.median(x["speedup"] for x in controls)
+        basetimes = [x["tutorial_us"] for x in (pairs or controls)]
+        drift = max(basetimes) / min(basetimes)
+        row = dict(
+            n=n,
+            input_hashes=hashes,
+            correctness=correctness,
+            prepare_seconds=time.monotonic() - began,
+            pairs=pairs,
+            controls=controls,
+            control_speedup=control_ratio,
+            baseline_drift=drift,
+            valid=abs(control_ratio - 1) <= 0.03 and drift <= 1.15,
+            tutorial_us=statistics.median(basetimes),
+            **extra,
+        )
+        if pairs:
+            row.update(
+                flaggems_us=statistics.median(x["other_us"] for x in pairs),
+                speedup=statistics.median(x["speedup"] for x in pairs),
+            )
+        records.append(row)
+        write(args.output / f"shape_{n}.json", row)
+        print(
+            f"DONE {n}: tutorial={row['tutorial_us']:.3f}us flaggems={row.get('flaggems_us')} "
+            f"speedup={row.get('speedup')} AA={control_ratio:.4f} valid={row['valid']}",
+            flush=True,
+        )
+    result = dict(
+        passed=True,
+        mode=args.mode,
+        seed=args.seed,
+        rounds=args.rounds,
+        records=records,
+        environment_sha256=sha(args.output / "environment.json"),
+        gpu_after=snapshot(),
+    )
+    if args.mode == "flagtree":
+        ratios = [x["speedup"] for x in records]
+        result["summary"] = dict(
+            geometric_mean=math.exp(statistics.mean(math.log(v) for v in ratios)),
+            arithmetic_mean=statistics.mean(ratios),
+            min=min(ratios),
+            max=max(ratios),
+            faster=sum(v > 1 for v in ratios),
+            slower=sum(v < 1 for v in ratios),
+            invalid=[x["n"] for x in records if not x["valid"]],
+        )
+    write(args.output / "summary.json", result)
+    print("SUMMARY", json.dumps(result.get("summary", {})), flush=True)
+
+
+if __name__ == "__main__":
+    main()
