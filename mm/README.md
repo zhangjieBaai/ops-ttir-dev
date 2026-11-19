@@ -4,7 +4,9 @@
 
 TTIR首轮优化已完成六组各8个候选的尝试：仅128×32×64组保留无符号索引改写，所属3点主测/独立复测几何平均约1.0510×/1.0507×；其他五组继续baseline。大组部分A/A控制无效，因此没有31点整体可靠加速结论。完整结果、负结果与限制见 [report_round1.md](report_round1.md)，冻结选择见 [round1_selection.json](results/round1_selection.json)。`ir/<family>/optimized.ttir` 对应最终选择，baseline副本均明确标记fallback。
 
-针对1152³/1280³匹配配置的第二轮IR借鉴见 [report_round2.md](report_round2.md)：对64×128×64组尝试8个功能候选，完整6点主测/复测未获可接受收益，保持原选择。官方TTIR可编译设备TMA诊断，但其每CTA384字节global scratch超出当前冻结工作区约定，未执行或计时。
+针对1152³/1280³匹配配置的固定工作区IR借鉴见 [report_round2.md](report_round2.md)：对64×128×64组尝试8个功能候选，完整6点主测/复测未获可接受收益。该分组仅编译设备TMA诊断，未执行或计时。
+
+随后按要求另建的 [设备TMA匹配工作区分组](tma_workspace/report.md) 实际运行了该TTIR：两边同设native allocator、candidate384bytes/CTA；精度和memcheck通过，但racecheck37条warning，主测/复测约0.703×/0.700×，明确拒绝。原baseline、旧选择和接口保持不变。
 
 另有用户授权的 [FlagGems Hopper / FlagTree 与教程对比](comparison/report.md)：同FlagTree环境配对主比较与原upstream环境参照分别报告，不属于纯TTIR改写收益实验，也不替换上述冻结基线。
 
