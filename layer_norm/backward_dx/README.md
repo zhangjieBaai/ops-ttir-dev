@@ -26,3 +26,7 @@ Python固定`/root/venvs/ir-ops-dev/bin/python`（upstream Triton3.7.0，无Flag
 
 
 首轮候选与原始证据位于`results/`；完整主测`full.json`、独立复测`repeat.json`、A/A控制、NCU和失败日志均保留。`finalize.py`按主测冻结组级候选，复测与sanitizer只负责验收，不重新选择复测中最有利的候选。
+
+## 第二轮瓶颈与负结果
+
+[第二轮报告](report_round2.md)：新增8个候选均未优于第一轮parent，保留当前分组选择。报告包含同条件NCU、实际DRAM读写字节数、寄存器/同步反汇编、完整30点和独立复测；原始证据位于`results/round2/`。

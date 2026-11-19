@@ -37,6 +37,13 @@ def cases(suite):
         16384,
     ]
     result = [(17, n, p, "normal") for n in edges for p in [0, 16]]
+    if suite == "round2-boundaries":
+        return result + [
+            (33, n, p, d)
+            for n in [10224, 10240, 10256]
+            for p in [0, 16]
+            for d in ["normal", "offset", "lowvar"]
+        ]
     if suite == "sanitizer":
         return result
     result += [(4096, n, 0, "normal") for n in range(1024, 15873, 512)]
@@ -70,7 +77,11 @@ def check_output(tensors, ref, native):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("names", nargs="+")
-    p.add_argument("--suite", choices=["full", "smoke", "sanitizer"], default="full")
+    p.add_argument(
+        "--suite",
+        choices=["full", "smoke", "sanitizer", "round2-boundaries"],
+        default="full",
+    )
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--output", required=True)
     args = p.parse_args()
