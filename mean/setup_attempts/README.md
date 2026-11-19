@@ -1,0 +1,1 @@
+Initial export had equal PTX/cubin but unequal LLIR debug locations for odd K=1025. No numerical/code difference found. Archived intact. Final baseline re-exported with TRITON_DISABLE_LINE_INFO=1 uniformly for source and file inputs before any optimization. See results/runs/setup/pipeline.log.
