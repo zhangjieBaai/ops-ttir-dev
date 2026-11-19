@@ -1,0 +1,60 @@
+module {
+  tt.func public @layer_norm_bwd_dx(%DX: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %DY: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %X: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %W: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %Mean: !tt.ptr<f32> {tt.divisibility = 16 : i32}, %Rstd: !tt.ptr<f32> {tt.divisibility = 16 : i32}, %stride: i32 {tt.divisibility = 16 : i32}, %N: i32 {tt.divisibility = 16 : i32}) attributes {noinline = false} {
+    %cst = arith.constant dense<0.000000e+00> : tensor<1024xf16>
+    %cst_0 = arith.constant dense<0.000000e+00> : tensor<1024xf32>
+    %row = tt.get_program_id x : i32
+    %cols = tt.make_range {end = 1024 : i32, start = 0 : i32} : tensor<1024xi32>
+    %mask = tt.splat %N : i32 -> tensor<1024xi32>
+    %mask_1 = arith.cmpi slt, %cols, %mask : tensor<1024xi32>
+    %X_2 = arith.muli %row, %stride : i32
+    %X_3 = tt.addptr %X, %X_2 : !tt.ptr<f16>, i32
+    %DY_4 = tt.addptr %DY, %X_2 : !tt.ptr<f16>, i32
+    %DX_5 = tt.addptr %DX, %X_2 : !tt.ptr<f16>, i32
+    %x = tt.splat %X_3 : !tt.ptr<f16> -> tensor<1024x!tt.ptr<f16>>
+    %x_6 = tt.addptr %x, %cols : tensor<1024x!tt.ptr<f16>>, tensor<1024xi32>
+    %x_7 = tt.load %x_6, %mask_1, %cst : tensor<1024x!tt.ptr<f16>>
+    %x_8 = arith.extf %x_7 : tensor<1024xf16> to tensor<1024xf32>
+    %dy = tt.splat %DY_4 : !tt.ptr<f16> -> tensor<1024x!tt.ptr<f16>>
+    %dy_9 = tt.addptr %dy, %cols : tensor<1024x!tt.ptr<f16>>, tensor<1024xi32>
+    %dy_10 = tt.load %dy_9, %mask_1, %cst : tensor<1024x!tt.ptr<f16>>
+    %dy_11 = arith.extf %dy_10 : tensor<1024xf16> to tensor<1024xf32>
+    %w = tt.splat %W : !tt.ptr<f16> -> tensor<1024x!tt.ptr<f16>>
+    %w_12 = tt.addptr %w, %cols : tensor<1024x!tt.ptr<f16>>, tensor<1024xi32>
+    %w_13 = tt.load %w_12, %mask_1, %cst : tensor<1024x!tt.ptr<f16>>
+    %w_14 = arith.extf %w_13 : tensor<1024xf16> to tensor<1024xf32>
+    %mean = tt.addptr %Mean, %row : !tt.ptr<f32>, i32
+    %mean_15 = tt.load %mean : !tt.ptr<f32>
+    %rstd = tt.addptr %Rstd, %row : !tt.ptr<f32>, i32
+    %rstd_16 = tt.load %rstd : !tt.ptr<f32>
+    %xhat = tt.splat %mean_15 : f32 -> tensor<1024xf32>
+    %xhat_17 = arith.subf %x_8, %xhat : tensor<1024xf32>
+    %xhat_18 = tt.splat %rstd_16 : f32 -> tensor<1024xf32>
+    %xhat_19 = arith.mulf %xhat_17, %xhat_18 : tensor<1024xf32>
+    %wdy = arith.mulf %w_14, %dy_11 : tensor<1024xf32>
+    %c1 = arith.mulf %xhat_19, %wdy : tensor<1024xf32>
+    %pair:2 = "tt.reduce"(%c1, %wdy) <{axis = 0 : i32}> ({
+    ^bb0(%a0: f32, %a1: f32, %b0: f32, %b1: f32):
+      %s0 = arith.addf %a0, %b0 : f32
+      %s1 = arith.addf %a1, %b1 : f32
+      tt.reduce.return %s0, %s1 : f32, f32
+    }) : (tensor<1024xf32>, tensor<1024xf32>) -> (f32, f32)
+    %c1_23 = arith.sitofp %N : i32 to f32
+    %one = arith.constant 1.0 : f32
+    %inv = arith.divf %one, %c1_23 : f32
+    %c1_24 = arith.mulf %pair#0, %inv : f32
+    %c2_25 = arith.mulf %pair#1, %inv : f32
+    %alpha = arith.mulf %c1_24, %rstd_16 : f32
+    %beta = arith.mulf %c2_25, %rstd_16 : f32
+    %alphas = tt.splat %alpha : f32 -> tensor<1024xf32>
+    %betas = tt.splat %beta : f32 -> tensor<1024xf32>
+    %scaled = arith.mulf %wdy, %xhat_18 : tensor<1024xf32>
+    %center = arith.subf %scaled, %betas : tensor<1024xf32>
+    %term = arith.mulf %xhat_19, %alphas : tensor<1024xf32>
+    %dx_30 = arith.subf %center, %term : tensor<1024xf32>
+    %0 = tt.splat %DX_5 : !tt.ptr<f16> -> tensor<1024x!tt.ptr<f16>>
+    %1 = tt.addptr %0, %cols : tensor<1024x!tt.ptr<f16>>, tensor<1024xi32>
+    %2 = arith.truncf %dx_30 : tensor<1024xf32> to tensor<1024xf16>
+    tt.store %1, %2, %mask_1 : tensor<1024x!tt.ptr<f16>>
+    tt.return
+  }
+}

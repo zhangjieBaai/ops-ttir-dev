@@ -1,0 +1,17 @@
+loc("/root/ops-ttir-dev/layer_norm/backward_dx/ir/b1024/r4_fold256.ttir":41:7): error: redefinition of SSA value '%x'
+Traceback (most recent call last):
+  File "/root/ops-ttir-dev/layer_norm/backward_dx/validate.py", line 144, in <module>
+    main()
+  File "/root/ops-ttir-dev/layer_norm/backward_dx/validate.py", line 116, in main
+    kernels[key] = compile_ir(name, block)
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/ops-ttir-dev/layer_norm/backward_dx/common.py", line 51, in compile_ir
+    ck = triton.compile(str(path), options=options(block))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/compiler/compiler.py", line 240, in compile
+    src = IRSource(src, context, backend)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/compiler/compiler.py", line 107, in __init__
+    self.module = ir.parse_mlir_module(self.path, context)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Parse MLIR file failed.

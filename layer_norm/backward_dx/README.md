@@ -34,3 +34,9 @@ Python固定`/root/venvs/ir-ops-dev/bin/python`（upstream Triton3.7.0，无Flag
 ## 第三轮：中心化代数与联合规约
 
 [第三轮报告](report_round3.md)记录6个新候选、完整矩阵与独立复测、数值抵消反例和NCU资源/访存分析。最终分组选择以`results/selection.json`为准；本轮决策在`results/round3/selection_final.json`，候选在各`ir/b*/r3_*.ttir`。跨算子经验见[knowledge复盘](../../knowledge/layernorm-backward-round3.md)。
+
+## 第四、五轮：整体平均 1.10× 目标
+
+[第四、五轮报告](report_round45.md)记录12种缓存/规约/掩码候选和4种内部多行调度候选，区分局部收益与整个30点矩阵是否达到目标。原始数据在`results/round4/`、`results/round5/`；[经验与负结果](../../knowledge/layernorm-backward-round45.md)保留数值失败、布局转换和多行循环反例。
+
+目前最终组合的全30点几何均值：主测1.0359×、独立复测1.0379×原baseline；最终入口直接复核1.0373×。已晋升b1024/b2048的`r4_center_maskfold`、b4096的`r4_evict`；**尚未达到整体平均1.10×目标**。

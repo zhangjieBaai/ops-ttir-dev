@@ -20,7 +20,7 @@ module {
     %dy_11 = arith.extf %dy_10 : tensor<2048xf16> to tensor<2048xf32>
     %w = tt.splat %W : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
     %w_12 = tt.addptr %w, %cols : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
-    %w_13 = tt.load %w_12, %mask_1 : tensor<2048x!tt.ptr<f16>>
+    %w_13 = tt.load %w_12, %mask_1, %cst : tensor<2048x!tt.ptr<f16>>
     %w_14 = arith.extf %w_13 : tensor<2048xf16> to tensor<2048xf32>
     %mean = tt.addptr %Mean, %row : !tt.ptr<f32>, i32
     %mean_15 = tt.load %mean : !tt.ptr<f32>
@@ -31,11 +31,8 @@ module {
     %xhat_18 = tt.splat %rstd_16 : f32 -> tensor<2048xf32>
     %xhat_19 = arith.mulf %xhat_17, %xhat_18 : tensor<2048xf32>
     %wdy = arith.mulf %w_14, %dy_11 : tensor<2048xf32>
-    %xhat_20 = arith.select %mask_1, %xhat_19, %cst_0 : tensor<2048xi1>, tensor<2048xf32>
-    %wdy_21 = arith.select %mask_1, %wdy, %cst_0 : tensor<2048xi1>, tensor<2048xf32>
-    %masked_center = arith.select %mask_1, %xhat_17, %cst_0 : tensor<2048xi1>, tensor<2048xf32>
-    %c1 = arith.mulf %masked_center, %wdy_21 : tensor<2048xf32>
-    %pair:2 = "tt.reduce"(%c1, %wdy_21) <{axis = 0 : i32}> ({
+    %c1 = arith.mulf %xhat_17, %wdy : tensor<2048xf32>
+    %pair:2 = "tt.reduce"(%c1, %wdy) <{axis = 0 : i32}> ({
     ^bb0(%a0: f32, %a1: f32, %b0: f32, %b1: f32):
       %s0 = arith.addf %a0, %b0 : f32
       %s1 = arith.addf %a1, %b1 : f32
@@ -52,9 +49,9 @@ module {
     %beta = arith.mulf %c2_25, %rstd_16 : f32
     %alphas = tt.splat %alpha : f32 -> tensor<2048xf32>
     %betas = tt.splat %beta : f32 -> tensor<2048xf32>
-    %scaled = arith.mulf %wdy_21, %xhat_18 : tensor<2048xf32>
+    %scaled = arith.mulf %wdy, %xhat_18 : tensor<2048xf32>
     %center = arith.subf %scaled, %betas : tensor<2048xf32>
-    %term = arith.mulf %masked_center, %alphas : tensor<2048xf32>
+    %term = arith.mulf %xhat_17, %alphas : tensor<2048xf32>
     %dx_30 = arith.subf %center, %term : tensor<2048xf32>
     %0 = tt.splat %DX_5 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
     %1 = tt.addptr %0, %cols : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
