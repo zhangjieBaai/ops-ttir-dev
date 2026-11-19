@@ -1,6 +1,13 @@
 # Host descriptor TTIR 可行性原型
 
-**编译、加载、设备执行与数值流程可行；同步检查尚未通过，未进入性能优化。** 最终结论见 [report.md](report.md)。本目录没有发布或替换现有 `optimized.ttir`。
+**当前在用户明确允许未解决 race 告警的前提下，已完成性能优化。**
+host-TMA加PID版本的本组六点设备时间主测/复测几何平均为1.1247×/1.1171×，详见 [v2性能报告](report_performance_v2.md)。
+同步资格仍未获，包含准备成本的调用比原指针接口更慢；旧MM的`optimized.ttir`和选择未覆盖。
+
+新选择为`ir/selected_host.ttir`，来源和用户例外见`results/performance_v2/selection.json`。
+独立入口`api.load()/prepare()/run_prepared()/matmul()`保留warning标记，仅支持本组冻结六点。
+完整复现可运行`CUDA_VISIBLE_DEVICES=1 bash mm/host_descriptor/replay_performance_v2.sh`。
+下文及 [首阶段报告](report.md)保留放行告警之前的流程验证和失败历史，不能将这些历史记录改标为同步通过。
 
 这是一个明确改变host传参契约的独立实验，不属于旧固定9参数ABI的同轮结果。实际执行环境为官方Triton3.7.0/原生backend/runtime，加一个局部、可恢复的TTIR文件签名reader适配；不能称作原封不动的官方file入口支持host descriptor。原始编译后产物、metadata、native launcher及CUDA descriptor编码均未修改。
 

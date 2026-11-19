@@ -1,0 +1,4036 @@
+{
+  "fingerprints": {
+    "/root/ops-ttir-dev/mm/host_descriptor/optimization_plan_v2.md": "0bd4593a2d92f58905c790341aa1baa611bf542cbf34992f41581e47766154b1",
+    "/root/ops-ttir-dev/mm/host_descriptor/performance_v2.py": "a8c2fbc5dda023f5757ac9c9b92996616c2428245a1e16a3dd59e251e8f34f82",
+    "/root/ops-ttir-dev/mm/host_descriptor/bridge.py": "c6f0c1227eaad781e9ba3d08a6b7c464e1b44fbeff94fbdf9c7d93dabddd2040",
+    "/root/ops-ttir-dev/mm/host_descriptor/results/prototype_inputs_v4.json": "129d832cce6180645cbcec30f88bbc5fe79b57d17c9dc106b186d241e57b6106"
+  },
+  "validation_sha256": "378b3fe2e52394f85da77a307a7d3c2587bb4eeac5f5f3456925a8e907fd10cb",
+  "baseline_manifest_sha256": "134f1c5a71958faafef94bf27229b57c0161d92d097764fbbc0f9b8db9d66127",
+  "seed": 42,
+  "rounds": 7,
+  "warning_exception": "Unresolved racecheck warnings retained; user explicitly permits continued performance evaluation, not sync qualification",
+  "sync_qualified": false,
+  "resources": {
+    "envelope_baseline": {
+      "hash": "057f90ba724352b7d882ade671b01f071047850fe909d13f97cfec11ee8baf33",
+      "stages": {
+        "ttir": "8a39808779cb9f7dbda682dcf54bb236310c5bcc7d3afb505060e38da3ffe622",
+        "ttgir": "61acc2808b341387bd5cc39603be40618b925fbc3ecbef3669d696fdcd82937c",
+        "llir": "6c689fe72e7e784741db357f58d5d562204d545d7a4dca39970de200d1b07418",
+        "ptx": "fb71e761334090fef2c27066f291b5fbf7c452fa428863653ed011de4b50c806",
+        "cubin": "dc44ee4246a19526358abd0b21f33a08962ae089eb7a114f1d7debcdc0504d65"
+      },
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "057f90ba724352b7d882ade671b01f071047850fe909d13f97cfec11ee8baf33",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "matmul_kernel",
+        "num_ctas": 1,
+        "num_stages": 4,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 98304,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [
+          {
+            "swizzle": 3,
+            "elem_size": 2,
+            "elem_type": 6,
+            "block_size": [
+              64,
+              64
+            ],
+            "fp4_padded": false
+          },
+          {
+            "swizzle": 3,
+            "elem_size": 2,
+            "elem_type": 6,
+            "block_size": [
+              64,
+              64
+            ],
+            "fp4_padded": false
+          },
+          {
+            "swizzle": 3,
+            "elem_size": 2,
+            "elem_type": 6,
+            "block_size": [
+              64,
+              64
+            ],
+            "fp4_padded": false
+          }
+        ],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32
+      },
+      "n_regs": 124,
+      "n_spills": 0
+    },
+    "envelope_host_v1": {
+      "hash": "63aca6fb87b5e46506322a64cb7c8fa6dc2dbff3b9effd007289ffa9c450da03",
+      "stages": {
+        "ttir": "38d72688923ad98b70ca48774882e1a769d825237a3afe92825a8fb0e0f25a0e",
+        "ttgir": "8259d9f7a4be967c4cb2471e344f7889c08efb0679fb69eca3b6ec721495bd68",
+        "llir": "b7fb149fb32b103448ceaabd0454ca484374c87fa6f60ad026fe2029633dcbd1",
+        "ptx": "4f0137b67832ee738d9441353e436d0cc146ca97ca61dd39ffbeae0007612b0b",
+        "cubin": "b464377c8d8273b983bf05b2e410bfcc6a87d179bb96dd8380e2153ff7d0b080"
+      },
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "63aca6fb87b5e46506322a64cb7c8fa6dc2dbff3b9effd007289ffa9c450da03",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "matmul_kernel",
+        "num_ctas": 1,
+        "num_stages": 4,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 98336,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [
+          {
+            "swizzle": 3,
+            "elem_size": 2,
+            "elem_type": 6,
+            "block_size": [
+              64,
+              64
+            ],
+            "fp4_padded": false
+          },
+          {
+            "swizzle": 3,
+            "elem_size": 2,
+            "elem_type": 6,
+            "block_size": [
+              64,
+              64
+            ],
+            "fp4_padded": false
+          },
+          {
+            "swizzle": 3,
+            "elem_size": 2,
+            "elem_type": 6,
+            "block_size": [
+              64,
+              64
+            ],
+            "fp4_padded": false
+          }
+        ],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32
+      },
+      "n_regs": 90,
+      "n_spills": 0
+    },
+    "host_pid_v2": {
+      "hash": "a9503688805b76ff03846d67b19998c7bdd5b0b36d3a9df3bad196d4483c9182",
+      "stages": {
+        "ttir": "29fe6cd5cd754096c7cd08810413c24ac3b3719b3b816babc22a129fa112d979",
+        "ttgir": "5dcb938d936bc9819cd35eb1d629894866203188958f08a62065f3bf3b4ca4ab",
+        "llir": "5371f985500bfd1beca4048dbb8587f03d6219043caabd9959ba1901d84a49fc",
+        "ptx": "792125e4f003588c8a0c1d6f2cffb25a9c33d237d86313afa1ab2ba3495e030e",
+        "cubin": "f9f60ccb1e255ed3147721fd965fa523d2429a76e108e6711f110f671495af53"
+      },
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "a9503688805b76ff03846d67b19998c7bdd5b0b36d3a9df3bad196d4483c9182",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "matmul_kernel",
+        "num_ctas": 1,
+        "num_stages": 4,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 98336,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [
+          {
+            "swizzle": 3,
+            "elem_size": 2,
+            "elem_type": 6,
+            "block_size": [
+              64,
+              64
+            ],
+            "fp4_padded": false
+          },
+          {
+            "swizzle": 3,
+            "elem_size": 2,
+            "elem_type": 6,
+            "block_size": [
+              64,
+              64
+            ],
+            "fp4_padded": false
+          },
+          {
+            "swizzle": 3,
+            "elem_size": 2,
+            "elem_type": 6,
+            "block_size": [
+              64,
+              64
+            ],
+            "fp4_padded": false
+          }
+        ],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32
+      },
+      "n_regs": 90,
+      "n_spills": 0
+    }
+  },
+  "audits": {
+    "envelope_baseline": {
+      "raw_signature": {
+        "0": "!tt.tensordesc<tensor<64x64xf16>>",
+        "1": "i32",
+        "2": "i32",
+        "3": "i64",
+        "4": "i64",
+        "5": "!tt.tensordesc<tensor<64x128xf16>>",
+        "6": "i32",
+        "7": "i32",
+        "8": "i64",
+        "9": "i64",
+        "10": "!tt.tensordesc<tensor<64x128xf16>>",
+        "11": "i32",
+        "12": "i32",
+        "13": "i64",
+        "14": "i64",
+        "15": "*f16",
+        "16": "*f16",
+        "17": "*f16",
+        "18": "i32",
+        "19": "i32",
+        "20": "i32",
+        "21": "i32",
+        "22": "i32",
+        "23": "i32"
+      },
+      "logical_signature": {
+        "0": "tensordesc<fp16[64,64]>",
+        "1": "tensordesc<fp16[64,128]>",
+        "2": "tensordesc<fp16[64,128]>",
+        "3": "*f16",
+        "4": "*f16",
+        "5": "*f16",
+        "6": "i32",
+        "7": "i32",
+        "8": "i32",
+        "9": "i32",
+        "10": "i32",
+        "11": "i32"
+      },
+      "descriptor_mapping": [
+        {
+          "logical_index": 0,
+          "physical_indices": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "dtype": "float16",
+          "block_shape": [
+            64,
+            64
+          ]
+        },
+        {
+          "logical_index": 1,
+          "physical_indices": [
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "dtype": "float16",
+          "block_shape": [
+            64,
+            128
+          ]
+        },
+        {
+          "logical_index": 2,
+          "physical_indices": [
+            10,
+            11,
+            12,
+            13,
+            14
+          ],
+          "dtype": "float16",
+          "block_shape": [
+            64,
+            128
+          ]
+        }
+      ],
+      "input_sha256": "c04f7641371d9b35646121d3b9d7fb8e48b62bec92f6e987827c0e98e3378e42",
+      "native_expanded_signature": [
+        "nvTmaDesc",
+        "i32",
+        "i32",
+        "i64",
+        "i64",
+        "nvTmaDesc",
+        "i32",
+        "i32",
+        "i64",
+        "i64",
+        "nvTmaDesc",
+        "i32",
+        "i32",
+        "i64",
+        "i64",
+        "*f16",
+        "*f16",
+        "*f16",
+        "i32",
+        "i32",
+        "i32",
+        "i32",
+        "i32",
+        "i32"
+      ],
+      "raw_adapted_gpu_artifacts_byte_identical": true,
+      "reader_restored": true
+    },
+    "envelope_host_v1": {
+      "raw_signature": {
+        "0": "!tt.tensordesc<tensor<64x64xf16>>",
+        "1": "i32",
+        "2": "i32",
+        "3": "i64",
+        "4": "i64",
+        "5": "!tt.tensordesc<tensor<64x128xf16>>",
+        "6": "i32",
+        "7": "i32",
+        "8": "i64",
+        "9": "i64",
+        "10": "!tt.tensordesc<tensor<64x128xf16>>",
+        "11": "i32",
+        "12": "i32",
+        "13": "i64",
+        "14": "i64",
+        "15": "*f16",
+        "16": "*f16",
+        "17": "*f16",
+        "18": "i32",
+        "19": "i32",
+        "20": "i32",
+        "21": "i32",
+        "22": "i32",
+        "23": "i32"
+      },
+      "logical_signature": {
+        "0": "tensordesc<fp16[64,64]>",
+        "1": "tensordesc<fp16[64,128]>",
+        "2": "tensordesc<fp16[64,128]>",
+        "3": "*f16",
+        "4": "*f16",
+        "5": "*f16",
+        "6": "i32",
+        "7": "i32",
+        "8": "i32",
+        "9": "i32",
+        "10": "i32",
+        "11": "i32"
+      },
+      "descriptor_mapping": [
+        {
+          "logical_index": 0,
+          "physical_indices": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "dtype": "float16",
+          "block_shape": [
+            64,
+            64
+          ]
+        },
+        {
+          "logical_index": 1,
+          "physical_indices": [
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "dtype": "float16",
+          "block_shape": [
+            64,
+            128
+          ]
+        },
+        {
+          "logical_index": 2,
+          "physical_indices": [
+            10,
+            11,
+            12,
+            13,
+            14
+          ],
+          "dtype": "float16",
+          "block_shape": [
+            64,
+            128
+          ]
+        }
+      ],
+      "input_sha256": "f28032333b2f3d8cd8c5cae0458977b8693a616c355268db253021fd4410446e",
+      "native_expanded_signature": [
+        "nvTmaDesc",
+        "i32",
+        "i32",
+        "i64",
+        "i64",
+        "nvTmaDesc",
+        "i32",
+        "i32",
+        "i64",
+        "i64",
+        "nvTmaDesc",
+        "i32",
+        "i32",
+        "i64",
+        "i64",
+        "*f16",
+        "*f16",
+        "*f16",
+        "i32",
+        "i32",
+        "i32",
+        "i32",
+        "i32",
+        "i32"
+      ],
+      "raw_adapted_gpu_artifacts_byte_identical": true,
+      "reader_restored": true
+    },
+    "host_pid_v2": {
+      "raw_signature": {
+        "0": "!tt.tensordesc<tensor<64x64xf16>>",
+        "1": "i32",
+        "2": "i32",
+        "3": "i64",
+        "4": "i64",
+        "5": "!tt.tensordesc<tensor<64x128xf16>>",
+        "6": "i32",
+        "7": "i32",
+        "8": "i64",
+        "9": "i64",
+        "10": "!tt.tensordesc<tensor<64x128xf16>>",
+        "11": "i32",
+        "12": "i32",
+        "13": "i64",
+        "14": "i64",
+        "15": "*f16",
+        "16": "*f16",
+        "17": "*f16",
+        "18": "i32",
+        "19": "i32",
+        "20": "i32",
+        "21": "i32",
+        "22": "i32",
+        "23": "i32"
+      },
+      "logical_signature": {
+        "0": "tensordesc<fp16[64,64]>",
+        "1": "tensordesc<fp16[64,128]>",
+        "2": "tensordesc<fp16[64,128]>",
+        "3": "*f16",
+        "4": "*f16",
+        "5": "*f16",
+        "6": "i32",
+        "7": "i32",
+        "8": "i32",
+        "9": "i32",
+        "10": "i32",
+        "11": "i32"
+      },
+      "descriptor_mapping": [
+        {
+          "logical_index": 0,
+          "physical_indices": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ],
+          "dtype": "float16",
+          "block_shape": [
+            64,
+            64
+          ]
+        },
+        {
+          "logical_index": 1,
+          "physical_indices": [
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "dtype": "float16",
+          "block_shape": [
+            64,
+            128
+          ]
+        },
+        {
+          "logical_index": 2,
+          "physical_indices": [
+            10,
+            11,
+            12,
+            13,
+            14
+          ],
+          "dtype": "float16",
+          "block_shape": [
+            64,
+            128
+          ]
+        }
+      ],
+      "input_sha256": "00285b0112333ba9c10735327d5d4e613b9a58dc31febd85b833a6a68c2d7b1e",
+      "native_expanded_signature": [
+        "nvTmaDesc",
+        "i32",
+        "i32",
+        "i64",
+        "i64",
+        "nvTmaDesc",
+        "i32",
+        "i32",
+        "i64",
+        "i64",
+        "nvTmaDesc",
+        "i32",
+        "i32",
+        "i64",
+        "i64",
+        "*f16",
+        "*f16",
+        "*f16",
+        "i32",
+        "i32",
+        "i32",
+        "i32",
+        "i32",
+        "i32"
+      ],
+      "raw_adapted_gpu_artifacts_byte_identical": true,
+      "reader_restored": true
+    }
+  },
+  "gpu_uuid": "2256da5a-8ff3-e27c-c9f0-11578c10fe28",
+  "gpu_before": "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.52 W, 700.00 W, 0 %, 86 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 1830 MHz, 2619 MHz, 31, 89.00 W, 700.00 W, 3 %, 649 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.76 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.08 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 30, 72.86 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 1830 MHz, 2619 MHz, 33, 164.19 W, 700.00 W, 51 %, 845 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 29, 70.60 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 345 MHz, 2619 MHz, 28, 73.47 W, 700.00 W, 0 %, 30 MiB\n",
+  "records": [
+    {
+      "name": "control",
+      "shape": [
+        768,
+        768,
+        768
+      ],
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "envelope_baseline",
+            "control"
+          ],
+          "baseline_us": 5.018494270707919,
+          "candidate_us": 5.0109021803911995,
+          "speedup": 1.0015151144531276
+        },
+        {
+          "round": 1,
+          "order": [
+            "envelope_baseline",
+            "control"
+          ],
+          "baseline_us": 5.007687824528392,
+          "candidate_us": 5.00824053028218,
+          "speedup": 0.9998896407330188
+        },
+        {
+          "round": 2,
+          "order": [
+            "control",
+            "envelope_baseline"
+          ],
+          "baseline_us": 4.960632496362128,
+          "candidate_us": 4.968156262720257,
+          "speedup": 0.9984856019093873
+        },
+        {
+          "round": 3,
+          "order": [
+            "envelope_baseline",
+            "control"
+          ],
+          "baseline_us": 4.961793483724031,
+          "candidate_us": 4.966748376614054,
+          "speedup": 0.9990023869714534
+        },
+        {
+          "round": 4,
+          "order": [
+            "control",
+            "envelope_baseline"
+          ],
+          "baseline_us": 4.987301759079573,
+          "candidate_us": 4.988650027678985,
+          "speedup": 0.999729732775013
+        },
+        {
+          "round": 5,
+          "order": [
+            "control",
+            "envelope_baseline"
+          ],
+          "baseline_us": 4.955119423547798,
+          "candidate_us": 4.98811348955682,
+          "speedup": 0.9933854620432958
+        },
+        {
+          "round": 6,
+          "order": [
+            "envelope_baseline",
+            "control"
+          ],
+          "baseline_us": 4.988692246430309,
+          "candidate_us": 4.9880481286860965,
+          "speedup": 1.0001291322231853
+        }
+      ],
+      "speedup": 0.999729732775013,
+      "baseline_drift": 1.012789771899129,
+      "control_speedup": 0.999729732775013,
+      "valid": true,
+      "baseline_us": 4.987301759079573,
+      "candidate_us": 4.98811348955682
+    },
+    {
+      "name": "envelope_host_v1",
+      "shape": [
+        768,
+        768,
+        768
+      ],
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 5.025676324826861,
+          "candidate_us": 4.309793313344319,
+          "speedup": 1.1661061121576222
+        },
+        {
+          "round": 1,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 5.008073894846291,
+          "candidate_us": 4.462047140387928,
+          "speedup": 1.1223713549585879
+        },
+        {
+          "round": 2,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 5.007805338059427,
+          "candidate_us": 4.461594163507654,
+          "speedup": 1.1224251141036878
+        },
+        {
+          "round": 3,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 4.957118901339444,
+          "candidate_us": 4.42092974742015,
+          "speedup": 1.1212842511763934
+        },
+        {
+          "round": 4,
+          "order": [
+            "envelope_baseline",
+            "envelope_host_v1"
+          ],
+          "baseline_us": 4.987730470093542,
+          "candidate_us": 4.440034948100359,
+          "speedup": 1.1233538763534983
+        },
+        {
+          "round": 5,
+          "order": [
+            "envelope_baseline",
+            "envelope_host_v1"
+          ],
+          "baseline_us": 4.957035655797689,
+          "candidate_us": 4.40480556455038,
+          "speedup": 1.1253699131901813
+        },
+        {
+          "round": 6,
+          "order": [
+            "envelope_baseline",
+            "envelope_host_v1"
+          ],
+          "baseline_us": 4.953278586978004,
+          "candidate_us": 4.406453479038799,
+          "speedup": 1.124096421428347
+        }
+      ],
+      "speedup": 1.1233538763534983,
+      "baseline_drift": 1.0146161247702055,
+      "control_speedup": 0.999729732775013,
+      "valid": true,
+      "baseline_us": 4.987730470093542,
+      "candidate_us": 4.42092974742015
+    },
+    {
+      "name": "host_pid_v2",
+      "shape": [
+        768,
+        768,
+        768
+      ],
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 5.009495182414457,
+          "candidate_us": 4.457937500693582,
+          "speedup": 1.1237248574335243
+        },
+        {
+          "round": 1,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 5.008191215971023,
+          "candidate_us": 4.458942035221319,
+          "speedup": 1.1231792601050135
+        },
+        {
+          "round": 2,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 4.9984228589743,
+          "candidate_us": 4.4584074214293645,
+          "speedup": 1.1211229451461409
+        },
+        {
+          "round": 3,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 4.988176357984977,
+          "candidate_us": 4.412076267300178,
+          "speedup": 1.1305734660469329
+        },
+        {
+          "round": 4,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 4.988322767821498,
+          "candidate_us": 4.438119694194962,
+          "speedup": 1.1239721124119746
+        },
+        {
+          "round": 5,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 4.955045591320908,
+          "candidate_us": 4.403805838690864,
+          "speedup": 1.1251734914802496
+        },
+        {
+          "round": 6,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 4.9895198567261385,
+          "candidate_us": 4.40414542451911,
+          "speedup": 1.1329144194349452
+        }
+      ],
+      "speedup": 1.1239721124119746,
+      "baseline_drift": 1.0109887164689102,
+      "control_speedup": 0.999729732775013,
+      "valid": true,
+      "baseline_us": 4.9895198567261385,
+      "candidate_us": 4.438119694194962
+    },
+    {
+      "name": "control",
+      "shape": [
+        896,
+        896,
+        896
+      ],
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "control",
+            "envelope_baseline"
+          ],
+          "baseline_us": 5.566856355378122,
+          "candidate_us": 5.56488756784168,
+          "speedup": 1.0003537874777235
+        },
+        {
+          "round": 1,
+          "order": [
+            "envelope_baseline",
+            "control"
+          ],
+          "baseline_us": 5.566282322444348,
+          "candidate_us": 5.535492560494176,
+          "speedup": 1.0055622443014218
+        },
+        {
+          "round": 2,
+          "order": [
+            "control",
+            "envelope_baseline"
+          ],
+          "baseline_us": 5.571270578221104,
+          "candidate_us": 5.566521322820742,
+          "speedup": 1.0008531819290607
+        },
+        {
+          "round": 3,
+          "order": [
+            "envelope_baseline",
+            "control"
+          ],
+          "baseline_us": 5.553360509069965,
+          "candidate_us": 5.537899117118089,
+          "speedup": 1.0027919237286365
+        },
+        {
+          "round": 4,
+          "order": [
+            "control",
+            "envelope_baseline"
+          ],
+          "baseline_us": 5.538734210964732,
+          "candidate_us": 5.53363004626145,
+          "speedup": 1.000922389943059
+        },
+        {
+          "round": 5,
+          "order": [
+            "control",
+            "envelope_baseline"
+          ],
+          "baseline_us": 5.567337727442578,
+          "candidate_us": 5.567875098685855,
+          "speedup": 0.9999034871950695
+        },
+        {
+          "round": 6,
+          "order": [
+            "control",
+            "envelope_baseline"
+          ],
+          "baseline_us": 5.53739879406336,
+          "candidate_us": 5.566058671515143,
+          "speedup": 0.9948509566385902
+        }
+      ],
+      "speedup": 1.0008531819290607,
+      "baseline_drift": 1.0061169125463851,
+      "control_speedup": 1.0008531819290607,
+      "valid": true,
+      "baseline_us": 5.566282322444348,
+      "candidate_us": 5.56488756784168
+    },
+    {
+      "name": "envelope_host_v1",
+      "shape": [
+        896,
+        896,
+        896
+      ],
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 5.5697203763268375,
+          "candidate_us": 4.94670721075288,
+          "speedup": 1.125945025454445
+        },
+        {
+          "round": 1,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 5.537889739184948,
+          "candidate_us": 4.918659562095602,
+          "speedup": 1.1258940915247084
+        },
+        {
+          "round": 2,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 5.570336726072023,
+          "candidate_us": 4.916945497019567,
+          "speedup": 1.132885595223399
+        },
+        {
+          "round": 3,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 5.5653754780336016,
+          "candidate_us": 4.948757209029853,
+          "speedup": 1.1246006306146163
+        },
+        {
+          "round": 4,
+          "order": [
+            "envelope_baseline",
+            "envelope_host_v1"
+          ],
+          "baseline_us": 5.537686770995253,
+          "candidate_us": 4.94650610886167,
+          "speedup": 1.1195147947102466
+        },
+        {
+          "round": 5,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 5.5714914202690125,
+          "candidate_us": 4.943387935255292,
+          "speedup": 1.127059315036598
+        },
+        {
+          "round": 6,
+          "order": [
+            "envelope_baseline",
+            "envelope_host_v1"
+          ],
+          "baseline_us": 5.5699370087009585,
+          "candidate_us": 4.946812955050692,
+          "speedup": 1.1259647492865192
+        }
+      ],
+      "speedup": 1.125945025454445,
+      "baseline_drift": 1.0061044711757294,
+      "control_speedup": 1.0008531819290607,
+      "valid": true,
+      "baseline_us": 5.5697203763268375,
+      "candidate_us": 4.94650610886167
+    },
+    {
+      "name": "host_pid_v2",
+      "shape": [
+        896,
+        896,
+        896
+      ],
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "envelope_baseline",
+            "host_pid_v2"
+          ],
+          "baseline_us": 5.566363940914006,
+          "candidate_us": 4.948807845346313,
+          "speedup": 1.1247888612503758
+        },
+        {
+          "round": 1,
+          "order": [
+            "envelope_baseline",
+            "host_pid_v2"
+          ],
+          "baseline_us": 5.532794385342985,
+          "candidate_us": 4.953687734158891,
+          "speedup": 1.1169041494462353
+        },
+        {
+          "round": 2,
+          "order": [
+            "envelope_baseline",
+            "host_pid_v2"
+          ],
+          "baseline_us": 5.5663258748283555,
+          "candidate_us": 4.9508996177137945,
+          "speedup": 1.1243059453099455
+        },
+        {
+          "round": 3,
+          "order": [
+            "envelope_baseline",
+            "host_pid_v2"
+          ],
+          "baseline_us": 5.569378449727213,
+          "candidate_us": 4.920198378483245,
+          "speedup": 1.1319418489471744
+        },
+        {
+          "round": 4,
+          "order": [
+            "envelope_baseline",
+            "host_pid_v2"
+          ],
+          "baseline_us": 5.53715054581805,
+          "candidate_us": 4.9163521670583465,
+          "speedup": 1.126272154163267
+        },
+        {
+          "round": 5,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 5.56937846661844,
+          "candidate_us": 4.9497226389443005,
+          "speedup": 1.125190010203542
+        },
+        {
+          "round": 6,
+          "order": [
+            "envelope_baseline",
+            "host_pid_v2"
+          ],
+          "baseline_us": 5.570689857463397,
+          "candidate_us": 4.914647886450862,
+          "speedup": 1.1334870749990391
+        }
+      ],
+      "speedup": 1.125190010203542,
+      "baseline_drift": 1.006849246417109,
+      "control_speedup": 1.0008531819290607,
+      "valid": true,
+      "baseline_us": 5.566363940914006,
+      "candidate_us": 4.948807845346313
+    },
+    {
+      "name": "control",
+      "shape": [
+        1024,
+        1024,
+        1024
+      ],
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "control",
+            "envelope_baseline"
+          ],
+          "baseline_us": 6.079641920564837,
+          "candidate_us": 6.076180450650465,
+          "speedup": 1.0005696785904377
+        },
+        {
+          "round": 1,
+          "order": [
+            "envelope_baseline",
+            "control"
+          ],
+          "baseline_us": 6.113655049071785,
+          "candidate_us": 6.110569066348362,
+          "speedup": 1.0005050237858235
+        },
+        {
+          "round": 2,
+          "order": [
+            "control",
+            "envelope_baseline"
+          ],
+          "baseline_us": 6.080074148807084,
+          "candidate_us": 6.083624763826353,
+          "speedup": 0.9994163652169376
+        },
+        {
+          "round": 3,
+          "order": [
+            "control",
+            "envelope_baseline"
+          ],
+          "baseline_us": 6.113786273532444,
+          "candidate_us": 6.076755004105124,
+          "speedup": 1.0060939217398601
+        },
+        {
+          "round": 4,
+          "order": [
+            "envelope_baseline",
+            "control"
+          ],
+          "baseline_us": 6.07972781148038,
+          "candidate_us": 6.080303995412738,
+          "speedup": 0.9999052376439085
+        },
+        {
+          "round": 5,
+          "order": [
+            "control",
+            "envelope_baseline"
+          ],
+          "baseline_us": 6.115746683247446,
+          "candidate_us": 6.071435180064075,
+          "speedup": 1.007298357286078
+        },
+        {
+          "round": 6,
+          "order": [
+            "control",
+            "envelope_baseline"
+          ],
+          "baseline_us": 6.11635610829815,
+          "candidate_us": 6.122745577551633,
+          "speedup": 0.9989564372432999
+        }
+      ],
+      "speedup": 1.0005050237858235,
+      "baseline_drift": 1.0060388733765921,
+      "control_speedup": 1.0005050237858235,
+      "valid": true,
+      "baseline_us": 6.113655049071785,
+      "candidate_us": 6.080303995412738
+    },
+    {
+      "name": "envelope_host_v1",
+      "shape": [
+        1024,
+        1024,
+        1024
+      ],
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 6.113181878465393,
+          "candidate_us": 5.412177824311786,
+          "speedup": 1.1295234703864792
+        },
+        {
+          "round": 1,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 6.073777611526529,
+          "candidate_us": 5.411431063776431,
+          "speedup": 1.122397668924174
+        },
+        {
+          "round": 2,
+          "order": [
+            "envelope_baseline",
+            "envelope_host_v1"
+          ],
+          "baseline_us": 6.078005238114116,
+          "candidate_us": 5.408728112513638,
+          "speedup": 1.1237402050312046
+        },
+        {
+          "round": 3,
+          "order": [
+            "envelope_baseline",
+            "envelope_host_v1"
+          ],
+          "baseline_us": 6.123844409982364,
+          "candidate_us": 5.416927389712416,
+          "speedup": 1.1305014760974075
+        },
+        {
+          "round": 4,
+          "order": [
+            "envelope_baseline",
+            "envelope_host_v1"
+          ],
+          "baseline_us": 6.118506078736737,
+          "candidate_us": 5.379482985403564,
+          "speedup": 1.1373780891841099
+        },
+        {
+          "round": 5,
+          "order": [
+            "envelope_baseline",
+            "envelope_host_v1"
+          ],
+          "baseline_us": 6.082247819978612,
+          "candidate_us": 5.413657512596185,
+          "speedup": 1.1235006658302247
+        },
+        {
+          "round": 6,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 6.117454110807696,
+          "candidate_us": 5.409086969530975,
+          "speedup": 1.1309587265405245
+        }
+      ],
+      "speedup": 1.1295234703864792,
+      "baseline_drift": 1.0082431069522237,
+      "control_speedup": 1.0005050237858235,
+      "valid": true,
+      "baseline_us": 6.113181878465393,
+      "candidate_us": 5.411431063776431
+    },
+    {
+      "name": "host_pid_v2",
+      "shape": [
+        1024,
+        1024,
+        1024
+      ],
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 6.118762014556105,
+          "candidate_us": 5.401195337596156,
+          "speedup": 1.1328533097044604
+        },
+        {
+          "round": 1,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 6.110593403765163,
+          "candidate_us": 5.39896635665107,
+          "speedup": 1.1318080165914404
+        },
+        {
+          "round": 2,
+          "order": [
+            "envelope_baseline",
+            "host_pid_v2"
+          ],
+          "baseline_us": 6.105730314601852,
+          "candidate_us": 5.366088453740209,
+          "speedup": 1.1378363154535973
+        },
+        {
+          "round": 3,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 6.117628680335151,
+          "candidate_us": 5.406361008355011,
+          "speedup": 1.1315612610554389
+        },
+        {
+          "round": 4,
+          "order": [
+            "envelope_baseline",
+            "host_pid_v2"
+          ],
+          "baseline_us": 6.119264358592824,
+          "candidate_us": 5.402683006727308,
+          "speedup": 1.1326343505575367
+        },
+        {
+          "round": 5,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 6.1132030617144,
+          "candidate_us": 5.370128882323073,
+          "speedup": 1.1383717589790656
+        },
+        {
+          "round": 6,
+          "order": [
+            "envelope_baseline",
+            "host_pid_v2"
+          ],
+          "baseline_us": 6.120620054357191,
+          "candidate_us": 5.370018847280328,
+          "speedup": 1.1397762705166312
+        }
+      ],
+      "speedup": 1.1328533097044604,
+      "baseline_drift": 1.0024386500857614,
+      "control_speedup": 1.0005050237858235,
+      "valid": true,
+      "baseline_us": 6.117628680335151,
+      "candidate_us": 5.39896635665107
+    },
+    {
+      "name": "control",
+      "shape": [
+        1152,
+        1152,
+        1152
+      ],
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "envelope_baseline",
+            "control"
+          ],
+          "baseline_us": 10.100363400936983,
+          "candidate_us": 10.051782224479862,
+          "speedup": 1.0048330908263021
+        },
+        {
+          "round": 1,
+          "order": [
+            "envelope_baseline",
+            "control"
+          ],
+          "baseline_us": 10.058274332682291,
+          "candidate_us": 10.093500753388787,
+          "speedup": 0.9965099897877683
+        },
+        {
+          "round": 2,
+          "order": [
+            "control",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.09294959368794,
+          "candidate_us": 10.093356089986813,
+          "speedup": 0.9999597263491699
+        },
+        {
+          "round": 3,
+          "order": [
+            "control",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.062504856964278,
+          "candidate_us": 10.05966665553959,
+          "speedup": 1.0002821367269783
+        },
+        {
+          "round": 4,
+          "order": [
+            "envelope_baseline",
+            "control"
+          ],
+          "baseline_us": 10.105533479244297,
+          "candidate_us": 10.06782504999749,
+          "speedup": 1.003745439462798
+        },
+        {
+          "round": 5,
+          "order": [
+            "envelope_baseline",
+            "control"
+          ],
+          "baseline_us": 10.091896023129822,
+          "candidate_us": 10.058141865610649,
+          "speedup": 1.0033559039005584
+        },
+        {
+          "round": 6,
+          "order": [
+            "control",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.092822093008301,
+          "candidate_us": 10.059636627964315,
+          "speedup": 1.003298873137399
+        }
+      ],
+      "speedup": 1.003298873137399,
+      "baseline_drift": 1.0046985342613342,
+      "control_speedup": 1.003298873137399,
+      "valid": true,
+      "baseline_us": 10.092822093008301,
+      "candidate_us": 10.05966665553959
+    },
+    {
+      "name": "envelope_host_v1",
+      "shape": [
+        1152,
+        1152,
+        1152
+      ],
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.058117947569807,
+          "candidate_us": 9.114567165461063,
+          "speedup": 1.103521183724912
+        },
+        {
+          "round": 1,
+          "order": [
+            "envelope_baseline",
+            "envelope_host_v1"
+          ],
+          "baseline_us": 10.05911932489073,
+          "candidate_us": 9.156279961973905,
+          "speedup": 1.0986032937684653
+        },
+        {
+          "round": 2,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.060517750089131,
+          "candidate_us": 9.117592921873339,
+          "speedup": 1.103418175860176
+        },
+        {
+          "round": 3,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.057591602089307,
+          "candidate_us": 9.113986999979948,
+          "speedup": 1.1035336787414152
+        },
+        {
+          "round": 4,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.096032785814863,
+          "candidate_us": 9.115355106332837,
+          "speedup": 1.1075852413912768
+        },
+        {
+          "round": 5,
+          "order": [
+            "envelope_baseline",
+            "envelope_host_v1"
+          ],
+          "baseline_us": 10.098774446164324,
+          "candidate_us": 9.107899575179067,
+          "speedup": 1.1087929069492157
+        },
+        {
+          "round": 6,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.062474976800166,
+          "candidate_us": 9.09507269943627,
+          "speedup": 1.1063655354204982
+        }
+      ],
+      "speedup": 1.1035336787414152,
+      "baseline_drift": 1.004094702360599,
+      "control_speedup": 1.003298873137399,
+      "valid": true,
+      "baseline_us": 10.060517750089131,
+      "candidate_us": 9.114567165461063
+    },
+    {
+      "name": "host_pid_v2",
+      "shape": [
+        1152,
+        1152,
+        1152
+      ],
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "envelope_baseline",
+            "host_pid_v2"
+          ],
+          "baseline_us": 10.065501232092878,
+          "candidate_us": 8.969256231159425,
+          "speedup": 1.1222225090554407
+        },
+        {
+          "round": 1,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.061784678245951,
+          "candidate_us": 8.984668431618331,
+          "speedup": 1.119883805932904
+        },
+        {
+          "round": 2,
+          "order": [
+            "envelope_baseline",
+            "host_pid_v2"
+          ],
+          "baseline_us": 10.09341003040345,
+          "candidate_us": 8.972194131496734,
+          "speedup": 1.1249656307558826
+        },
+        {
+          "round": 3,
+          "order": [
+            "envelope_baseline",
+            "host_pid_v2"
+          ],
+          "baseline_us": 10.060033517975098,
+          "candidate_us": 8.945897281278462,
+          "speedup": 1.1245415861221932
+        },
+        {
+          "round": 4,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.098688471169075,
+          "candidate_us": 8.999969678135416,
+          "speedup": 1.1220802771928102
+        },
+        {
+          "round": 5,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.062110677678534,
+          "candidate_us": 8.955583818290265,
+          "speedup": 1.1235571998252505
+        },
+        {
+          "round": 6,
+          "order": [
+            "envelope_baseline",
+            "host_pid_v2"
+          ],
+          "baseline_us": 10.058283385238719,
+          "candidate_us": 8.92803978115373,
+          "speedup": 1.1265948216842434
+        }
+      ],
+      "speedup": 1.1235571998252505,
+      "baseline_drift": 1.004017095599996,
+      "control_speedup": 1.003298873137399,
+      "valid": true,
+      "baseline_us": 10.062110677678534,
+      "candidate_us": 8.969256231159425
+    },
+    {
+      "name": "control",
+      "shape": [
+        1280,
+        1280,
+        1280
+      ],
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "control",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.53904179878826,
+          "candidate_us": 10.63021241453994,
+          "speedup": 0.991423443653207
+        },
+        {
+          "round": 1,
+          "order": [
+            "envelope_baseline",
+            "control"
+          ],
+          "baseline_us": 10.686797081534543,
+          "candidate_us": 10.643561753557288,
+          "speedup": 1.0040621108777619
+        },
+        {
+          "round": 2,
+          "order": [
+            "control",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.70545293319048,
+          "candidate_us": 10.596372448489468,
+          "speedup": 1.0102941346419512
+        },
+        {
+          "round": 3,
+          "order": [
+            "envelope_baseline",
+            "control"
+          ],
+          "baseline_us": 10.725924257725225,
+          "candidate_us": 10.642270228930506,
+          "speedup": 1.0078605435677914
+        },
+        {
+          "round": 4,
+          "order": [
+            "control",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.744621730986095,
+          "candidate_us": 10.675141945508344,
+          "speedup": 1.0065085584653033
+        },
+        {
+          "round": 5,
+          "order": [
+            "control",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.725277771443238,
+          "candidate_us": 10.743545752968538,
+          "speedup": 0.9982996319887918
+        },
+        {
+          "round": 6,
+          "order": [
+            "control",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.743916678188704,
+          "candidate_us": 10.764437376867969,
+          "speedup": 0.998093658037032
+        }
+      ],
+      "speedup": 1.0040621108777619,
+      "baseline_drift": 1.0195065107552257,
+      "control_speedup": 1.0040621108777619,
+      "valid": true,
+      "baseline_us": 10.725277771443238,
+      "candidate_us": 10.643561753557288
+    },
+    {
+      "name": "envelope_host_v1",
+      "shape": [
+        1280,
+        1280,
+        1280
+      ],
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.620817659969383,
+          "candidate_us": 9.648872878933714,
+          "speedup": 1.1007314318709396
+        },
+        {
+          "round": 1,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 11.089882775658706,
+          "candidate_us": 10.089261333147686,
+          "speedup": 1.0991768782144176
+        },
+        {
+          "round": 2,
+          "order": [
+            "envelope_baseline",
+            "envelope_host_v1"
+          ],
+          "baseline_us": 10.843224192382381,
+          "candidate_us": 9.945434331893921,
+          "speedup": 1.0902715588407583
+        },
+        {
+          "round": 3,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.825931381239572,
+          "candidate_us": 9.988290890910982,
+          "speedup": 1.0838622442494958
+        },
+        {
+          "round": 4,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.759409685462552,
+          "candidate_us": 9.799920168469441,
+          "speedup": 1.0979078911357056
+        },
+        {
+          "round": 5,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.734231207105848,
+          "candidate_us": 10.004573906792535,
+          "speedup": 1.0729323714444168
+        },
+        {
+          "round": 6,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.693055981292867,
+          "candidate_us": 9.819056199112085,
+          "speedup": 1.0890105692907446
+        }
+      ],
+      "speedup": 1.0902715588407583,
+      "baseline_drift": 1.0441646896412942,
+      "control_speedup": 1.0040621108777619,
+      "valid": true,
+      "baseline_us": 10.759409685462552,
+      "candidate_us": 9.945434331893921
+    },
+    {
+      "name": "host_pid_v2",
+      "shape": [
+        1280,
+        1280,
+        1280
+      ],
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "envelope_baseline",
+            "host_pid_v2"
+          ],
+          "baseline_us": 10.607770954797028,
+          "candidate_us": 9.452448240660258,
+          "speedup": 1.1222247067343973
+        },
+        {
+          "round": 1,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.579104081378212,
+          "candidate_us": 9.483335663648552,
+          "speedup": 1.1155467291883332
+        },
+        {
+          "round": 2,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 11.179284218651413,
+          "candidate_us": 9.856204794791324,
+          "speedup": 1.1342382236780726
+        },
+        {
+          "round": 3,
+          "order": [
+            "envelope_baseline",
+            "host_pid_v2"
+          ],
+          "baseline_us": 10.657711130868497,
+          "candidate_us": 9.546233665652393,
+          "speedup": 1.1164309930119594
+        },
+        {
+          "round": 4,
+          "order": [
+            "envelope_baseline",
+            "host_pid_v2"
+          ],
+          "baseline_us": 10.682407450453143,
+          "candidate_us": 9.549730721535338,
+          "speedup": 1.1186082374410344
+        },
+        {
+          "round": 5,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.698459137520288,
+          "candidate_us": 9.559395922484596,
+          "speedup": 1.1191564011232664
+        },
+        {
+          "round": 6,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 10.681445099586664,
+          "candidate_us": 9.545798276014345,
+          "speedup": 1.1189682403435919
+        }
+      ],
+      "speedup": 1.1189682403435919,
+      "baseline_drift": 1.056732605394219,
+      "control_speedup": 1.0040621108777619,
+      "valid": true,
+      "baseline_us": 10.681445099586664,
+      "candidate_us": 9.546233665652393
+    },
+    {
+      "name": "control",
+      "shape": [
+        1408,
+        1408,
+        1408
+      ],
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "envelope_baseline",
+            "control"
+          ],
+          "baseline_us": 12.3476786143852,
+          "candidate_us": 12.328519104323309,
+          "speedup": 1.0015540804130458
+        },
+        {
+          "round": 1,
+          "order": [
+            "envelope_baseline",
+            "control"
+          ],
+          "baseline_us": 12.386760834611362,
+          "candidate_us": 12.495365537198863,
+          "speedup": 0.9913084013217394
+        },
+        {
+          "round": 2,
+          "order": [
+            "control",
+            "envelope_baseline"
+          ],
+          "baseline_us": 12.718634307384491,
+          "candidate_us": 12.52358680115341,
+          "speedup": 1.0155744124529178
+        },
+        {
+          "round": 3,
+          "order": [
+            "envelope_baseline",
+            "control"
+          ],
+          "baseline_us": 12.59970856060313,
+          "candidate_us": 12.465619202789393,
+          "speedup": 1.0107567346340671
+        },
+        {
+          "round": 4,
+          "order": [
+            "envelope_baseline",
+            "control"
+          ],
+          "baseline_us": 12.646166304970503,
+          "candidate_us": 12.750448700683819,
+          "speedup": 0.9918212763988672
+        },
+        {
+          "round": 5,
+          "order": [
+            "envelope_baseline",
+            "control"
+          ],
+          "baseline_us": 12.56486093430292,
+          "candidate_us": 12.522857908218626,
+          "speedup": 1.003354108654122
+        },
+        {
+          "round": 6,
+          "order": [
+            "envelope_baseline",
+            "control"
+          ],
+          "baseline_us": 12.671332976706427,
+          "candidate_us": 12.614159937258119,
+          "speedup": 1.0045324492263206
+        }
+      ],
+      "speedup": 1.003354108654122,
+      "baseline_drift": 1.030042545209034,
+      "control_speedup": 1.003354108654122,
+      "valid": true,
+      "baseline_us": 12.59970856060313,
+      "candidate_us": 12.522857908218626
+    },
+    {
+      "name": "envelope_host_v1",
+      "shape": [
+        1408,
+        1408,
+        1408
+      ],
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "envelope_baseline",
+            "envelope_host_v1"
+          ],
+          "baseline_us": 12.344170500549373,
+          "candidate_us": 11.852408053215123,
+          "speedup": 1.041490509365382
+        },
+        {
+          "round": 1,
+          "order": [
+            "envelope_baseline",
+            "envelope_host_v1"
+          ],
+          "baseline_us": 12.385925086768898,
+          "candidate_us": 11.38394682960436,
+          "speedup": 1.0880167724043526
+        },
+        {
+          "round": 2,
+          "order": [
+            "envelope_baseline",
+            "envelope_host_v1"
+          ],
+          "baseline_us": 12.452904749575849,
+          "candidate_us": 11.544294396304888,
+          "speedup": 1.0787064433805318
+        },
+        {
+          "round": 3,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 12.441582228566807,
+          "candidate_us": 11.697223344522525,
+          "speedup": 1.0636355194835911
+        },
+        {
+          "round": 4,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 12.457053479631632,
+          "candidate_us": 11.682427470350872,
+          "speedup": 1.0663069393109184
+        },
+        {
+          "round": 5,
+          "order": [
+            "envelope_host_v1",
+            "envelope_baseline"
+          ],
+          "baseline_us": 12.615335629071076,
+          "candidate_us": 11.691005825996399,
+          "speedup": 1.07906332584484
+        },
+        {
+          "round": 6,
+          "order": [
+            "envelope_baseline",
+            "envelope_host_v1"
+          ],
+          "baseline_us": 12.649424565981512,
+          "candidate_us": 11.774977980601276,
+          "speedup": 1.0742631185230958
+        }
+      ],
+      "speedup": 1.0742631185230958,
+      "baseline_drift": 1.0247286008742795,
+      "control_speedup": 1.003354108654122,
+      "valid": true,
+      "baseline_us": 12.452904749575849,
+      "candidate_us": 11.691005825996399
+    },
+    {
+      "name": "host_pid_v2",
+      "shape": [
+        1408,
+        1408,
+        1408
+      ],
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 12.325444472463507,
+          "candidate_us": 10.969767501638254,
+          "speedup": 1.1235830176549133
+        },
+        {
+          "round": 1,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 12.36045231867142,
+          "candidate_us": 11.163422220149902,
+          "speedup": 1.1072278800277648
+        },
+        {
+          "round": 2,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 12.92203508574387,
+          "candidate_us": 11.332565161309809,
+          "speedup": 1.1402568528668713
+        },
+        {
+          "round": 3,
+          "order": [
+            "envelope_baseline",
+            "host_pid_v2"
+          ],
+          "baseline_us": 12.872008973739566,
+          "candidate_us": 11.45073381259287,
+          "speedup": 1.124120880321544
+        },
+        {
+          "round": 4,
+          "order": [
+            "envelope_baseline",
+            "host_pid_v2"
+          ],
+          "baseline_us": 12.63013219132143,
+          "candidate_us": 11.314219300464917,
+          "speedup": 1.1163061149789133
+        },
+        {
+          "round": 5,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 12.763077574349493,
+          "candidate_us": 11.348489713411999,
+          "speedup": 1.1246498782358405
+        },
+        {
+          "round": 6,
+          "order": [
+            "host_pid_v2",
+            "envelope_baseline"
+          ],
+          "baseline_us": 12.599146616971504,
+          "candidate_us": 11.487512379528516,
+          "speedup": 1.0967689261797002
+        }
+      ],
+      "speedup": 1.1235830176549133,
+      "baseline_drift": 1.048403172365363,
+      "control_speedup": 1.003354108654122,
+      "valid": true,
+      "baseline_us": 12.63013219132143,
+      "candidate_us": 11.332565161309809
+    }
+  ],
+  "wall_metrics": {
+    "768": {
+      "descriptor_object_prepare_us": [
+        13.617,
+        8.935,
+        8.352,
+        8.093,
+        8.728,
+        7.804,
+        7.569,
+        8.239,
+        7.722,
+        7.699,
+        7.725,
+        7.22,
+        7.306,
+        7.44,
+        7.183,
+        7.568,
+        7.319,
+        7.583,
+        7.423,
+        7.347,
+        7.182,
+        7.402,
+        7.465,
+        7.519,
+        7.139,
+        7.113,
+        7.528,
+        7.181,
+        7.157,
+        7.196,
+        7.106,
+        7.129,
+        7.323,
+        7.265,
+        7.275,
+        7.184,
+        7.359,
+        7.548,
+        7.152,
+        7.184,
+        7.301,
+        7.194,
+        7.233,
+        7.313,
+        7.32,
+        7.09,
+        7.04,
+        7.383,
+        7.34,
+        7.281
+      ],
+      "descriptor_prepare_median_us": 7.3215,
+      "records": {
+        "preallocated_with_descriptor_prepare": {
+          "samples_us": {
+            "envelope_baseline": [
+              55.953,
+              51.576,
+              52.709,
+              52.671,
+              52.208,
+              51.379,
+              51.972,
+              50.616,
+              52.308,
+              50.289
+            ],
+            "envelope_host_v1": [
+              63.886,
+              56.164,
+              50.535,
+              52.562,
+              49.858,
+              49.912,
+              51.842,
+              50.703,
+              49.603,
+              50.949
+            ],
+            "host_pid_v2": [
+              57.013,
+              49.376,
+              50.83,
+              51.729,
+              48.477,
+              53.664,
+              51.915,
+              51.684,
+              52.334,
+              48.949
+            ],
+            "original_pointer_baseline": [
+              46.046,
+              41.504,
+              41.097,
+              41.261,
+              40.66,
+              40.016,
+              41.506,
+              40.119,
+              39.288,
+              40.427
+            ]
+          },
+          "orders": [
+            [
+              "envelope_host_v1",
+              "host_pid_v2",
+              "envelope_baseline",
+              "original_pointer_baseline"
+            ],
+            [
+              "original_pointer_baseline",
+              "envelope_host_v1",
+              "envelope_baseline",
+              "host_pid_v2"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "envelope_baseline"
+            ],
+            [
+              "envelope_baseline",
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "host_pid_v2"
+            ],
+            [
+              "envelope_baseline",
+              "envelope_host_v1",
+              "host_pid_v2",
+              "original_pointer_baseline"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "envelope_baseline"
+            ],
+            [
+              "envelope_baseline",
+              "original_pointer_baseline",
+              "host_pid_v2",
+              "envelope_host_v1"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "envelope_baseline"
+            ],
+            [
+              "original_pointer_baseline",
+              "host_pid_v2",
+              "envelope_baseline",
+              "envelope_host_v1"
+            ],
+            [
+              "envelope_baseline",
+              "envelope_host_v1",
+              "host_pid_v2",
+              "original_pointer_baseline"
+            ]
+          ],
+          "median_us": {
+            "envelope_baseline": 52.09,
+            "envelope_host_v1": 50.826,
+            "host_pid_v2": 51.7065,
+            "original_pointer_baseline": 40.8785
+          }
+        },
+        "allocation_and_descriptor_prepare": {
+          "samples_us": {
+            "envelope_baseline": [
+              61.672,
+              59.887,
+              60.742,
+              58.218,
+              58.246,
+              60.771,
+              58.557,
+              60.207,
+              61.909,
+              59.224
+            ],
+            "envelope_host_v1": [
+              69.19,
+              63.271,
+              62.586,
+              61.082,
+              59.039,
+              59.683,
+              58.739,
+              58.824,
+              56.512,
+              58.41
+            ],
+            "host_pid_v2": [
+              121.575,
+              59.72,
+              59.399,
+              58.58,
+              61.317,
+              59.765,
+              60.015,
+              61.874,
+              59.314,
+              62.036
+            ],
+            "original_pointer_baseline": [
+              49.357,
+              47.87,
+              48.446,
+              49.268,
+              49.354,
+              48.252,
+              48.58,
+              46.814,
+              46.473,
+              48.158
+            ]
+          },
+          "orders": [
+            [
+              "host_pid_v2",
+              "envelope_host_v1",
+              "envelope_baseline",
+              "original_pointer_baseline"
+            ],
+            [
+              "envelope_host_v1",
+              "host_pid_v2",
+              "envelope_baseline",
+              "original_pointer_baseline"
+            ],
+            [
+              "envelope_baseline",
+              "host_pid_v2",
+              "original_pointer_baseline",
+              "envelope_host_v1"
+            ],
+            [
+              "original_pointer_baseline",
+              "envelope_host_v1",
+              "host_pid_v2",
+              "envelope_baseline"
+            ],
+            [
+              "original_pointer_baseline",
+              "host_pid_v2",
+              "envelope_host_v1",
+              "envelope_baseline"
+            ],
+            [
+              "host_pid_v2",
+              "original_pointer_baseline",
+              "envelope_baseline",
+              "envelope_host_v1"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_baseline",
+              "envelope_host_v1",
+              "original_pointer_baseline"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_baseline",
+              "envelope_host_v1",
+              "original_pointer_baseline"
+            ],
+            [
+              "original_pointer_baseline",
+              "envelope_baseline",
+              "host_pid_v2",
+              "envelope_host_v1"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_baseline",
+              "envelope_host_v1",
+              "original_pointer_baseline"
+            ]
+          ],
+          "median_us": {
+            "envelope_baseline": 60.047,
+            "envelope_host_v1": 59.361000000000004,
+            "host_pid_v2": 59.89,
+            "original_pointer_baseline": 48.349000000000004
+          }
+        }
+      },
+      "scope": "CPUwall includes per-call preparation/native encoding/launch/completion sync; allocation mode also includes output torch.empty. Not kernel time."
+    },
+    "896": {
+      "descriptor_object_prepare_us": [
+        12.239,
+        8.124,
+        8.771,
+        7.799,
+        7.288,
+        7.589,
+        7.28,
+        7.448,
+        7.418,
+        7.791,
+        7.509,
+        7.257,
+        7.37,
+        7.377,
+        7.2,
+        7.404,
+        7.181,
+        7.6,
+        7.217,
+        12.237,
+        7.189,
+        7.68,
+        7.405,
+        7.237,
+        7.607,
+        7.393,
+        7.206,
+        7.363,
+        7.327,
+        7.427,
+        7.54,
+        7.416,
+        7.262,
+        7.34,
+        7.377,
+        7.5,
+        7.193,
+        7.408,
+        7.336,
+        7.2,
+        7.166,
+        7.822,
+        8.406,
+        8.038,
+        10.046,
+        8.203,
+        8.486,
+        7.355,
+        7.472,
+        9.269
+      ],
+      "descriptor_prepare_median_us": 7.412000000000001,
+      "records": {
+        "preallocated_with_descriptor_prepare": {
+          "samples_us": {
+            "envelope_baseline": [
+              63.801,
+              54.36,
+              50.828,
+              51.35,
+              52.887,
+              52.215,
+              52.204,
+              52.503,
+              50.74,
+              51.15
+            ],
+            "envelope_host_v1": [
+              51.768,
+              50.921,
+              49.006,
+              51.961,
+              50.385,
+              58.096,
+              51.962,
+              49.417,
+              50.183,
+              51.236
+            ],
+            "host_pid_v2": [
+              56.25,
+              52.967,
+              52.128,
+              50.8,
+              52.008,
+              51.001,
+              50.2,
+              49.311,
+              51.128,
+              50.751
+            ],
+            "original_pointer_baseline": [
+              45.31,
+              40.66,
+              40.483,
+              39.775,
+              39.983,
+              40.681,
+              40.797,
+              41.776,
+              39.71,
+              39.627
+            ]
+          },
+          "orders": [
+            [
+              "envelope_baseline",
+              "host_pid_v2",
+              "envelope_host_v1",
+              "original_pointer_baseline"
+            ],
+            [
+              "envelope_baseline",
+              "original_pointer_baseline",
+              "host_pid_v2",
+              "envelope_host_v1"
+            ],
+            [
+              "envelope_baseline",
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "host_pid_v2"
+            ],
+            [
+              "envelope_host_v1",
+              "host_pid_v2",
+              "original_pointer_baseline",
+              "envelope_baseline"
+            ],
+            [
+              "envelope_baseline",
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "host_pid_v2"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "envelope_baseline"
+            ],
+            [
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "envelope_baseline",
+              "host_pid_v2"
+            ],
+            [
+              "original_pointer_baseline",
+              "envelope_baseline",
+              "host_pid_v2",
+              "envelope_host_v1"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "envelope_baseline"
+            ],
+            [
+              "envelope_baseline",
+              "original_pointer_baseline",
+              "envelope_host_v1",
+              "host_pid_v2"
+            ]
+          ],
+          "median_us": {
+            "envelope_baseline": 52.209500000000006,
+            "envelope_host_v1": 51.0785,
+            "host_pid_v2": 51.064499999999995,
+            "original_pointer_baseline": 40.5715
+          }
+        },
+        "allocation_and_descriptor_prepare": {
+          "samples_us": {
+            "envelope_baseline": [
+              61.768,
+              59.949,
+              58.092,
+              59.767,
+              63.928,
+              57.94,
+              59.298,
+              57.922,
+              61.158,
+              57.961
+            ],
+            "envelope_host_v1": [
+              58.975,
+              58.602,
+              59.56,
+              57.736,
+              59.01,
+              60.529,
+              62.483,
+              59.43,
+              59.694,
+              60.321
+            ],
+            "host_pid_v2": [
+              94.436,
+              60.757,
+              59.855,
+              68.088,
+              59.484,
+              58.661,
+              58.968,
+              60.238,
+              60.805,
+              59.912
+            ],
+            "original_pointer_baseline": [
+              57.243,
+              48.934,
+              47.936,
+              47.514,
+              48.012,
+              47.399,
+              48.491,
+              48.481,
+              47.436,
+              48.191
+            ]
+          },
+          "orders": [
+            [
+              "host_pid_v2",
+              "original_pointer_baseline",
+              "envelope_baseline",
+              "envelope_host_v1"
+            ],
+            [
+              "host_pid_v2",
+              "original_pointer_baseline",
+              "envelope_baseline",
+              "envelope_host_v1"
+            ],
+            [
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "host_pid_v2",
+              "envelope_baseline"
+            ],
+            [
+              "envelope_baseline",
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "host_pid_v2"
+            ],
+            [
+              "envelope_baseline",
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "host_pid_v2"
+            ],
+            [
+              "envelope_host_v1",
+              "envelope_baseline",
+              "original_pointer_baseline",
+              "host_pid_v2"
+            ],
+            [
+              "original_pointer_baseline",
+              "envelope_host_v1",
+              "host_pid_v2",
+              "envelope_baseline"
+            ],
+            [
+              "original_pointer_baseline",
+              "envelope_host_v1",
+              "host_pid_v2",
+              "envelope_baseline"
+            ],
+            [
+              "original_pointer_baseline",
+              "host_pid_v2",
+              "envelope_host_v1",
+              "envelope_baseline"
+            ],
+            [
+              "original_pointer_baseline",
+              "envelope_host_v1",
+              "host_pid_v2",
+              "envelope_baseline"
+            ]
+          ],
+          "median_us": {
+            "envelope_baseline": 59.5325,
+            "envelope_host_v1": 59.495000000000005,
+            "host_pid_v2": 60.075,
+            "original_pointer_baseline": 48.1015
+          }
+        }
+      },
+      "scope": "CPUwall includes per-call preparation/native encoding/launch/completion sync; allocation mode also includes output torch.empty. Not kernel time."
+    },
+    "1024": {
+      "descriptor_object_prepare_us": [
+        11.916,
+        8.209,
+        7.946,
+        7.245,
+        7.499,
+        7.416,
+        7.26,
+        7.143,
+        7.089,
+        7.454,
+        7.575,
+        7.678,
+        7.279,
+        7.459,
+        7.398,
+        8.423,
+        7.65,
+        7.447,
+        7.711,
+        7.121,
+        7.168,
+        7.577,
+        7.054,
+        7.35,
+        7.194,
+        7.49,
+        7.329,
+        7.074,
+        7.226,
+        7.098,
+        7.28,
+        7.357,
+        7.384,
+        7.543,
+        7.328,
+        7.325,
+        7.303,
+        7.061,
+        7.173,
+        7.124,
+        7.196,
+        7.16,
+        7.407,
+        7.375,
+        6.95,
+        7.247,
+        8.055,
+        13.049,
+        7.779,
+        7.576
+      ],
+      "descriptor_prepare_median_us": 7.3535,
+      "records": {
+        "preallocated_with_descriptor_prepare": {
+          "samples_us": {
+            "envelope_baseline": [
+              68.899,
+              54.327,
+              52.435,
+              51.069,
+              52.457,
+              50.818,
+              51.296,
+              50.414,
+              50.576,
+              49.151
+            ],
+            "envelope_host_v1": [
+              57.031,
+              51.83,
+              49.412,
+              49.415,
+              53.516,
+              52.691,
+              49.973,
+              50.977,
+              50.168,
+              52.267
+            ],
+            "host_pid_v2": [
+              52.004,
+              50.014,
+              52.785,
+              50.725,
+              50.289,
+              52.54,
+              51.163,
+              50.862,
+              50.67,
+              51.199
+            ],
+            "original_pointer_baseline": [
+              43.796,
+              40.786,
+              40.395,
+              40.022,
+              40.78,
+              40.69,
+              40.043,
+              39.859,
+              40.23,
+              38.524
+            ]
+          },
+          "orders": [
+            [
+              "envelope_baseline",
+              "envelope_host_v1",
+              "host_pid_v2",
+              "original_pointer_baseline"
+            ],
+            [
+              "envelope_baseline",
+              "envelope_host_v1",
+              "host_pid_v2",
+              "original_pointer_baseline"
+            ],
+            [
+              "host_pid_v2",
+              "original_pointer_baseline",
+              "envelope_baseline",
+              "envelope_host_v1"
+            ],
+            [
+              "envelope_baseline",
+              "host_pid_v2",
+              "envelope_host_v1",
+              "original_pointer_baseline"
+            ],
+            [
+              "envelope_host_v1",
+              "envelope_baseline",
+              "host_pid_v2",
+              "original_pointer_baseline"
+            ],
+            [
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "host_pid_v2",
+              "envelope_baseline"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "envelope_baseline"
+            ],
+            [
+              "host_pid_v2",
+              "original_pointer_baseline",
+              "envelope_host_v1",
+              "envelope_baseline"
+            ],
+            [
+              "envelope_host_v1",
+              "host_pid_v2",
+              "envelope_baseline",
+              "original_pointer_baseline"
+            ],
+            [
+              "original_pointer_baseline",
+              "envelope_host_v1",
+              "host_pid_v2",
+              "envelope_baseline"
+            ]
+          ],
+          "median_us": {
+            "envelope_baseline": 51.182500000000005,
+            "envelope_host_v1": 51.403499999999994,
+            "host_pid_v2": 51.0125,
+            "original_pointer_baseline": 40.3125
+          }
+        },
+        "allocation_and_descriptor_prepare": {
+          "samples_us": {
+            "envelope_baseline": [
+              83.745,
+              59.314,
+              59.019,
+              59.228,
+              60.646,
+              58.173,
+              57.494,
+              57.85,
+              58.115,
+              60.128
+            ],
+            "envelope_host_v1": [
+              62.498,
+              58.866,
+              62.191,
+              60.944,
+              58.292,
+              59.435,
+              58.276,
+              58.737,
+              62.961,
+              60.493
+            ],
+            "host_pid_v2": [
+              142.036,
+              61.354,
+              61.991,
+              57.99,
+              60.789,
+              61.092,
+              60.93,
+              65.045,
+              58.818,
+              58.19
+            ],
+            "original_pointer_baseline": [
+              55.43,
+              49.271,
+              48.439,
+              48.102,
+              48.722,
+              48.593,
+              45.524,
+              48.843,
+              47.485,
+              47.857
+            ]
+          },
+          "orders": [
+            [
+              "host_pid_v2",
+              "envelope_baseline",
+              "original_pointer_baseline",
+              "envelope_host_v1"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_baseline",
+              "envelope_host_v1",
+              "original_pointer_baseline"
+            ],
+            [
+              "host_pid_v2",
+              "original_pointer_baseline",
+              "envelope_host_v1",
+              "envelope_baseline"
+            ],
+            [
+              "envelope_host_v1",
+              "host_pid_v2",
+              "original_pointer_baseline",
+              "envelope_baseline"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "envelope_baseline"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_host_v1",
+              "envelope_baseline",
+              "original_pointer_baseline"
+            ],
+            [
+              "original_pointer_baseline",
+              "host_pid_v2",
+              "envelope_host_v1",
+              "envelope_baseline"
+            ],
+            [
+              "original_pointer_baseline",
+              "host_pid_v2",
+              "envelope_host_v1",
+              "envelope_baseline"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_host_v1",
+              "envelope_baseline",
+              "original_pointer_baseline"
+            ],
+            [
+              "envelope_baseline",
+              "original_pointer_baseline",
+              "envelope_host_v1",
+              "host_pid_v2"
+            ]
+          ],
+          "median_us": {
+            "envelope_baseline": 59.1235,
+            "envelope_host_v1": 59.964,
+            "host_pid_v2": 61.010999999999996,
+            "original_pointer_baseline": 48.516000000000005
+          }
+        }
+      },
+      "scope": "CPUwall includes per-call preparation/native encoding/launch/completion sync; allocation mode also includes output torch.empty. Not kernel time."
+    },
+    "1152": {
+      "descriptor_object_prepare_us": [
+        12.355,
+        8.541,
+        7.772,
+        7.353,
+        7.344,
+        7.555,
+        7.313,
+        7.542,
+        7.437,
+        7.373,
+        7.24,
+        7.556,
+        7.311,
+        7.333,
+        7.385,
+        7.356,
+        7.298,
+        7.598,
+        7.435,
+        7.274,
+        7.543,
+        7.396,
+        7.355,
+        7.492,
+        7.283,
+        7.369,
+        7.239,
+        7.489,
+        7.49,
+        7.398,
+        7.415,
+        7.657,
+        7.383,
+        7.716,
+        7.445,
+        7.391,
+        7.381,
+        7.453,
+        6.979,
+        7.217,
+        7.469,
+        7.721,
+        7.508,
+        7.311,
+        7.29,
+        7.17,
+        7.211,
+        7.111,
+        7.199,
+        7.529
+      ],
+      "descriptor_prepare_median_us": 7.388,
+      "records": {
+        "preallocated_with_descriptor_prepare": {
+          "samples_us": {
+            "envelope_baseline": [
+              58.939,
+              57.182,
+              56.02,
+              55.627,
+              53.901,
+              59.123,
+              54.999,
+              53.681,
+              57.298,
+              55.21
+            ],
+            "envelope_host_v1": [
+              64.086,
+              56.226,
+              54.167,
+              53.418,
+              55.872,
+              54.24,
+              54.4,
+              54.323,
+              54.298,
+              53.777
+            ],
+            "host_pid_v2": [
+              57.474,
+              57.82,
+              55.421,
+              55.487,
+              54.512,
+              54.116,
+              56.115,
+              54.803,
+              54.631,
+              56.528
+            ],
+            "original_pointer_baseline": [
+              47.884,
+              45.527,
+              46.866,
+              44.905,
+              44.814,
+              44.763,
+              44.922,
+              45.082,
+              44.881,
+              43.242
+            ]
+          },
+          "orders": [
+            [
+              "envelope_host_v1",
+              "envelope_baseline",
+              "original_pointer_baseline",
+              "host_pid_v2"
+            ],
+            [
+              "envelope_host_v1",
+              "host_pid_v2",
+              "original_pointer_baseline",
+              "envelope_baseline"
+            ],
+            [
+              "host_pid_v2",
+              "original_pointer_baseline",
+              "envelope_baseline",
+              "envelope_host_v1"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "envelope_baseline"
+            ],
+            [
+              "original_pointer_baseline",
+              "envelope_host_v1",
+              "host_pid_v2",
+              "envelope_baseline"
+            ],
+            [
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "envelope_baseline",
+              "host_pid_v2"
+            ],
+            [
+              "original_pointer_baseline",
+              "host_pid_v2",
+              "envelope_baseline",
+              "envelope_host_v1"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_host_v1",
+              "envelope_baseline",
+              "original_pointer_baseline"
+            ],
+            [
+              "envelope_baseline",
+              "host_pid_v2",
+              "envelope_host_v1",
+              "original_pointer_baseline"
+            ],
+            [
+              "original_pointer_baseline",
+              "host_pid_v2",
+              "envelope_baseline",
+              "envelope_host_v1"
+            ]
+          ],
+          "median_us": {
+            "envelope_baseline": 55.8235,
+            "envelope_host_v1": 54.310500000000005,
+            "host_pid_v2": 55.454,
+            "original_pointer_baseline": 44.9135
+          }
+        },
+        "allocation_and_descriptor_prepare": {
+          "samples_us": {
+            "envelope_baseline": [
+              121.716,
+              64.823,
+              64.681,
+              64.42,
+              69.333,
+              62.1,
+              62.862,
+              63.314,
+              64.115,
+              63.964
+            ],
+            "envelope_host_v1": [
+              68.393,
+              63.116,
+              62.125,
+              62.677,
+              62.936,
+              60.939,
+              62.218,
+              60.417,
+              66.32,
+              61.466
+            ],
+            "host_pid_v2": [
+              63.151,
+              63.365,
+              63.246,
+              63.107,
+              63.013,
+              61.539,
+              61.214,
+              64.151,
+              61.946,
+              62.854
+            ],
+            "original_pointer_baseline": [
+              64.736,
+              53.765,
+              53.347,
+              53.233,
+              52.299,
+              52.255,
+              51.738,
+              50.865,
+              52.13,
+              51.975
+            ]
+          },
+          "orders": [
+            [
+              "envelope_baseline",
+              "original_pointer_baseline",
+              "envelope_host_v1",
+              "host_pid_v2"
+            ],
+            [
+              "envelope_baseline",
+              "original_pointer_baseline",
+              "host_pid_v2",
+              "envelope_host_v1"
+            ],
+            [
+              "envelope_baseline",
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "host_pid_v2"
+            ],
+            [
+              "envelope_baseline",
+              "original_pointer_baseline",
+              "host_pid_v2",
+              "envelope_host_v1"
+            ],
+            [
+              "envelope_baseline",
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "host_pid_v2"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_baseline",
+              "envelope_host_v1",
+              "original_pointer_baseline"
+            ],
+            [
+              "envelope_baseline",
+              "envelope_host_v1",
+              "host_pid_v2",
+              "original_pointer_baseline"
+            ],
+            [
+              "original_pointer_baseline",
+              "host_pid_v2",
+              "envelope_baseline",
+              "envelope_host_v1"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "envelope_baseline"
+            ],
+            [
+              "host_pid_v2",
+              "original_pointer_baseline",
+              "envelope_baseline",
+              "envelope_host_v1"
+            ]
+          ],
+          "median_us": {
+            "envelope_baseline": 64.2675,
+            "envelope_host_v1": 62.447500000000005,
+            "host_pid_v2": 63.06,
+            "original_pointer_baseline": 52.277
+          }
+        }
+      },
+      "scope": "CPUwall includes per-call preparation/native encoding/launch/completion sync; allocation mode also includes output torch.empty. Not kernel time."
+    },
+    "1280": {
+      "descriptor_object_prepare_us": [
+        12.861,
+        8.229,
+        7.415,
+        7.357,
+        7.18,
+        7.374,
+        7.258,
+        7.513,
+        7.377,
+        7.494,
+        7.096,
+        7.097,
+        7.164,
+        7.124,
+        7.255,
+        7.167,
+        7.211,
+        7.19,
+        7.238,
+        7.001,
+        7.211,
+        7.272,
+        7.272,
+        7.249,
+        7.216,
+        7.265,
+        7.101,
+        7.356,
+        7.439,
+        7.447,
+        7.085,
+        7.057,
+        7.408,
+        7.336,
+        7.258,
+        7.335,
+        7.189,
+        7.358,
+        7.32,
+        7.367,
+        7.201,
+        7.558,
+        8.692,
+        7.538,
+        7.37,
+        7.663,
+        7.402,
+        7.445,
+        7.369,
+        7.384
+      ],
+      "descriptor_prepare_median_us": 7.327500000000001,
+      "records": {
+        "preallocated_with_descriptor_prepare": {
+          "samples_us": {
+            "envelope_baseline": [
+              63.685,
+              55.666,
+              57.137,
+              57.183,
+              55.821,
+              54.821,
+              54.989,
+              55.512,
+              57.262,
+              56.042
+            ],
+            "envelope_host_v1": [
+              55.889,
+              55.825,
+              54.226,
+              54.684,
+              62.541,
+              55.112,
+              55.468,
+              56.391,
+              56.688,
+              54.959
+            ],
+            "host_pid_v2": [
+              58.574,
+              56.308,
+              55.931,
+              55.134,
+              53.301,
+              54.592,
+              54.253,
+              53.656,
+              55.136,
+              54.586
+            ],
+            "original_pointer_baseline": [
+              47.669,
+              45.835,
+              45.284,
+              45.315,
+              45.075,
+              44.749,
+              45.015,
+              45.456,
+              45.148,
+              45.043
+            ]
+          },
+          "orders": [
+            [
+              "envelope_baseline",
+              "host_pid_v2",
+              "envelope_host_v1",
+              "original_pointer_baseline"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_baseline",
+              "original_pointer_baseline",
+              "envelope_host_v1"
+            ],
+            [
+              "host_pid_v2",
+              "original_pointer_baseline",
+              "envelope_baseline",
+              "envelope_host_v1"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "envelope_baseline"
+            ],
+            [
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "envelope_baseline",
+              "host_pid_v2"
+            ],
+            [
+              "host_pid_v2",
+              "original_pointer_baseline",
+              "envelope_host_v1",
+              "envelope_baseline"
+            ],
+            [
+              "host_pid_v2",
+              "original_pointer_baseline",
+              "envelope_host_v1",
+              "envelope_baseline"
+            ],
+            [
+              "original_pointer_baseline",
+              "envelope_host_v1",
+              "host_pid_v2",
+              "envelope_baseline"
+            ],
+            [
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "envelope_baseline",
+              "host_pid_v2"
+            ],
+            [
+              "envelope_baseline",
+              "original_pointer_baseline",
+              "host_pid_v2",
+              "envelope_host_v1"
+            ]
+          ],
+          "median_us": {
+            "envelope_baseline": 55.9315,
+            "envelope_host_v1": 55.6465,
+            "host_pid_v2": 54.863,
+            "original_pointer_baseline": 45.216
+          }
+        },
+        "allocation_and_descriptor_prepare": {
+          "samples_us": {
+            "envelope_baseline": [
+              67.624,
+              63.906,
+              64.03,
+              63.33,
+              64.221,
+              63.824,
+              62.931,
+              62.73,
+              61.742,
+              63.279
+            ],
+            "envelope_host_v1": [
+              116.161,
+              61.466,
+              62.56,
+              63.132,
+              62.367,
+              63.304,
+              62.109,
+              62.208,
+              61.67,
+              64.102
+            ],
+            "host_pid_v2": [
+              63.841,
+              63.589,
+              64.481,
+              60.956,
+              61.392,
+              63.21,
+              62.569,
+              62.993,
+              63.211,
+              63.781
+            ],
+            "original_pointer_baseline": [
+              67.583,
+              53.295,
+              52.852,
+              52.675,
+              52.988,
+              51.815,
+              52.862,
+              52.918,
+              57.803,
+              60.2
+            ]
+          },
+          "orders": [
+            [
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "envelope_baseline",
+              "host_pid_v2"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_baseline",
+              "envelope_host_v1",
+              "original_pointer_baseline"
+            ],
+            [
+              "host_pid_v2",
+              "original_pointer_baseline",
+              "envelope_baseline",
+              "envelope_host_v1"
+            ],
+            [
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "envelope_baseline",
+              "host_pid_v2"
+            ],
+            [
+              "envelope_host_v1",
+              "host_pid_v2",
+              "original_pointer_baseline",
+              "envelope_baseline"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_baseline",
+              "original_pointer_baseline",
+              "envelope_host_v1"
+            ],
+            [
+              "original_pointer_baseline",
+              "envelope_host_v1",
+              "host_pid_v2",
+              "envelope_baseline"
+            ],
+            [
+              "original_pointer_baseline",
+              "host_pid_v2",
+              "envelope_host_v1",
+              "envelope_baseline"
+            ],
+            [
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "host_pid_v2",
+              "envelope_baseline"
+            ],
+            [
+              "envelope_baseline",
+              "original_pointer_baseline",
+              "envelope_host_v1",
+              "host_pid_v2"
+            ]
+          ],
+          "median_us": {
+            "envelope_baseline": 63.577,
+            "envelope_host_v1": 62.463499999999996,
+            "host_pid_v2": 63.210499999999996,
+            "original_pointer_baseline": 52.953
+          }
+        }
+      },
+      "scope": "CPUwall includes per-call preparation/native encoding/launch/completion sync; allocation mode also includes output torch.empty. Not kernel time."
+    },
+    "1408": {
+      "descriptor_object_prepare_us": [
+        12.564,
+        7.991,
+        7.489,
+        7.358,
+        7.304,
+        7.213,
+        7.714,
+        7.546,
+        7.344,
+        7.641,
+        7.372,
+        7.191,
+        7.301,
+        7.232,
+        7.344,
+        7.444,
+        7.375,
+        7.382,
+        7.281,
+        7.261,
+        7.52,
+        7.564,
+        7.405,
+        7.159,
+        7.448,
+        7.52,
+        7.208,
+        7.203,
+        7.142,
+        7.146,
+        7.331,
+        7.296,
+        7.25,
+        7.449,
+        7.384,
+        7.281,
+        7.161,
+        7.312,
+        7.446,
+        7.449,
+        7.148,
+        7.573,
+        7.375,
+        7.496,
+        7.208,
+        7.197,
+        7.237,
+        7.401,
+        7.169,
+        7.304
+      ],
+      "descriptor_prepare_median_us": 7.344,
+      "records": {
+        "preallocated_with_descriptor_prepare": {
+          "samples_us": {
+            "envelope_baseline": [
+              59.162,
+              61.244,
+              57.23,
+              59.229,
+              58.54,
+              56.459,
+              56.02,
+              55.569,
+              58.691,
+              57.743
+            ],
+            "envelope_host_v1": [
+              66.022,
+              56.174,
+              55.777,
+              55.891,
+              56.058,
+              57.734,
+              57.361,
+              56.686,
+              57.782,
+              56.928
+            ],
+            "host_pid_v2": [
+              59.937,
+              56.143,
+              58.579,
+              56.912,
+              55.382,
+              58.047,
+              56.889,
+              55.642,
+              55.57,
+              55.506
+            ],
+            "original_pointer_baseline": [
+              50.049,
+              47.3,
+              46.936,
+              46.871,
+              46.466,
+              56.428,
+              47.098,
+              46.739,
+              47.79,
+              46.791
+            ]
+          },
+          "orders": [
+            [
+              "envelope_host_v1",
+              "host_pid_v2",
+              "envelope_baseline",
+              "original_pointer_baseline"
+            ],
+            [
+              "envelope_baseline",
+              "host_pid_v2",
+              "envelope_host_v1",
+              "original_pointer_baseline"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_baseline",
+              "envelope_host_v1",
+              "original_pointer_baseline"
+            ],
+            [
+              "envelope_baseline",
+              "original_pointer_baseline",
+              "host_pid_v2",
+              "envelope_host_v1"
+            ],
+            [
+              "envelope_baseline",
+              "envelope_host_v1",
+              "host_pid_v2",
+              "original_pointer_baseline"
+            ],
+            [
+              "host_pid_v2",
+              "original_pointer_baseline",
+              "envelope_host_v1",
+              "envelope_baseline"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_baseline",
+              "original_pointer_baseline",
+              "envelope_host_v1"
+            ],
+            [
+              "original_pointer_baseline",
+              "envelope_host_v1",
+              "host_pid_v2",
+              "envelope_baseline"
+            ],
+            [
+              "envelope_baseline",
+              "original_pointer_baseline",
+              "envelope_host_v1",
+              "host_pid_v2"
+            ],
+            [
+              "envelope_host_v1",
+              "host_pid_v2",
+              "original_pointer_baseline",
+              "envelope_baseline"
+            ]
+          ],
+          "median_us": {
+            "envelope_baseline": 58.1415,
+            "envelope_host_v1": 56.807,
+            "host_pid_v2": 56.516000000000005,
+            "original_pointer_baseline": 47.016999999999996
+          }
+        },
+        "allocation_and_descriptor_prepare": {
+          "samples_us": {
+            "envelope_baseline": [
+              67.37,
+              66.399,
+              66.486,
+              65.068,
+              66.492,
+              64.808,
+              65.454,
+              65.351,
+              65.383,
+              65.144
+            ],
+            "envelope_host_v1": [
+              76.758,
+              65.492,
+              64.127,
+              65.584,
+              64.967,
+              64.952,
+              64.917,
+              64.917,
+              64.836,
+              64.051
+            ],
+            "host_pid_v2": [
+              115.781,
+              67.984,
+              64.506,
+              64.313,
+              62.65,
+              64.545,
+              67.658,
+              64.83,
+              67.066,
+              66.027
+            ],
+            "original_pointer_baseline": [
+              57.162,
+              56.543,
+              54.275,
+              53.953,
+              54.078,
+              59.519,
+              55.657,
+              54.768,
+              54.512,
+              54.13
+            ]
+          },
+          "orders": [
+            [
+              "host_pid_v2",
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "envelope_baseline"
+            ],
+            [
+              "envelope_host_v1",
+              "host_pid_v2",
+              "original_pointer_baseline",
+              "envelope_baseline"
+            ],
+            [
+              "envelope_baseline",
+              "host_pid_v2",
+              "envelope_host_v1",
+              "original_pointer_baseline"
+            ],
+            [
+              "envelope_host_v1",
+              "envelope_baseline",
+              "original_pointer_baseline",
+              "host_pid_v2"
+            ],
+            [
+              "envelope_baseline",
+              "host_pid_v2",
+              "original_pointer_baseline",
+              "envelope_host_v1"
+            ],
+            [
+              "envelope_baseline",
+              "original_pointer_baseline",
+              "envelope_host_v1",
+              "host_pid_v2"
+            ],
+            [
+              "original_pointer_baseline",
+              "envelope_host_v1",
+              "host_pid_v2",
+              "envelope_baseline"
+            ],
+            [
+              "original_pointer_baseline",
+              "host_pid_v2",
+              "envelope_host_v1",
+              "envelope_baseline"
+            ],
+            [
+              "host_pid_v2",
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "envelope_baseline"
+            ],
+            [
+              "envelope_host_v1",
+              "original_pointer_baseline",
+              "host_pid_v2",
+              "envelope_baseline"
+            ]
+          ],
+          "median_us": {
+            "envelope_baseline": 65.4185,
+            "envelope_host_v1": 64.9345,
+            "host_pid_v2": 65.4285,
+            "original_pointer_baseline": 54.64
+          }
+        }
+      },
+      "scope": "CPUwall includes per-call preparation/native encoding/launch/completion sync; allocation mode also includes output torch.empty. Not kernel time."
+    }
+  },
+  "metric": "Preallocated descriptors+output CUDA graph device time; excludes CPU encoding/allocation; includes every device operation",
+  "summary": {
+    "control": {
+      "geometric_mean": 1.0019658019063555,
+      "arithmetic_mean": 1.0019671718598633,
+      "min": 0.999729732775013,
+      "max": 1.0040621108777619,
+      "ci95": [
+        0.9989288833438876,
+        1.0035551697341727
+      ]
+    },
+    "envelope_host_v1": {
+      "geometric_mean": 1.1076264782977043,
+      "arithmetic_mean": 1.1078151213832819,
+      "min": 1.0742631185230958,
+      "max": 1.1295234703864792,
+      "ci95": [
+        1.1047124958518586,
+        1.1104879797408318
+      ]
+    },
+    "host_pid_v2": {
+      "geometric_mean": 1.1246797244801654,
+      "arithmetic_mean": 1.1246873150239554,
+      "min": 1.1189682403435919,
+      "max": 1.1328533097044604,
+      "ci95": [
+        1.1216110244614896,
+        1.1269384148412311
+      ]
+    }
+  },
+  "gpu_after": "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 32, 74.98 W, 700.00 W, 0 %, 86 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 1830 MHz, 2619 MHz, 42, 461.40 W, 700.00 W, 0 %, 855 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.65 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.06 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 31, 73.24 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 1830 MHz, 2619 MHz, 34, 133.44 W, 700.00 W, 100 %, 825 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.55 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 345 MHz, 2619 MHz, 28, 73.47 W, 700.00 W, 0 %, 30 MiB\n"
+}

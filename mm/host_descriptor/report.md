@@ -1,5 +1,8 @@
 # Host descriptor：可以执行，尚未通过同步验收
 
+本文保留用户放行告警前的可行性与同步定位。用户随后允许带告警继续，性能结果见 [v2报告](report_performance_v2.md)。
+该例外没有清除本文告警，也未授予同步资格。
+
 **Host descriptor 版 TTIR 已能编译、加载和执行，数值检查通过。**
 但官方 Triton 3.7 路径仍有 racecheck 同步告警，因此没有进入性能优化，也没有替换现有 `optimized.ttir`。
 比较用的原始版本称为基线（baseline）；本次为新 host 接口建立了匹配基线，旧实验保持不变。

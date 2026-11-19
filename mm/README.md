@@ -8,7 +8,7 @@ TTIR首轮优化已完成六组各8个候选的尝试：仅128×32×64组保留�
 
 随后按要求另建的 [设备TMA匹配工作区分组](tma_workspace/report.md) 实际运行了该TTIR：两边同设native allocator、candidate384bytes/CTA；精度和memcheck通过，但racecheck37条warning，主测/复测约0.703×/0.700×，明确拒绝。原baseline、旧选择和接口保持不变。
 
-用户要求的 [host descriptor可行性原型](host_descriptor/report.md) 已跑通编译、原生加载、零scratch执行、匹配baseline与37项数值/边界检查，依赖显式局部file-source签名适配。memcheck通过，但racecheck仍37条warning，原生源码控制也重现告警；同步门槛未通过，未进入性能阶段或替换optimized。
+用户要求的 [host descriptor可行性原型](host_descriptor/report.md) 已跑通编译、原生加载、零scratch执行、匹配baseline与37项数值/边界检查，依赖显式局部file-source签名适配。用户随后明确允许未解决告警继续，完成了 [host v2性能优化](host_descriptor/report_performance_v2.md)：本组六点设备时间几何平均1.1247×/独立复测1.1171×，新入口和选择在host_descriptor目录；racecheck告警仍未解决，包含准备的调用没有原指针接口加速，旧六组优化选择保持不变。
 
 另有用户授权的 [FlagGems Hopper / FlagTree 与教程对比](comparison/report.md)：同FlagTree环境配对主比较与原upstream环境参照分别报告，不属于纯TTIR改写收益实验，也不替换上述冻结基线。
 
