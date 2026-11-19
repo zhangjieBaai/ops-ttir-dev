@@ -1,5 +1,9 @@
 # Vector add: direct TTIR optimization
 
+本轮完整矩阵未达到预设 1.02x 晋升门槛，`optimized.ttir` 保留 baseline。
+streaming store 在 N=2^22 有约 1.206x 局部收益，16 点几何均值仅 1.0131x。
+实验细节和证据见 [report.md](report.md)；最终选择见 `results/selection.json`。
+
 Official tutorial snapshot: `upstream/01-vector-add.py.txt`; source and commit
 hashes: `upstream/provenance.json`. Frozen contract: `optimization_plan.md`.
 FP32, 16-byte aligned, non-aliasing contiguous vectors; positive lengths divisible

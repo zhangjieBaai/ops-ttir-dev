@@ -35,7 +35,7 @@ def check_case(kernels, n, pattern):
         x.fill_(1.25)
         y.fill_(-0.125)
     elif pattern == "special":
-        values = torch.tensor(
+        x_values = torch.tensor(
             [
                 0.0,
                 -0.0,
@@ -56,8 +56,29 @@ def check_case(kernels, n, pattern):
             ],
             device="cuda",
         )
-        x.copy_(values.repeat((n + 15) // 16)[:n])
-        y.copy_(torch.roll(values, 1).repeat((n + 15) // 16)[:n])
+        y_values = torch.tensor(
+            [
+                -0.0,
+                -0.0,
+                1.0,
+                1.0,
+                1.0,
+                -1e-40,
+                1e-40,
+                3e38,
+                -3e38,
+                -1.0,
+                1.0,
+                -1e20,
+                1e20,
+                1e-30,
+                -1e-30,
+                0.25,
+            ],
+            device="cuda",
+        )
+        x.copy_(x_values.repeat((n + 15) // 16)[:n])
+        y.copy_(y_values.repeat((n + 15) // 16)[:n])
     x_before, y_before = x.clone(), y.clone()
     reference = x + y
     cpu_checked = n <= 65536
