@@ -1,63 +1,122 @@
-# Host descriptor：执行集成可行，racecheck阻止进入优化阶段
+# Host descriptor：可以执行，尚未通过同步验收
 
-已将host-descriptor方案实际编译、加载并运行。**可以把自己的TTIR改为host descriptor，并在官方Triton3.7.0原生backend/runtime上执行，但需要显式文件签名reader适配和新的host参数契约；不是只换旧optimized.ttir文件就能运行。** 全部旧baseline、配置映射和旧optimized选择保持原字节。
+**Host descriptor 版 TTIR 已能编译、加载和执行，数值检查通过。**
+但官方 Triton 3.7 路径仍有 racecheck 同步告警，因此没有进入性能优化，也没有替换现有 `optimized.ttir`。
+比较用的原始版本称为基线（baseline）；本次为新 host 接口建立了匹配基线，旧实验保持不变。
 
-数值和memcheck流程已闭环，**racecheck仍有37条warning，正式性能优化门槛未通过**。因此本轮没有benchmark加速比、没有新的最优版本，也没有将该方向宣布为已验证可用。阶段A可行性与阶段B资格要分开；用户授权的条件“跑通后再真的优化”没有被数值PASS代替。
+## 验证结果
 
-| 阶段/对象 | 执行结果 | 能支持的结论 |
+| 检查 | 结果 | 范围 |
 |---|---|---|
-| 原始host TTIR直接file入口 | GPU编译成功，launcher初始化断言失败 | 官方3.7原file-source签名读取与native descriptor展开不匹配 |
-| 适配后FG原始host IR | 1152/1280数值通过 | native host编码/启动能力可用，非正式baseline |
-| 同签名envelope baseline / host版本 | 各37项数值通过、scratch0 | host入口及匹配baseline可以跑通，不需要设备descriptor scratch |
-| memcheck | 两版本各37项数值通过，工具0errors | 该覆盖范围没有memcheck错误 |
-| racecheck | 数值通过，但37warning报告，退出99 | 同步资格失败，不能晋升或启动正式性能选优 |
-| 不经reader的native源码对照 | 1152/1280数值通过，2warning报告、退出99 | 告警不只存在于reader适配路径；原因仍未确定 |
-| 禁用acc多缓冲诊断 | 同原始可执行section，未启动 | 该提示本例没有改变同步机器码 |
-| 单循环stage1诊断 | 数值通过，74warning报告、退出99 | 减少流水级没有清除告警；不是4stages性能候选 |
-| 最终三路一致性 | 原baseline/envelope baseline/host 37项逐位相同 | 匹配接口未靠添加虚假GPU工作拖慢baseline，数值结果一致 |
+| 原始 TTIR 直接编译 | 编译成功，launcher 初始化失败 | 文件读取的参数形式与 launcher 不匹配 |
+| 局部签名适配后执行 | 通过 | 使用官方 backend、描述符编码和原生 launcher |
+| 匹配基线与 host 版数值 | 各 37 项通过 | 含六个性能尺寸、边界、padding 和压力输入 |
+| 三路输出对比 | 37 项逐位相同 | 原基线、匹配基线、host 版 |
+| memcheck | 0 errors | 匹配基线和 host 版各 37 项 |
+| host 版 racecheck | 37 条 warning，退出 99 | 未通过同步验收 |
+| 不经适配器的原生源码对照 | 数值通过，但有 2 条 warning | 官方 3.7，1152³ 和 1280³ |
+| 性能测量与晋升 | **NOT_RUN，未晋升** | 未通过同步检查，不进行收益选优 |
 
-## 签名适配具体做了什么
+数据与失败状态见 [outcome.json](results/outcome.json)。数值通过不代表同步正确，warning 没有被当作误报略过。
 
-原始TTIR文件入口从IRSource得到物理MLIR参数：每个 `!tt.tensordesc<tensor<...xf16>>` 后已有2个i32 shape和2个i64 stride。nativeCudaLauncher却检查Python逻辑签名`tensordesc<fp16[...]>`并自己展开为CUDA tensor map及shape/stride，原形式不被识别，导致计数断言失败。
+## 编译和参数流程如何跑通
 
-[bridge.py](bridge.py)调用原IRSource构造器解析文件，然后**在CompiledKernel构造前**仅对受支持、声明且hash匹配的文件恢复逻辑signature，将上述5个物理参数折叠为1个逻辑descriptor参数。标量/指针顺序不变；nativeCudaLauncher按**该kernel自己生成的tensordesc_meta**编码tensor map并展开。raw/adapted对同一输入的TTGIR、LLVM IR、PTX和cubin均逐字节一致，模块、源码hash、make_ir及backend阶段不变。没有在编译后改ck.src.signature、metadata、cubin、module或function，也没有阶段override/hook。
+Host descriptor 是 CPU 准备的矩阵布局描述，矩阵数据仍在 GPU。
+原始文件中的每个 descriptor 后，已经跟着两个 shape 和两个 stride 参数。
+原生 launcher 期待的则是逻辑 descriptor 参数，由它负责展开这些字段。
+原入口识别不到文件中的形式，因此产生计数断言；原始失败日志仍然保留。
 
-构造器只在受锁context中临时包装并finally恢复；未修改安装文件。校验涵盖正常/抛异常/解析失败的恢复、未声明路径拒绝、缺字段/错dtype/错相邻字段拒绝；native展开的类型顺序和数量与真实物理prototype完全相同。固定版本且单线程实验范围，未验证并发库级部署，不把这个局部ABI桥说成官方原file入口天然支持。
+[bridge.py](bridge.py) 在 `IRSource` 构造时恢复逻辑参数签名。
+它只接受本实验声明且 SHA256 匹配的文件，支持二维 FP16 和明确的相邻字段类型。
+随后仍使用该 kernel 自己生成的描述符元数据，让原生 launcher 编码和传参。
+实际展开后的参数顺序、数量、类型均与 GPU 入口一致。
 
-三份初始输入的来源与SHA256在 [prototype_inputs.json](results/prototype_inputs.json)：FGhostReference是只读实际产物副本；自己的envelope_host_v1直接从已有device-TMA TTIR移除device描述符创建，改为hostdesc入口；envelope_baseline保留原教程计算和指针访存，仅加入相同hostdesc参数。两者真正拥有相同逻辑及物理参数envelope，unused descriptor仍由native产生真实metadata并编码，没复制candidate metadata给baseline或插入假GPU工作。host端构造A/B/C官方TensorDescriptor，形状/stride由实际tensor取得，block_shape64x64/64x128/64x128；底层tensor与参数对象在启动及同步期间保活。scratch均为0，未注册allocator。
+这个适配发生在 `CompiledKernel` 创建前。
+安装文件和后端编译阶段保持不变。编译后的签名、metadata 以及 GPU 产物没有被替换。
+同一输入在适配前后的 TTGIR、LLVM IR、PTX、cubin 均字节一致。
+构造器在正常、异常和解析失败路径都会恢复，错误参数与未声明路径也有拒绝检查。
 
-## 数值和同步证据
+因此环境应准确描述为“官方 Triton 3.7 backend/runtime，加局部文件签名适配”。
+它不是完全未改动的官方文件调用路径，也还不是经过并发验证的生产库集成。
 
-本组为BM64/BN128/BK64、group8、warps4、stages4、CTAs1，六点768/896/1024/1152/1280/1408；扩展37项含最小输入、K/tile尾部、行尾padding、zero/constant/alternating/large/small分布及704×256×80非初始三行partial-group。nativeFP16与禁TF32FP32参考，max维度<=272另用CPUFP64；rtol=.001、atol=.01，输出NaN sentinel、有限性、padding canary和输入不变检查。最终 [final_checks_v2.json](results/final_checks_v2.json) 对37项比较原baseline、envelope baseline、host版本，三路输出逐位相同，并核查完整解析options/target、相同实际ABI、zero scratch及原始安装RECORD。
+## 匹配基线与数值范围
 
-[full_check](results/full_check/summary.json)、[memcheck_check](results/memcheck_check/summary.json)、[racecheck_check](results/racecheck_check/summary.json)的数值各为baseline37+host37通过。但工具状态独立：[memcheck.log](results/memcheck.log)0errors；[racecheck.log](results/racecheck.log)37条显示的hazard报告（单报告可能聚合多个底层hazard），0errors/37warnings，进程退出99。数值正确不清除警告，不把warning改标PASS。
+自己的 host 版直接从已有 device-TMA TTIR 删除设备描述符构造，改为 host 参数。
+匹配基线保留原教程的计算和普通指针加载，加入相同的 descriptor 加原始指针参数。
+两版都有 12 个逻辑参数，原生展开后为 24 个物理参数；全编译选项和 target 相同。
+双方使用各自产生的真实描述符元数据，scratch 均为 0，没有伪造 metadata 或添加虚假 GPU 工作。
 
-为排除“只有签名适配才触发”的解释，新增 [source_controls.py](source_controls.py) native源码对照，不经过reader适配，直接`@triton.jit`执行同样host descriptor load/dot/store；1152/1280数值通过，native_source_racecheck.log仍有2条warning、退出99。它只是诊断对照，不是重新修改教程kernel后伪装直接TTIR候选；不能据此证明是编译器bug、工具误报或实际硬件race的哪一种，原因保持未知。
+A/B/C 的官方 `TensorDescriptor` 使用实际 tensor 的地址、shape 和 stride。
+分块分别为 64×64、64×128、64×128，底层 tensor 和参数对象在启动、同步期间保活。
+原始三份输入及来源见 [prototype_inputs.json](results/prototype_inputs.json)。
+FlagGems 的 host IR 副本仅作能力参照，不替代匹配基线。
 
-进一步的两个**同步诊断**由[make_sync_probes.py](make_sync_probes.py)确定性生成，使用独立v2输入registry，原registry/候选不覆盖。`tt.disallow_acc_multi_buffer`产生相同可执行机器码，没再启动；`tt.num_stages=1`只覆盖该循环，顶层编译选项仍4，但属于显式不同循环调度诊断、不参与排名，完整数值通过却仍74条warning，未修复资格。不是反复调参直到工具不报，也没有任何下游IR或binary编辑。
+固定分块是 64×128×64，group 为 8。启动配置为 4 warps、4 stages 和 1 CTA。
+本组六个方阵边长从 768 到 1408，步长为 128。
+37 项扩展用例还包含最小尺寸、K 尾部、padding 和数值压力输入。
+704×256×80 用例覆盖非初始三行 partial group，而非只检查平凡尾组。
 
-## 是否作为优化方向
+数值对照为 native FP16 和禁 TF32 的 FP32；最大维度不超过 272 的用例另查 CPU FP64。
+容差固定为 `rtol=.001, atol=.01`。
+输出先填 NaN sentinel（未写入位置的标记），再检查有限性、行尾保护区和输入不变。
+[最终检查](results/final_checks_v2.json) 记录全部 37 项三路输出逐位相同及真实参数展开。
 
-**集成层面值得继续研究，但本次不能进入正式收益优化或替换optimized。** 优先未决问题是TMA/WGMMA路径racecheck告警的原因和清除条件；需原始hazard地址/生成同步的独立证据或明确工具支持说明，不能直接忽略。当前已经排除“仅因reader适配发生”和“降低循环stage必然能清除”的简单解释。
+## 同步定位：barrier 初始化与首次使用
 
-由于阶段A的必需同步检查失败，阶段B完全未运行：无kernel计时、host descriptor准备时间、包含准备的调用耗时或性能接受；这些状态均是NOT_RUN，不是0或通过。本轮不承诺host版会重现FG性能。若后续同步门槛通过，才按照[plan.md](plan.md)对统一参数契约的baseline/候选完整6点配对计时，另测host准备和调用成本，保持原旧实验独立。
+后续单 CTA、单 K 迭代用例 64×128×64 仍数值通过，但 racecheck 失败。
+详细报告指向 shared 地址 `0x18400`：
 
-## 环境、结果和复现
+- thread31 在 PC `0x820` 写入，SASS 指令为 `SYNCS.EXCH.64`，对应 mbarrier 初始化。
+- thread0 在 PC `0xb70` 读取，SASS 指令为 `SYNCS.ARRIVE.TRANS64`，对应首次 arrive 操作。
 
-执行为指定venv官方Triton3.7.0/backend/runtime加本地signature reader适配，FP16/H100 SM90/GPU1，UUID `2256da5a-8ff3-e27c-c9f0-11578c10fe28`。compute-sanitizer2025.2.0、ptxas12.8.93，实际库及工具源码hash在final_checks_v2.json。FlagTree不参与本轮编译。GPU隔离检查针对阶段边界，不是连续独占保证；没有锁频或冷缓存承诺，且本轮未进行性能测量。
+官方 3.7 产物由 elect 选出的线程初始化 barrier，首次 arrive 则由 thread0 执行。
+两者之间没有 `bar.sync`，第一条 CTA 同步在 arrive 之后。
+这把问题缩到了生成的 barrier 初始化/首次使用顺序，但尚未完成独立上游修复。
+原始 hazard、SASS 和 PTX 见 [sync_followup](results/sync_followup/)，哈希与归纳见 [diagnosis.json](results/sync_followup/diagnosis.json)。
 
-[README.md](README.md)列出脚本职责；[replay.sh](replay.sh)在新目录重新执行数值/工具/最终ABI检查并保留nonzero exit status，不自动进入性能。初始导入错误small.log保留，首次有效执行从small_v2开始；旧bridge/probe版本源文件快照保留，旧结果不重标为当前runner采集。最终原始registry、输入/产物hash和probe源码版本在各JSON核对。
+三个新的 TTIR 诊断分别在循环首部、首尾加入 `gpu.barrier`，或组合首部 barrier 与单循环 stage1。
+六次数值检查通过，但合计仍有 8 条 warning，工具退出 99。
+生成代码显示，这些源级 barrier 没有被放到后端生成的 init 与首次 arrive 之间。
+serial 版的第一条 barrier 在 init 之前，不能修复该位置的顺序。
+这些都是正确性诊断，没有计时或参与性能排名。
 
-全部原型和失败日志保留。原审查意见通过后，审批归档因KernelForge框架目录的并发外部修改而被自动审计拒绝；MM文件未变。相同计划和已有检查重新绑定到本实验目录审计，最终状态以 `/root/KernelForge-workspace/runs/mm-host-descriptor-local-v1/advisors/` 为准，旧失败记录保留。该框架未注册MM执行adapter，不宣称CLI qualification；审查通过也不授予hostTMA同步正确性或性能收益。
+此前另一个禁用累加器多缓冲的提示没有改变可执行机器码，未重复启动。
+此前完整 serial 诊断仍有 74 条 warning，也保留为失败；没有用新的日志覆盖旧记录。
 
-serial诊断记录的中间probe源码后来只清理了一条未使用的`import json`。现已按该记录的SHA256精确重建源码，见 [重建收据](results/serial_source_provenance.json)；历史serial JSON保持原字节，没有改成由当前probe采集，也没有重复执行GPU实验。
+## 独立 FlagTree 对照
 
-## 同步后续定位：初始化与首次使用的顺序
+在独立 FlagTree 0.7.0 环境，使用相同的 `native_host_control` 源码和相同配置测试 1152³、1280³。
+两点数值通过，racecheck 为 0 hazards、0 errors、0 warnings，退出 0。
+它的生成代码由 thread0 初始化，并在 init 与首次 arrive 之间有 `bar.sync`。
 
-在用户要求继续后，新增的单CTA、单K迭代用例（64×128×64）仍数值通过但racecheck失败。hazard详细报告指向shared地址0x18400：thread31在PC0x820执行`SYNCS.EXCH.64`（mbarrier初始化），thread0在PC0xb70执行`SYNCS.ARRIVE.TRANS64`（首次arrive.expect_tx）。相应官方3.7产物中，init使用elect选出的线程，首次arrive选择thread0，二者之间没有`bar.sync`，第一条CTA barrier在arrive之后。它把告警范围缩到生成的barrier初始化/首次使用顺序，不能再仅称矩阵访存或多轮K缓冲问题。
+该环境实际为 Triton 3.6、PyTorch 2.11；主实验为官方 Triton 3.7、PyTorch 2.12。
+因此这是可见环境差异下的同步诊断，**不能替代官方 3.7 验收，也不是性能比较**。
+不经过签名适配器的官方 3.7 原生源码对照仍报两条 warning，说明告警不只存在于适配路径。
+这些证据支持代码生成顺序的解释，不证明所有硬件执行正确或某个工具必然误报。
 
-新增3个**仅正确性诊断**：在TTIR循环首部、首尾加入`gpu.barrier`，以及首部barrier加单循环stage1；六次数值检查通过，但合计8条race warning、进程退出99。产物显示这些源级barrier没有被放入后端生成的init与首次arrive之间；serial版barrier在init之前。未修改下游IR、binary或已编译metadata，也未靠关闭racecheck选项消除报告。它们不是新的性能候选，未进入阶段B。
+## 当前决定与复现
 
-额外在独立FlagTree0.7.0环境（实际triton3.6、torch2.11）运行**同一个`native_host_control`源码、相同tile/warps/stages/CTAs**的1152/1280两点对照：数值通过，racecheck为0hazards/0errors/0warnings，退出0。该产物以thread0初始化，并在init与首次arrive之间有`bar.sync`。这支持生成同步顺序差异的诊断，**不能替代官方3.7验收**，也没有用它报告性能或把全部差异仅归因于编译器；环境差异保持可见。
+当前结论是：执行集成可行，同步资格未通过。
+三个 TTIR barrier 位置诊断没有解决问题，主环境、编译器和下游产物也没有被擅自修改。
+后续可能需要 TMA lowering 的修复或独立、版本明确的工具链验证；它们需要单独验证其适用范围。
+本轮性能阶段仍为 **NOT_RUN**，kernel、host 准备及完整调用耗时均为 null，不能当作 0 或通过。
 
-原始hazard、SASS、两边原始PTX与工具日志在 [sync_followup](results/sync_followup/)，归纳和哈希在 [diagnosis.json](results/sync_followup/diagnosis.json)。官方3.7路径仍未清除告警，后续可能需要修复TMA lowering或用独立、版本明确的工具链验证；本实验没有擅自修改编译器或迁移主环境。旧`optimized.ttir`继续保持，性能优化仍是NOT_RUN。
+执行环境为指定 venv、H100 SM90、GPU1，UUID `2256da5a-8ff3-e27c-c9f0-11578c10fe28`。
+工具为 compute-sanitizer 2025.2.0、ptxas 12.8.93，实际模块和工具哈希保留在最终检查中。
+GPU 检查覆盖阶段边界，不是连续独占证明；本轮没有性能或冷缓存结论。
+
+```bash
+# 确认 GPU 空闲；数值和工具复验使用新目录，并保留非零工具状态
+CUDA_VISIBLE_DEVICES=1 bash mm/host_descriptor/replay.sh
+```
+
+原始失败、数值记录及输入版本均保留。
+最早 `small.log` 是导入设置错误，首次有效设备执行从 `small_v2` 开始。
+serial 中间脚本后来仅删除了未使用的 import；按历史 SHA256 精确重建的源码及方法见 [来源收据](results/serial_source_provenance.json)。
+这些历史记录没有重标为由当前脚本采集，维护的复现脚本也未冒充历史 stdin 命令的采集器。
+
+旧 baseline、绑定协议、六组映射和所有旧 optimized 文件均保持原字节。
+审批状态以 `/root/KernelForge-workspace/runs/mm-host-descriptor-local-v1/advisors/` 为初次原型审查来源。
+更早审批曾因框架目录的外部并发修改被自动审计拒绝，该失败记录没有被当作有效批准。
+本次同步后续的独立审查记录在 `/root/KernelForge-workspace/runs/mm-host-sync-followup-20261119/advisors/`。
+审查完成也不等于 host TMA 同步通过或产生了性能收益。
