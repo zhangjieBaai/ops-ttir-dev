@@ -49,3 +49,5 @@
 [README.md](README.md)列出脚本职责；[replay.sh](replay.sh)在新目录重新执行数值/工具/最终ABI检查并保留nonzero exit status，不自动进入性能。初始导入错误small.log保留，首次有效执行从small_v2开始；旧bridge/probe版本源文件快照保留，旧结果不重标为当前runner采集。最终原始registry、输入/产物hash和probe源码版本在各JSON核对。
 
 全部原型和失败日志保留；独立KernelForge计划审查已通过，最终close审查记录位于 `/root/KernelForge-workspace/runs/mm-host-descriptor-feasibility-v1/advisors/`。该框架未注册MM执行adapter，不宣称CLI qualification；本结论也不授予hostTMA同步正确性或性能收益。
+
+serial诊断记录的中间probe源码后来只清理了一条未使用的`import json`。现已按该记录的SHA256精确重建源码，见 [重建收据](results/serial_source_provenance.json)；历史serial JSON保持原字节，没有改成由当前probe采集，也没有重复执行GPU实验。

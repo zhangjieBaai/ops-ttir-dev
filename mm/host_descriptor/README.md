@@ -12,6 +12,8 @@
 
 原始三份输入在 `ir/`，来源和输入hash见 `results/prototype_inputs.json`；两个附加诊断用不可变的v2 registry，旧registry未覆盖。最早standalone导入错误保留，实际初始执行从 `small_v2` 开始。旧版bridge/probe源快照在results中，与当时运行hash对应；后续记录明确新的版本，不重标旧证据。
 
+serial诊断的中间probe版本后来仅删掉了未使用的`import json`。按原记录SHA256精确重建的源码存于`results/probe_serial_hash_reconstruction.py.txt`，重建方法和哈希对应见`results/serial_source_provenance.json`；这是哈希验证的源码重建，不是声称原快照一直保留，也不是新跑的诊断。
+
 ```bash
 # 先确认GPU空闲；预期racecheck有非零状态，不能当作最终资格通过
 CUDA_VISIBLE_DEVICES=1 bash mm/host_descriptor/replay.sh
