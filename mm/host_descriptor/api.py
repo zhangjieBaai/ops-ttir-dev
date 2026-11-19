@@ -10,7 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import torch
 from bridge import compile_file
-from common import runtime_args, sha256
+from common import digest, runtime_args, sha256
 from probe import CONFIG, ROOT, descriptors
 
 
@@ -26,6 +26,14 @@ def load():
     assert sha256(ROOT / selection["source_path"]) == selection["source_sha256"]
     assert sha256(registry) == selection["registry_sha256"]
     kernel, audit = compile_file(path, CONFIG["options"], registry)
+    measurements = ROOT / "results/performance_v2/main.json"
+    assert sha256(measurements) == selection["main_sha256"]
+    expected = json.loads(measurements.read_text())["resources"][selection["selected"]][
+        "stages"
+    ]["cubin"]
+    assert (
+        digest(kernel.asm["cubin"]) == expected
+    ), "Selected native binary differs from measured artifact"
     return dict(
         kernel=kernel,
         selection=selection,
