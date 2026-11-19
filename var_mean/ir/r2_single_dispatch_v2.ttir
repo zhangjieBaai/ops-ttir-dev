@@ -1,0 +1,110 @@
+module {
+  tt.func public @var_mean_welford_kernel(%X: !tt.ptr<f32> {tt.divisibility = 16 : i32}, %Var: !tt.ptr<f32> {tt.divisibility = 16 : i32}, %Mean: !tt.ptr<f32> {tt.divisibility = 16 : i32}, %M: i32, %N: i32, %correction: f32) attributes {noinline = false} {
+    %c1024_i32 = arith.constant 1024 : i32
+    %c0_i32 = arith.constant 0 : i32
+    %cst = arith.constant dense<0.000000e+00> : tensor<1024xf32>
+    %0 = tt.get_program_id x : i32
+    %1 = arith.extsi %0 : i32 to i64
+    %2 = arith.extsi %N : i32 to i64
+    %3 = arith.muli %1, %2 : i64
+    %row_ptr = tt.addptr %X, %3 : !tt.ptr<f32>, i64
+    %var_ptr = tt.addptr %Var, %1 : !tt.ptr<f32>, i64
+    %mean_ptr = tt.addptr %Mean, %1 : !tt.ptr<f32>, i64
+%bound1024 = arith.constant 1024 : i32
+%fits1024 = arith.cmpi sle, %N, %bound1024 : i32
+scf.if %fits1024 {
+%zero = arith.constant dense<0.0> : tensor<1024xf32>
+%cols = tt.make_range {end = 1024 : i32, start = 0 : i32} : tensor<1024xi32>
+%limit = tt.splat %N : i32 -> tensor<1024xi32>
+%mask = arith.cmpi slt, %cols, %limit : tensor<1024xi32>
+%ptr = tt.splat %row_ptr : !tt.ptr<f32> -> tensor<1024x!tt.ptr<f32>>
+%addrs = tt.addptr %ptr, %cols : tensor<1024x!tt.ptr<f32>>, tensor<1024xi32>
+%values = tt.load %addrs, %mask, %zero : tensor<1024x!tt.ptr<f32>>
+%sum = "tt.reduce"(%values) <{axis = 0 : i32}> ({
+^bb0(%a: f32, %b: f32):
+    %s = arith.addf %a, %b : f32
+    tt.reduce.return %s : f32
+}) : (tensor<1024xf32>) -> f32
+%nf = arith.sitofp %N : i32 to f32
+%avg = arith.divf %sum, %nf : f32
+%avgvec = tt.splat %avg : f32 -> tensor<1024xf32>
+%diff = arith.subf %values, %avgvec : tensor<1024xf32>
+%centered = arith.select %mask, %diff, %zero : tensor<1024xi1>, tensor<1024xf32>
+%squares = arith.mulf %centered, %centered : tensor<1024xf32>
+%ss = "tt.reduce"(%squares) <{axis = 0 : i32}> ({
+^bb0(%a: f32, %b: f32):
+    %s = arith.addf %a, %b : f32
+    tt.reduce.return %s : f32
+}) : (tensor<1024xf32>) -> f32
+%denom = arith.subf %nf, %correction : f32
+%variance = arith.divf %ss, %denom : f32
+ tt.store %mean_ptr, %avg : !tt.ptr<f32>
+ tt.store %var_ptr, %variance : !tt.ptr<f32>
+
+} else {
+%bound4096 = arith.constant 4096 : i32
+%fits4096 = arith.cmpi sle, %N, %bound4096 : i32
+scf.if %fits4096 {
+%zero = arith.constant dense<0.0> : tensor<4096xf32>
+%cols = tt.make_range {end = 4096 : i32, start = 0 : i32} : tensor<4096xi32>
+%limit = tt.splat %N : i32 -> tensor<4096xi32>
+%mask = arith.cmpi slt, %cols, %limit : tensor<4096xi32>
+%ptr = tt.splat %row_ptr : !tt.ptr<f32> -> tensor<4096x!tt.ptr<f32>>
+%addrs = tt.addptr %ptr, %cols : tensor<4096x!tt.ptr<f32>>, tensor<4096xi32>
+%values = tt.load %addrs, %mask, %zero : tensor<4096x!tt.ptr<f32>>
+%sum = "tt.reduce"(%values) <{axis = 0 : i32}> ({
+^bb0(%a: f32, %b: f32):
+    %s = arith.addf %a, %b : f32
+    tt.reduce.return %s : f32
+}) : (tensor<4096xf32>) -> f32
+%nf = arith.sitofp %N : i32 to f32
+%avg = arith.divf %sum, %nf : f32
+%avgvec = tt.splat %avg : f32 -> tensor<4096xf32>
+%diff = arith.subf %values, %avgvec : tensor<4096xf32>
+%centered = arith.select %mask, %diff, %zero : tensor<4096xi1>, tensor<4096xf32>
+%squares = arith.mulf %centered, %centered : tensor<4096xf32>
+%ss = "tt.reduce"(%squares) <{axis = 0 : i32}> ({
+^bb0(%a: f32, %b: f32):
+    %s = arith.addf %a, %b : f32
+    tt.reduce.return %s : f32
+}) : (tensor<4096xf32>) -> f32
+%denom = arith.subf %nf, %correction : f32
+%variance = arith.divf %ss, %denom : f32
+ tt.store %mean_ptr, %avg : !tt.ptr<f32>
+ tt.store %var_ptr, %variance : !tt.ptr<f32>
+
+} else {
+%zero = arith.constant dense<0.0> : tensor<16384xf32>
+%cols = tt.make_range {end = 16384 : i32, start = 0 : i32} : tensor<16384xi32>
+%limit = tt.splat %N : i32 -> tensor<16384xi32>
+%mask = arith.cmpi slt, %cols, %limit : tensor<16384xi32>
+%ptr = tt.splat %row_ptr : !tt.ptr<f32> -> tensor<16384x!tt.ptr<f32>>
+%addrs = tt.addptr %ptr, %cols : tensor<16384x!tt.ptr<f32>>, tensor<16384xi32>
+%values = tt.load %addrs, %mask, %zero : tensor<16384x!tt.ptr<f32>>
+%sum = "tt.reduce"(%values) <{axis = 0 : i32}> ({
+^bb0(%a: f32, %b: f32):
+    %s = arith.addf %a, %b : f32
+    tt.reduce.return %s : f32
+}) : (tensor<16384xf32>) -> f32
+%nf = arith.sitofp %N : i32 to f32
+%avg = arith.divf %sum, %nf : f32
+%avgvec = tt.splat %avg : f32 -> tensor<16384xf32>
+%diff = arith.subf %values, %avgvec : tensor<16384xf32>
+%centered = arith.select %mask, %diff, %zero : tensor<16384xi1>, tensor<16384xf32>
+%squares = arith.mulf %centered, %centered : tensor<16384xf32>
+%ss = "tt.reduce"(%squares) <{axis = 0 : i32}> ({
+^bb0(%a: f32, %b: f32):
+    %s = arith.addf %a, %b : f32
+    tt.reduce.return %s : f32
+}) : (tensor<16384xf32>) -> f32
+%denom = arith.subf %nf, %correction : f32
+%variance = arith.divf %ss, %denom : f32
+ tt.store %mean_ptr, %avg : !tt.ptr<f32>
+ tt.store %var_ptr, %variance : !tt.ptr<f32>
+
+}
+
+}
+tt.return
+}
+}

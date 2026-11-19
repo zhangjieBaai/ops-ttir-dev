@@ -1,0 +1,876 @@
+{
+  "passed": true,
+  "provenance": {
+    "command": [
+      "/root/venvs/ir-ops-dev/bin/python",
+      "var_mean/validate.py",
+      "--names",
+      "baseline",
+      "optimized",
+      "--sanitizer",
+      "--output",
+      "var_mean/results/runs/r2/final_gpu5/racecheck_accuracy.json"
+    ],
+    "git_commit": "0976ff9bc7db9e37192879af39ba9716d07bcaf2",
+    "contract_sha256": "2e2267012228ff33bd184e402df44af1e8a018aa694a03c0673042269e09339e",
+    "scripts": {
+      "common.py": "0049c8a380932b987a042e71c40218d37e1ef1e6ae3068e0599a2a3ac75b04fc",
+      "export_baseline.py": "97cd8a837358bbdb404821264db27f58357af31da781eab1c2a7a499e3b8c722",
+      "verify_pipeline.py": "b771671be51c5365e53785576f9361a438ee666a7dd6f6547105984557d3adf6",
+      "validate.py": "476b4b00abd62b950563002c9a0719379418c3200e5e7ac7c00e6f27596fc907",
+      "make_candidates.py": "bee50dea6847f5333c352f1e27b032102af4519582ed82e76f0e8f245892ae79",
+      "benchmark.py": "0c06258fd6e00a2e1c4963fcd6fb3166737d81d716e63cad5977f2e205a23ce4",
+      "make_dispatch.py": "cfee6858774cc966ec121134c98eb826a3d5c772153896f86ddf3c62d9f3b356",
+      "make_hybrid.py": "d38fc47a6cd391ee278fb36e0618d0190b0faf900c7250811409ef9c11c633c1",
+      "tutorial.py": "66a1ccfdc059536f3a0bc7630242b59079393a59eab8826e6d1d8ae42078c83d",
+      "verify_extraction.py": "f0013736971108492e138e82aa1104c00a094908499b2cb9191ca1e99cdb3910",
+      "select_candidate.py": "1bc9d3a098235c6de045c68461020df47f8959ffdaa576635082dcd71701ca9c"
+    },
+    "environment": {
+      "CUDA_HOME": "/usr/local/cuda",
+      "_CUDA_COMPAT_PATH": "/usr/local/cuda/compat",
+      "CUDA_VERSION": "12.9.0.043",
+      "CUDA_ARCH_LIST": "7.5 8.0 8.6 9.0 10.0 12.0",
+      "TRITON_DISABLE_LINE_INFO": "1",
+      "NVIDIA_REQUIRE_CUDA": "cuda>=9.0",
+      "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": "python",
+      "TORCH_CUDA_ARCH_LIST": "7.5 8.0 8.6 9.0 10.0 12.0+PTX",
+      "LIBRARY_PATH": "/usr/local/cuda/lib64/stubs:",
+      "CUDA_VISIBLE_DEVICES": "5",
+      "PYTHONIOENCODING": "utf-8",
+      "PATH": "/root/.codex/tmp/arg0-linux/codex-arg0MmGutg:/root/.vscode-server/bin/e646868227c3e3a9e3f24277c8c7220be42c0be7/bin/remote-cli:/usr/local/lib/python3.12/dist-packages/mlir/llvm_artifact/bin:/usr/local/lib/python3.12/dist-packages/torch_tensorrt/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/mpi/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/ucx/bin:/opt/amazon/efa/bin:/opt/tensorrt/bin:/root/.vscode-server/extensions/openai.chatgpt-26.1106.51428/bin/linux-x86_64",
+      "CUDA_MODULE_LOADING": "LAZY",
+      "LD_LIBRARY_PATH": "/usr/local/cuda-12.9/compute-sanitizer:/usr/local/lib/python3.12/dist-packages/torch/lib:/usr/local/lib/python3.12/dist-packages/torch_tensorrt/lib:/usr/local/cuda/compat/lib:/usr/local/nvidia/lib:/usr/local/nvidia/lib64",
+      "CUDA_DRIVER_VERSION": "575.51.03",
+      "NVTX_INJECTION64_PATH": "libsanitizer-collection.so"
+    },
+    "telemetry": "index, uuid, name, driver_version, pstate, clocks.current.sm [MHz], clocks.current.memory [MHz], power.draw [W], temperature.gpu, utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, P0, 345 MHz, 2619 MHz, 74.14 W, 29, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, P0, 345 MHz, 2619 MHz, 72.98 W, 29, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, P0, 345 MHz, 2619 MHz, 70.70 W, 27, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, P0, 345 MHz, 2619 MHz, 74.04 W, 29, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, P0, 345 MHz, 2619 MHz, 73.15 W, 31, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, P0, 1830 MHz, 2619 MHz, 129.99 W, 33, 0 %, 793 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, P0, 345 MHz, 2619 MHz, 70.51 W, 29, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, P0, 345 MHz, 2619 MHz, 73.29 W, 28, 0 %, 30 MiB\n",
+    "torch_version": "2.12.0+cu130",
+    "torch_path": "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/torch/__init__.py",
+    "loaded_libraries": [
+      "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/nvidia/cu13/lib/libcudart.so.13",
+      "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/nvidia/cu13/lib/libnvJitLink.so.13",
+      "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/nvidia/cu13/lib/libnvrtc-builtins.so.13.0",
+      "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/nvidia/cu13/lib/libnvrtc.so.13",
+      "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/nvidia/nvshmem/lib/libnvshmem_host.so.3",
+      "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so",
+      "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/_C/libtriton.so",
+      "/usr/lib/x86_64-linux-gnu/libcuda.so.580.126.20"
+    ],
+    "clocks_locked": "NOT_VERIFIED; no clock-setting command issued",
+    "cache": "no explicit cache flush; repeated same-input CUDA graph replay"
+  },
+  "seed": 42,
+  "identities": {
+    "baseline": {
+      "ttir_path": "/root/ops-ttir-dev/var_mean/ir/baseline.ttir",
+      "ttir_sha256": "15298caf68470c10aa3d4e7dda94c5322d4c7c4091778622a6ed01faed06ef09",
+      "products": {
+        "ttir": "68447c96999e21d3e5021f7d4659dff14848fd07e01217bbe3dc705ddaab0383",
+        "ttgir": "84a73063f417131fb562fe1d3c89daacd8f1493ff10b13f6bf46f34ed90d4127",
+        "llir": "2f68d0e6d8bf404f0b4c43045373ffe658a86b4ade85079b4902f067996f4314",
+        "ptx": "e383425e83e79f62a849d511c74029d40232732abc8d49cc035df1fdc6b65a50",
+        "cubin": "2dab67352d849c25158ba24e82212c82d0d17cd5937672c21a42a833946c6029"
+      },
+      "options": {
+        "TRITON_DISABLE_LINE_INFO": "true",
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "638f775c5db46c30b8a9234afd87e79aa37dda957b5b8e0f772c6380f09f2f1f",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "var_mean_welford_kernel",
+        "num_ctas": 1,
+        "num_stages": 3,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 16,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32
+      },
+      "n_regs": 32,
+      "n_spills": 0,
+      "shared": 16
+    },
+    "optimized": {
+      "ttir_path": "/root/ops-ttir-dev/var_mean/ir/optimized.ttir",
+      "ttir_sha256": "812e8d9eacc3a0bb33ea24efa729d48ac9b11b828d0c6c9ff31c7fb4a94efa9e",
+      "products": {
+        "ttir": "1beed01ef73536835d11ac63c0e977eaa1281d518172463bda92075a6bdd4f4e",
+        "ttgir": "1c35d1a54332bad88290f4e2a8848c22c82496088ae55ff80d8cbea2c6776cc8",
+        "llir": "86daf54517a6551d777d60c217765292b05253dff33997034f33cd28d7b3c104",
+        "ptx": "92327af687069971c948778f59ab6298853810442c8f6d9f008b9bd4288e3a83",
+        "cubin": "ee1ccc6646e9443c3fec747ec1a22c63eec9e9fbcef602517860a14ff9493c93"
+      },
+      "options": {
+        "TRITON_DISABLE_LINE_INFO": "true",
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "0b9e023a669366a9c3919e9a507e6e8d74cd6861292a936728419fce8e51ef0b",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "var_mean_welford_kernel",
+        "num_ctas": 1,
+        "num_stages": 3,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 16,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32
+      },
+      "n_regs": 32,
+      "n_spills": 0,
+      "shared": 16
+    }
+  },
+  "records": [
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        16
+      ],
+      "distribution": "normal",
+      "correction": 0.0,
+      "max_abs_var": 9.755666163790977e-08,
+      "max_abs_mean": 3.2829120699684466e-08,
+      "native_max_abs_var": 1.1920928955078125e-07,
+      "native_max_abs_mean": 2.9802322387695312e-08,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        16
+      ],
+      "distribution": "normal",
+      "correction": 0.0,
+      "max_abs_var": 9.755666163790977e-08,
+      "max_abs_mean": 3.2829120699684466e-08,
+      "native_max_abs_var": 1.1920928955078125e-07,
+      "native_max_abs_mean": 2.9802322387695312e-08,
+      "passed": true
+    },
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        16
+      ],
+      "distribution": "normal",
+      "correction": 1.0,
+      "max_abs_var": 1.303859187284928e-07,
+      "max_abs_mean": 3.2829120699684466e-08,
+      "native_max_abs_var": 2.384185791015625e-07,
+      "native_max_abs_mean": 2.9802322387695312e-08,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        16
+      ],
+      "distribution": "normal",
+      "correction": 1.0,
+      "max_abs_var": 1.303859187284928e-07,
+      "max_abs_mean": 3.2829120699684466e-08,
+      "native_max_abs_var": 2.384185791015625e-07,
+      "native_max_abs_mean": 2.9802322387695312e-08,
+      "passed": true
+    },
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        16
+      ],
+      "distribution": "offset",
+      "correction": 0.0,
+      "max_abs_var": 5.364417865472149e-07,
+      "max_abs_mean": 0.0007324218768189894,
+      "native_max_abs_var": 0.0005216598510742188,
+      "native_max_abs_mean": 0.0,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        16
+      ],
+      "distribution": "offset",
+      "correction": 0.0,
+      "max_abs_var": 5.364417865472149e-07,
+      "max_abs_mean": 0.0007324218768189894,
+      "native_max_abs_var": 0.0005216598510742188,
+      "native_max_abs_mean": 0.0,
+      "passed": true
+    },
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        16
+      ],
+      "distribution": "offset",
+      "correction": 1.0,
+      "max_abs_var": 6.357828600256354e-07,
+      "max_abs_mean": 0.0007324218768189894,
+      "native_max_abs_var": 0.0005564689636230469,
+      "native_max_abs_mean": 0.0,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        16
+      ],
+      "distribution": "offset",
+      "correction": 1.0,
+      "max_abs_var": 6.357828600256354e-07,
+      "max_abs_mean": 0.0007324218768189894,
+      "native_max_abs_var": 0.0005564689636230469,
+      "native_max_abs_mean": 0.0,
+      "passed": true
+    },
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        128
+      ],
+      "distribution": "normal",
+      "correction": 0.0,
+      "max_abs_var": 1.1617583717260516e-07,
+      "max_abs_mean": 1.3602402759715915e-08,
+      "native_max_abs_var": 2.384185791015625e-07,
+      "native_max_abs_mean": 2.2351741790771484e-08,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        128
+      ],
+      "distribution": "normal",
+      "correction": 0.0,
+      "max_abs_var": 1.1617583717260516e-07,
+      "max_abs_mean": 1.3602402759715915e-08,
+      "native_max_abs_var": 2.384185791015625e-07,
+      "native_max_abs_mean": 2.2351741790771484e-08,
+      "passed": true
+    },
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        128
+      ],
+      "distribution": "normal",
+      "correction": 1.0,
+      "max_abs_var": 1.3023178913051936e-07,
+      "max_abs_mean": 1.3602402759715915e-08,
+      "native_max_abs_var": 2.384185791015625e-07,
+      "native_max_abs_mean": 2.2351741790771484e-08,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        128
+      ],
+      "distribution": "normal",
+      "correction": 1.0,
+      "max_abs_var": 1.3023178913051936e-07,
+      "max_abs_mean": 1.3602402759715915e-08,
+      "native_max_abs_var": 2.384185791015625e-07,
+      "native_max_abs_mean": 2.2351741790771484e-08,
+      "passed": true
+    },
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        128
+      ],
+      "distribution": "offset",
+      "correction": 0.0,
+      "max_abs_var": 9.462813981286899e-07,
+      "max_abs_mean": 0.0009689331127447076,
+      "native_max_abs_var": 0.0002809762954711914,
+      "native_max_abs_mean": 0.001953125,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        128
+      ],
+      "distribution": "offset",
+      "correction": 0.0,
+      "max_abs_var": 9.462813981286899e-07,
+      "max_abs_mean": 0.0009689331127447076,
+      "native_max_abs_var": 0.0002809762954711914,
+      "native_max_abs_mean": 0.001953125,
+      "passed": true
+    },
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        128
+      ],
+      "distribution": "offset",
+      "correction": 1.0,
+      "max_abs_var": 9.133702323360637e-07,
+      "max_abs_mean": 0.0009689331127447076,
+      "native_max_abs_var": 0.00028312206268310547,
+      "native_max_abs_mean": 0.001953125,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        128
+      ],
+      "distribution": "offset",
+      "correction": 1.0,
+      "max_abs_var": 9.133702323360637e-07,
+      "max_abs_mean": 0.0009689331127447076,
+      "native_max_abs_var": 0.00028312206268310547,
+      "native_max_abs_mean": 0.001953125,
+      "passed": true
+    },
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        1040
+      ],
+      "distribution": "normal",
+      "correction": 0.0,
+      "max_abs_var": 1.0783791504209717e-07,
+      "max_abs_mean": 6.437207579479409e-09,
+      "native_max_abs_var": 2.384185791015625e-07,
+      "native_max_abs_mean": 7.450580596923828e-09,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        1040
+      ],
+      "distribution": "normal",
+      "correction": 0.0,
+      "max_abs_var": 1.3058066405946533e-07,
+      "max_abs_mean": 7.838165144713471e-09,
+      "native_max_abs_var": 1.1920928955078125e-07,
+      "native_max_abs_mean": 7.450580596923828e-09,
+      "passed": true
+    },
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        1040
+      ],
+      "distribution": "normal",
+      "correction": 1.0,
+      "max_abs_var": 9.320038574234246e-08,
+      "max_abs_mean": 6.437207579479409e-09,
+      "native_max_abs_var": 2.384185791015625e-07,
+      "native_max_abs_mean": 7.450580596923828e-09,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        1040
+      ],
+      "distribution": "normal",
+      "correction": 1.0,
+      "max_abs_var": 1.6535620406266105e-07,
+      "max_abs_mean": 7.838165144713471e-09,
+      "native_max_abs_var": 1.1920928955078125e-07,
+      "native_max_abs_mean": 7.450580596923828e-09,
+      "passed": true
+    },
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        1040
+      ],
+      "distribution": "offset",
+      "correction": 0.0,
+      "max_abs_var": 1.3227326551845664e-06,
+      "max_abs_mean": 0.0011437049179221503,
+      "native_max_abs_var": 0.00012135505676269531,
+      "native_max_abs_mean": 0.0009765625,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        1040
+      ],
+      "distribution": "offset",
+      "correction": 0.0,
+      "max_abs_var": 1.6420587798382513e-06,
+      "max_abs_mean": 0.0012789212723873788,
+      "native_max_abs_var": 0.00012135505676269531,
+      "native_max_abs_mean": 0.001953125,
+      "passed": true
+    },
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        1040
+      ],
+      "distribution": "offset",
+      "correction": 1.0,
+      "max_abs_var": 1.291994773389149e-06,
+      "max_abs_mean": 0.0011437049179221503,
+      "native_max_abs_var": 0.0001214742660522461,
+      "native_max_abs_mean": 0.0009765625,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        1040
+      ],
+      "distribution": "offset",
+      "correction": 1.0,
+      "max_abs_var": 1.6252242925895999e-06,
+      "max_abs_mean": 0.0012789212723873788,
+      "native_max_abs_var": 0.0001214742660522461,
+      "native_max_abs_mean": 0.001953125,
+      "passed": true
+    },
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        4096
+      ],
+      "distribution": "normal",
+      "correction": 0.0,
+      "max_abs_var": 8.607088064493951e-08,
+      "max_abs_mean": 2.8991990926041655e-09,
+      "native_max_abs_var": 1.1920928955078125e-07,
+      "native_max_abs_mean": 7.450580596923828e-09,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        4096
+      ],
+      "distribution": "normal",
+      "correction": 0.0,
+      "max_abs_var": 9.283744373256297e-08,
+      "max_abs_mean": 2.749089853329445e-09,
+      "native_max_abs_var": 1.1920928955078125e-07,
+      "native_max_abs_mean": 6.51925802230835e-09,
+      "passed": true
+    },
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        4096
+      ],
+      "distribution": "normal",
+      "correction": 1.0,
+      "max_abs_var": 1.603536929906113e-07,
+      "max_abs_mean": 2.8991990926041655e-09,
+      "native_max_abs_var": 2.384185791015625e-07,
+      "native_max_abs_mean": 7.450580596923828e-09,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        4096
+      ],
+      "distribution": "normal",
+      "correction": 1.0,
+      "max_abs_var": 1.582724690196713e-07,
+      "max_abs_mean": 2.749089853329445e-09,
+      "native_max_abs_var": 1.7881393432617188e-07,
+      "native_max_abs_mean": 6.51925802230835e-09,
+      "passed": true
+    },
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        4096
+      ],
+      "distribution": "offset",
+      "correction": 0.0,
+      "max_abs_var": 6.925434872240288e-07,
+      "max_abs_mean": 0.0008475780468870653,
+      "native_max_abs_var": 9.840726852416992e-05,
+      "native_max_abs_mean": 0.0009765625,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        4096
+      ],
+      "distribution": "offset",
+      "correction": 0.0,
+      "max_abs_var": 6.925434872240288e-07,
+      "max_abs_mean": 0.0008475780468870653,
+      "native_max_abs_var": 9.834766387939453e-05,
+      "native_max_abs_mean": 0.0009765625,
+      "passed": true
+    },
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        4096
+      ],
+      "distribution": "offset",
+      "correction": 1.0,
+      "max_abs_var": 7.577464411490098e-07,
+      "max_abs_mean": 0.0008475780468870653,
+      "native_max_abs_var": 9.85264778137207e-05,
+      "native_max_abs_mean": 0.0009765625,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        4096
+      ],
+      "distribution": "offset",
+      "correction": 1.0,
+      "max_abs_var": 7.577464411490098e-07,
+      "max_abs_mean": 0.0008475780468870653,
+      "native_max_abs_var": 9.846687316894531e-05,
+      "native_max_abs_mean": 0.0009765625,
+      "passed": true
+    },
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        8208
+      ],
+      "distribution": "normal",
+      "correction": 0.0,
+      "max_abs_var": 1.3021839717630712e-07,
+      "max_abs_mean": 2.169095243698127e-09,
+      "native_max_abs_var": 1.7881393432617188e-07,
+      "native_max_abs_mean": 2.7939677238464355e-09,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        8208
+      ],
+      "distribution": "normal",
+      "correction": 0.0,
+      "max_abs_var": 1.0715864129373642e-07,
+      "max_abs_mean": 4.048818736876458e-09,
+      "native_max_abs_var": 1.7881393432617188e-07,
+      "native_max_abs_mean": 3.725290298461914e-09,
+      "passed": true
+    },
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        8208
+      ],
+      "distribution": "normal",
+      "correction": 1.0,
+      "max_abs_var": 1.1371653285685568e-07,
+      "max_abs_mean": 2.169095243698127e-09,
+      "native_max_abs_var": 1.1920928955078125e-07,
+      "native_max_abs_mean": 2.7939677238464355e-09,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        8208
+      ],
+      "distribution": "normal",
+      "correction": 1.0,
+      "max_abs_var": 1.1371653285685568e-07,
+      "max_abs_mean": 4.048818736876458e-09,
+      "native_max_abs_var": 1.1920928955078125e-07,
+      "native_max_abs_mean": 3.725290298461914e-09,
+      "passed": true
+    },
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        8208
+      ],
+      "distribution": "offset",
+      "correction": 0.0,
+      "max_abs_var": 8.530007740148449e-07,
+      "max_abs_mean": 0.0009632370711187832,
+      "native_max_abs_var": 5.0008296966552734e-05,
+      "native_max_abs_mean": 0.001953125,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        8208
+      ],
+      "distribution": "offset",
+      "correction": 0.0,
+      "max_abs_var": 4.248219060976055e-07,
+      "max_abs_mean": 0.000807734249974601,
+      "native_max_abs_var": 5.0127506256103516e-05,
+      "native_max_abs_mean": 0.0009765625,
+      "passed": true
+    },
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        8208
+      ],
+      "distribution": "offset",
+      "correction": 1.0,
+      "max_abs_var": 8.330597700556552e-07,
+      "max_abs_mean": 0.0009632370711187832,
+      "native_max_abs_var": 4.9948692321777344e-05,
+      "native_max_abs_mean": 0.001953125,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        8208
+      ],
+      "distribution": "offset",
+      "correction": 1.0,
+      "max_abs_var": 3.6701932559779493e-07,
+      "max_abs_mean": 0.000807734249974601,
+      "native_max_abs_var": 5.0067901611328125e-05,
+      "native_max_abs_mean": 0.0009765625,
+      "passed": true
+    },
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        16384
+      ],
+      "distribution": "normal",
+      "correction": 0.0,
+      "max_abs_var": 1.3455829450670365e-07,
+      "max_abs_mean": 1.835988247284731e-09,
+      "native_max_abs_var": 1.1920928955078125e-07,
+      "native_max_abs_mean": 3.259629011154175e-09,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        16384
+      ],
+      "distribution": "normal",
+      "correction": 0.0,
+      "max_abs_var": 7.989264072527646e-08,
+      "max_abs_mean": 3.1876619104725945e-09,
+      "native_max_abs_var": 1.1920928955078125e-07,
+      "native_max_abs_mean": 1.862645149230957e-09,
+      "passed": true
+    },
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        16384
+      ],
+      "distribution": "normal",
+      "correction": 1.0,
+      "max_abs_var": 1.4765675460104433e-07,
+      "max_abs_mean": 1.835988247284731e-09,
+      "native_max_abs_var": 1.1920928955078125e-07,
+      "native_max_abs_mean": 3.259629011154175e-09,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        16384
+      ],
+      "distribution": "normal",
+      "correction": 1.0,
+      "max_abs_var": 5.5385143249431223e-08,
+      "max_abs_mean": 3.1876619104725945e-09,
+      "native_max_abs_var": 1.1920928955078125e-07,
+      "native_max_abs_mean": 1.862645149230957e-09,
+      "passed": true
+    },
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        16384
+      ],
+      "distribution": "offset",
+      "correction": 0.0,
+      "max_abs_var": 7.437032086832218e-07,
+      "max_abs_mean": 0.0008920431118895067,
+      "native_max_abs_var": 1.7702579498291016e-05,
+      "native_max_abs_mean": 0.0009765625,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        16384
+      ],
+      "distribution": "offset",
+      "correction": 0.0,
+      "max_abs_var": 4.1209057410895866e-07,
+      "max_abs_mean": 0.0008159876451827586,
+      "native_max_abs_var": 1.800060272216797e-05,
+      "native_max_abs_mean": 0.0009765625,
+      "passed": true
+    },
+    {
+      "name": "baseline",
+      "shape": [
+        17,
+        16384
+      ],
+      "distribution": "offset",
+      "correction": 1.0,
+      "max_abs_var": 7.677971112229898e-07,
+      "max_abs_mean": 0.0008920431118895067,
+      "native_max_abs_var": 1.7702579498291016e-05,
+      "native_max_abs_mean": 0.0009765625,
+      "passed": true
+    },
+    {
+      "name": "optimized",
+      "shape": [
+        17,
+        16384
+      ],
+      "distribution": "offset",
+      "correction": 1.0,
+      "max_abs_var": 4.7006499093171783e-07,
+      "max_abs_mean": 0.0008159876451827586,
+      "native_max_abs_var": 1.800060272216797e-05,
+      "native_max_abs_mean": 0.0009765625,
+      "passed": true
+    }
+  ]
+}
