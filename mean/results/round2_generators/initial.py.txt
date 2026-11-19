@@ -1,0 +1,223 @@
+"""Direct TTIR construction for loop unrolling and local N/K redistribution."""
+
+from common import ROOT, ir_path, manifest, save_json, sha256
+
+VARIANTS = {
+    "r2_seq4": dict(unroll=4),
+    "r2_seq8": dict(unroll=8),
+    "r2_acc4": dict(unroll=4, independent=True),
+    "r2_acc8": dict(unroll=8, independent=True),
+    "r2_n16k256": dict(rows=16, width=256),
+    "r2_n64k64": dict(rows=64, width=64),
+}
+
+
+def build(original, *, unroll=1, independent=False, rows=1, width=1024):
+    header = next(l for l in original.splitlines() if "tt.func public" in l)
+    lines = []
+
+    def emit(s):
+        lines.append("    " + s)
+
+    for p in ("N", "K"):
+        if f"%{p}:" not in header:
+            emit(f"%{p} = arith.constant 1 : i32")
+    for p, v in [
+        ("z", 0),
+        ("one", 1),
+        ("w", width),
+        ("full", 1024),
+        ("step", unroll if rows == 1 else rows),
+    ]:
+        emit(f"%{p} = arith.constant {v} : i32")
+    emit("%pm = tt.get_program_id x : i32")
+    emit("%pk = tt.get_program_id y : i32")
+    emit("%kb = arith.muli %pk, %full : i32")
+    emit("%mn = arith.muli %pm, %N : i32")
+    emit("%base = arith.muli %mn, %K : i32")
+    emit(
+        f"%kr = tt.make_range {{end = {width} : i32, start = 0 : i32}} : tensor<{width}xi32>"
+    )
+    if width < 1024:
+        emit("%kloop = scf.for %sub = %z to %full step %w : i32 {")
+        emit("%kbase = arith.addi %kb, %sub : i32")
+    else:
+        emit("%kbase = arith.addi %kb, %z : i32")
+    i = f"tensor<{width}xi32>"
+    f = f"tensor<{width}xf32>"
+    h = f"tensor<{width}xf16>"
+    b = f"tensor<{width}xi1>"
+    p = f"tensor<{width}x!tt.ptr<f16>>"
+    emit(f"%kbs = tt.splat %kbase : i32 -> {i}")
+    emit(f"%ko = arith.addi %kr, %kbs : {i}")
+    emit(f"%ks = tt.splat %K : i32 -> {i}")
+    emit(f"%km = arith.cmpi slt, %ko, %ks : {i}")
+    if rows == 1:
+        emit(f"%zero = arith.constant dense<0.0> : {f}")
+        emit(f"%zeroh = arith.constant dense<0.0> : {h}")
+        emit(f"%ip = tt.splat %input_ptr : !tt.ptr<f16> -> {p}")
+        count = unroll if independent else 1
+        states = ", ".join(f"%s{j} = %zero" for j in range(count))
+        outs = ", ".join(f for _ in range(count))
+        emit(
+            f"%acc:{count} = scf.for %n = %z to %N step %step iter_args({states}) -> ({outs}) : i32 {{"
+        )
+        # Keep all loads before arithmetic; downstream may reschedule them.
+        for j in range(unroll):
+            emit(f"%j{j} = arith.constant {j} : i32")
+            emit(f"%n{j} = arith.addi %n, %j{j} : i32")
+            emit(f"%valid{j} = arith.cmpi slt, %n{j}, %N : i32")
+            emit(f"%vm{j} = tt.splat %valid{j} : i1 -> {b}")
+            emit(f"%mask{j} = arith.andi %vm{j}, %km : {b}")
+            emit(f"%nk{j} = arith.muli %n{j}, %K : i32")
+            emit(f"%bas{j} = arith.addi %base, %nk{j} : i32")
+            emit(f"%bs{j} = tt.splat %bas{j} : i32 -> {i}")
+            emit(f"%off{j} = arith.addi %bs{j}, %ko : {i}")
+            emit(f"%ptr{j} = tt.addptr %ip, %off{j} : {p}, {i}")
+            emit(f"%v{j} = tt.load %ptr{j}, %mask{j}, %zeroh : {p}")
+            emit(f"%vf{j} = arith.extf %v{j} : {h} to {f}")
+        for j in range(unroll):
+            prev = f"%s{j}" if independent else "%s0" if j == 0 else f"%a{j-1}"
+            emit(f"%a{j} = arith.addf {prev}, %vf{j} : {f}")
+        yields = (
+            ", ".join(f"%a{j}" for j in range(unroll))
+            if independent
+            else f"%a{unroll-1}"
+        )
+        emit(f"scf.yield {yields} : {outs}")
+        emit("}")
+        if independent:
+            for j in range(1, unroll):
+                prev = "%acc#0" if j == 1 else f"%join{j-1}"
+                emit(f"%join{j} = arith.addf {prev}, %acc#{j} : {f}")
+            total = f"%join{unroll-1}"
+        else:
+            total = "%acc#0"
+    else:
+        ti = f"tensor<{rows}x{width}xi32>"
+        tf = f"tensor<{rows}x{width}xf32>"
+        th = f"tensor<{rows}x{width}xf16>"
+        tb = f"tensor<{rows}x{width}xi1>"
+        tp = f"tensor<{rows}x{width}x!tt.ptr<f16>>"
+        emit(
+            f"%nr = tt.make_range {{end = {rows} : i32, start = 0 : i32}} : tensor<{rows}xi32>"
+        )
+        emit(
+            f"%ne = tt.expand_dims %nr {{axis = 1 : i32}} : tensor<{rows}xi32> -> tensor<{rows}x1xi32>"
+        )
+        emit(
+            f"%ke = tt.expand_dims %ko {{axis = 0 : i32}} : {i} -> tensor<1x{width}xi32>"
+        )
+        emit(f"%kt = tt.broadcast %ke : tensor<1x{width}xi32> -> {ti}")
+        emit(f"%ns = tt.splat %N : i32 -> {ti}")
+        emit(f"%stride = tt.splat %K : i32 -> {ti}")
+        emit(f"%bs = tt.splat %base : i32 -> {ti}")
+        emit(f"%zero = arith.constant dense<0.0> : {tf}")
+        emit(f"%zeroh = arith.constant dense<0.0> : {th}")
+        emit(f"%ip = tt.splat %input_ptr : !tt.ptr<f16> -> {tp}")
+        emit(
+            f"%acc = scf.for %n = %z to %N step %step iter_args(%sum = %zero) -> ({tf}) : i32 {{"
+        )
+        emit(f"%nsc = tt.splat %n : i32 -> tensor<{rows}x1xi32>")
+        emit(f"%ni = arith.addi %nsc, %ne : tensor<{rows}x1xi32>")
+        emit(f"%nt = tt.broadcast %ni : tensor<{rows}x1xi32> -> {ti}")
+        emit(f"%nm = arith.cmpi slt, %nt, %ns : {ti}")
+        emit(f"%kmt = arith.cmpi slt, %kt, %stride : {ti}")
+        emit(f"%mask = arith.andi %nm, %kmt : {tb}")
+        emit(f"%no = arith.muli %nt, %stride : {ti}")
+        emit(f"%o0 = arith.addi %no, %kt : {ti}")
+        emit(f"%off = arith.addi %o0, %bs : {ti}")
+        emit(f"%ptr = tt.addptr %ip, %off : {tp}, {ti}")
+        emit(f"%v = tt.load %ptr, %mask, %zeroh : {tp}")
+        emit(f"%vf = arith.extf %v : {th} to {tf}")
+        emit(f"%add = arith.addf %sum, %vf : {tf}")
+        emit(f"scf.yield %add : {tf}")
+        emit("}")
+        emit('%reduced = "tt.reduce"(%acc) ({')
+        emit("^bb0(%a: f32, %b: f32):")
+        emit("%c = arith.addf %a, %b : f32")
+        emit("tt.reduce.return %c : f32")
+        emit(f"}}) {{axis = 0 : i32}} : ({tf}) -> {f}")
+        total = "%reduced"
+    emit("%nf = arith.sitofp %N : i32 to f32")
+    emit(f"%nfs = tt.splat %nf : f32 -> {f}")
+    emit(f"%avg = arith.divf {total}, %nfs : {f}")
+    emit(f"%avgh = arith.truncf %avg : {f} to {h}")
+    emit("%ob = arith.muli %pm, %K : i32")
+    emit(f"%obs = tt.splat %ob : i32 -> {i}")
+    emit(f"%oo = arith.addi %obs, %ko : {i}")
+    emit(f"%op = tt.splat %output_ptr : !tt.ptr<f16> -> {p}")
+    emit(f"%optr = tt.addptr %op, %oo : {p}, {i}")
+    emit(f"tt.store %optr, %avgh, %km : {p}")
+    if width < 1024:
+        emit("scf.yield")
+        emit("}")
+    emit("tt.return")
+    start = original.index(header) + len(header)
+    end = original.index("\n  }", start)
+    return original[:start] + "\n" + "\n".join(lines) + original[end:]
+
+
+def branch(original, fast, predicate):
+    header = next(l for l in original.splitlines() if "tt.func public" in l)
+
+    def body(text):
+        start = text.index(header) + len(header)
+        end = text.index("\n  }", start)
+        return text[start:end].replace("    tt.return", "")
+
+    # Both bodies use local SSA names and have no outward results.
+    pos = original.index(header) + len(header)
+    end = original.index("\n  }", pos)
+    return (
+        original[:pos]
+        + "\n"
+        + predicate
+        + "\n    scf.if %take {\n"
+        + body(fast)
+        + "\n    } else {\n"
+        + body(original)
+        + "\n    }\n    tt.return"
+        + original[end:]
+    )
+
+
+def generate():
+    records = []
+    for group in manifest()["groups"]:
+        base = ir_path(group, "optimized").read_text()
+        for name, config in VARIANTS.items():
+            result = base
+            if "@mean_dim_kernel_non_inner_vec" in base:
+                result = build(base, **config)
+                if "rows" in config:
+                    if "%N:" in next(
+                        l for l in base.splitlines() if "tt.func public" in l
+                    ):
+                        result = branch(
+                            base,
+                            result,
+                            "    %limit = arith.constant 128 : i32\n    %take = arith.cmpi sge, %N, %limit : i32",
+                        )
+                    else:
+                        result = base
+            path = ir_path(group, name)
+            with path.open("x") as stream:
+                stream.write(result)
+            records.append(
+                dict(
+                    group=group, name=name, sha256=sha256(path), changed=result != base
+                )
+            )
+    save_json(
+        ROOT / "results/round2_candidates.json",
+        dict(
+            plan_sha256=sha256(ROOT / "optimization_plan_round2.md"),
+            generator_sha256=sha256(__file__),
+            records=records,
+        ),
+    )
+
+
+if __name__ == "__main__":
+    generate()
