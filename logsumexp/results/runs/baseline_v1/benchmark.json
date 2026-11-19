@@ -1,0 +1,4856 @@
+{
+  "command": [
+    "/root/venvs/ir-ops-dev/bin/python",
+    "logsumexp/benchmark.py",
+    "--rounds",
+    "3",
+    "--pipeline",
+    "logsumexp/results/runs/baseline_v1/pipeline.json",
+    "--validation",
+    "logsumexp/results/runs/baseline_v1/accuracy.json",
+    "--output",
+    "logsumexp/results/runs/baseline_v1/benchmark.json"
+  ],
+  "git_commit": "6bb8ac718b54474f8ae148f3b32879d088dfa98f",
+  "git_status": " M ../.gitignore\n M ../.pre-commit-config.yaml\n M ../AGENTS.md\n M ../README.md\n M ../knowledge/README.md\n M ../knowledge/evidence-index.md\n M ../knowledge/techniques.md\n M ../knowledge/ttir-model.md\n?? ../knowledge/softmax-llir.md\n?? ../knowledge/ttir-vs-triton.md\n?? ./\n?? ../mm/host_descriptor/\n?? ../sum/\n?? ../var_mean/\n",
+  "protocol_sha256": "69a32639f5aca65f217fd37cc06a7ba9451d3b5d1f880ec3990d124106012860",
+  "baseline_sha256": "a3d8832442f4fe58faf3d8fa4895249d86eed51cb9100ac4d7eac81e0fa001bb",
+  "code_sha256": {
+    "tutorial.py": "38f4cc2b2d8f4149a6c84ddc905ae979d04700efd47f15eec53878c291d4725f",
+    "frozen_extension.py": "74c8a3a1bdff2178b5be7d480da7c836315b6f46be459e75dee1a5986d496c02",
+    "frozen_heuristics.py": "506483c0e341e01d82942e60a698a1e1f1401f8575d483acd986b73e03ad09ef",
+    "environment.py": "3730fe04b0c27a1c53f901a492e32e1bcd849b1a108d226b8d76d311dc57ea5c",
+    "common.py": "16eac9f7bd15864023e657b962361e6915b84828b879b092ac3c7aff00423a0f",
+    "export_baseline.py": "a7e52f2bc4b1234aac6c79a4f6656f2666411af8985e99154262b52e3b3600a2",
+    "verify_pipeline.py": "079a5996577d866da103339c6db46a8b3fd415540e972c72c6d7437ce9c58a73",
+    "validate.py": "08ddd456fa28c63abaa8ae8a20a4f651f5bb64fd8d616cf507f34ef447b40d4e",
+    "benchmark.py": "ae3044ef1006e04141a14d81ba7d88f1014bf7c1af57cd6156db3f183de14a7d"
+  },
+  "visible_devices": "7",
+  "physical_uuid": "GPU-b024aea2-2ffa-7211-b551-8e5575887423",
+  "gpu_snapshot": "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.19 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.26 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.77 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.13 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.71 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.25 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.60 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 30, 103.62 W, 700.00 W, 0 %, 557 MiB\n",
+  "suite": "full",
+  "rounds": 3,
+  "rep_ms": 20,
+  "seed": 42,
+  "metric": "graph_replay one kernel device latency, allocation/loading/submission excluded",
+  "cache": "repeated same input; no clearing; no cold-cache claim",
+  "clocks_locked": "UNKNOWN; not actively set",
+  "validation_sha256": "088fe6da46c19c6ab3743b06d775b36300414b11da4301cd36f858260db2d50e",
+  "pipeline_sha256": "97b1328f52223ed935b46086122a998a803ca589bc1bbf9485f708f8bbd8b92b",
+  "artifacts": {
+    "g_89a9edc29b16": {
+      "baseline": {
+        "hash": "dacb6811d712f214d47e7e96011318981620798e4223503b78cc94f3feeed0f8",
+        "stages": {
+          "ttir": "67f12237bdb57695b71e36ce9321d8a7b47720cf73cc152d279b1a90c54ea218",
+          "ttgir": "e402690b336bd03cc4bb182147339e03832baf4ccae4376e440bfd35f535dd06",
+          "llir": "1b74652391c00c5a67467e9dbf2051256bd44e194848f98f57039ca4380ca34f",
+          "ptx": "cd2e45c21b2d1c49995a84e2e5aa5727e33b3482a6c34f81bb88dd07e44d94a0",
+          "cubin": "0fe54469cd95940a5d595fd6f99bdd67d32f29098921fb9a3e0c0422f4b796f3"
+        },
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "dacb6811d712f214d47e7e96011318981620798e4223503b78cc94f3feeed0f8",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "logsumexp_kernel_non_inner",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 16,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 4096,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "n_regs": 32,
+        "n_spills": 0,
+        "input_ttir": "/root/ops-ttir-dev/logsumexp/ir/g_89a9edc29b16/baseline.ttir",
+        "input_sha256": "67f12237bdb57695b71e36ce9321d8a7b47720cf73cc152d279b1a90c54ea218"
+      }
+    },
+    "g_25df7a76052b": {
+      "baseline": {
+        "hash": "06414aa7289bbeaeaceb1767e650122ad2c5c1bed46a936a715e502823398acd",
+        "stages": {
+          "ttir": "660c505ef02f0103fdbcf54d4312e49fd6ba8645621b66a1e5382db3ef6f21c2",
+          "ttgir": "24e216080f28660e02f8d1d922aee3094732c51e6595ace758dd244a1b279e26",
+          "llir": "d932185b3261ec8404d4d81c30e253d48f8cc3c9c157b6c39ffa08875cad5715",
+          "ptx": "52eb04f3e83f3e21758d04c9ba618bef8e00f77da1939613206228ea6e664c75",
+          "cubin": "8167da6ee1608a97c227d2e3b5ecd05966750b21a7e6bc9a4da4329cffeb2716"
+        },
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "06414aa7289bbeaeaceb1767e650122ad2c5c1bed46a936a715e502823398acd",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "logsumexp_kernel_non_inner",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 16,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 64,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "n_regs": 32,
+        "n_spills": 0,
+        "input_ttir": "/root/ops-ttir-dev/logsumexp/ir/g_25df7a76052b/baseline.ttir",
+        "input_sha256": "660c505ef02f0103fdbcf54d4312e49fd6ba8645621b66a1e5382db3ef6f21c2"
+      }
+    },
+    "g_0b7ba13d19cb": {
+      "baseline": {
+        "hash": "0a09a8cff9bf4050700ab70ec88dbb960cffefaf2fb2f4d1d066f765eecfcc17",
+        "stages": {
+          "ttir": "7c4cb139e2b6e92f5666b3ba15cfaa932695abf16cb147aabef9f419de4fe800",
+          "ttgir": "463f7f5ea086b14ca550a2e0e4388e2ac1e40d103f8bbeaf0e97888b2578ca09",
+          "llir": "b1e73a5732f5b2b31a9faa50475f13593d5a7722eff24937edca9359cd3aba3f",
+          "ptx": "17e198a8af9534c160aa2edb6fd4ee2d793f7a3e261fb324dfa4861d0b470e66",
+          "cubin": "8719082abee2e29c78c844f626957630697757095f5868de8c5e0e786413ac27"
+        },
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "0a09a8cff9bf4050700ab70ec88dbb960cffefaf2fb2f4d1d066f765eecfcc17",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "logsumexp_kernel_non_inner",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 16,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 512,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "n_regs": 40,
+        "n_spills": 0,
+        "input_ttir": "/root/ops-ttir-dev/logsumexp/ir/g_0b7ba13d19cb/baseline.ttir",
+        "input_sha256": "7c4cb139e2b6e92f5666b3ba15cfaa932695abf16cb147aabef9f419de4fe800"
+      }
+    },
+    "g_c6892bb035fa": {
+      "baseline": {
+        "hash": "b93e42f96b68ebe547b9ed6e2a5e8c086245af221217750d839ddfe53d8a7fc4",
+        "stages": {
+          "ttir": "74e192f9963176652717d2638dc6c7cb88650d71e9d68d9914c447b5fce2202f",
+          "ttgir": "c85670b5fed6c67f75a70dd65ec92bec38978d31f27a39e4112bb000d23c917d",
+          "llir": "f3e063df51a9b69587159e6ec8c3c9389082f35378616c17c1578e8f576b3ffa",
+          "ptx": "ab07c9cbed9370cd24e40967f9c23b0e2f95d18cb846cbb361717124f2958317",
+          "cubin": "f9a5265a37902c33d4bf34bf22396162b757f1185dfa2f2103e58b34232aeb51"
+        },
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "b93e42f96b68ebe547b9ed6e2a5e8c086245af221217750d839ddfe53d8a7fc4",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "logsumexp_kernel_inner",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 16,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "n_regs": 16,
+        "n_spills": 0,
+        "input_ttir": "/root/ops-ttir-dev/logsumexp/ir/g_c6892bb035fa/baseline.ttir",
+        "input_sha256": "74e192f9963176652717d2638dc6c7cb88650d71e9d68d9914c447b5fce2202f"
+      }
+    },
+    "g_df236e18c0a5": {
+      "baseline": {
+        "hash": "3a9f99cc8d403e27c3e200ceb650ea851b1eda7cf6af969274b553f31ece925e",
+        "stages": {
+          "ttir": "252a90c52753649e1e78097ab7860d56deba37af57d93391f6bd03314319a629",
+          "ttgir": "5a266ae88d9c43e05357fca6b0c346846f83fc83003735a0c09b1602195324ff",
+          "llir": "3d4a312833081043be8d22ada9fe3f01cfd6e37a568a46a598047e6d24bcb58d",
+          "ptx": "a6c9dedae0afd1243d7536687fb331d6a3b16a7c5346eedd6be8d2dec5a51de9",
+          "cubin": "64f6bb8a9b8f58de2a65c2e7aeda6313c49fa20548069a20e110d43b2ad21574"
+        },
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "3a9f99cc8d403e27c3e200ceb650ea851b1eda7cf6af969274b553f31ece925e",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "logsumexp_kernel_inner",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 16,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 64,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "n_regs": 79,
+        "n_spills": 0,
+        "input_ttir": "/root/ops-ttir-dev/logsumexp/ir/g_df236e18c0a5/baseline.ttir",
+        "input_sha256": "252a90c52753649e1e78097ab7860d56deba37af57d93391f6bd03314319a629"
+      }
+    },
+    "g_1c037e05ab35": {
+      "baseline": {
+        "hash": "4cbbf2d90a03387c319994531731001c805314c0ca55c1b946e70b5f754d67f2",
+        "stages": {
+          "ttir": "65f626f0ef9d84d900cd0c5c799fc3dbf4eaebd7db6987dc2ffb8fc903c6985b",
+          "ttgir": "b6f27b24b95a76804baac4f821ac9d227c1d20cbfb3411d0ab5bdfaf42d90666",
+          "llir": "b9064db0e4d737d424c2b4e7b26a154fa6a084ca293a65ff120d379078fc3453",
+          "ptx": "18bad26460d6bd0de76903c39b21ab1503dc143be4f2d1c045e4b9ab283ba605",
+          "cubin": "c8fa1668cca02fd385876aadb95fc9568adc2defcd33b1de85386186bd3292b8"
+        },
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "4cbbf2d90a03387c319994531731001c805314c0ca55c1b946e70b5f754d67f2",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "logsumexp_kernel_inner",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 16,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 64,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "n_regs": 79,
+        "n_spills": 0,
+        "input_ttir": "/root/ops-ttir-dev/logsumexp/ir/g_1c037e05ab35/baseline.ttir",
+        "input_sha256": "65f626f0ef9d84d900cd0c5c799fc3dbf4eaebd7db6987dc2ffb8fc903c6985b"
+      }
+    },
+    "g_78effb105bfb": {
+      "baseline": {
+        "hash": "fbc8c59e93e3b27bda274d512330f0b49c7168583293f25c13fa616196546236",
+        "stages": {
+          "ttir": "5edef8297ff7b2f3777d48f97d65678f0066e05a461b462aaf0c4682786d893a",
+          "ttgir": "5a2af54f422d2a55dcc21909c311ce08c5dac96a85ac39349539278d53015e0b",
+          "llir": "d1e0140d07eceac52a3cb4bb62a4e1cd8c9ac9458cba202065eee031e0784f14",
+          "ptx": "5604edd29ab1d9c227d33f1e85276006af4961d268697c8300bbb1cf98d91408",
+          "cubin": "8526a72d87801d4bd6fd2b65a81df1f85dcc871784abb28cc293505b5278e783"
+        },
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "fbc8c59e93e3b27bda274d512330f0b49c7168583293f25c13fa616196546236",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "logsumexp_kernel_inner",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 16,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "n_regs": 16,
+        "n_spills": 0,
+        "input_ttir": "/root/ops-ttir-dev/logsumexp/ir/g_78effb105bfb/baseline.ttir",
+        "input_sha256": "5edef8297ff7b2f3777d48f97d65678f0066e05a461b462aaf0c4682786d893a"
+      }
+    },
+    "g_6a72b2de463b": {
+      "baseline": {
+        "hash": "97dd49ae6d82508dc77587a79d6336e7b36418dda65de5783f03220931c8e64b",
+        "stages": {
+          "ttir": "e381d2393f92b46b3fa335d9ae36d90f0005f4a2a7a2d14f9f1b5e599cae7afa",
+          "ttgir": "44a1e361bc7701163c715b2b0ef931f42d2cc98e3bacaadddde1a5627454e891",
+          "llir": "cddd9cb4d9696139453511eff8c441f138d916da5d519e2cafb25299f9dcbf1d",
+          "ptx": "3df95911274d193f95ec0a0f9e20064b076143c8c2c601b1981b7f4b09fd04c7",
+          "cubin": "504ca95e79829f8edbf83ba9635de4bcbdad8a5424a1650bc4de7118e23da1ab"
+        },
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "97dd49ae6d82508dc77587a79d6336e7b36418dda65de5783f03220931c8e64b",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "logsumexp_kernel_inner",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 16,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 64,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "n_regs": 31,
+        "n_spills": 0,
+        "input_ttir": "/root/ops-ttir-dev/logsumexp/ir/g_6a72b2de463b/baseline.ttir",
+        "input_sha256": "e381d2393f92b46b3fa335d9ae36d90f0005f4a2a7a2d14f9f1b5e599cae7afa"
+      }
+    },
+    "g_4d6c54a25a3a": {
+      "baseline": {
+        "hash": "7e4bb677e7d76319b55be67a51ee129fece7d503145f07aa7d3ae6be7d23f9e6",
+        "stages": {
+          "ttir": "9231cdbab88b4fcc42ab6a2d994bcae00058936f80a97e93842414b70f8eb3f9",
+          "ttgir": "e9cbe4a1687297699f6f227bb39ad58917f72d0e14a4ff1ca35ace3ded21dbd9",
+          "llir": "39338f81e12a0b196b517e2d4ac71f575c30f9d167dccd12793f8bd61239e7da",
+          "ptx": "3378afc49252e7b78c5a9d2fa3695442754ada7adb961e54fbfdbbcb271d0954",
+          "cubin": "d8df83df1d9096f8e6bbbab1ce094e571ba0b525ae57eecd2c57ce5c7b61c7cc"
+        },
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "7e4bb677e7d76319b55be67a51ee129fece7d503145f07aa7d3ae6be7d23f9e6",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "logsumexp_kernel_inner",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 16,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "n_regs": 23,
+        "n_spills": 0,
+        "input_ttir": "/root/ops-ttir-dev/logsumexp/ir/g_4d6c54a25a3a/baseline.ttir",
+        "input_sha256": "9231cdbab88b4fcc42ab6a2d994bcae00058936f80a97e93842414b70f8eb3f9"
+      }
+    },
+    "g_505c3890a49d": {
+      "baseline": {
+        "hash": "fbd78973ae176e03621a3670835332567ce242c310507dba2d0f753374929454",
+        "stages": {
+          "ttir": "c1042d497267fdc1b3269bbdc1e56b49bfaef8cb93b9f0078e6c19d17f2f1718",
+          "ttgir": "8f3a93bab421ac1f33dab51702bc69ec89f0e21d164eeb74ccae257c946aaabf",
+          "llir": "43db90638940619737802c6a0c7c970326f0aa7b36e41c289f8f68fc33fd02d8",
+          "ptx": "9e2310e1382bd42c8a6c13270f317452890fe450bd9748c6367456d333476964",
+          "cubin": "9432e91f4cd93bdf09bfe2d6f0d2590ac8e7d0c9b16bdbbb0137506ff97a9b8a"
+        },
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "fbd78973ae176e03621a3670835332567ce242c310507dba2d0f753374929454",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "logsumexp_kernel_inner",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 16,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 64,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "n_regs": 31,
+        "n_spills": 0,
+        "input_ttir": "/root/ops-ttir-dev/logsumexp/ir/g_505c3890a49d/baseline.ttir",
+        "input_sha256": "c1042d497267fdc1b3269bbdc1e56b49bfaef8cb93b9f0078e6c19d17f2f1718"
+      }
+    },
+    "g_fc25ed1f09af": {
+      "baseline": {
+        "hash": "c69d583ec5e2df246919bf068dd4241327b740ea19f4c1752e9430eff0c37551",
+        "stages": {
+          "ttir": "90e6876e6204dbd8ca361fa8059e54e6258bcd6244b754e769151029d29b0ab0",
+          "ttgir": "bb5c7d429d14e116425bab78d929c517453bd900b46b907ef9139ceceedee2be",
+          "llir": "a26fa5e4e2b56ab80e96037dfa160287c1e53b1f58ac22cadfe3d7d5ba174a8c",
+          "ptx": "1137a6a92fde9073fc19cb754598200bbabd3c4e8e1eac23dcfea13e5fbda02e",
+          "cubin": "82523759ed126d1c9fc707957eb53d1d3e488518257e330eb4c5efce73ebe86e"
+        },
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "c69d583ec5e2df246919bf068dd4241327b740ea19f4c1752e9430eff0c37551",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "logsumexp_kernel_inner",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 16,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 64,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "n_regs": 32,
+        "n_spills": 0,
+        "input_ttir": "/root/ops-ttir-dev/logsumexp/ir/g_fc25ed1f09af/baseline.ttir",
+        "input_sha256": "8f3a2cb183c1f4b23e47b113381fb7020fad7cf513ab938b165757177f8e57dc"
+      }
+    },
+    "g_493b7cfcff50": {
+      "baseline": {
+        "hash": "8283fba8fafbe3b6e40305633156a54bb4eb2806350c3c017083d486892f225f",
+        "stages": {
+          "ttir": "e05c461ca237acacb09f3581bd3ffe7ce21baad206625fad5dc90490eab2244b",
+          "ttgir": "379e0e6032cde3d3f9735c518b44d302591ba7c922df3f396621a978c88f0eae",
+          "llir": "22e3f2c289c9b70330c6f599f1e63f2d412b6438ed1eca3e6d13f143675bac6a",
+          "ptx": "600e664ab32bf2c9b87242f09e15e94a5cf22b142d6bf0863b6e8455677cbb85",
+          "cubin": "1e75080f27373ef087b9fc0c7c9f05f3e3299ed5c2fdad7722211d90d7b1e3cd"
+        },
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "8283fba8fafbe3b6e40305633156a54bb4eb2806350c3c017083d486892f225f",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "logsumexp_kernel_inner",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 16,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 64,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "n_regs": 32,
+        "n_spills": 0,
+        "input_ttir": "/root/ops-ttir-dev/logsumexp/ir/g_493b7cfcff50/baseline.ttir",
+        "input_sha256": "4011a5bd78ae26034803a503ad8277d77cdef37f53de45a2ba8c3f289bb5fbe2"
+      }
+    },
+    "g_38408436523c": {
+      "baseline": {
+        "hash": "b18efbbe671fa23fe657e9b59e5f23d6f48ea0e55e9559e07d432f7de8bdc13f",
+        "stages": {
+          "ttir": "68c1047d5a253d437a13d84fdf2d89d0aeacd8516668eeeb39ceb50c08a65e10",
+          "ttgir": "05ca3de3199b5062b117e499d53b6e77b0c78358d26f94b95b21fda203763b5d",
+          "llir": "33fa20b29d9faedd5c14b01ce9c41ce4c9391b95b30cc1e2fb831b9a917daeb8",
+          "ptx": "c3672f6c3810304548b376406afb7b771d27fef3d10c48e5eceef1fa2c6ee728",
+          "cubin": "bf96538354205c84a6c961fd94bed6464091c9b84aa4f5feb1c15cff0c655975"
+        },
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "b18efbbe671fa23fe657e9b59e5f23d6f48ea0e55e9559e07d432f7de8bdc13f",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "logsumexp_kernel_inner",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 16,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "n_regs": 23,
+        "n_spills": 0,
+        "input_ttir": "/root/ops-ttir-dev/logsumexp/ir/g_38408436523c/baseline.ttir",
+        "input_sha256": "68c1047d5a253d437a13d84fdf2d89d0aeacd8516668eeeb39ceb50c08a65e10"
+      }
+    },
+    "g_2672f7722871": {
+      "baseline": {
+        "hash": "6d7d5f15340c92e2fb90b95bb4a9e6e990e9ba99b939faf61609984745853aaa",
+        "stages": {
+          "ttir": "79c974f60504df53bd60922824abeda7444074b5932df31cd9ea1136d698e1e7",
+          "ttgir": "0099213ed754367859484c775e9db15a4aeb0a413717dbf7c2cfc51842c0915f",
+          "llir": "726e712f8d74bfedadd7ff3444dcf40e0bb5ab662cda6b7431725bb7c1ceaa18",
+          "ptx": "c5df029eaa34d6324198092ffcd566b1c0bac8e10f2b6037a003d6e4ffc6bdc2",
+          "cubin": "29db414c021b55dc9fd8aad0def16317cb5eb94e65209223d83778b4cc762ce7"
+        },
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "6d7d5f15340c92e2fb90b95bb4a9e6e990e9ba99b939faf61609984745853aaa",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "logsumexp_kernel_inner",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 16,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 64,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "n_regs": 23,
+        "n_spills": 0,
+        "input_ttir": "/root/ops-ttir-dev/logsumexp/ir/g_2672f7722871/baseline.ttir",
+        "input_sha256": "79c974f60504df53bd60922824abeda7444074b5932df31cd9ea1136d698e1e7"
+      }
+    },
+    "g_97b63d5ad18c": {
+      "baseline": {
+        "hash": "a99c0550df77e8ce85700f37cc2b073c54399f44a34124bbb6bf9602e44796af",
+        "stages": {
+          "ttir": "cfa4f0f8e2f23a15e2e677e97428e41d39c282305600eb5f00b8ea95306252bb",
+          "ttgir": "044266dfe0fd543266814ec602e0b8a9b5b3376f1277e9ba1542b041a4db76a2",
+          "llir": "5fb082879afcd6d78460c82bb1c09924c6dc8bff1177ec80970e36a612f036eb",
+          "ptx": "02ea1675cc96383ebdbf95f33c5bb7b6987888d80a1b5c32c04dbb6aadadfb07",
+          "cubin": "151dbaa646277269407ab3a836c17544f0ccb97199db4c50b8415c162f8fc338"
+        },
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "a99c0550df77e8ce85700f37cc2b073c54399f44a34124bbb6bf9602e44796af",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "logsumexp_kernel_non_inner",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 16,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 512,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "n_regs": 64,
+        "n_spills": 0,
+        "input_ttir": "/root/ops-ttir-dev/logsumexp/ir/g_97b63d5ad18c/baseline.ttir",
+        "input_sha256": "3525f9fd33048ab4e77f89e15c134f9ead61af14aee0c24ac5c5a1eff9422f40"
+      }
+    },
+    "g_c3f1a9a2be29": {
+      "baseline": {
+        "hash": "67decbf65a8653a40b42181cc35f1cfc0b004bd40b0177e1e4c612f4191fa486",
+        "stages": {
+          "ttir": "0149e4b628a5a4a853dcdb9410badb8b75550426b951d1fd9d6e35f0a644fbbe",
+          "ttgir": "537f93ed63ee13c412e405e556a9f004093788ee05e2266aadfc61a5ef16ea90",
+          "llir": "37f3068e80f74d438e31e52265b7e16cd97eb2d4ba59cc0698c53f4ec2587340",
+          "ptx": "c6860de592907d35dce1465cf183d5bdc0da66e7c0bcb219a5d6de36cf91fea0",
+          "cubin": "b8ff572cc27e7235149d2e42282937b5df41f628f79d483c04b985372c7e47b0"
+        },
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "67decbf65a8653a40b42181cc35f1cfc0b004bd40b0177e1e4c612f4191fa486",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "logsumexp_kernel_non_inner",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 16,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 4096,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "n_regs": 64,
+        "n_spills": 0,
+        "input_ttir": "/root/ops-ttir-dev/logsumexp/ir/g_c3f1a9a2be29/baseline.ttir",
+        "input_sha256": "d28245ebbca571361eb105612d5a01c4545642cad51a50cd5eb5e09e09141448"
+      }
+    },
+    "g_2c3d9cf9cc2b": {
+      "baseline": {
+        "hash": "719a3634864507fe171caeeaaf3d32feb7530bda5e4452805cd3b4470e9f9287",
+        "stages": {
+          "ttir": "00062047d87f9eb9d1c6ab24aebd62073c19bca9be39dd5115f96d21f3c93a9e",
+          "ttgir": "c2e9dc283f44fe27a6dd78ead21b236c4bd88b76768ff6c12c9ab8166d0aab8d",
+          "llir": "6fbf345bbbf8a4c4d7c83f8357115030b25d762ecfa3283d2d811bd22b9d3243",
+          "ptx": "62dfc39bb2cfd79993a2b93916cc00eb54b6e9f4dbbfa499ad95f9e1b68a4564",
+          "cubin": "7937cdd414d4c0d88fce257c60dda3b6eef1d8c168ae9c24e586431aebc461bc"
+        },
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "719a3634864507fe171caeeaaf3d32feb7530bda5e4452805cd3b4470e9f9287",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "logsumexp_kernel_inner",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 16,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 64,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "n_regs": 23,
+        "n_spills": 0,
+        "input_ttir": "/root/ops-ttir-dev/logsumexp/ir/g_2c3d9cf9cc2b/baseline.ttir",
+        "input_sha256": "00062047d87f9eb9d1c6ab24aebd62073c19bca9be39dd5115f96d21f3c93a9e"
+      }
+    }
+  },
+  "records": [],
+  "controls": [
+    {
+      "shape": [
+        1,
+        128,
+        1
+      ],
+      "group": "g_c6892bb035fa",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 1.5494494313304046,
+          "candidate_us": 1.5494542411497456,
+          "speedup": 0.9999968957977504,
+          "graph_replay_samples_us": {
+            "A/A": [
+              1.8947613963313954,
+              1.5139366644279277,
+              1.5110898160648916,
+              1.510761353172126,
+              1.511199337687627,
+              1.510186517615926,
+              1.5105697413200594,
+              1.5107886825900898,
+              1.5108434434014575,
+              1.5104054588859563
+            ],
+            "baseline": [
+              1.8962225625245739,
+              1.5140294833581303,
+              1.5108084912776167,
+              1.5103633587176983,
+              1.5107823471781079,
+              1.510206201462816,
+              1.5104418885688347,
+              1.511070420035754,
+              1.5104157444693258,
+              1.5101538157111885
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 1.5501358856757483,
+          "candidate_us": 1.5489647201463288,
+          "speedup": 1.0007560956774464,
+          "graph_replay_samples_us": {
+            "A/A": [
+              1.8949804742351855,
+              1.5131241940205393,
+              1.5107712714500676,
+              1.5102483673033371,
+              1.509908464998981,
+              1.5106666711420795,
+              1.509908464998981,
+              1.510065365460963,
+              1.509986963926577,
+              1.509986963926577
+            ],
+            "baseline": [
+              1.905846099058787,
+              1.5135128528643877,
+              1.510538447361726,
+              1.5101794822093768,
+              1.510538447361726,
+              1.5100768934457731,
+              1.5098974108695984,
+              1.5104102591673534,
+              1.5099487052514005,
+              1.5104102591673534
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 1.5485052957511474,
+          "candidate_us": 1.5498871330639346,
+          "speedup": 0.9991084271342678,
+          "graph_replay_samples_us": {
+            "baseline": [
+              1.8875305499113373,
+              1.5135713000557922,
+              1.5110154412292132,
+              1.5108068492612707,
+              1.5101288039216008,
+              1.5101809762023577,
+              1.5109894036663774,
+              1.5104417404510573,
+              1.5101026692036799,
+              1.5102852236087865
+            ],
+            "A/A": [
+              1.9029896322200053,
+              1.5134132928032575,
+              1.5107529531184622,
+              1.510139087216555,
+              1.5108041244921544,
+              1.510241429963939,
+              1.510062377801616,
+              1.5101135491753082,
+              1.5105483629148926,
+              1.5098065209331557
+            ]
+          }
+        }
+      ],
+      "median_speedup": 0.9999968957977504,
+      "passed": true
+    },
+    {
+      "shape": [
+        1,
+        1008,
+        1
+      ],
+      "group": "g_4d6c54a25a3a",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 1.675245121343812,
+          "candidate_us": 1.6771082682987613,
+          "speedup": 0.9988890717491726,
+          "graph_replay_samples_us": {
+            "A/A": [
+              2.0471816375940555,
+              1.6393657433915523,
+              1.6357920053974746,
+              1.6355737091025426,
+              1.6354918988057923,
+              1.6353827506583265,
+              1.635601046953258,
+              1.6353827506583265,
+              1.6357920053974746,
+              1.6355191350288096
+            ],
+            "baseline": [
+              2.0313632626636307,
+              1.6381824589882719,
+              1.6357413374171723,
+              1.6349718147644752,
+              1.6355556042040167,
+              1.635661666863791,
+              1.6352902004374792,
+              1.6349187340111677,
+              1.6358209091237133,
+              1.6349452249644012
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 1.6733611744403465,
+          "candidate_us": 1.674927399482256,
+          "speedup": 0.9990648997428822,
+          "graph_replay_samples_us": {
+            "A/A": [
+              2.0245597195723417,
+              1.639084757110219,
+              1.6361086456863967,
+              1.6351341710659704,
+              1.6356872433007008,
+              1.6356345557381586,
+              1.635897895436228,
+              1.6355555734516662,
+              1.635713538024651,
+              1.635897895436228
+            ],
+            "baseline": [
+              2.016075371010324,
+              1.6385357115836192,
+              1.6349912719846427,
+              1.6347652144630593,
+              1.635041652658467,
+              1.634564066345263,
+              1.6346393564228738,
+              1.6345136856714384,
+              1.6352175167949763,
+              1.6352678974688006
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 1.6736865629915332,
+          "candidate_us": 1.6739960452510971,
+          "speedup": 0.9998151236614675,
+          "graph_replay_samples_us": {
+            "A/A": [
+              2.015973671828166,
+              1.6387590874146314,
+              1.63606596071728,
+              1.6353795237273665,
+              1.6354323417046677,
+              1.635775609378374,
+              1.6355907956365705,
+              1.6354587015145683,
+              1.6359076051428767,
+              1.6356171554464713
+            ],
+            "baseline": [
+              2.0149246591036434,
+              1.6390295302281614,
+              1.635698314572944,
+              1.635095037397791,
+              1.6357770708740735,
+              1.635016378809194,
+              1.6352262653288294,
+              1.6352787369587383,
+              1.6354885257658411,
+              1.6353311108761146
+            ]
+          }
+        }
+      ],
+      "median_speedup": 0.9990648997428822,
+      "passed": true
+    },
+    {
+      "shape": [
+        1,
+        4096,
+        1
+      ],
+      "group": "g_2c3d9cf9cc2b",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 1.9426451483511258,
+          "candidate_us": 1.9440120324156338,
+          "speedup": 0.9992968746891914,
+          "graph_replay_samples_us": {
+            "A/A": [
+              2.3109773944195053,
+              1.907639037397571,
+              1.903067630036433,
+              1.902586535403603,
+              1.9026766146036018,
+              1.9030376036364334,
+              1.902586535403603,
+              1.9022255463707716,
+              1.9031579333140438,
+              1.9021654935707724
+            ],
+            "baseline": [
+              2.302049412169606,
+              1.9057924311479193,
+              1.9025238970359035,
+              1.9019967838017118,
+              1.9024184351108808,
+              1.90212856211026,
+              1.9021548784937852,
+              1.9026819917279767,
+              1.9024975806523783,
+              1.9022075112608354
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 1.9417784537798093,
+          "candidate_us": 1.9436548386130446,
+          "speedup": 0.9990346100573216,
+          "graph_replay_samples_us": {
+            "A/A": [
+              2.3151036090276715,
+              1.9050970125357842,
+              1.902475006205581,
+              1.902608767799709,
+              1.902341045264815,
+              1.901993384728065,
+              1.902448094409445,
+              1.9014581390049148,
+              1.9009765175273985,
+              1.9020468096270609
+            ],
+            "baseline": [
+              2.3000230514463578,
+              1.9061465322235485,
+              1.9015374988194846,
+              1.9018271332415042,
+              1.9014321236944003,
+              1.9012476681681818,
+              1.9016428739445692,
+              1.901168783996331,
+              1.9015637935434349,
+              1.9011950787202812
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 1.9418297231000643,
+          "candidate_us": 1.944199851452555,
+          "speedup": 0.9987809234988266,
+          "graph_replay_samples_us": {
+            "baseline": [
+              2.3004884767060236,
+              1.9051088358309403,
+              1.9017821884784762,
+              1.9014125609948689,
+              1.9014389208047697,
+              1.9016238329040729,
+              1.901227648895566,
+              1.9012542054204657,
+              1.9017294688586748,
+              1.9022310921067846
+            ],
+            "A/A": [
+              2.3173310630779156,
+              1.9064007540860302,
+              1.9024307749796991,
+              1.902216338152058,
+              1.9025918524103411,
+              1.901894383138703,
+              1.9021625790592012,
+              1.901894383138703,
+              1.9024577544500922,
+              1.9026186320328051
+            ]
+          }
+        }
+      ],
+      "median_speedup": 0.9990346100573216,
+      "passed": true
+    },
+    {
+      "shape": [
+        1,
+        8192,
+        1
+      ],
+      "group": "g_6a72b2de463b",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 2.1606255892225374,
+          "candidate_us": 2.143674161260491,
+          "speedup": 1.0079076513904888,
+          "graph_replay_samples_us": {
+            "A/A": [
+              2.2485562112947175,
+              2.1353906748310623,
+              2.1318410406049515,
+              2.1317615019564595,
+              2.1317881464168726,
+              2.1314966362833188,
+              2.131867487698991,
+              2.1314172950012007,
+              2.13128486216463,
+              2.1313377563527087
+            ],
+            "baseline": [
+              2.407939810501902,
+              2.136755308312183,
+              2.132504605808752,
+              2.132771905502281,
+              2.132477915675419,
+              2.1326382556555163,
+              2.134322522576889,
+              2.1323442658286544,
+              2.1323442658286544,
+              2.132157036535124
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 2.161244611023914,
+          "candidate_us": 2.1465809814265517,
+          "speedup": 1.006831156021711,
+          "graph_replay_samples_us": {
+            "A/A": [
+              2.2674097389471335,
+              2.1360000625985567,
+              2.132144326069316,
+              2.1324327734650157,
+              2.132117943685563,
+              2.1318033093311746,
+              2.132091756726875,
+              2.132799977161845,
+              2.1367082830335273,
+              2.13230164324651
+            ],
+            "baseline": [
+              2.405464036662588,
+              2.135348602717102,
+              2.136234049740516,
+              2.1419762622697553,
+              2.1339067828513887,
+              2.131705981469437,
+              2.1319336570769902,
+              2.131857702383411,
+              2.1319841678905864,
+              2.1320348671773677
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 2.159706034264576,
+          "candidate_us": 2.1611081540692347,
+          "speedup": 0.9993512033157532,
+          "graph_replay_samples_us": {
+            "A/A": [
+              2.4175624519748236,
+              2.136795688925772,
+              2.1329475785681398,
+              2.131761306017691,
+              2.131963940253094,
+              2.1319348385277963,
+              2.1321374727631994,
+              2.131905952370835,
+              2.1322532329593815,
+              2.131819078331614
+            ],
+            "baseline": [
+              2.406833250612909,
+              2.1353359668126135,
+              2.1320353776192493,
+              2.1313650775205506,
+              2.131958146137542,
+              2.1315712202565504,
+              2.1313908213477863,
+              2.131313397747965,
+              2.1331957710259966,
+              2.1320613135645985
+            ]
+          }
+        }
+      ],
+      "median_speedup": 1.006831156021711,
+      "passed": true
+    },
+    {
+      "shape": [
+        1,
+        32768,
+        1
+      ],
+      "group": "g_df236e18c0a5",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 3.5011104898827496,
+          "candidate_us": 3.502108951321511,
+          "speedup": 0.9997148970941111,
+          "graph_replay_samples_us": {
+            "A/A": [
+              3.7576858195564653,
+              3.4765287532992564,
+              3.4732634553680826,
+              3.473973422317031,
+              3.4736895201580653,
+              3.473235107462493,
+              3.472951205303527,
+              3.4731215042885997,
+              3.4733203627307963,
+              3.4733203627307963
+            ],
+            "baseline": [
+              3.75226295367182,
+              3.4762981326081035,
+              3.473116286582916,
+              3.472628742575932,
+              3.4728340846400503,
+              3.4723465406330662,
+              3.472987804397546,
+              3.472987804397546,
+              3.4732703887278684,
+              3.472372160592649
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 3.5011628428496224,
+          "candidate_us": 3.501134167713334,
+          "speedup": 1.0000081902420515,
+          "graph_replay_samples_us": {
+            "A/A": [
+              3.749217757259507,
+              3.4762796149196395,
+              3.473503618355257,
+              3.473272285308225,
+              3.4731953019597923,
+              3.473040952261193,
+              3.4734522961229684,
+              3.4733492686566576,
+              3.47286094144645,
+              3.473169640843648
+            ],
+            "baseline": [
+              3.752602555277232,
+              3.476148933574002,
+              3.4733832024280082,
+              3.4729006931386612,
+              3.472824686581326,
+              3.472520282209912,
+              3.4728753576195497,
+              3.4728753576195497,
+              3.472799351062215,
+              3.472698008985769
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 3.5017733176549277,
+          "candidate_us": 3.500746503757064,
+          "speedup": 1.0002933128396363,
+          "graph_replay_samples_us": {
+            "A/A": [
+              3.74565610460415,
+              3.476254879289372,
+              3.4733501968869738,
+              3.472942835206439,
+              3.4734777584197416,
+              3.4732993241328343,
+              3.473707065460788,
+              3.4730700170917874,
+              3.473019144337648,
+              3.4726877121409037
+            ],
+            "baseline": [
+              3.7552531560262046,
+              3.4773600101470947,
+              3.4737332661946616,
+              3.473066488901774,
+              3.473120133082072,
+              3.4730935096740723,
+              3.4731733798980713,
+              3.4731467564900713,
+              3.4729866186777754,
+              3.4727998574574785
+            ]
+          }
+        }
+      ],
+      "median_speedup": 1.0000081902420515,
+      "passed": true
+    },
+    {
+      "shape": [
+        1,
+        65536,
+        1
+      ],
+      "group": "g_fc25ed1f09af",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 10.044460502459849,
+          "candidate_us": 10.047806623683794,
+          "speedup": 0.9996669799341025,
+          "graph_replay_samples_us": {
+            "A/A": [
+              10.30148390041216,
+              10.02216704854115,
+              10.025050930414539,
+              10.016337108520625,
+              10.023086891649783,
+              10.02216704854115,
+              10.012318509651397,
+              10.019190816614108,
+              10.017993923344525,
+              10.018270059148508
+            ],
+            "baseline": [
+              10.259107720080038,
+              10.023482411885432,
+              10.017841839961868,
+              10.024719101061924,
+              10.016805834049801,
+              10.025007261646738,
+              10.020748316812858,
+              10.020374394149231,
+              10.019856391193198,
+              10.016661753757395
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 10.042433079526068,
+          "candidate_us": 10.04191509240122,
+          "speedup": 1.0000515825039429,
+          "graph_replay_samples_us": {
+            "baseline": [
+              10.244969619668794,
+              10.02545074243734,
+              10.0213141586879,
+              10.01689078777868,
+              10.02142887355181,
+              10.023439807994576,
+              10.020423834370966,
+              10.015310462116124,
+              10.018183470200379,
+              10.016919038454121
+            ],
+            "A/A": [
+              10.238819256398717,
+              10.02435147867052,
+              10.01794057487394,
+              10.015465882205795,
+              10.029300864006807,
+              10.016478218387007,
+              10.02646079172359,
+              10.019880606545716,
+              10.011922705571555,
+              10.018530545628552
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 10.039274435374592,
+          "candidate_us": 10.04433421968664,
+          "speedup": 0.9994962548834615,
+          "graph_replay_samples_us": {
+            "A/A": [
+              10.250982676983309,
+              10.025142659395533,
+              10.026005507586566,
+              10.017149960362794,
+              10.018185035451939,
+              10.02419412618056,
+              10.021663847423735,
+              10.022009158070196,
+              10.019766780993795,
+              10.018242444417977
+            ],
+            "baseline": [
+              10.226369122046657,
+              10.019861148088026,
+              10.01462552839485,
+              10.017198879932355,
+              10.019041720430419,
+              10.019363389372607,
+              10.015765753263093,
+              10.018836863516016,
+              10.017843089548283,
+              10.023838859153622
+            ]
+          }
+        }
+      ],
+      "median_speedup": 0.9996669799341025,
+      "passed": true
+    },
+    {
+      "shape": [
+        64,
+        128,
+        1
+      ],
+      "group": "g_78effb105bfb",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 1.7070250805988108,
+          "candidate_us": 1.707465724961568,
+          "speedup": 0.9997419307712504,
+          "graph_replay_samples_us": {
+            "baseline": [
+              1.7626666894523046,
+              1.7034552430593841,
+              1.700616438329006,
+              1.7011039573231905,
+              1.6998135915366552,
+              1.7003870993104886,
+              1.70027237639205,
+              1.700616438329006,
+              1.700616438329006,
+              1.7007025339270152
+            ],
+            "A/A": [
+              1.7633217428794783,
+              1.7034186623913194,
+              1.6997923694267405,
+              1.6998753828160902,
+              1.7008443192214702,
+              1.7013978793134328,
+              1.7014532559470734,
+              1.7015086325807143,
+              1.7013702425577237,
+              1.7016747624816366
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 1.7236689743392024,
+          "candidate_us": 1.7237010493860452,
+          "speedup": 0.9999813917576634,
+          "graph_replay_samples_us": {
+            "baseline": [
+              1.9105386207340729,
+              1.7052983062795997,
+              1.7021988647512794,
+              1.7022802957358154,
+              1.702008453991419,
+              1.701981310329907,
+              1.7020355976529313,
+              1.7020355976529313,
+              1.7064673068063585,
+              1.7018453894577092
+            ],
+            "A/A": [
+              1.911008594841357,
+              1.705233624439366,
+              1.702690643303329,
+              1.7027512065847752,
+              1.7022668131139893,
+              1.7021760245822122,
+              1.7029327836483295,
+              1.7022970383643201,
+              1.7027512065847752,
+              1.7029025583979986
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 1.7063785874709887,
+          "candidate_us": 1.7081528155063903,
+          "speedup": 0.9989613177349852,
+          "graph_replay_samples_us": {
+            "A/A": [
+              1.7729162036496806,
+              1.7056525938451135,
+              1.7019741063295197,
+              1.7007294665561632,
+              1.700010398594387,
+              1.6995954843255705,
+              1.6997890835088598,
+              1.7000933402349132,
+              1.700480538601492,
+              1.7002869394182025
+            ],
+            "baseline": [
+              1.7571009059112788,
+              1.703730834980686,
+              1.7000862603767666,
+              1.7002519602606891,
+              1.7007765222768314,
+              1.7012458509983328,
+              1.7001414936714074,
+              1.7001414936714074,
+              1.7003347587750017,
+              1.6999757937874849
+            ]
+          }
+        }
+      ],
+      "median_speedup": 0.9997419307712504,
+      "passed": true
+    },
+    {
+      "shape": [
+        64,
+        1008,
+        1
+      ],
+      "group": "g_38408436523c",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 1.6381409957254534,
+          "candidate_us": 1.6188157298577526,
+          "speedup": 1.0119379034384592,
+          "graph_replay_samples_us": {
+            "A/A": [
+              1.6924034083178168,
+              1.61293437126567,
+              1.6110617322800957,
+              1.609712337403988,
+              1.6101331345370244,
+              1.6100458252481566,
+              1.6100767122470208,
+              1.609912491272863,
+              1.6104102000911897,
+              1.6114670859137006
+            ],
+            "baseline": [
+              1.8310503993960592,
+              1.6204028678454943,
+              1.6166330884686477,
+              1.6162877888988247,
+              1.616115085512614,
+              1.6163165191952273,
+              1.616115085512614,
+              1.6162589513998238,
+              1.6159136518300008,
+              1.6163165191952273
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 1.6411339410880108,
+          "candidate_us": 1.8126099942678429,
+          "speedup": 0.9053982634311275,
+          "graph_replay_samples_us": {
+            "baseline": [
+              1.8608597625000651,
+              1.61975135176474,
+              1.6170230894275075,
+              1.6158295143561083,
+              1.6164546749731574,
+              1.6163978229407518,
+              1.6162842247456473,
+              1.6163410767780528,
+              1.615460029080325,
+              1.6169378643137524
+            ],
+            "A/A": [
+              1.9925369042742886,
+              1.796433724552752,
+              1.7934044544134617,
+              1.793046416185809,
+              1.7921928694654456,
+              1.7915594803486756,
+              1.7917521438992576,
+              1.7916971557932344,
+              1.791917313396828,
+              1.7915594803486756
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 1.8126904534863997,
+          "candidate_us": 1.8124135128863446,
+          "speedup": 1.0001528021050858,
+          "graph_replay_samples_us": {
+            "baseline": [
+              1.9908612912839596,
+              1.7962666245194168,
+              1.7926918493734825,
+              1.7929802069792877,
+              1.791798209284877,
+              1.7921153489533845,
+              1.7928648639369655,
+              1.7924612706845946,
+              1.7921730204745456,
+              1.7926918493734825
+            ],
+            "A/A": [
+              1.9904000418526786,
+              1.795490892418535,
+              1.7928034712225842,
+              1.7924156023826434,
+              1.7917783745439537,
+              1.7924709237499155,
+              1.7921662433838947,
+              1.7924709237499155,
+              1.7917507138603177,
+              1.7923879416990074
+            ]
+          }
+        }
+      ],
+      "median_speedup": 1.0001528021050858,
+      "passed": true
+    },
+    {
+      "shape": [
+        64,
+        4096,
+        1
+      ],
+      "group": "g_2672f7722871",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 2.00355901734989,
+          "candidate_us": 2.0058917749614613,
+          "speedup": 0.9988370471225367,
+          "graph_replay_samples_us": {
+            "baseline": [
+              2.2151236399323695,
+              1.9806077960523192,
+              1.9774982449022707,
+              1.9792507899523624,
+              1.9807208974454094,
+              1.980975322925581,
+              1.979788074223818,
+              1.98038159326614,
+              1.9802684918730504,
+              1.980975322925581
+            ],
+            "A/A": [
+              2.2327400626936504,
+              1.9833577657037174,
+              1.9795322501430543,
+              1.9808167146346538,
+              1.980174482388854,
+              1.980258324175397,
+              1.9803140800036685,
+              1.980425799704347,
+              1.980341957917804,
+              1.9809563122494684
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 2.1764546390032877,
+          "candidate_us": 2.17877220776346,
+          "speedup": 0.9989362959781135,
+          "graph_replay_samples_us": {
+            "A/A": [
+              2.3561943736341266,
+              2.1601667006810508,
+              2.158083435561922,
+              2.1581389009952545,
+              2.157805487513542,
+              2.1583055042558246,
+              2.157583418819639,
+              2.160361036658287,
+              2.162749982542462,
+              2.158333236972491
+            ],
+            "baseline": [
+              2.355315782365756,
+              2.1594643053425924,
+              2.156220733849711,
+              2.157118525440337,
+              2.1559892197000496,
+              2.1555546721721663,
+              2.1560181319983296,
+              2.156481376061073,
+              2.155757489786968,
+              2.156626153315894
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 2.1769701282253164,
+          "candidate_us": 2.176183543793143,
+          "speedup": 1.000361451328137,
+          "graph_replay_samples_us": {
+            "A/A": [
+              2.360602764234151,
+              2.15879450105641,
+              2.1553972404297084,
+              2.1553149778548986,
+              2.15575343941989,
+              2.1549040732318407,
+              2.155232919405585,
+              2.1556711768450803,
+              2.154931426048279,
+              2.155232919405585
+            ],
+            "baseline": [
+              2.3549524887165414,
+              2.1584253948057475,
+              2.155163376109252,
+              2.1560070594291485,
+              2.1554164601545556,
+              2.1565132275197545,
+              2.1580034483924693,
+              2.158819057819923,
+              2.157834795531154,
+              2.15856597377462
+            ]
+          }
+        }
+      ],
+      "median_speedup": 0.9989362959781135,
+      "passed": true
+    },
+    {
+      "shape": [
+        64,
+        8192,
+        1
+      ],
+      "group": "g_505c3890a49d",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 2.485426957456057,
+          "candidate_us": 2.4691703200134385,
+          "speedup": 1.0065838461246894,
+          "graph_replay_samples_us": {
+            "baseline": [
+              2.6740712978651375,
+              2.467447524480878,
+              2.4647505567138035,
+              2.4642503126924917,
+              2.464305826314732,
+              2.464166835118749,
+              2.464444817510716,
+              2.4642503126924917,
+              2.462832229640772,
+              2.463749861530798
+            ],
+            "A/A": [
+              2.5147909945156908,
+              2.4689188892977225,
+              2.46333684740083,
+              2.4652987564165976,
+              2.463972424390197,
+              2.4641657534452714,
+              2.4630605453860164,
+              2.4628945994665377,
+              2.4627012704114635,
+              2.4625631194040567
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 2.471525319583753,
+          "candidate_us": 2.469725287596802,
+          "speedup": 1.000728838950628,
+          "graph_replay_samples_us": {
+            "A/A": [
+              2.5199369078441767,
+              2.4677516072858143,
+              2.4641400768583734,
+              2.463804038073656,
+              2.4636640740609024,
+              2.4644200048838805,
+              2.46341209711991,
+              2.4630760583351914,
+              2.464111917183677,
+              2.462936094322438
+            ],
+            "baseline": [
+              2.541235604211298,
+              2.4669320171416116,
+              2.463916209355699,
+              2.464055806970513,
+              2.463888331441563,
+              2.4631622574092207,
+              2.463134379495085,
+              2.46346953859712,
+              2.4620454764907067,
+              2.4634135747247132
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 2.4690041254306663,
+          "candidate_us": 2.46798250855518,
+          "speedup": 1.0004139481831598,
+          "graph_replay_samples_us": {
+            "A/A": [
+              2.5040941078121923,
+              2.4667966265638337,
+              2.464994863301766,
+              2.463919375123096,
+              2.4638386333689968,
+              2.463515866704348,
+              2.463596608458447,
+              2.4637310444807805,
+              2.4632740421455446,
+              2.462063917592794
+            ],
+            "baseline": [
+              2.50772422757642,
+              2.4681103640589224,
+              2.4639448215221535,
+              2.464358559970198,
+              2.4636137074437636,
+              2.4644138484165587,
+              2.464855128321154,
+              2.46471721550514,
+              2.4643310185136467,
+              2.463972362978705
+            ]
+          }
+        }
+      ],
+      "median_speedup": 1.000728838950628,
+      "passed": true
+    },
+    {
+      "shape": [
+        64,
+        32768,
+        1
+      ],
+      "group": "g_1c037e05ab35",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 4.046220651121952,
+          "candidate_us": 4.040427363082155,
+          "speedup": 1.0014338305132597,
+          "graph_replay_samples_us": {
+            "baseline": [
+              4.230285011599417,
+              4.029273559159762,
+              4.025370336968802,
+              4.024968767379966,
+              4.02522707199302,
+              4.025542682596386,
+              4.025026073370279,
+              4.02580098720944,
+              4.025427642959116,
+              4.025284377983333
+            ],
+            "A/A": [
+              4.224931540554517,
+              4.022986105043595,
+              4.019041175711645,
+              4.018630066963091,
+              4.0245480733375025,
+              4.018684772595967,
+              4.018904003378464,
+              4.018849297745588,
+              4.018849297745588,
+              4.018849297745588
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 4.045584813247654,
+          "candidate_us": 4.03985247404679,
+          "speedup": 1.0014189476565518,
+          "graph_replay_samples_us": {
+            "A/A": [
+              4.218045110287874,
+              4.0216487386952275,
+              4.018170315286388,
+              4.018476320349652,
+              4.018309634664784,
+              4.018838301948879,
+              4.018170315286388,
+              4.017919872118079,
+              4.024069412894871,
+              4.024876718935759
+            ],
+            "baseline": [
+              4.22581748174513,
+              4.028309643165995,
+              4.023352916802883,
+              4.02472967124847,
+              4.031669662659426,
+              4.024454320359353,
+              4.024151475417224,
+              4.0238486304750944,
+              4.024536802518388,
+              4.024977528084576
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 4.0408335148115455,
+          "candidate_us": 4.0389017701674135,
+          "speedup": 1.0004782846313323,
+          "graph_replay_samples_us": {
+            "baseline": [
+              4.228845225938677,
+              4.028687831986348,
+              4.025813348279027,
+              4.018723607777122,
+              4.0176561288694925,
+              4.017382426788095,
+              4.01749174445995,
+              4.017957160368855,
+              4.0176561288694925,
+              4.018121544778398
+            ],
+            "A/A": [
+              4.2202218513656815,
+              4.022075636271339,
+              4.0184949463159505,
+              4.018269761543442,
+              4.0184949463159505,
+              4.018889859909528,
+              4.017649243056511,
+              4.018213045229471,
+              4.0182979096400055,
+              4.01841050202626
+            ]
+          }
+        }
+      ],
+      "median_speedup": 1.0014189476565518,
+      "passed": true
+    },
+    {
+      "shape": [
+        64,
+        65536,
+        1
+      ],
+      "group": "g_493b7cfcff50",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 10.436351133685925,
+          "candidate_us": 10.459177264963605,
+          "speedup": 0.997817597818698,
+          "graph_replay_samples_us": {
+            "baseline": [
+              10.526112666252564,
+              10.426337099665126,
+              10.424662044681218,
+              10.428042098752211,
+              10.426458690871973,
+              10.426337099665126,
+              10.421556931921236,
+              10.42764647363142,
+              10.424753691784888,
+              10.431604539633478
+            ],
+            "A/A": [
+              10.727288459967887,
+              10.434021729167245,
+              10.42943747442388,
+              10.432312921272903,
+              10.430519266909128,
+              10.43040557264009,
+              10.425252846551535,
+              10.42741643152203,
+              10.431259976587262,
+              10.423857970594087
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 10.457114362040592,
+          "candidate_us": 10.455201505986166,
+          "speedup": 1.0001829573589118,
+          "graph_replay_samples_us": {
+            "baseline": [
+              10.711219730329473,
+              10.427142501971042,
+              10.424553502888557,
+              10.429865126812626,
+              10.430639042667393,
+              10.427943461134197,
+              10.430452125682944,
+              10.42783687868349,
+              10.430985833327904,
+              10.430505416908296
+            ],
+            "A/A": [
+              10.710130466937182,
+              10.43017258334034,
+              10.428766374638295,
+              10.422158534581296,
+              10.424239354728604,
+              10.429947154174162,
+              10.420949262139668,
+              10.42497011395875,
+              10.42848479768723,
+              10.432196417676124
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 10.472039868754726,
+          "candidate_us": 10.457968854374808,
+          "speedup": 1.0013454825287638,
+          "graph_replay_samples_us": {
+            "A/A": [
+              10.72259604879977,
+              10.4315079347788,
+              10.432108969488885,
+              10.429076105992474,
+              10.428146863981356,
+              10.426206938941492,
+              10.4277095257167,
+              10.429786271666178,
+              10.42505862059296,
+              10.427491263789463
+            ],
+            "baseline": [
+              10.704161824169248,
+              10.427989168650544,
+              10.43710225188787,
+              10.452202827699722,
+              10.451554153372065,
+              10.45022691999163,
+              10.448338908533895,
+              10.449813807614937,
+              10.450492366667717,
+              10.448516458959624
+            ]
+          }
+        }
+      ],
+      "median_speedup": 1.0001829573589118,
+      "passed": true
+    },
+    {
+      "shape": [
+        1024,
+        128,
+        1
+      ],
+      "group": "g_78effb105bfb",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 2.327129434810455,
+          "candidate_us": 2.3038066941864637,
+          "speedup": 1.010123566652899,
+          "graph_replay_samples_us": {
+            "baseline": [
+              2.5803738806445526,
+              2.3026864080970464,
+              2.2979913320083285,
+              2.301205297744951,
+              2.300227052780218,
+              2.297376441122663,
+              2.300003418235279,
+              2.2965100134303995,
+              2.2965379156920585,
+              2.298382588349055
+            ],
+            "A/A": [
+              2.3497404370989114,
+              2.3016750569246254,
+              2.29942866734096,
+              2.2988276578942126,
+              2.298279197848573,
+              2.2985143077616788,
+              2.2987233376016425,
+              2.297678383029237,
+              2.296737943376814,
+              2.2984619529879824
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 2.3063627112038487,
+          "candidate_us": 2.3025774797856413,
+          "speedup": 1.0016439105530381,
+          "graph_replay_samples_us": {
+            "A/A": [
+              2.344264889395,
+              2.302596111171293,
+              2.299708641128035,
+              2.294993361100456,
+              2.3000264009892546,
+              2.2985429953265664,
+              2.294887375357925,
+              2.297403993985511,
+              2.299231803969832,
+              2.2941192254325413
+            ],
+            "baseline": [
+              2.3568013800233483,
+              2.3034505929892313,
+              2.302273121020488,
+              2.301383388890464,
+              2.2991855711792692,
+              2.301148089442405,
+              2.297746482094291,
+              2.302560860859207,
+              2.299054762621152,
+              2.3000228629186323
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 2.30407943908838,
+          "candidate_us": 2.3051169807995717,
+          "speedup": 0.9995498962873322,
+          "graph_replay_samples_us": {
+            "baseline": [
+              2.3366918174432123,
+              2.3030520821686644,
+              2.3041536943544094,
+              2.3026420556611304,
+              2.300156890343818,
+              2.2979023172151,
+              2.2986966004077676,
+              2.299029699223246,
+              2.29867102147294,
+              2.299798212593512
+            ],
+            "A/A": [
+              2.369535176393116,
+              2.30190909727237,
+              2.2959007124352593,
+              2.2962184066709357,
+              2.30032102050024,
+              2.296853597939162,
+              2.29547731732415,
+              2.2967476998606036,
+              2.2994474106529115,
+              2.2987593689469685
+            ]
+          }
+        }
+      ],
+      "median_speedup": 1.0016439105530381,
+      "passed": true
+    },
+    {
+      "shape": [
+        1024,
+        1008,
+        1
+      ],
+      "group": "g_38408436523c",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 2.6079947208807415,
+          "candidate_us": 2.6075059371176503,
+          "speedup": 1.0001874525983367,
+          "graph_replay_samples_us": {
+            "A/A": [
+              2.882896108551161,
+              2.5806991844549576,
+              2.5772352396331217,
+              2.578030250298839,
+              2.5766672237636565,
+              2.5762697184307974,
+              2.575843865192349,
+              2.5756450067501526,
+              2.575588310938973,
+              2.576184463162494
+            ],
+            "baseline": [
+              2.881082567838159,
+              2.577980162680346,
+              2.575762397778703,
+              2.5774521796223353,
+              2.5757360379688023,
+              2.579669944523978,
+              2.5727524615750452,
+              2.578613781692958,
+              2.580065931817486,
+              2.5808317433096
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 2.6110717683420157,
+          "candidate_us": 2.609765664659272,
+          "speedup": 1.0005004678007803,
+          "graph_replay_samples_us": {
+            "baseline": [
+              2.8886909688676137,
+              2.5814853389668655,
+              2.5810293077042563,
+              2.5791487095086363,
+              2.578863796122034,
+              2.5798040952198438,
+              2.5798896541578475,
+              2.5806303865020017,
+              2.581570897904869,
+              2.579604528466188
+            ],
+            "A/A": [
+              2.879249239430844,
+              2.5845436216558064,
+              2.5789255463189678,
+              2.5824983528902616,
+              2.5792102597677977,
+              2.5807377975735464,
+              2.5766989559803193,
+              2.580012897071715,
+              2.5782006458171365,
+              2.5775793300863223
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 2.6058800855473656,
+          "candidate_us": 2.6050178506192743,
+          "speedup": 1.0003309900267618,
+          "graph_replay_samples_us": {
+            "baseline": [
+              2.878793919306105,
+              2.578170854641964,
+              2.5747670999523784,
+              2.5743383858072098,
+              2.5764020843122473,
+              2.576482355894156,
+              2.5755444563413583,
+              2.575169256584129,
+              2.572971572428692,
+              2.5761608702054173
+            ],
+            "A/A": [
+              2.8559352049371607,
+              2.5771927794915546,
+              2.581964435608306,
+              2.5805381747080403,
+              2.5740033030703158,
+              2.575377591038832,
+              2.577841185286907,
+              2.578178333115539,
+              2.5744959832783456,
+              2.5746515156577434
+            ]
+          }
+        }
+      ],
+      "median_speedup": 1.0003309900267618,
+      "passed": true
+    },
+    {
+      "shape": [
+        1024,
+        4096,
+        1
+      ],
+      "group": "g_2672f7722871",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 5.315727319462326,
+          "candidate_us": 5.306040519891783,
+          "speedup": 1.0018256173382445,
+          "graph_replay_samples_us": {
+            "A/A": [
+              5.402225228243095,
+              5.307177610175554,
+              5.292740311733512,
+              5.3079219197118,
+              5.293484621269758,
+              5.2917582489723385,
+              5.291579490484193,
+              5.292174760685411,
+              5.290805461794831,
+              5.2905375458473385
+            ],
+            "baseline": [
+              5.57810525836566,
+              5.303247515963932,
+              5.291955238585847,
+              5.291375134709172,
+              5.291513372228719,
+              5.289139060546243,
+              5.2784260642024545,
+              5.276824812934356,
+              5.278150000584547,
+              5.278536736502331
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 5.318920598553785,
+          "candidate_us": 5.3087350277327845,
+          "speedup": 1.0019186436632814,
+          "graph_replay_samples_us": {
+            "A/A": [
+              5.557387411695245,
+              5.28254484767236,
+              5.280839206805285,
+              5.280866235645894,
+              5.279729410678199,
+              5.280974754423861,
+              5.280243765480829,
+              5.279918612562461,
+              5.279891583721851,
+              5.28495444864186
+            ],
+            "baseline": [
+              5.568026315073254,
+              5.2978892054664115,
+              5.2927101475458125,
+              5.2917060726049225,
+              5.29043778814037,
+              5.289592002660751,
+              5.289962132246804,
+              5.290173578616709,
+              5.289037202036548,
+              5.289671541146263
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 5.3152735284034245,
+          "candidate_us": 5.312140519300965,
+          "speedup": 1.000589782798681,
+          "graph_replay_samples_us": {
+            "A/A": [
+              5.5914632327910185,
+              5.295642072145072,
+              5.278912870569869,
+              5.279814396994906,
+              5.279947137082028,
+              5.2788334635534655,
+              5.279549311880444,
+              5.279019141651523,
+              5.279125017673395,
+              5.2790985486679265
+            ],
+            "baseline": [
+              5.5563167815512795,
+              5.2867812298713845,
+              5.279455387845952,
+              5.283377221290102,
+              5.292064585584275,
+              5.290621087906208,
+              5.291873850720995,
+              5.291547166540267,
+              5.290757443042511,
+              5.2899405296812665
+            ]
+          }
+        }
+      ],
+      "median_speedup": 1.0018256173382445,
+      "passed": true
+    },
+    {
+      "shape": [
+        1024,
+        8192,
+        1
+      ],
+      "group": "g_505c3890a49d",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 6.964705589059166,
+          "candidate_us": 6.9721465582376,
+          "speedup": 0.9989327577789308,
+          "graph_replay_samples_us": {
+            "A/A": [
+              7.212044118524908,
+              6.937142693516099,
+              6.933157697265401,
+              6.9323957184732174,
+              6.931868228283557,
+              6.9314870205554335,
+              6.931135505983681,
+              6.927003790607382,
+              6.92981678050953,
+              7.055414028656788
+            ],
+            "baseline": [
+              7.245082267055428,
+              6.938812491127048,
+              6.935400689751042,
+              6.934103776704897,
+              6.9340474805117704,
+              6.933596270725065,
+              6.932835431876161,
+              6.931622963119708,
+              6.932609826982809,
+              6.92894469273773
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 6.905862816742489,
+          "candidate_us": 6.94619913728402,
+          "speedup": 0.99419303712083,
+          "graph_replay_samples_us": {
+            "baseline": [
+              6.949485625539507,
+              6.904771498271397,
+              6.900914226259505,
+              6.900885701179504,
+              6.900828651019505,
+              6.900628549712045,
+              6.900314348084586,
+              6.9007426500320435,
+              6.900914226259505,
+              6.899142691067287
+            ],
+            "A/A": [
+              7.22247553112937,
+              6.920688268909165,
+              6.917153401881406,
+              6.91548085333324,
+              6.9163983427050955,
+              6.915210672413921,
+              6.913834840411078,
+              6.91432052277795,
+              6.913241407320432,
+              6.913187531958543
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 6.944705670181136,
+          "candidate_us": 6.922744073774605,
+          "speedup": 1.0031723831146278,
+          "graph_replay_samples_us": {
+            "A/A": [
+              7.117290061925832,
+              6.903948147056157,
+              6.902801097410121,
+              6.902436868375598,
+              6.900638244827718,
+              6.900247611129711,
+              6.8998049447124865,
+              6.901081687852692,
+              6.900351676568146,
+              6.898840397887588
+            ],
+            "baseline": [
+              7.204703906663285,
+              6.919319820640306,
+              6.913929316349802,
+              6.914457735397125,
+              6.914430960065368,
+              6.913982079503558,
+              6.915409047184259,
+              6.9257403876937,
+              6.9135064236099915,
+              6.911577024703966
+            ]
+          }
+        }
+      ],
+      "median_speedup": 0.9989327577789308,
+      "passed": true
+    },
+    {
+      "shape": [
+        1024,
+        32768,
+        1
+      ],
+      "group": "g_1c037e05ab35",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 33.42259319116038,
+          "candidate_us": 33.41357712518601,
+          "speedup": 1.0002698324079637,
+          "graph_replay_samples_us": {
+            "A/A": [
+              33.65760076613653,
+              33.40208871023995,
+              33.38465372721354,
+              33.38520231701079,
+              33.402513776506694,
+              33.368319556826634,
+              33.3757563999721,
+              33.39074997674851,
+              33.375331333705354,
+              33.3935546875
+            ],
+            "baseline": [
+              33.65259643987561,
+              33.39012632978723,
+              33.38570290423454,
+              33.39897994454025,
+              33.40629821128034,
+              33.401759803717866,
+              33.398753362344515,
+              33.40221296810935,
+              33.39761706954199,
+              33.39188487817209
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 33.409772214636334,
+          "candidate_us": 33.4215262257461,
+          "speedup": 0.9996483101630257,
+          "graph_replay_samples_us": {
+            "A/A": [
+              33.694240218358686,
+              33.387573052805365,
+              33.40096507512086,
+              33.400227837528746,
+              33.40170231271297,
+              33.386271050635806,
+              33.37934845728232,
+              33.386835815213246,
+              33.38797210801578,
+              33.39012632978723
+            ],
+            "baseline": [
+              33.64825628500069,
+              33.38064345638308,
+              33.3773013764778,
+              33.34734081167035,
+              33.384893636787886,
+              33.373847893909016,
+              33.38364457662127,
+              33.39536886299606,
+              33.40193824430482,
+              33.404487002212385
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 33.41445325707423,
+          "candidate_us": 33.414647948574014,
+          "speedup": 0.9999941734684715,
+          "graph_replay_samples_us": {
+            "baseline": [
+              33.66948052225412,
+              33.37564696703607,
+              33.39680343262618,
+              33.37989020303687,
+              33.39332594616857,
+              33.37776858503647,
+              33.39969080016977,
+              33.366159400448176,
+              33.40139792988533,
+              33.38436878408077
+            ],
+            "A/A": [
+              33.70287384785397,
+              33.391717454077494,
+              33.383322433686594,
+              33.39690221867092,
+              33.387211007131654,
+              33.39278865867937,
+              33.35487338858591,
+              33.363550481661946,
+              33.38681812017736,
+              33.386421875214914
+            ]
+          }
+        }
+      ],
+      "median_speedup": 0.9999941734684715,
+      "passed": true
+    },
+    {
+      "shape": [
+        1024,
+        65536,
+        1
+      ],
+      "group": "g_493b7cfcff50",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 56.4116268213893,
+          "candidate_us": 56.46189909714919,
+          "speedup": 0.9991096247812459,
+          "graph_replay_samples_us": {
+            "baseline": [
+              56.68879534142457,
+              56.388787859695746,
+              56.36785736531456,
+              56.37020659236964,
+              56.35650276788169,
+              56.354064046462604,
+              56.35631818575593,
+              56.36176056176686,
+              56.39019180253104,
+              56.4817836906903
+            ],
+            "A/A": [
+              56.84677101451265,
+              56.50594248574161,
+              56.48729222766041,
+              56.44080483701808,
+              56.3761412039311,
+              56.37216850145329,
+              56.39848765536878,
+              56.39857794406146,
+              56.39072282779851,
+              56.40208227394601
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 56.4095261517693,
+          "candidate_us": 56.44920461318072,
+          "speedup": 0.9992970944111026,
+          "graph_replay_samples_us": {
+            "baseline": [
+              56.678025862749884,
+              56.37703502879423,
+              56.35360268985524,
+              56.373742047478174,
+              56.35360268985524,
+              56.35567272410673,
+              56.36960197897518,
+              56.355953216552734,
+              56.34964774636661,
+              56.528377532958984
+            ],
+            "A/A": [
+              56.79086797377642,
+              56.49251937866211,
+              56.48188310510972,
+              56.478214263916016,
+              56.39378603766946,
+              56.37703502879423,
+              56.35294072768267,
+              56.35858984554515,
+              56.35915083043715,
+              56.40705894021427
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 56.40690896363385,
+          "candidate_us": 56.4553252363627,
+          "speedup": 0.9991423967087935,
+          "graph_replay_samples_us": {
+            "baseline": [
+              56.71815675268483,
+              56.39324919664051,
+              56.390796087484446,
+              56.37484525157287,
+              56.35360560234318,
+              56.354263890809364,
+              56.35218775026214,
+              56.35785353218911,
+              56.35379127344902,
+              56.42034029890303
+            ],
+            "A/A": [
+              56.83218694366185,
+              56.490951583097115,
+              56.46923931650708,
+              56.48358662923177,
+              56.39494836857888,
+              56.35625000900223,
+              56.368329883676715,
+              56.39579795454807,
+              56.36559545466331,
+              56.396366220659914
+            ]
+          }
+        }
+      ],
+      "median_speedup": 0.9991423967087935,
+      "passed": true
+    },
+    {
+      "shape": [
+        1,
+        128,
+        64
+      ],
+      "group": "g_25df7a76052b",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 2.6784112667157487,
+          "candidate_us": 2.6641439758209255,
+          "speedup": 1.0053553002481508,
+          "graph_replay_samples_us": {
+            "A/A": [
+              2.815616161473919,
+              2.651036858252204,
+              2.6471704729827126,
+              2.64725280604816,
+              2.6467044637462678,
+              2.64725280604816,
+              2.646978634897214,
+              2.646457668850334,
+              2.6465397976153717,
+              2.646430088294911
+            ],
+            "baseline": [
+              2.953813658447802,
+              2.651753869752264,
+              2.648548417853974,
+              2.6476485867491926,
+              2.6469174085057268,
+              2.6473110715199017,
+              2.646045651293387,
+              2.6464956715991086,
+              2.6472549237350167,
+              2.6483234077011133
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 2.6756338749901722,
+          "candidate_us": 2.676142237709024,
+          "speedup": 0.9998100389763711,
+          "graph_replay_samples_us": {
+            "baseline": [
+              2.9265355255644203,
+              2.6511457006810075,
+              2.647322113231077,
+              2.646182957342116,
+              2.6469695366035073,
+              2.6472677618770275,
+              2.6476474131568004,
+              2.6472136125726213,
+              2.6481626397472318,
+              2.6478914891259144
+            ],
+            "A/A": [
+              2.9318081469100705,
+              2.651966190068989,
+              2.6482033034259156,
+              2.6470892628968494,
+              2.6465173274530964,
+              2.647149596478955,
+              2.647300094001605,
+              2.6474806461711036,
+              2.6468486014336543,
+              2.647059208250001
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 2.6743992989373315,
+          "candidate_us": 2.674947904237214,
+          "speedup": 0.999794909912446,
+          "graph_replay_samples_us": {
+            "baseline": [
+              2.920982976665411,
+              2.650833985196101,
+              2.6474475860595703,
+              2.646012584190198,
+              2.646586499406618,
+              2.6463281947935644,
+              2.6462422358080944,
+              2.646500540421148,
+              2.6470458026424115,
+              2.646012584190198
+            ],
+            "A/A": [
+              2.91858512872285,
+              2.650289481859115,
+              2.6473569716671275,
+              2.647562617274343,
+              2.647562617274343,
+              2.648720212304707,
+              2.6477170910482624,
+              2.6475369355302916,
+              2.647048215774095,
+              2.6470997709170034
+            ]
+          }
+        }
+      ],
+      "median_speedup": 0.9998100389763711,
+      "passed": true
+    },
+    {
+      "shape": [
+        1,
+        512,
+        64
+      ],
+      "group": "g_25df7a76052b",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 2.7707852647456037,
+          "candidate_us": 2.763256346675712,
+          "speedup": 1.0027246542214403,
+          "graph_replay_samples_us": {
+            "A/A": [
+              2.8189013541584282,
+              2.759718349282171,
+              2.7572676329545573,
+              2.7561408113425885,
+              2.756704327086328,
+              2.7567886970412565,
+              2.7584225778848355,
+              2.7563097611279557,
+              2.7563662176400845,
+              2.755943738238912
+            ],
+            "baseline": [
+              2.8883477915888247,
+              2.760990008861325,
+              2.7575919460692138,
+              2.756709039809313,
+              2.7571906612868293,
+              2.7579665184020996,
+              2.7579932308515978,
+              2.7576989952138433,
+              2.7573778477799533,
+              2.755986607593039
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 2.7683597083059737,
+          "candidate_us": 2.7689791925541765,
+          "speedup": 0.9997762770302252,
+          "graph_replay_samples_us": {
+            "baseline": [
+              2.8618254117517665,
+              2.760966352168346,
+              2.7568590320996793,
+              2.7580671262421066,
+              2.7580671262421066,
+              2.757530284407955,
+              2.757476480215188,
+              2.757610690673726,
+              2.7585771659876674,
+              2.7566174132711936
+            ],
+            "A/A": [
+              2.8870128965997077,
+              2.7594804376750797,
+              2.7557661781063327,
+              2.7552986299836792,
+              2.755376619177979,
+              2.7551687770075612,
+              2.755610393239306,
+              2.755610393239306,
+              2.755246766201861,
+              2.7552208343109528
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 2.762618064880371,
+          "candidate_us": 2.7657708820460343,
+          "speedup": 0.9988600584429717,
+          "graph_replay_samples_us": {
+            "A/A": [
+              2.852362389378219,
+              2.7597937500684933,
+              2.7565486413285027,
+              2.7565220843130414,
+              2.7554845770299186,
+              2.755298479735009,
+              2.755138741268878,
+              2.75551113404538,
+              2.7555644462629845,
+              2.7554845770299186
+            ],
+            "baseline": [
+              2.8401958288522713,
+              2.7559696873532067,
+              2.7534853053998343,
+              2.7534311833763927,
+              2.754592493113586,
+              2.753755311925703,
+              2.753539226226163,
+              2.753458143789557,
+              2.7539442360149655,
+              2.7538092327520314
+            ]
+          }
+        }
+      ],
+      "median_speedup": 0.9997762770302252,
+      "passed": true
+    },
+    {
+      "shape": [
+        1,
+        2048,
+        64
+      ],
+      "group": "g_25df7a76052b",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 3.709489505877192,
+          "candidate_us": 3.704797301516437,
+          "speedup": 1.0012665212099012,
+          "graph_replay_samples_us": {
+            "A/A": [
+              3.9492885538395623,
+              3.678308637350198,
+              3.670630839047016,
+              3.6703088139527593,
+              3.671650918538138,
+              3.669449546993179,
+              3.6851007666363813,
+              3.685395989642047,
+              3.684053885056669,
+              3.6837850641084198
+            ],
+            "baseline": [
+              3.9540435002225047,
+              3.683642031937242,
+              3.6836697887483623,
+              3.6830027967199466,
+              3.6819741375854385,
+              3.682919112005822,
+              3.6808895505479273,
+              3.683030553531067,
+              3.6803058289528723,
+              3.681417758520741
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 3.710999468007983,
+          "candidate_us": 3.7011719565106254,
+          "speedup": 1.0026552431534748,
+          "graph_replay_samples_us": {
+            "A/A": [
+              3.947569366194244,
+              3.684403346135066,
+              3.681640951042501,
+              3.678495863563994,
+              3.6719040992932444,
+              3.668704399695763,
+              3.6705640646127558,
+              3.671357162997254,
+              3.6682666876377206,
+              3.6688136239337106
+            ],
+            "baseline": [
+              3.943098892811604,
+              3.675053109248132,
+              3.6711684481025264,
+              3.672258718565562,
+              3.672370327612198,
+              3.79735205371307,
+              3.6706653744893303,
+              3.6694076904563406,
+              3.6693518859330223,
+              3.669268179148045
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 3.7104880412419634,
+          "candidate_us": 3.686515939530551,
+          "speedup": 1.00650264425941,
+          "graph_replay_samples_us": {
+            "A/A": [
+              3.7306007985091463,
+              3.684353491442785,
+              3.6825160676935957,
+              3.6809330694245785,
+              3.681611256548878,
+              3.67759731548835,
+              3.6816677019368633,
+              3.681385053762699,
+              3.6820918848152293,
+              3.6824027556833867
+            ],
+            "baseline": [
+              3.986080090204874,
+              3.687066634496053,
+              3.681306838989258,
+              3.6808268229166665,
+              3.6814932028452554,
+              3.68122657140096,
+              3.6848533153533936,
+              3.68285338083903,
+              3.6723200480143228,
+              3.6668535073598223
+            ]
+          }
+        }
+      ],
+      "median_speedup": 1.0026552431534748,
+      "passed": true
+    },
+    {
+      "shape": [
+        1,
+        8192,
+        64
+      ],
+      "group": "g_25df7a76052b",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 6.969336161376737,
+          "candidate_us": 7.002163570193894,
+          "speedup": 0.9953118191987269,
+          "graph_replay_samples_us": {
+            "baseline": [
+              7.024765860104392,
+              6.96692187735375,
+              6.963092384608925,
+              6.962354724288833,
+              6.962439692612236,
+              6.963318966804667,
+              6.962468015386704,
+              6.962524660935639,
+              6.963659685554234,
+              6.961815746117991
+            ],
+            "A/A": [
+              7.25988633246573,
+              6.973836577197347,
+              6.974451131932126,
+              6.974744876358465,
+              6.971458759849179,
+              6.972473730427993,
+              6.9745307374677195,
+              6.973649504188703,
+              6.972073314583958,
+              6.9745307374677195
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 6.991066611730135,
+          "candidate_us": 7.001361281184827,
+          "speedup": 0.9985296188782091,
+          "graph_replay_samples_us": {
+            "baseline": [
+              7.238230644128262,
+              6.973948998328967,
+              6.962640927388118,
+              6.961231048290546,
+              6.961692602206499,
+              6.963282059400509,
+              6.961820217279287,
+              6.962794523972731,
+              6.962230572333703,
+              6.962794523972731
+            ],
+            "A/A": [
+              7.23479319426973,
+              6.978169134107687,
+              6.975999929137149,
+              6.979742696729757,
+              6.97429139735335,
+              6.973911544023934,
+              6.973884873471017,
+              6.974535473322464,
+              6.973559169446007,
+              6.974725399987172
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 6.992919745565462,
+          "candidate_us": 6.999005777550361,
+          "speedup": 0.9991304433546233,
+          "graph_replay_samples_us": {
+            "baseline": [
+              7.251576816334444,
+              6.974064001516134,
+              6.963172880541377,
+              6.963092739842519,
+              6.962474053647338,
+              6.963845261004792,
+              6.961398565468668,
+              6.961909061720392,
+              6.961075598452272,
+              6.966588477126691
+            ],
+            "A/A": [
+              7.229643732212893,
+              6.9719356240578065,
+              6.972789764404297,
+              6.974912384181347,
+              6.973514279115547,
+              6.973048244093614,
+              6.973773530386027,
+              6.973177869728854,
+              6.973177869728854,
+              6.97408447759437
+            ]
+          }
+        }
+      ],
+      "median_speedup": 0.9985296188782091,
+      "passed": true
+    },
+    {
+      "shape": [
+        16,
+        128,
+        64
+      ],
+      "group": "g_0b7ba13d19cb",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 3.6341040112629397,
+          "candidate_us": 3.634703488185488,
+          "speedup": 0.9998350685483708,
+          "graph_replay_samples_us": {
+            "A/A": [
+              3.7475310522934486,
+              3.6254344315364446,
+              3.62176566288389,
+              3.6220414885159196,
+              3.621710168904271,
+              3.620993268900904,
+              3.6214898372518607,
+              3.621655085991169,
+              3.6225655983234275,
+              3.6218482872535445
+            ],
+            "baseline": [
+              3.659943590933149,
+              3.6319069137002464,
+              3.6302841611435688,
+              3.630044751631054,
+              3.6305501276715435,
+              3.630390785578778,
+              3.630523570656083,
+              3.636162774521216,
+              3.6307364231531363,
+              3.630497013640622
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 3.654473457100743,
+          "candidate_us": 3.624304944894125,
+          "speedup": 1.0083239442224967,
+          "graph_replay_samples_us": {
+            "baseline": [
+              3.905299271720758,
+              3.6333131243039944,
+              3.6297829300559736,
+              3.6300653287613174,
+              3.6299807354084495,
+              3.6295851247034974,
+              3.625631121966235,
+              3.6201801114869347,
+              3.620010503918748,
+              3.62088631868152
+            ],
+            "A/A": [
+              3.650729193492388,
+              3.6236308158429633,
+              3.6211524246255657,
+              3.6211524246255657,
+              3.621486501137623,
+              3.621040789120295,
+              3.6208739583652054,
+              3.6207067126082375,
+              3.621040789120295,
+              3.621235840003111
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 3.657902607343422,
+          "candidate_us": 3.6321061722775725,
+          "speedup": 1.0071023350756494,
+          "graph_replay_samples_us": {
+            "A/A": [
+              3.6586213619151016,
+              3.624769170233544,
+              3.6215011109697057,
+              3.6274654307263963,
+              3.6318231136240855,
+              3.631468833761012,
+              3.630978604580494,
+              3.6318503034875746,
+              3.6319590629415313,
+              3.6306247305362787
+            ],
+            "baseline": [
+              3.90524158770747,
+              3.6338495456507443,
+              3.6304349752810086,
+              3.6305641106472155,
+              3.6300209711517355,
+              3.6299176628587704,
+              3.6296069670224633,
+              3.629529485802739,
+              3.629839796160341,
+              3.6300209711517355
+            ]
+          }
+        }
+      ],
+      "median_speedup": 1.0071023350756494,
+      "passed": true
+    },
+    {
+      "shape": [
+        16,
+        512,
+        64
+      ],
+      "group": "g_0b7ba13d19cb",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 4.08011786090957,
+          "candidate_us": 4.0791695740700575,
+          "speedup": 1.0002324705610526,
+          "graph_replay_samples_us": {
+            "A/A": [
+              4.341748238416012,
+              4.0539103046072205,
+              4.048338202430551,
+              4.049176597433985,
+              4.04801332436672,
+              4.0502588525225525,
+              4.049474066430395,
+              4.05033987050125,
+              4.049852956480025,
+              4.050583327511863
+            ],
+            "baseline": [
+              4.329951031898711,
+              4.0521114430529,
+              4.0496757494837485,
+              4.050435489211262,
+              4.050828040914333,
+              4.050461633310771,
+              4.050618497907823,
+              4.049833004291241,
+              4.0569820497703235,
+              4.060281669254584
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 4.080614230524503,
+          "candidate_us": 4.0646903607647635,
+          "speedup": 1.0039176095462148,
+          "graph_replay_samples_us": {
+            "A/A": [
+              4.103174467780667,
+              4.064243658746761,
+              4.058612381342906,
+              4.058856044323917,
+              4.058693871280264,
+              4.060128416910188,
+              4.060128416910188,
+              4.060507627509774,
+              4.062159210695631,
+              4.060399512147338
+            ],
+            "baseline": [
+              4.336589610566414,
+              4.061724246825126,
+              4.0576933997251485,
+              4.048095775038745,
+              4.053251091598341,
+              4.049055578367467,
+              4.049795963055269,
+              4.049795963055269,
+              4.049988005441177,
+              4.050152671572073
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 4.0605308072833735,
+          "candidate_us": 4.088390715578769,
+          "speedup": 0.9931856052335615,
+          "graph_replay_samples_us": {
+            "baseline": [
+              4.144541201959562,
+              4.054147268727047,
+              4.051677475571116,
+              4.051705184235122,
+              4.0507614354103,
+              4.050511643872092,
+              4.0508726836284765,
+              4.050345391888052,
+              4.050289560997889,
+              4.050456226544078
+            ],
+            "A/A": [
+              4.3404798304781,
+              4.063700412182097,
+              4.05975138887446,
+              4.0592067799669636,
+              4.059261159693941,
+              4.059288349557431,
+              4.060023693328208,
+              4.0607318472354965,
+              4.06065027764503,
+              4.060813416825964
+            ]
+          }
+        }
+      ],
+      "median_speedup": 1.0002324705610526,
+      "passed": true
+    },
+    {
+      "shape": [
+        16,
+        2048,
+        64
+      ],
+      "group": "g_97b63d5ad18c",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 5.994055137114387,
+          "candidate_us": 6.01953034794003,
+          "speedup": 0.9957679072364239,
+          "graph_replay_samples_us": {
+            "baseline": [
+              6.030664330243658,
+              5.9851446590391095,
+              5.985226704274167,
+              5.991686344959057,
+              5.991086846112799,
+              5.991713964147096,
+              5.9919316683351695,
+              5.990841522736687,
+              5.991141272159816,
+              5.991114059136308
+            ],
+            "A/A": [
+              6.275170649418127,
+              5.995670226491758,
+              5.993698558442102,
+              5.9956170240111595,
+              5.9924463149808425,
+              5.987410342862068,
+              5.990421444450589,
+              5.988662586323327,
+              5.98852958012183,
+              5.9876767522984995
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 6.0135941408118425,
+          "candidate_us": 6.026435686537057,
+          "speedup": 0.9978691308771614,
+          "graph_replay_samples_us": {
+            "baseline": [
+              6.259043168048469,
+              5.981779682392977,
+              5.97861893323003,
+              5.9788014937420275,
+              5.978174793476962,
+              5.976921003692004,
+              5.994161489058514,
+              5.9942140384596225,
+              5.994866818797831,
+              5.999359987219986
+            ],
+            "A/A": [
+              6.276601602223294,
+              6.0006874651948285,
+              5.997329112912012,
+              5.996456225056294,
+              5.9952925059421,
+              5.99608578957802,
+              5.998942083563686,
+              6.000026592538377,
+              5.999894181558909,
+              6.003041306803049
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 6.022762572172704,
+          "candidate_us": 6.037371380384578,
+          "speedup": 0.9975802700726116,
+          "graph_replay_samples_us": {
+            "A/A": [
+              6.281275685839479,
+              6.014936786157348,
+              6.01116288143931,
+              6.011880513441523,
+              6.008371958304878,
+              6.007920071928208,
+              6.0105779242277935,
+              6.010950205730045,
+              6.008637703930421,
+              6.008000072846777
+            ],
+            "baseline": [
+              6.281806087727069,
+              5.997379135094528,
+              5.994040886366766,
+              5.993128017186147,
+              5.993910309932246,
+              5.992345724440049,
+              5.992580451125912,
+              5.99375369593489,
+              5.994901291801372,
+              5.993780122118066
+            ]
+          }
+        }
+      ],
+      "median_speedup": 0.9975802700726116,
+      "passed": true
+    },
+    {
+      "shape": [
+        16,
+        8192,
+        64
+      ],
+      "group": "g_97b63d5ad18c",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 12.614895936747757,
+          "candidate_us": 12.599362278080854,
+          "speedup": 1.0012328924531306,
+          "graph_replay_samples_us": {
+            "A/A": [
+              12.803197027335374,
+              12.577258975185853,
+              12.57432096540988,
+              12.58142492484854,
+              12.578615868007379,
+              12.579164399147997,
+              12.575709615297443,
+              12.576031997634471,
+              12.57293231552232,
+              12.574966692419272
+            ],
+            "baseline": [
+              12.887999580355148,
+              12.578804114647898,
+              12.572664176406015,
+              12.576472715258157,
+              12.572428397146979,
+              12.572664176406015,
+              12.57145360827006,
+              12.606848649873065,
+              12.603808153159504,
+              12.605815795954742
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 12.610973502105137,
+          "candidate_us": 12.58013166527636,
+          "speedup": 1.0024516306863391,
+          "graph_replay_samples_us": {
+            "baseline": [
+              12.926762059049786,
+              12.603411584530237,
+              12.600663922867685,
+              12.576966015797742,
+              12.571894447758513,
+              12.566912848994418,
+              12.562083298305295,
+              12.571079326125812,
+              12.561961839783866,
+              12.56799967783802
+            ],
+            "A/A": [
+              12.627530054847758,
+              12.582191722518065,
+              12.582539218674949,
+              12.579240160867922,
+              12.574379526038282,
+              12.573714713291492,
+              12.57076315164135,
+              12.575160745686262,
+              12.569518891208642,
+              12.566278467988882
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 12.600664096408421,
+          "candidate_us": 12.584012164209122,
+          "speedup": 1.0013232609744815,
+          "graph_replay_samples_us": {
+            "A/A": [
+              12.6176839484308,
+              12.575217655726842,
+              12.577142930568609,
+              12.577504143679052,
+              12.584571551559563,
+              12.582406065517798,
+              12.583639388693902,
+              12.58168453560736,
+              12.579729682520815,
+              12.580541739786478
+            ],
+            "baseline": [
+              12.883285522460938,
+              12.572984483506945,
+              12.57173326280382,
+              12.562858581542969,
+              12.56251695421007,
+              12.566698710123697,
+              12.569286770290798,
+              12.57375250922309,
+              12.572586907280817,
+              12.57093726264106
+            ]
+          }
+        }
+      ],
+      "median_speedup": 1.0013232609744815,
+      "passed": true
+    },
+    {
+      "shape": [
+        256,
+        128,
+        64
+      ],
+      "group": "g_89a9edc29b16",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 7.738870164773759,
+          "candidate_us": 7.738648885513243,
+          "speedup": 1.0000285940431968,
+          "graph_replay_samples_us": {
+            "baseline": [
+              7.9969637585382385,
+              7.717138659344973,
+              7.714510834130057,
+              7.7148615008723125,
+              7.712584342399652,
+              7.706598643838924,
+              7.706482044971772,
+              7.705780711487262,
+              7.706160963016704,
+              7.707620189137702
+            ],
+            "A/A": [
+              7.9862436318298595,
+              7.709689951536566,
+              7.70713996095776,
+              7.706263846876215,
+              7.710327053465784,
+              7.711283102075094,
+              7.712982304363329,
+              7.714416377277296,
+              7.714363351402441,
+              7.713779275348077
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 7.756921024256965,
+          "candidate_us": 7.7490330947580315,
+          "speedup": 1.0010179243529453,
+          "graph_replay_samples_us": {
+            "baseline": [
+              7.989470491704252,
+              7.717361155244493,
+              7.71408965907146,
+              7.7232986791027365,
+              7.738584505323692,
+              7.738254324267411,
+              7.737951999677415,
+              7.738089643393185,
+              7.737869249586387,
+              7.734240535198618
+            ],
+            "A/A": [
+              8.015635843124326,
+              7.740171797253448,
+              7.738095727806445,
+              7.711137355428438,
+              7.714641927768929,
+              7.714318144492172,
+              7.714129337866766,
+              7.714884564368385,
+              7.713887504699758,
+              7.713428744771647
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 7.7247566287800415,
+          "candidate_us": 7.7404716016867265,
+          "speedup": 0.9979697654464282,
+          "graph_replay_samples_us": {
+            "baseline": [
+              7.878807035543152,
+              7.716962846658997,
+              7.7090707875914495,
+              7.705979428048861,
+              7.706819954565016,
+              7.706061056104757,
+              7.706630836098881,
+              7.706088534856247,
+              7.706196833465059,
+              7.704948974867999
+            ],
+            "A/A": [
+              7.985358883895425,
+              7.711031138144992,
+              7.713264933747339,
+              7.7138031301025185,
+              7.714072629320611,
+              7.713722119920889,
+              7.711408116217918,
+              7.714448805312532,
+              7.713856869529936,
+              7.713749390675101
+            ]
+          }
+        }
+      ],
+      "median_speedup": 1.0000285940431968,
+      "passed": true
+    },
+    {
+      "shape": [
+        256,
+        512,
+        64
+      ],
+      "group": "g_c3f1a9a2be29",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 12.828685125300066,
+          "candidate_us": 12.81670271378807,
+          "speedup": 1.000934905941066,
+          "graph_replay_samples_us": {
+            "A/A": [
+              12.958036515993903,
+              12.792943879490503,
+              12.792943879490503,
+              12.792697917466425,
+              12.79325018907439,
+              12.794078596486342,
+              12.794262382236676,
+              12.815248703339412,
+              12.818040235159152,
+              12.815524839143396
+            ],
+            "baseline": [
+              13.102955190874395,
+              12.819134871018735,
+              12.815220156391497,
+              12.797939086464863,
+              12.7907852130739,
+              12.791492353367389,
+              12.790932607080483,
+              12.79319966727698,
+              12.79502454545373,
+              12.790167561998691
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 12.974264392745024,
+          "candidate_us": 12.827648256220606,
+          "speedup": 1.0114296972910306,
+          "graph_replay_samples_us": {
+            "baseline": [
+              13.075103867525435,
+              13.579299445430662,
+              12.806719081325495,
+              12.804157989846784,
+              13.521114536148904,
+              12.804399551420337,
+              12.800542648229221,
+              12.784120951219691,
+              12.783397164497448,
+              12.783788691806254
+            ],
+            "A/A": [
+              13.070593286619767,
+              12.78677099094754,
+              12.784971719639797,
+              12.807571985239564,
+              12.805831507996658,
+              12.805337810775743,
+              12.80615055226026,
+              12.805048163544559,
+              12.803626730565256,
+              12.800579814616919
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 13.002342002979223,
+          "candidate_us": 12.822190526493026,
+          "speedup": 1.0140499765710056,
+          "graph_replay_samples_us": {
+            "A/A": [
+              13.068123327670977,
+              12.788295299790528,
+              12.783446637573814,
+              12.786200606343455,
+              12.794522284569307,
+              12.784673300048143,
+              12.800089994025521,
+              12.808232356500582,
+              12.803083050462886,
+              12.805238407945053
+            ],
+            "baseline": [
+              13.277248253568935,
+              12.995524567682386,
+              12.982817202950445,
+              12.963988815528758,
+              12.965967113845014,
+              12.972367328146229,
+              12.964359228161799,
+              12.966276712463674,
+              12.968656751844618,
+              12.966214055600373
+            ]
+          }
+        }
+      ],
+      "median_speedup": 1.0114296972910306,
+      "passed": true
+    },
+    {
+      "shape": [
+        256,
+        2048,
+        64
+      ],
+      "group": "g_c3f1a9a2be29",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 36.55320250872269,
+          "candidate_us": 36.583057300064915,
+          "speedup": 0.9991839175414634,
+          "graph_replay_samples_us": {
+            "A/A": [
+              36.865548570026725,
+              36.526077477506895,
+              36.52688329534013,
+              36.52409250422042,
+              36.519874898038175,
+              36.558450654495594,
+              36.585489908854164,
+              36.579967469208,
+              36.572652269703475,
+              36.57153595325559
+            ],
+            "baseline": [
+              36.745382512657386,
+              36.53635562044903,
+              36.54574051644038,
+              36.53797408909474,
+              36.539403674671945,
+              36.53207056730697,
+              36.52691146702442,
+              36.53505195691748,
+              36.52256345285953,
+              36.510571229805066
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 36.93781675294388,
+          "candidate_us": 36.90151140527818,
+          "speedup": 1.000983844462818,
+          "graph_replay_samples_us": {
+            "baseline": [
+              37.165519803069365,
+              36.93959509679513,
+              36.93575082823288,
+              36.916403807410894,
+              36.921922550644986,
+              36.92601447881654,
+              36.900464878525845,
+              36.89767408740613,
+              36.88409346942754,
+              36.89072852910951
+            ],
+            "A/A": [
+              37.03294772546268,
+              36.903455419447816,
+              36.89221132148817,
+              36.874315576645934,
+              36.88090055891611,
+              36.88344862854596,
+              36.89338906297406,
+              36.89388904756713,
+              36.88804478321261,
+              36.87251192852131
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 36.91662628826928,
+          "candidate_us": 36.920348586739266,
+          "speedup": 0.9998991802999573,
+          "graph_replay_samples_us": {
+            "baseline": [
+              37.06664519551199,
+              36.88236711554026,
+              37.05867811863524,
+              36.88124645544861,
+              36.885977719080586,
+              36.87620348503617,
+              36.88099783218325,
+              36.86848132062979,
+              36.886538049126415,
+              36.879127591500485
+            ],
+            "A/A": [
+              37.11887834600901,
+              36.88392193864755,
+              36.87103434759356,
+              36.886538049126415,
+              36.88124645544861,
+              36.86935335745607,
+              36.91436530087245,
+              36.937899162797144,
+              36.91511117066855,
+              36.92513773877333
+            ]
+          }
+        }
+      ],
+      "median_speedup": 0.9998991802999573,
+      "passed": true
+    },
+    {
+      "shape": [
+        256,
+        8192,
+        64
+      ],
+      "group": "g_c3f1a9a2be29",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 126.36539951447517,
+          "candidate_us": 126.44393305624685,
+          "speedup": 0.9993789062086772,
+          "graph_replay_samples_us": {
+            "baseline": [
+              126.64051671181956,
+              126.42023640294228,
+              126.28727574502268,
+              126.37213430097027,
+              126.32175568611392,
+              126.37997288857736,
+              126.27055260442918,
+              126.34198588709677,
+              126.31556603216357,
+              126.3039988856162
+            ],
+            "A/A": [
+              126.63555760537423,
+              126.45264902422504,
+              126.3944318217616,
+              126.46916297174268,
+              126.44748072470388,
+              126.54513697470388,
+              126.3814249346333,
+              126.36510787471647,
+              126.36407421481225,
+              126.38430441579513
+            ]
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "baseline",
+            "A/A"
+          ],
+          "baseline_us": 126.37272742486769,
+          "candidate_us": 126.45726849955898,
+          "speedup": 0.9993314652791857,
+          "graph_replay_samples_us": {
+            "baseline": [
+              126.59653694398942,
+              126.37047306183847,
+              126.40433772917717,
+              126.36304055490803,
+              126.3655262608682,
+              126.39380424253402,
+              126.27572090395034,
+              126.2709709905809,
+              126.3700669811618,
+              126.3167965796686
+            ],
+            "A/A": [
+              126.62193544449346,
+              126.44397366431451,
+              126.47783833165322,
+              126.49000844647806,
+              126.46998743857108,
+              126.49785933956024,
+              126.39173692272557,
+              126.4189935499622,
+              126.31947917322958,
+              126.4408726846018
+            ]
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "A/A",
+            "baseline"
+          ],
+          "baseline_us": 126.4303390796368,
+          "candidate_us": 126.37347067556074,
+          "speedup": 1.0004500027084169,
+          "graph_replay_samples_us": {
+            "A/A": [
+              126.6832536266696,
+              126.32093121928553,
+              126.34322874007687,
+              126.33868801978326,
+              126.38058816232989,
+              126.39669602917087,
+              126.30853960590979,
+              126.29305931829637,
+              126.36386502173639,
+              126.30585701234878
+            ],
+            "baseline": [
+              126.5733303167881,
+              126.5263557434082,
+              126.42297989282852,
+              126.43036475548378,
+              126.49251253176958,
+              126.43774961813902,
+              126.39753635113054,
+              126.36574720725035,
+              126.3281993376903,
+              126.3286150418795
+            ]
+          }
+        }
+      ],
+      "median_speedup": 0.9993789062086772,
+      "passed": true
+    }
+  ],
+  "telemetry_during": [
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.20 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.25 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.80 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.12 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.71 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.25 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.62 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 30, 129.85 W, 700.00 W, 0 %, 731 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.21 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.30 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.82 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.12 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.70 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.22 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.60 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 30, 130.66 W, 700.00 W, 30 %, 733 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.23 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.27 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.80 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.12 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.71 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.22 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.55 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 30, 130.43 W, 700.00 W, 0 %, 733 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.18 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.26 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.81 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.16 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.71 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.22 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.58 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 30, 130.65 W, 700.00 W, 0 %, 733 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.19 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.28 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.82 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.14 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.73 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.21 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.56 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 30, 131.14 W, 700.00 W, 0 %, 733 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.18 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.25 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.80 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.14 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.71 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.22 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.61 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 30, 131.07 W, 700.00 W, 31 %, 733 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.19 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.26 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.80 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.11 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.73 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.23 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.63 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 30, 131.99 W, 700.00 W, 0 %, 752 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.21 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.28 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.83 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.13 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.73 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.18 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.58 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 30, 135.01 W, 700.00 W, 0 %, 1351 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.19 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.27 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.82 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.15 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.74 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.19 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.57 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 30, 141.50 W, 700.00 W, 2 %, 733 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.21 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.22 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.78 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.14 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.73 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.22 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.53 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 30, 146.69 W, 700.00 W, 0 %, 733 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.18 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.24 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.82 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.11 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.71 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.22 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.58 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 31, 178.07 W, 700.00 W, 0 %, 753 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.18 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.26 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.79 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.10 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.71 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.19 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.63 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 31, 193.83 W, 700.00 W, 0 %, 753 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.18 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.28 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.83 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.13 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.72 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.18 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.63 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 31, 155.02 W, 700.00 W, 0 %, 733 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.16 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.27 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.76 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.14 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.71 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.18 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.59 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 31, 174.21 W, 700.00 W, 31 %, 753 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.19 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.25 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.83 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.11 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.69 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.21 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.55 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 32, 300.51 W, 700.00 W, 0 %, 753 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.16 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.24 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.75 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.14 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.66 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.17 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.57 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 33, 330.70 W, 700.00 W, 0 %, 749 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.17 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.28 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.74 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.14 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.68 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.18 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.61 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 34, 392.73 W, 700.00 W, 1 %, 797 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.17 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.28 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.76 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.09 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.67 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.21 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.61 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 37, 548.01 W, 700.00 W, 48 %, 861 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.18 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.27 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.81 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.13 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.72 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.19 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.68 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 34, 162.76 W, 700.00 W, 40 %, 733 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.20 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.23 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.78 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.17 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.74 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.22 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.70 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 33, 154.81 W, 700.00 W, 0 %, 733 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.20 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.24 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.80 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.14 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.72 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.17 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.68 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 33, 172.90 W, 700.00 W, 0 %, 733 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.18 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.24 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.79 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.14 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.68 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.16 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.68 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 33, 220.85 W, 700.00 W, 11 %, 733 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.18 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.23 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.79 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.14 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.71 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.16 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.69 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 33, 190.10 W, 700.00 W, 0 %, 733 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.16 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.25 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.83 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.13 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.70 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.19 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.72 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 34, 208.87 W, 700.00 W, 81 %, 733 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.17 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.26 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.79 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.14 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.67 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.15 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 30, 70.72 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 34, 280.98 W, 700.00 W, 0 %, 753 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.18 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.28 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.76 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.13 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.69 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.18 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 31, 70.69 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 35, 335.82 W, 700.00 W, 0 %, 753 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.18 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.22 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.79 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.10 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.68 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.15 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 31, 70.71 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 34, 235.08 W, 700.00 W, 16 %, 753 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.18 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.23 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.82 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.14 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.68 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.17 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 31, 70.73 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 34, 284.96 W, 700.00 W, 0 %, 1371 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.21 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.26 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.80 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.18 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.68 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.20 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 31, 70.75 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 36, 446.60 W, 700.00 W, 7 %, 797 MiB\n",
+    "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.19 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.24 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.79 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.09 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.69 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.22 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 31, 70.78 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 37, 493.41 W, 700.00 W, 17 %, 989 MiB\n"
+  ],
+  "summaries": {},
+  "aa_passed": true,
+  "contention_after": "GPU-b024aea2-2ffa-7211-b551-8e5575887423, 1502545, /root/venvs/ir-ops-dev/bin/python\n",
+  "gpu_snapshot_after": "index, uuid, name, driver_version, pci.bus_id, clocks.current.sm [MHz], clocks.current.memory [MHz], temperature.gpu, power.draw [W], power.limit [W], utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:19:00.0, 345 MHz, 2619 MHz, 30, 74.15 W, 700.00 W, 0 %, 90 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:3B:00.0, 345 MHz, 2619 MHz, 30, 73.23 W, 700.00 W, 0 %, 130 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:4C:00.0, 345 MHz, 2619 MHz, 28, 70.78 W, 700.00 W, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:5D:00.0, 345 MHz, 2619 MHz, 30, 74.10 W, 700.00 W, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:9B:00.0, 345 MHz, 2619 MHz, 29, 72.69 W, 700.00 W, 0 %, 120 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:BB:00.0, 345 MHz, 2619 MHz, 29, 72.22 W, 700.00 W, 0 %, 124 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:CB:00.0, 345 MHz, 2619 MHz, 31, 70.80 W, 700.00 W, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 00000000:DB:00.0, 1830 MHz, 2619 MHz, 35, 220.06 W, 700.00 W, 0 %, 989 MiB\n",
+  "telemetry_sha256": "8d6b82bde3e28b0f79c6688fbd8d170f7e00b770dc1bade98fc6ecdf028fa2cf"
+}
