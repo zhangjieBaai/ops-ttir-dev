@@ -1,0 +1,47 @@
+module {
+  tt.func public @matmul_kernel(%a_ptr: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %b_ptr: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %c_ptr: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %M: i32 {tt.divisibility = 16 : i32}, %N: i32 {tt.divisibility = 16 : i32}, %K: i32 {tt.divisibility = 16 : i32}, %stride_am: i32 {tt.divisibility = 16 : i32}, %stride_bk: i32 {tt.divisibility = 16 : i32}, %stride_cm: i32 {tt.divisibility = 16 : i32}) attributes {noinline = false} {
+    %c0 = arith.constant 0 : i32
+    %c1 = arith.constant 1 : i32
+    %c8 = arith.constant 8 : i32
+    %c64 = arith.constant 64 : i32
+    %c128 = arith.constant 128 : i32
+    %c63 = arith.constant 63 : i32
+    %c127 = arith.constant 127 : i32
+    %one64 = arith.constant 1 : i64
+    %sa = arith.extsi %stride_am : i32 to i64
+    %sb = arith.extsi %stride_bk : i32 to i64
+    %sc = arith.extsi %stride_cm : i32 to i64
+    %da = tt.make_tensor_descriptor %a_ptr, [%M, %K], [%sa, %one64] : <f16>, <tensor<64x64xf16>>
+    %db = tt.make_tensor_descriptor %b_ptr, [%K, %N], [%sb, %one64] : <f16>, <tensor<64x128xf16>>
+    %dc = tt.make_tensor_descriptor %c_ptr, [%M, %N], [%sc, %one64] : <f16>, <tensor<64x128xf16>>
+    %pid = tt.get_program_id x : i32
+    %madd = arith.addi %M, %c63 : i32
+    %nm = arith.divsi %madd, %c64 : i32
+    %nadd = arith.addi %N, %c127 : i32
+    %nn = arith.divsi %nadd, %c128 : i32
+    %width = arith.muli %nn, %c8 : i32
+    %group = arith.divsi %pid, %width : i32
+    %first = arith.muli %group, %c8 : i32
+    %remaining = arith.subi %nm, %first : i32
+    %size = arith.minsi %remaining, %c8 : i32
+    %local = arith.remsi %pid, %width : i32
+    %rm = arith.remsi %local, %size : i32
+    %pm = arith.addi %first, %rm : i32
+    %pn = arith.divsi %local, %size : i32
+    %om = arith.muli %pm, %c64 : i32
+    %on = arith.muli %pn, %c128 : i32
+    %kadd = arith.addi %K, %c63 : i32
+    %iters = arith.divsi %kadd, %c64 : i32
+    %zero = arith.constant dense<0.0> : tensor<64x128xf32>
+    %result = scf.for %k = %c0 to %iters step %c1 iter_args(%acc = %zero) -> (tensor<64x128xf32>) : i32 {
+      %ok = arith.muli %k, %c64 : i32
+      %a = tt.descriptor_load %da[%om, %ok] : !tt.tensordesc<tensor<64x64xf16>> -> tensor<64x64xf16>
+      %b = tt.descriptor_load %db[%ok, %on] : !tt.tensordesc<tensor<64x128xf16>> -> tensor<64x128xf16>
+      %next = tt.dot %a, %b, %acc, inputPrecision = tf32 : tensor<64x64xf16> * tensor<64x128xf16> -> tensor<64x128xf32>
+      scf.yield %next : tensor<64x128xf32>
+    }
+    %out = arith.truncf %result : tensor<64x128xf32> to tensor<64x128xf16>
+    tt.descriptor_store %dc[%om, %on], %out : !tt.tensordesc<tensor<64x128xf16>>, tensor<64x128xf16>
+    tt.return
+  }
+}
