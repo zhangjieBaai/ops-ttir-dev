@@ -64,7 +64,13 @@ def main():
     parser.add_argument("--rounds", type=int, default=7)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--reference", default="baseline", help="Immutable reference kernel name"
+    )
+    parser.add_argument("--round-protocol", type=Path)
     args = parser.parse_args()
+    reference = args.reference
+    assert reference not in args.names and "A/A" not in args.names
     assert not args.output.exists()
     validation = json.loads(args.validation.read_text())
     pipeline = json.loads(args.pipeline.read_text())
@@ -79,7 +85,7 @@ def main():
         == pipeline["protocol_sha256"]
         == sha256(ROOT / "optimization_plan.md")
     )
-    names = list(dict.fromkeys(["baseline", *args.names]))
+    names = list(dict.fromkeys([reference, *args.names]))
     shapes = [
         s
         for s in PERF_SHAPES
@@ -94,8 +100,8 @@ def main():
             == kernel_info(ck, group, name)["input_sha256"]
         )
         assert (
-            pipeline["kernels"][group]["baseline"]["stages"]["cubin"]
-            == kernel_info(kernels[group, "baseline"], group, "baseline")["stages"][
+            pipeline["kernels"][group][reference]["stages"]["cubin"]
+            == kernel_info(kernels[group, reference], group, reference)["stages"][
                 "cubin"
             ]
         )
@@ -104,6 +110,10 @@ def main():
     rng = random.Random(args.seed)
     result = dict(
         **receipt(),
+        performance_reference=reference,
+        round_protocol_sha256=(
+            sha256(args.round_protocol) if args.round_protocol else None
+        ),
         suite=args.suite,
         rounds=args.rounds,
         rep_ms=20,
@@ -155,11 +165,11 @@ def main():
                     candidates = [*args.names, "A/A"]
                     rng.shuffle(candidates)
                     for candidate in candidates:
-                        order = ["baseline", candidate]
+                        order = [reference, candidate]
                         rng.shuffle(order)
                         times, raw = {}, {}
                         for label in order:
-                            ck = kernels[group, "baseline" if label == "A/A" else label]
+                            ck = kernels[group, reference if label == "A/A" else label]
                             samples = triton.testing.do_bench_cudagraph(
                                 partial(launch, ck, shape, tensors),
                                 rep=20,
@@ -173,9 +183,9 @@ def main():
                         row = dict(
                             round=turn,
                             order=order,
-                            baseline_us=times["baseline"],
+                            baseline_us=times[reference],
                             candidate_us=times[candidate],
-                            speedup=times["baseline"] / times[candidate],
+                            speedup=times[reference] / times[candidate],
                             graph_replay_samples_us=raw,
                         )
                         (controls if candidate == "A/A" else pairs[candidate]).append(

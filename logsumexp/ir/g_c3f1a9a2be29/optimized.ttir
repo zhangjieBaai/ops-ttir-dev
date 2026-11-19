@@ -47,13 +47,18 @@ module {
       %inp_48 = arith.extf %inp_47 : tensor<128x64xf16> to tensor<128x64xf32>
       %m_new = arith.maxnumf %m, %inp_48 : tensor<128x64xf32>
       %all_neg_inf = arith.cmpf oeq, %m_new, %cst_0 : tensor<128x64xf32>
-      %z_49 = arith.subf %m, %m_new : tensor<128x64xf32>
-      %z_50 = math.exp %z_49 : tensor<128x64xf32>
-      %z_51 = arith.mulf %z_25, %z_50 : tensor<128x64xf32>
-      %z_52 = arith.subf %inp_48, %m_new : tensor<128x64xf32>
-      %z_53 = math.exp %z_52 : tensor<128x64xf32>
-      %z_54 = arith.addf %z_51, %z_53 : tensor<128x64xf32>
-      %z_55 = arith.select %all_neg_inf, %z_25, %z_54 : tensor<128x64xi1>, tensor<128x64xf32>
+      %r2_one = arith.constant dense<1.000000e+00> : tensor<128x64xf32>
+      %r2_zero = arith.constant dense<0.000000e+00> : tensor<128x64xf32>
+      %r2_delta = arith.subf %inp_48, %m : tensor<128x64xf32>
+      %r2_abs = math.absf %r2_delta : tensor<128x64xf32>
+      %r2_neg = arith.subf %r2_zero, %r2_abs : tensor<128x64xf32>
+      %r2_ratio = math.exp %r2_neg : tensor<128x64xf32>
+      %r2_newmax = arith.cmpf ogt, %inp_48, %m : tensor<128x64xf32>
+      %r2_mul = arith.mulf %z_25, %r2_ratio : tensor<128x64xf32>
+      %r2_high = arith.addf %r2_mul, %r2_one : tensor<128x64xf32>
+      %r2_low = arith.addf %z_25, %r2_ratio : tensor<128x64xf32>
+      %r2_sum = arith.select %r2_newmax, %r2_high, %r2_low : tensor<128x64xi1>, tensor<128x64xf32>
+      %z_55 = arith.select %all_neg_inf, %z_25, %r2_sum : tensor<128x64xi1>, tensor<128x64xf32>
       scf.yield %m_new, %z_55 : tensor<128x64xf32>, tensor<128x64xf32>
     }
     %m_reduced = "tt.reduce"(%z_9#0) <{axis = 0 : i32}> ({

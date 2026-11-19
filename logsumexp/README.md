@@ -22,13 +22,20 @@ but every compilation regenerates and records stage hashes and resources.
 
 Kernel graph replay excludes allocation, Python submission, compilation and
 loading. This experiment does not modify or qualify FlagGems public APIs.
-First round complete: [report_round1.md](report_round1.md),
-[selection](results/selection.json), [acceptance](results/acceptance.json).
-Selected `r1_trim`: 30-case geometric speedup 1.0297x, independent repeat
-1.0283x; non-inner benefit, inner machine code unchanged. Worst case
-0.9880x / 0.9819x. Every `ir/<group>/optimized.ttir` matches the selected
-immutable candidate. All 51-point pipeline, two-seed accuracy and final
-memcheck/racecheck passed. Full paired samples and negative candidates retained.
+Current round: [report_round2.md](report_round2.md),
+[selection](results/selection_round2.json), [acceptance](results/acceptance_round2.json).
+Selected `r2_select_after` preserves round-one short-reduction improvements and
+uses one exponential per online recurrence update. All 30 cases: geometric
+speedup 1.0615x vs original baseline, independent repeat 1.0605x. Direct paired
+gain vs `r1_trim`: 1.0311x / 1.0309x. Worst vs parent: 0.9966x / 0.9929x.
+All 51-point pipeline, two-seed accuracy, memcheck/racecheck passed. Raw samples
+and all negative candidates retained. Old 20/10 split is reused regression
+coverage, not a fresh holdout. Every optimized.ttir matches selection_round2.
+
+Historical round one: [report_round1.md](report_round1.md),
+[selection archive](results/runs/r2_setup/parent_selection.json),
+[acceptance archive](results/runs/r2_setup/parent_acceptance.json).
+Original baseline and immutable r1_trim files remain available.
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 bash logsumexp/test_accuracy.sh

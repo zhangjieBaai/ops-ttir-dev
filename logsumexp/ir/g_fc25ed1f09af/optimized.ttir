@@ -23,13 +23,18 @@ module {
       %inp_21 = arith.extf %inp_20 : tensor<4096xf16> to tensor<4096xf32>
       %m_new = arith.maxnumf %m, %inp_21 : tensor<4096xf32>
       %all_neg_inf = arith.cmpf oeq, %m_new, %cst_0 : tensor<4096xf32>
-      %z_22 = arith.subf %m, %m_new : tensor<4096xf32>
-      %z_23 = math.exp %z_22 : tensor<4096xf32>
-      %z_24 = arith.mulf %z_15, %z_23 : tensor<4096xf32>
-      %z_25 = arith.subf %inp_21, %m_new : tensor<4096xf32>
-      %z_26 = math.exp %z_25 : tensor<4096xf32>
-      %z_27 = arith.addf %z_24, %z_26 : tensor<4096xf32>
-      %z_28 = arith.select %all_neg_inf, %z_15, %z_27 : tensor<4096xi1>, tensor<4096xf32>
+      %r2_one = arith.constant dense<1.000000e+00> : tensor<4096xf32>
+      %r2_zero = arith.constant dense<0.000000e+00> : tensor<4096xf32>
+      %r2_delta = arith.subf %inp_21, %m : tensor<4096xf32>
+      %r2_abs = math.absf %r2_delta : tensor<4096xf32>
+      %r2_neg = arith.subf %r2_zero, %r2_abs : tensor<4096xf32>
+      %r2_ratio = math.exp %r2_neg : tensor<4096xf32>
+      %r2_newmax = arith.cmpf ogt, %inp_21, %m : tensor<4096xf32>
+      %r2_mul = arith.mulf %z_15, %r2_ratio : tensor<4096xf32>
+      %r2_high = arith.addf %r2_mul, %r2_one : tensor<4096xf32>
+      %r2_low = arith.addf %z_15, %r2_ratio : tensor<4096xf32>
+      %r2_sum = arith.select %r2_newmax, %r2_high, %r2_low : tensor<4096xi1>, tensor<4096xf32>
+      %z_28 = arith.select %all_neg_inf, %z_15, %r2_sum : tensor<4096xi1>, tensor<4096xf32>
       scf.yield %m_new, %z_28 : tensor<4096xf32>, tensor<4096xf32>
     }
     %m_reduced = "tt.reduce"(%z_6#0) <{axis = 0 : i32}> ({

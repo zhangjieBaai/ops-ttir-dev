@@ -1,0 +1,43 @@
+{
+  "status": "SCOPED_EXPERIMENT_ACCEPTED",
+  "candidate": "r1_trim",
+  "scope": "Frozen FP16 contiguous axis1 inner/non-inner; 30 performance shapes, 21 additional correctness shapes; no FlagGems API qualification",
+  "checks": {
+    "pipeline_all_51_points": true,
+    "alias_matches_candidate_all_29_groups": true,
+    "accuracy_seed42_checks": 2040,
+    "accuracy_seed123_checks": 816,
+    "memcheck": {
+      "kernel_checks": 204,
+      "summary": "0 errors",
+      "log": "results/runs/sanitizer_trim/memcheck_v2.log"
+    },
+    "racecheck": {
+      "kernel_checks": 204,
+      "summary": "0 hazards, 0 errors, 0 warnings",
+      "log": "results/runs/sanitizer_trim/racecheck_v2.log"
+    },
+    "doubled_work_timer_probe_ratio": 2.0000662240165012,
+    "performance": "results/performance_acceptance.json",
+    "artifact_audit": "results/artifact_audit.json"
+  },
+  "limitations": [
+    "No CPU oracle on full matrix: CUDA FP64 and native FP32 ATen used.",
+    "Remote official wheel origin not independently attested; local RECORD, paths and loaded component hashes checked.",
+    "No profiler causal attribution; no cold-cache, allocation/submission or end-to-end metrics.",
+    "No full FlagGems API integration, other dtype, strided, NaN/+inf or empty input qualification.",
+    "Cross-process two-candidate superiority is not claimed; finalist compared with its baseline within each process.",
+    "Clocks not actively locked; lock configuration unknown."
+  ],
+  "evidence_sha256": {
+    "results/selection.json": "78eea2e01e5d961c74f570106c90c8d52f3b72146befb23c0379c60eedffd6cc",
+    "results/performance_acceptance.json": "766e7ca4d3e44866e195f4fb41cf3db50b1011afb5040c76d645d9074ddfaec1",
+    "results/artifact_audit.json": "39580c76c0a76ac829e384a6c285a2e85a262d55166d18ab2d48d6d916c165a6",
+    "results/runs/final_alias/pipeline.json": "19d071b563cef56ab51fc4f9be4a6230573829394d1bd341b1ca4735fbd00997",
+    "results/runs/round1_screen/accuracy.json": "46fed98e4a24c52aa7b0d581a381a8cd3e439f469baef65d5733db0ae42d9ec4",
+    "results/runs/final_repeat_gpu0/accuracy.json": "26ce3a4bb4a7c1658d302a9ec0256ef9cc228090a468b0311674e8e689274fe2",
+    "results/runs/sanitizer_trim/memcheck_v2.json": "a8d2d36a111aa63a61bb1238f48740a220f5477fa039c3e1adb2beb7c9cf14cb",
+    "results/runs/sanitizer_trim/racecheck_v2.json": "679f134180d7058901dd708cc01067487d4fcccee6d4a459ddb8395a58b97998",
+    "results/runs/final_repeat_gpu0/timer_probe.json": "1470ff4130053aacd7803ea81330b50885667321fe95f8aadf88160e5851f2c1"
+  }
+}
