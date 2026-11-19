@@ -21,7 +21,6 @@ from common import (
     kernel_info,
     key,
     launch,
-    manifest,
     receipt,
     save_json,
     sha256,

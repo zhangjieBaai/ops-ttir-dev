@@ -11,10 +11,10 @@ from pathlib import Path
 
 os.environ["TRITON_DISABLE_LINE_INFO"] = "1"
 
-import torch
-import triton
-from environment import check_environment
-from triton.backends.nvidia.compiler import CUDABackend
+import torch  # noqa: E402
+import triton  # noqa: E402
+from environment import check_environment  # noqa: E402
+from triton.backends.nvidia.compiler import CUDABackend  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent
 PERF_SHAPES = [
