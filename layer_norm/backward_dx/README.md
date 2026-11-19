@@ -30,3 +30,7 @@ Python固定`/root/venvs/ir-ops-dev/bin/python`（upstream Triton3.7.0，无Flag
 ## 第二轮瓶颈与负结果
 
 [第二轮报告](report_round2.md)：新增8个候选均未优于第一轮parent，保留当前分组选择。报告包含同条件NCU、实际DRAM读写字节数、寄存器/同步反汇编、完整30点和独立复测；原始证据位于`results/round2/`。
+
+## 第三轮：中心化代数与联合规约
+
+[第三轮报告](report_round3.md)记录6个新候选、完整矩阵与独立复测、数值抵消反例和NCU资源/访存分析。最终分组选择以`results/selection.json`为准；本轮决策在`results/round3/selection_final.json`，候选在各`ir/b*/r3_*.ttir`。跨算子经验见[knowledge复盘](../../knowledge/layernorm-backward-round3.md)。

@@ -1,0 +1,235 @@
+#loc = loc("/root/ops-ttir-dev/layer_norm/backward_dx/tutorial.py":8:0)
+#loc1 = loc(unknown)
+#loc29 = loc("/root/ops-ttir-dev/layer_norm/backward_dx/tutorial.py":27:16)
+#loc32 = loc("/root/ops-ttir-dev/layer_norm/backward_dx/tutorial.py":28:16)
+#loc41 = loc("DX"(#loc))
+#loc42 = loc("DY"(#loc))
+#loc43 = loc("X"(#loc))
+#loc44 = loc("W"(#loc))
+#loc45 = loc("Mean"(#loc))
+#loc46 = loc("Rstd"(#loc))
+#loc47 = loc("stride"(#loc))
+#loc48 = loc("N"(#loc))
+#loc75 = loc("c1"(#loc29))
+#loc77 = loc("c2"(#loc32))
+#loc84 = loc(callsite(#loc1 at #loc75))
+#loc86 = loc(callsite(#loc1 at #loc77))
+module {
+  tt.func public @layer_norm_bwd_dx(%DX: !tt.ptr<f16> {tt.divisibility = 16 : i32} loc("DX"(#loc)), %DY: !tt.ptr<f16> {tt.divisibility = 16 : i32} loc("DY"(#loc)), %X: !tt.ptr<f16> {tt.divisibility = 16 : i32} loc("X"(#loc)), %W: !tt.ptr<f16> {tt.divisibility = 16 : i32} loc("W"(#loc)), %Mean: !tt.ptr<f32> {tt.divisibility = 16 : i32} loc("Mean"(#loc)), %Rstd: !tt.ptr<f32> {tt.divisibility = 16 : i32} loc("Rstd"(#loc)), %stride: i32 {tt.divisibility = 16 : i32} loc("stride"(#loc)), %N: i32 {tt.divisibility = 16 : i32} loc("N"(#loc))) attributes {noinline = false} {
+    %g0 = arith.constant dense<0.0> : tensor<2048xf32>
+    %g1 = arith.constant dense<0.0> : tensor<2048xf16>
+    %g2 = tt.get_program_id x : i32
+    %g3 = arith.muli %g2, %stride : i32
+    %g4 = tt.addptr %X, %g3 : !tt.ptr<f16>, i32
+    %g5 = tt.addptr %DY, %g3 : !tt.ptr<f16>, i32
+    %g6 = tt.addptr %DX, %g3 : !tt.ptr<f16>, i32
+    %g7 = tt.addptr %Mean, %g2 : !tt.ptr<f32>, i32
+    %g8 = tt.addptr %Rstd, %g2 : !tt.ptr<f32>, i32
+    %g9 = tt.load %g7 : !tt.ptr<f32>
+    %g10 = tt.load %g8 : !tt.ptr<f32>
+    %g11 = tt.splat %g9 : f32 -> tensor<2048xf32>
+    %g12 = tt.splat %g10 : f32 -> tensor<2048xf32>
+    %g13 = arith.sitofp %N : i32 to f32
+    %g14 = arith.constant 1.0 : f32
+    %g15 = arith.divf %g14, %g13 : f32
+    %g16 = tt.splat %N : i32 -> tensor<2048xi32>
+    %g17 = tt.make_range {end = 2048 : i32, start = 0 : i32} : tensor<2048xi32>
+    %g18 = arith.cmpi slt, %g17, %g16 : tensor<2048xi32>
+    %g19 = tt.splat %g4 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g20 = tt.addptr %g19, %g17 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g21 = tt.load %g20, %g18, %g1 cacheModifier = ca : tensor<2048x!tt.ptr<f16>>
+    %g22 = arith.extf %g21 : tensor<2048xf16> to tensor<2048xf32>
+    %g23 = tt.splat %g5 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g24 = tt.addptr %g23, %g17 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g25 = tt.load %g24, %g18, %g1 cacheModifier = ca : tensor<2048x!tt.ptr<f16>>
+    %g26 = arith.extf %g25 : tensor<2048xf16> to tensor<2048xf32>
+    %g27 = tt.splat %W : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g28 = tt.addptr %g27, %g17 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g29 = tt.load %g28, %g18, %g1 cacheModifier = ca : tensor<2048x!tt.ptr<f16>>
+    %g30 = arith.extf %g29 : tensor<2048xf16> to tensor<2048xf32>
+    %g31 = arith.subf %g22, %g11 : tensor<2048xf32>
+    %g32 = arith.select %g18, %g31, %g0 : tensor<2048xi1>, tensor<2048xf32>
+    %g33 = arith.mulf %g30, %g26 : tensor<2048xf32>
+    %g34 = arith.mulf %g32, %g33 : tensor<2048xf32>
+    %g35 = arith.addf %g0, %g34 : tensor<2048xf32>
+    %g36 = arith.addf %g0, %g33 : tensor<2048xf32>
+    %g37 = arith.constant dense<2048> : tensor<2048xi32>
+    %g38 = arith.addi %g17, %g37 : tensor<2048xi32>
+    %g39 = arith.cmpi slt, %g38, %g16 : tensor<2048xi32>
+    %g40 = tt.splat %g4 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g41 = tt.addptr %g40, %g38 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g42 = tt.load %g41, %g39, %g1 cacheModifier = ca : tensor<2048x!tt.ptr<f16>>
+    %g43 = arith.extf %g42 : tensor<2048xf16> to tensor<2048xf32>
+    %g44 = tt.splat %g5 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g45 = tt.addptr %g44, %g38 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g46 = tt.load %g45, %g39, %g1 cacheModifier = ca : tensor<2048x!tt.ptr<f16>>
+    %g47 = arith.extf %g46 : tensor<2048xf16> to tensor<2048xf32>
+    %g48 = tt.splat %W : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g49 = tt.addptr %g48, %g38 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g50 = tt.load %g49, %g39, %g1 cacheModifier = ca : tensor<2048x!tt.ptr<f16>>
+    %g51 = arith.extf %g50 : tensor<2048xf16> to tensor<2048xf32>
+    %g52 = arith.subf %g43, %g11 : tensor<2048xf32>
+    %g53 = arith.select %g39, %g52, %g0 : tensor<2048xi1>, tensor<2048xf32>
+    %g54 = arith.mulf %g51, %g47 : tensor<2048xf32>
+    %g55 = arith.mulf %g53, %g54 : tensor<2048xf32>
+    %g56 = arith.addf %g35, %g55 : tensor<2048xf32>
+    %g57 = arith.addf %g36, %g54 : tensor<2048xf32>
+    %g58 = arith.constant dense<4096> : tensor<2048xi32>
+    %g59 = arith.addi %g17, %g58 : tensor<2048xi32>
+    %g60 = arith.cmpi slt, %g59, %g16 : tensor<2048xi32>
+    %g61 = tt.splat %g4 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g62 = tt.addptr %g61, %g59 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g63 = tt.load %g62, %g60, %g1 cacheModifier = ca : tensor<2048x!tt.ptr<f16>>
+    %g64 = arith.extf %g63 : tensor<2048xf16> to tensor<2048xf32>
+    %g65 = tt.splat %g5 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g66 = tt.addptr %g65, %g59 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g67 = tt.load %g66, %g60, %g1 cacheModifier = ca : tensor<2048x!tt.ptr<f16>>
+    %g68 = arith.extf %g67 : tensor<2048xf16> to tensor<2048xf32>
+    %g69 = tt.splat %W : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g70 = tt.addptr %g69, %g59 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g71 = tt.load %g70, %g60, %g1 cacheModifier = ca : tensor<2048x!tt.ptr<f16>>
+    %g72 = arith.extf %g71 : tensor<2048xf16> to tensor<2048xf32>
+    %g73 = arith.subf %g64, %g11 : tensor<2048xf32>
+    %g74 = arith.select %g60, %g73, %g0 : tensor<2048xi1>, tensor<2048xf32>
+    %g75 = arith.mulf %g72, %g68 : tensor<2048xf32>
+    %g76 = arith.mulf %g74, %g75 : tensor<2048xf32>
+    %g77 = arith.addf %g56, %g76 : tensor<2048xf32>
+    %g78 = arith.addf %g57, %g75 : tensor<2048xf32>
+    %g79 = arith.constant dense<6144> : tensor<2048xi32>
+    %g80 = arith.addi %g17, %g79 : tensor<2048xi32>
+    %g81 = arith.cmpi slt, %g80, %g16 : tensor<2048xi32>
+    %g82 = tt.splat %g4 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g83 = tt.addptr %g82, %g80 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g84 = tt.load %g83, %g81, %g1 cacheModifier = ca : tensor<2048x!tt.ptr<f16>>
+    %g85 = arith.extf %g84 : tensor<2048xf16> to tensor<2048xf32>
+    %g86 = tt.splat %g5 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g87 = tt.addptr %g86, %g80 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g88 = tt.load %g87, %g81, %g1 cacheModifier = ca : tensor<2048x!tt.ptr<f16>>
+    %g89 = arith.extf %g88 : tensor<2048xf16> to tensor<2048xf32>
+    %g90 = tt.splat %W : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g91 = tt.addptr %g90, %g80 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g92 = tt.load %g91, %g81, %g1 cacheModifier = ca : tensor<2048x!tt.ptr<f16>>
+    %g93 = arith.extf %g92 : tensor<2048xf16> to tensor<2048xf32>
+    %g94 = arith.subf %g85, %g11 : tensor<2048xf32>
+    %g95 = arith.select %g81, %g94, %g0 : tensor<2048xi1>, tensor<2048xf32>
+    %g96 = arith.mulf %g93, %g89 : tensor<2048xf32>
+    %g97 = arith.mulf %g95, %g96 : tensor<2048xf32>
+    %g98 = arith.addf %g77, %g97 : tensor<2048xf32>
+    %g99 = arith.addf %g78, %g96 : tensor<2048xf32>
+    %sums:2 = "tt.reduce"(%g98, %g99) <{axis = 0 : i32}> ({
+    ^bb0(%l0: f32, %l1: f32, %r0: f32, %r1: f32):
+      %s0 = arith.addf %l0, %r0 : f32
+      %s1 = arith.addf %l1, %r1 : f32
+      tt.reduce.return %s0, %s1 : f32, f32
+    }) : (tensor<2048xf32>, tensor<2048xf32>) -> (f32, f32)
+    %g100 = arith.mulf %sums#0, %g15 : f32
+    %g101 = arith.mulf %sums#1, %g15 : f32
+    %g102 = arith.mulf %g10, %g10 : f32
+    %g103 = arith.mulf %g100, %g102 : f32
+    %g104 = tt.splat %g103 : f32 -> tensor<2048xf32>
+    %g105 = tt.splat %g101 : f32 -> tensor<2048xf32>
+    %g106 = arith.cmpi slt, %g17, %g16 : tensor<2048xi32>
+    %g107 = tt.splat %g4 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g108 = tt.addptr %g107, %g17 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g109 = tt.load %g108, %g106, %g1 : tensor<2048x!tt.ptr<f16>>
+    %g110 = arith.extf %g109 : tensor<2048xf16> to tensor<2048xf32>
+    %g111 = tt.splat %g5 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g112 = tt.addptr %g111, %g17 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g113 = tt.load %g112, %g106, %g1 : tensor<2048x!tt.ptr<f16>>
+    %g114 = arith.extf %g113 : tensor<2048xf16> to tensor<2048xf32>
+    %g115 = tt.splat %W : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g116 = tt.addptr %g115, %g17 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g117 = tt.load %g116, %g106, %g1 : tensor<2048x!tt.ptr<f16>>
+    %g118 = arith.extf %g117 : tensor<2048xf16> to tensor<2048xf32>
+    %g119 = arith.subf %g110, %g11 : tensor<2048xf32>
+    %g120 = arith.select %g106, %g119, %g0 : tensor<2048xi1>, tensor<2048xf32>
+    %g121 = arith.mulf %g118, %g114 : tensor<2048xf32>
+    %g122 = arith.mulf %g120, %g104 : tensor<2048xf32>
+    %g123 = arith.addf %g122, %g105 : tensor<2048xf32>
+    %g124 = arith.subf %g121, %g123 : tensor<2048xf32>
+    %g125 = arith.mulf %g124, %g12 : tensor<2048xf32>
+    %g126 = arith.truncf %g125 : tensor<2048xf32> to tensor<2048xf16>
+    %g127 = tt.splat %g6 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g128 = tt.addptr %g127, %g17 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    tt.store %g128, %g126, %g106 cacheModifier = cs : tensor<2048x!tt.ptr<f16>>
+    %g129 = arith.constant dense<2048> : tensor<2048xi32>
+    %g130 = arith.addi %g17, %g129 : tensor<2048xi32>
+    %g131 = arith.cmpi slt, %g130, %g16 : tensor<2048xi32>
+    %g132 = tt.splat %g4 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g133 = tt.addptr %g132, %g130 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g134 = tt.load %g133, %g131, %g1 : tensor<2048x!tt.ptr<f16>>
+    %g135 = arith.extf %g134 : tensor<2048xf16> to tensor<2048xf32>
+    %g136 = tt.splat %g5 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g137 = tt.addptr %g136, %g130 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g138 = tt.load %g137, %g131, %g1 : tensor<2048x!tt.ptr<f16>>
+    %g139 = arith.extf %g138 : tensor<2048xf16> to tensor<2048xf32>
+    %g140 = tt.splat %W : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g141 = tt.addptr %g140, %g130 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g142 = tt.load %g141, %g131, %g1 : tensor<2048x!tt.ptr<f16>>
+    %g143 = arith.extf %g142 : tensor<2048xf16> to tensor<2048xf32>
+    %g144 = arith.subf %g135, %g11 : tensor<2048xf32>
+    %g145 = arith.select %g131, %g144, %g0 : tensor<2048xi1>, tensor<2048xf32>
+    %g146 = arith.mulf %g143, %g139 : tensor<2048xf32>
+    %g147 = arith.mulf %g145, %g104 : tensor<2048xf32>
+    %g148 = arith.addf %g147, %g105 : tensor<2048xf32>
+    %g149 = arith.subf %g146, %g148 : tensor<2048xf32>
+    %g150 = arith.mulf %g149, %g12 : tensor<2048xf32>
+    %g151 = arith.truncf %g150 : tensor<2048xf32> to tensor<2048xf16>
+    %g152 = tt.splat %g6 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g153 = tt.addptr %g152, %g130 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    tt.store %g153, %g151, %g131 cacheModifier = cs : tensor<2048x!tt.ptr<f16>>
+    %g154 = arith.constant dense<4096> : tensor<2048xi32>
+    %g155 = arith.addi %g17, %g154 : tensor<2048xi32>
+    %g156 = arith.cmpi slt, %g155, %g16 : tensor<2048xi32>
+    %g157 = tt.splat %g4 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g158 = tt.addptr %g157, %g155 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g159 = tt.load %g158, %g156, %g1 : tensor<2048x!tt.ptr<f16>>
+    %g160 = arith.extf %g159 : tensor<2048xf16> to tensor<2048xf32>
+    %g161 = tt.splat %g5 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g162 = tt.addptr %g161, %g155 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g163 = tt.load %g162, %g156, %g1 : tensor<2048x!tt.ptr<f16>>
+    %g164 = arith.extf %g163 : tensor<2048xf16> to tensor<2048xf32>
+    %g165 = tt.splat %W : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g166 = tt.addptr %g165, %g155 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g167 = tt.load %g166, %g156, %g1 : tensor<2048x!tt.ptr<f16>>
+    %g168 = arith.extf %g167 : tensor<2048xf16> to tensor<2048xf32>
+    %g169 = arith.subf %g160, %g11 : tensor<2048xf32>
+    %g170 = arith.select %g156, %g169, %g0 : tensor<2048xi1>, tensor<2048xf32>
+    %g171 = arith.mulf %g168, %g164 : tensor<2048xf32>
+    %g172 = arith.mulf %g170, %g104 : tensor<2048xf32>
+    %g173 = arith.addf %g172, %g105 : tensor<2048xf32>
+    %g174 = arith.subf %g171, %g173 : tensor<2048xf32>
+    %g175 = arith.mulf %g174, %g12 : tensor<2048xf32>
+    %g176 = arith.truncf %g175 : tensor<2048xf32> to tensor<2048xf16>
+    %g177 = tt.splat %g6 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g178 = tt.addptr %g177, %g155 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    tt.store %g178, %g176, %g156 cacheModifier = cs : tensor<2048x!tt.ptr<f16>>
+    %g179 = arith.constant dense<6144> : tensor<2048xi32>
+    %g180 = arith.addi %g17, %g179 : tensor<2048xi32>
+    %g181 = arith.cmpi slt, %g180, %g16 : tensor<2048xi32>
+    %g182 = tt.splat %g4 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g183 = tt.addptr %g182, %g180 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g184 = tt.load %g183, %g181, %g1 : tensor<2048x!tt.ptr<f16>>
+    %g185 = arith.extf %g184 : tensor<2048xf16> to tensor<2048xf32>
+    %g186 = tt.splat %g5 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g187 = tt.addptr %g186, %g180 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g188 = tt.load %g187, %g181, %g1 : tensor<2048x!tt.ptr<f16>>
+    %g189 = arith.extf %g188 : tensor<2048xf16> to tensor<2048xf32>
+    %g190 = tt.splat %W : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g191 = tt.addptr %g190, %g180 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    %g192 = tt.load %g191, %g181, %g1 : tensor<2048x!tt.ptr<f16>>
+    %g193 = arith.extf %g192 : tensor<2048xf16> to tensor<2048xf32>
+    %g194 = arith.subf %g185, %g11 : tensor<2048xf32>
+    %g195 = arith.select %g181, %g194, %g0 : tensor<2048xi1>, tensor<2048xf32>
+    %g196 = arith.mulf %g193, %g189 : tensor<2048xf32>
+    %g197 = arith.mulf %g195, %g104 : tensor<2048xf32>
+    %g198 = arith.addf %g197, %g105 : tensor<2048xf32>
+    %g199 = arith.subf %g196, %g198 : tensor<2048xf32>
+    %g200 = arith.mulf %g199, %g12 : tensor<2048xf32>
+    %g201 = arith.truncf %g200 : tensor<2048xf32> to tensor<2048xf16>
+    %g202 = tt.splat %g6 : !tt.ptr<f16> -> tensor<2048x!tt.ptr<f16>>
+    %g203 = tt.addptr %g202, %g180 : tensor<2048x!tt.ptr<f16>>, tensor<2048xi32>
+    tt.store %g203, %g201, %g181 cacheModifier = cs : tensor<2048x!tt.ptr<f16>>
+    tt.return
+  }
+}
