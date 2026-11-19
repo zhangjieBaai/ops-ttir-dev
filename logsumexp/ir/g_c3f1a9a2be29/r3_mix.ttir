@@ -1,0 +1,96 @@
+module {
+  tt.func public @logsumexp_kernel_non_inner(%output_ptr: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %input_ptr: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %M: i32 {tt.divisibility = 16 : i32}, %N: i32 {tt.divisibility = 16 : i32}, %K: i32 {tt.divisibility = 16 : i32}) attributes {noinline = false} {
+    %cst = arith.constant dense<0xFC00> : tensor<128x64xf16>
+    %c128_i32 = arith.constant 128 : i32
+    %c0_i32 = arith.constant 0 : i32
+    %out = arith.constant dense<0xFF800000> : tensor<1x64xf32>
+    %z = arith.constant dense<0.000000e+00> : tensor<128x64xf32>
+    %cst_0 = arith.constant dense<0xFF800000> : tensor<128x64xf32>
+    %k_offsets = arith.constant 64 : i64
+    %pid_m = tt.get_program_id x : i32
+    %pid_m_1 = arith.extsi %pid_m : i32 to i64
+    %pid_k = tt.get_program_id y : i32
+    %pid_k_2 = arith.extsi %pid_k : i32 to i64
+    %k_offsets_3 = arith.muli %pid_k_2, %k_offsets : i64
+    %k_offsets_4 = tt.make_range {end = 64 : i32, start = 0 : i32} : tensor<64xi32>
+    %k_offsets_5 = tt.expand_dims %k_offsets_4 {axis = 0 : i32} : tensor<64xi32> -> tensor<1x64xi32>
+    %k_offsets_6 = arith.extsi %k_offsets_5 : tensor<1x64xi32> to tensor<1x64xi64>
+    %k_offsets_7 = tt.splat %k_offsets_3 : i64 -> tensor<1x64xi64>
+    %k_offsets_8 = arith.addi %k_offsets_7, %k_offsets_6 : tensor<1x64xi64>
+    %z_9:2 = scf.for %start_n = %c0_i32 to %N step %c128_i32 iter_args(%m = %cst_0, %z_25 = %z) -> (tensor<128x64xf32>, tensor<128x64xf32>)  : i32 {
+      %n_offsets = tt.make_range {end = 128 : i32, start = 0 : i32} : tensor<128xi32>
+      %n_offsets_26 = tt.expand_dims %n_offsets {axis = 1 : i32} : tensor<128xi32> -> tensor<128x1xi32>
+      %n_offsets_27 = tt.splat %start_n : i32 -> tensor<128x1xi32>
+      %n_offsets_28 = arith.addi %n_offsets_27, %n_offsets_26 : tensor<128x1xi32>
+      %inp_offsets = arith.extsi %N : i32 to i64
+      %inp_offsets_29 = arith.muli %pid_m_1, %inp_offsets : i64
+      %inp_offsets_30 = arith.extsi %K : i32 to i64
+      %inp_offsets_31 = arith.muli %inp_offsets_29, %inp_offsets_30 : i64
+      %inp_offsets_32 = tt.splat %K : i32 -> tensor<128x1xi32>
+      %inp_offsets_33 = arith.muli %n_offsets_28, %inp_offsets_32 : tensor<128x1xi32>
+      %inp_offsets_34 = arith.extsi %inp_offsets_33 : tensor<128x1xi32> to tensor<128x1xi64>
+      %inp_offsets_35 = tt.splat %inp_offsets_31 : i64 -> tensor<128x1xi64>
+      %inp_offsets_36 = arith.addi %inp_offsets_35, %inp_offsets_34 : tensor<128x1xi64>
+      %inp_offsets_37 = tt.broadcast %inp_offsets_36 : tensor<128x1xi64> -> tensor<128x64xi64>
+      %inp_offsets_38 = tt.broadcast %k_offsets_8 : tensor<1x64xi64> -> tensor<128x64xi64>
+      %inp_offsets_39 = arith.addi %inp_offsets_37, %inp_offsets_38 : tensor<128x64xi64>
+      %mask = tt.splat %N : i32 -> tensor<128x1xi32>
+      %mask_40 = arith.cmpi slt, %n_offsets_28, %mask : tensor<128x1xi32>
+      %mask_41 = tt.splat %inp_offsets_30 : i64 -> tensor<1x64xi64>
+      %mask_42 = arith.cmpi slt, %k_offsets_8, %mask_41 : tensor<1x64xi64>
+      %mask_43 = tt.broadcast %mask_40 : tensor<128x1xi1> -> tensor<128x64xi1>
+      %mask_44 = tt.broadcast %mask_42 : tensor<1x64xi1> -> tensor<128x64xi1>
+      %mask_45 = arith.andi %mask_43, %mask_44 : tensor<128x64xi1>
+      %inp = tt.splat %input_ptr : !tt.ptr<f16> -> tensor<128x64x!tt.ptr<f16>>
+      %inp_46 = tt.addptr %inp, %inp_offsets_39 : tensor<128x64x!tt.ptr<f16>>, tensor<128x64xi64>
+      %inp_47 = tt.load %inp_46, %mask_45, %cst : tensor<128x64x!tt.ptr<f16>>
+      %inp_48 = arith.extf %inp_47 : tensor<128x64xf16> to tensor<128x64xf32>
+      %m_new = arith.maxnumf %m, %inp_48 : tensor<128x64xf32>
+      %all_neg_inf = arith.cmpf oeq, %m_new, %cst_0 : tensor<128x64xf32>
+      %r2_one = arith.constant dense<1.000000e+00> : tensor<128x64xf32>
+      %r2_zero = arith.constant dense<0.000000e+00> : tensor<128x64xf32>
+      %r2_delta = arith.subf %inp_48, %m : tensor<128x64xf32>
+      %r2_abs = math.absf %r2_delta : tensor<128x64xf32>
+      %r2_neg = arith.subf %r2_zero, %r2_abs : tensor<128x64xf32>
+      %r2_ratio = math.exp %r2_neg : tensor<128x64xf32>
+      %r2_newmax = arith.cmpf ogt, %inp_48, %m : tensor<128x64xf32>
+      %r2_mul = arith.mulf %z_25, %r2_ratio : tensor<128x64xf32>
+      %r2_high = arith.addf %r2_mul, %r2_one : tensor<128x64xf32>
+      %r2_low = arith.addf %z_25, %r2_ratio : tensor<128x64xf32>
+      %r2_sum = arith.select %r2_newmax, %r2_high, %r2_low : tensor<128x64xi1>, tensor<128x64xf32>
+      %z_55 = arith.select %all_neg_inf, %z_25, %r2_sum : tensor<128x64xi1>, tensor<128x64xf32>
+      scf.yield %m_new, %z_55 : tensor<128x64xf32>, tensor<128x64xf32>
+    }
+    %m_reduced = "tt.reduce"(%z_9#0) <{axis = 0 : i32}> ({
+    ^bb0(%m_reduced_25: f32, %m_reduced_26: f32):
+      %m_reduced_27 = arith.maxnumf %m_reduced_25, %m_reduced_26 : f32
+      tt.reduce.return %m_reduced_27 : f32
+    }) : (tensor<128x64xf32>) -> tensor<64xf32>
+    %m_reduced_10 = tt.expand_dims %m_reduced {axis = 0 : i32} : tensor<64xf32> -> tensor<1x64xf32>
+    %z_11 = tt.broadcast %m_reduced_10 : tensor<1x64xf32> -> tensor<128x64xf32>
+    %z_12 = arith.subf %z_9#0, %z_11 : tensor<128x64xf32>
+    %z_13 = math.exp %z_12 : tensor<128x64xf32>
+    %z_14 = arith.mulf %z_9#1, %z_13 : tensor<128x64xf32>
+    %z_15 = "tt.reduce"(%z_14) <{axis = 0 : i32}> ({
+    ^bb0(%z_25: f32, %z_26: f32):
+      %z_27 = arith.addf %z_25, %z_26 : f32
+      tt.reduce.return %z_27 : f32
+    }) : (tensor<128x64xf32>) -> tensor<64xf32>
+    %z_16 = tt.expand_dims %z_15 {axis = 0 : i32} : tensor<64xf32> -> tensor<1x64xf32>
+    %out_17 = arith.cmpf oeq, %m_reduced_10, %out : tensor<1x64xf32>
+    %out_18 = math.log %z_16 : tensor<1x64xf32>
+    %out_19 = arith.addf %m_reduced_10, %out_18 : tensor<1x64xf32>
+    %out_20 = arith.select %out_17, %m_reduced_10, %out_19 : tensor<1x64xi1>, tensor<1x64xf32>
+    %out_offset = arith.extsi %K : i32 to i64
+    %out_offset_21 = arith.muli %pid_m_1, %out_offset : i64
+    %out_offset_22 = tt.splat %out_offset_21 : i64 -> tensor<1x64xi64>
+    %out_offset_23 = arith.addi %out_offset_22, %k_offsets_8 : tensor<1x64xi64>
+    %output_ptrs = tt.splat %output_ptr : !tt.ptr<f16> -> tensor<1x64x!tt.ptr<f16>>
+    %output_ptrs_24 = tt.addptr %output_ptrs, %out_offset_23 : tensor<1x64x!tt.ptr<f16>>, tensor<1x64xi64>
+    %0 = tt.splat %out_offset : i64 -> tensor<1x64xi64>
+    %1 = arith.cmpi slt, %k_offsets_8, %0 : tensor<1x64xi64>
+    %2 = arith.truncf %out_20 : tensor<1x64xf32> to tensor<1x64xf16>
+    tt.store %output_ptrs_24, %2, %1 : tensor<1x64x!tt.ptr<f16>>
+    tt.return
+  }
+}

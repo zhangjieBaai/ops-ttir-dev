@@ -16,12 +16,13 @@ module {
     %mask = tt.splat %N : i32 -> tensor<32768xi32>
     %mask_7 = arith.cmpi slt, %n_offsets, %mask : tensor<32768xi32>
     %inp_8 = tt.load %input_ptrs_6, %mask_7, %inp : tensor<32768x!tt.ptr<f16>>
+    %m_half = "tt.reduce"(%inp_8) <{axis = 0 : i32}> ({
+    ^bb0(%m_15: f16, %m_16: f16):
+      %m_17 = arith.maxnumf %m_15, %m_16 : f16
+      tt.reduce.return %m_17 : f16
+    }) : (tensor<32768xf16>) -> f16
+    %m = arith.extf %m_half : f16 to f32
     %inp_9 = arith.extf %inp_8 : tensor<32768xf16> to tensor<32768xf32>
-    %m = "tt.reduce"(%inp_9) <{axis = 0 : i32}> ({
-    ^bb0(%m_15: f32, %m_16: f32):
-      %m_17 = arith.maxnumf %m_15, %m_16 : f32
-      tt.reduce.return %m_17 : f32
-    }) : (tensor<32768xf32>) -> f32
     %safe_m = arith.cmpf oeq, %m, %cst_0 : f32
     %safe_m_10 = arith.select %safe_m, %cst, %m : f32
     %e = tt.splat %safe_m_10 : f32 -> tensor<32768xf32>

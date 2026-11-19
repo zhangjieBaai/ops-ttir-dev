@@ -1,0 +1,64 @@
+"""Recorded adaptive combination: large-inner FP16 max/full-tile paths only."""
+
+import re
+
+from common import ROOT, ir_path, manifest, save_json, sha256
+from make_round3_half import half_max
+
+
+def half_noninner(text):
+    pattern = re.compile(
+        r"(?P<cast>    (?P<x32>%\w+) = arith.extf (?P<x16>%\w+) : "
+        r"(?P<half>tensor<[\dx]+f16>) to (?P<wide>tensor<[\dx]+f32>)\n)"
+        r'    (?P<max>%\w+) = "tt.reduce"\((?P=x32)\) <\{axis = 0 : i32\}> \(\{\n'
+        r"(?P<region>.*?)\n    \}\) : \((?P=wide)\) -> (?P<out>tensor<\d+xf32>)\n",
+        re.S,
+    )
+
+    def replace(m):
+        typ = m["out"].replace("f32", "f16")
+        region = m["region"].replace("f32", "f16")
+        return (
+            f'    {m["max"]}_half = "tt.reduce"({m["x16"]}) <{{axis = 0 : i32}}> ({{\n'
+            f'{region}\n    }}) : ({m["half"]}) -> {typ}\n'
+            f'    {m["max"]} = arith.extf {m["max"]}_half : {typ} to {m["out"]}\n'
+            + m["cast"]
+        )
+
+    return pattern.sub(replace, text)
+
+
+def mixed(group, config):
+    parent = ir_path(group, "r2_select_after").read_text()
+    if "TILE_K" in config["meta"]:
+        return parent
+    if config["meta"]["ONE_TILE_PER_CTA"]:
+        return half_max(parent) if config["meta"]["TILE_N"] >= 16384 else parent
+    return ir_path(group, "r3_full64_half").read_text()
+
+
+def main():
+    output = {}
+    for group, config in manifest()["groups"].items():
+        text = mixed(group, config)
+        output[group] = {}
+        for name, value in [("r3_mix", text), ("r3_mix_halfnon", half_noninner(text))]:
+            path = ir_path(group, name)
+            with path.open("x") as stream:
+                stream.write(value)
+            output[group][name] = {
+                "sha256": sha256(path),
+                "parent_sha256": sha256(ir_path(group, "r2_select_after")),
+            }
+    save_json(
+        ROOT / "results/runs/r3_adaptive/candidates.json",
+        dict(
+            groups=output,
+            generator_sha256=sha256(__file__),
+            reason="Initial tuning: small halfmax regresses, large32768 improves; full65536 helps M1, regresses M1024. Single whole candidate retaining full65536 path for all loop groups, original small-inner path. No shape-specific winner table. Non-inner half-max tested separately.",
+        ),
+    )
+
+
+if __name__ == "__main__":
+    main()

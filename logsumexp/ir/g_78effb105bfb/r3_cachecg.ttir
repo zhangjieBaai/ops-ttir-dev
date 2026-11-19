@@ -1,0 +1,43 @@
+module {
+  tt.func public @logsumexp_kernel_inner(%output_ptr: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %input_ptr: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %M: i32 {tt.divisibility = 16 : i32}, %N: i32 {tt.divisibility = 16 : i32}) attributes {noinline = false} {
+    %inp = arith.constant dense<0xFC00> : tensor<128xf16>
+    %cst = arith.constant 0.000000e+00 : f32
+    %cst_0 = arith.constant 0xFF800000 : f32
+    %pid_m = tt.get_program_id x : i32
+    %pid_m_1 = arith.extsi %pid_m : i32 to i64
+    %n_offsets = tt.make_range {end = 128 : i32, start = 0 : i32} : tensor<128xi32>
+    %offset = arith.extsi %N : i32 to i64
+    %offset_2 = arith.muli %pid_m_1, %offset : i64
+    %offset_3 = arith.extsi %n_offsets : tensor<128xi32> to tensor<128xi64>
+    %offset_4 = tt.splat %offset_2 : i64 -> tensor<128xi64>
+    %offset_5 = arith.addi %offset_4, %offset_3 : tensor<128xi64>
+    %input_ptrs = tt.splat %input_ptr : !tt.ptr<f16> -> tensor<128x!tt.ptr<f16>>
+    %input_ptrs_6 = tt.addptr %input_ptrs, %offset_5 : tensor<128x!tt.ptr<f16>>, tensor<128xi64>
+    %mask = tt.splat %N : i32 -> tensor<128xi32>
+    %mask_7 = arith.cmpi slt, %n_offsets, %mask : tensor<128xi32>
+    %inp_8 = tt.load %input_ptrs_6, %mask_7, %inp cacheModifier = cg : tensor<128x!tt.ptr<f16>>
+    %inp_9 = arith.extf %inp_8 : tensor<128xf16> to tensor<128xf32>
+    %m = "tt.reduce"(%inp_9) <{axis = 0 : i32}> ({
+    ^bb0(%m_15: f32, %m_16: f32):
+      %m_17 = arith.maxnumf %m_15, %m_16 : f32
+      tt.reduce.return %m_17 : f32
+    }) : (tensor<128xf32>) -> f32
+    %safe_m = arith.cmpf oeq, %m, %cst_0 : f32
+    %safe_m_10 = arith.select %safe_m, %cst, %m : f32
+    %e = tt.splat %safe_m_10 : f32 -> tensor<128xf32>
+    %e_11 = arith.subf %inp_9, %e : tensor<128xf32>
+    %e_12 = math.exp %e_11 : tensor<128xf32>
+    %z = "tt.reduce"(%e_12) <{axis = 0 : i32}> ({
+    ^bb0(%z_15: f32, %z_16: f32):
+      %z_17 = arith.addf %z_15, %z_16 : f32
+      tt.reduce.return %z_17 : f32
+    }) : (tensor<128xf32>) -> f32
+    %out = math.log %z : f32
+    %out_13 = arith.addf %safe_m_10, %out : f32
+    %out_14 = arith.select %safe_m, %m, %out_13 : f32
+    %output_ptrs = tt.addptr %output_ptr, %pid_m_1 : !tt.ptr<f16>, i64
+    %0 = arith.truncf %out_14 : f32 to f16
+    tt.store %output_ptrs, %0 : !tt.ptr<f16>
+    tt.return
+  }
+}

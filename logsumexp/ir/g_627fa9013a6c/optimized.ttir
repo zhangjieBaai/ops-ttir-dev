@@ -1,5 +1,45 @@
 module {
   tt.func public @logsumexp_kernel_inner(%output_ptr: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %input_ptr: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %M: i32, %N: i32 {tt.divisibility = 16 : i32}) attributes {noinline = false} {
+    %r3_limit = arith.constant 65536 : i32
+    %r3_fits = arith.cmpi sle, %N, %r3_limit : i32
+    scf.if %r3_fits {
+    %r3_neg = arith.constant dense<0xFC00> : tensor<65536xf16>
+    %r3_inf = arith.constant 0xFF800000 : f32
+    %r3_zero = arith.constant 0.000000e+00 : f32
+    %r3_pid = tt.get_program_id x : i32
+    %r3_base = arith.muli %r3_pid, %N : i32
+    %r3_cols = tt.make_range {end = 65536 : i32, start = 0 : i32} : tensor<65536xi32>
+    %r3_row = tt.splat %r3_base : i32 -> tensor<65536xi32>
+    %r3_offsets = arith.addi %r3_row, %r3_cols : tensor<65536xi32>
+    %r3_n = tt.splat %N : i32 -> tensor<65536xi32>
+    %r3_mask = arith.cmpi slt, %r3_cols, %r3_n : tensor<65536xi32>
+    %r3_ptr = tt.splat %input_ptr : !tt.ptr<f16> -> tensor<65536x!tt.ptr<f16>>
+    %r3_ptrs = tt.addptr %r3_ptr, %r3_offsets : tensor<65536x!tt.ptr<f16>>, tensor<65536xi32>
+    %r3_x16 = tt.load %r3_ptrs, %r3_mask, %r3_neg : tensor<65536x!tt.ptr<f16>>
+    %r3_max_half = "tt.reduce"(%r3_x16) <{axis = 0 : i32}> ({
+    ^bb0(%r3_max_a: f16, %r3_max_b: f16):
+      %r3_max_v = arith.maxnumf %r3_max_a, %r3_max_b : f16
+      tt.reduce.return %r3_max_v : f16
+    }) : (tensor<65536xf16>) -> f16
+    %r3_max = arith.extf %r3_max_half : f16 to f32
+    %r3_x = arith.extf %r3_x16 : tensor<65536xf16> to tensor<65536xf32>
+    %r3_allinf = arith.cmpf oeq, %r3_max, %r3_inf : f32
+    %r3_safe = arith.select %r3_allinf, %r3_zero, %r3_max : f32
+    %r3_bmax = tt.splat %r3_safe : f32 -> tensor<65536xf32>
+    %r3_delta = arith.subf %r3_x, %r3_bmax : tensor<65536xf32>
+    %r3_exp = math.exp %r3_delta : tensor<65536xf32>
+    %r3_sum = "tt.reduce"(%r3_exp) <{axis = 0 : i32}> ({
+    ^bb0(%r3_sum_a: f32, %r3_sum_b: f32):
+      %r3_sum_v = arith.addf %r3_sum_a, %r3_sum_b : f32
+      tt.reduce.return %r3_sum_v : f32
+    }) : (tensor<65536xf32>) -> f32
+    %r3_log = math.log %r3_sum : f32
+    %r3_value = arith.addf %r3_safe, %r3_log : f32
+    %r3_out = arith.select %r3_allinf, %r3_max, %r3_value : f32
+    %r3_out16 = arith.truncf %r3_out : f32 to f16
+    %r3_yptr = tt.addptr %output_ptr, %r3_pid : !tt.ptr<f16>, i32
+    tt.store %r3_yptr, %r3_out16 : !tt.ptr<f16>
+    } else {
     %cst = arith.constant dense<0xFC00> : tensor<4096xf16>
     %c4096_i32 = arith.constant 4096 : i32
     %c0_i32 = arith.constant 0 : i32
@@ -58,6 +98,7 @@ module {
     %output_ptrs = tt.addptr %output_ptr, %pid_m_2 : !tt.ptr<f16>, i64
     %0 = arith.truncf %out_14 : f32 to f16
     tt.store %output_ptrs, %0 : !tt.ptr<f16>
+    }
     tt.return
   }
 }
