@@ -1,0 +1,191 @@
+{
+  "status": "TASK_CONTEXT_OK",
+  "schema_version": "kernelforge/0.1",
+  "ts": "2026-11-19T05:07:22Z",
+  "artifact_refs": [],
+  "error": null,
+  "scope": {
+    "platform": "h100",
+    "operator": "vector_add"
+  },
+  "scope_sources": {
+    "platform": "explicit task declaration (not a probe)",
+    "operator": "explicit task declaration (not a probe)"
+  },
+  "operator": {
+    "name": "vector_add",
+    "discovered": false,
+    "available": [
+      "cvtcolor",
+      "resize",
+      "warpaffine"
+    ],
+    "note": "New operator: define contract and execution adapter before running verification."
+  },
+  "navigation_gaps": [],
+  "detail": "summary",
+  "resources": [
+    {
+      "id": "05-diagnose",
+      "title": "Diagnose a slow kernel with traces, counters or compiler output / 性能瓶颈诊断",
+      "path": "skills/diagnose-kernel/SKILL.md",
+      "kind": "skill",
+      "read_as": "guide",
+      "scope_mismatch": [],
+      "scope_unverified": []
+    },
+    {
+      "id": "device-performance-reference",
+      "title": "用户提供的多平台硬件规格表：显存带宽、Tensor、Vector copy（以当前实测为准）",
+      "path": "skills/framework-workflow/references/device-performance.md",
+      "kind": "guide",
+      "read_as": "guide",
+      "scope_mismatch": [],
+      "scope_unverified": []
+    },
+    {
+      "id": "02-adaptation",
+      "title": "渐进式检索与跨平台、跨算子适配原则",
+      "path": "docs/adaptation.md",
+      "kind": "guide",
+      "read_as": "guide",
+      "scope_mismatch": [],
+      "scope_unverified": []
+    }
+  ],
+  "lessons": [
+    {
+      "lesson_id": "lz-5533c9ac0763",
+      "claim": "性能比较应先对齐指标边界、执行工作与配对条件",
+      "lifecycle": "ACTIVE",
+      "evidence_grade": "HEURISTIC",
+      "scope": {
+        "platform": "*",
+        "backend": "*",
+        "operator": "*",
+        "path": "*"
+      },
+      "scope_mismatch": [],
+      "scope_unverified": [],
+      "scope_status": "matched",
+      "evidence_status": "NONE",
+      "open_conflicts": [],
+      "usable_as_current": false,
+      "usable_as_guidance": true,
+      "guidance_action": "明确两边执行工作和计时边界，采用可比较的配对样本，再评估差异。",
+      "compatibility": null,
+      "read_as": "portable_guidance",
+      "evidence_count": 0,
+      "next": "python -m kernelforge lesson show --id lz-5533c9ac0763 --scope platform=h100 --scope operator=vector_add",
+      "more_scope_fields": [
+        "arch",
+        "channels",
+        "contract",
+        "dtype",
+        "mode",
+        "oracle_build",
+        "regime",
+        "toolchain",
+        "workload"
+      ]
+    },
+    {
+      "lesson_id": "lz-00e52685931e",
+      "claim": "把环境配置与实际探测结果分开，迁移时重新确认所需能力",
+      "lifecycle": "ACTIVE",
+      "evidence_grade": "HEURISTIC",
+      "scope": {
+        "platform": "*",
+        "backend": "*",
+        "operator": "*",
+        "path": "*"
+      },
+      "scope_mismatch": [],
+      "scope_unverified": [],
+      "scope_status": "matched",
+      "evidence_status": "NONE",
+      "open_conflicts": [],
+      "usable_as_current": false,
+      "usable_as_guidance": true,
+      "guidance_action": "选择目标配置，探测实际设备与所需能力，保留未知项并据此选择执行路径。",
+      "compatibility": null,
+      "read_as": "portable_guidance",
+      "evidence_count": 0,
+      "next": "python -m kernelforge lesson show --id lz-00e52685931e --scope platform=h100 --scope operator=vector_add",
+      "more_scope_fields": [
+        "arch",
+        "channels",
+        "contract",
+        "dtype",
+        "mode",
+        "oracle_build",
+        "regime",
+        "toolchain",
+        "workload"
+      ]
+    },
+    {
+      "lesson_id": "lz-bb34ea2dfda8",
+      "claim": "在使用 TLE primitive 前检查当前后端的实际白名单",
+      "lifecycle": "ACTIVE",
+      "evidence_grade": "HEURISTIC",
+      "scope": {
+        "platform": "bw1000",
+        "backend": "hip",
+        "operator": "*",
+        "path": "*"
+      },
+      "scope_mismatch": [
+        "platform"
+      ],
+      "scope_unverified": [
+        "arch",
+        "backend",
+        "toolchain"
+      ],
+      "scope_status": "mismatch",
+      "evidence_status": "MISSING",
+      "open_conflicts": [],
+      "usable_as_current": false,
+      "usable_as_guidance": false,
+      "guidance_action": null,
+      "compatibility": null,
+      "read_as": "related_scope",
+      "evidence_count": 3,
+      "next": "python -m kernelforge lesson show --id lz-bb34ea2dfda8 --scope platform=h100 --scope operator=vector_add",
+      "more_scope_fields": [
+        "arch",
+        "channels",
+        "contract",
+        "dtype",
+        "mode",
+        "oracle_build",
+        "regime",
+        "toolchain",
+        "workload"
+      ]
+    }
+  ],
+  "counts": {
+    "resources": 6,
+    "lessons": 4,
+    "usable": 0,
+    "guidance": 2,
+    "shown_lessons": 3
+  },
+  "next": {
+    "expand": "Repeat task with --detail evidence or --detail full; raise --limit only as needed.",
+    "lesson": "Use the selected lesson's next command to expand it with the same task scope.",
+    "scope": "Missing or legacy regime conditions require confirmation; aliases never relax scope.",
+    "history": "lesson search --query <question> --lifecycle RETRACTED finds recorded counterexamples.",
+    "adapt": "docs/adaptation.md"
+  },
+  "doc_gate": {
+    "status": "DOC_CHANGE_PENDING",
+    "changed": {
+      "added": 66,
+      "modified": 37
+    },
+    "next": "python3 tools/run_advisor.py --check-docs --run doc-maintenance"
+  }
+}
