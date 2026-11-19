@@ -4,6 +4,9 @@
 streaming store 在 N=2^22 有约 1.206x 局部收益，16 点几何均值仅 1.0131x。
 实验细节和证据见 [report.md](report.md)；最终选择见 `results/selection.json`。
 
+NCU 诊断和待执行的第二轮计划见 [optimization_plan_v2.md](optimization_plan_v2.md)：
+小尺寸网格不足，中等尺寸有缓存/分组机会，大尺寸 DRAM 吞吐已约 92%。
+
 Official tutorial snapshot: `upstream/01-vector-add.py.txt`; source and commit
 hashes: `upstream/provenance.json`. Frozen contract: `optimization_plan.md`.
 FP32, 16-byte aligned, non-aliasing contiguous vectors; positive lengths divisible
