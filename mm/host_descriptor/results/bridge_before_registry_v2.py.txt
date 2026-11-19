@@ -1,0 +1,116 @@
+"""Version-pinned input-signature compatibility shim; GPU compilation and launcher stay native."""
+
+# flake8: noqa: E402 -- standalone MM owner bootstrap.
+
+import contextlib
+import json
+import re
+import sys
+import threading
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+import triton
+import triton.compiler.compiler as compiler
+from common import gate, sha256
+from triton.backends.nvidia.driver import expand_signature
+
+LOCK = threading.RLock()
+DESC = re.compile(r"^!tt\.tensordesc<tensor<(\d+)x(\d+)xf16>>$")
+
+
+def normalize(raw):
+    logical = {}
+    mapping = []
+    i = 0
+    while i < len(raw):
+        ty = raw[i]
+        if ty.startswith("!tt.tensordesc"):
+            match = DESC.fullmatch(ty)
+            if not match:
+                raise ValueError(f"Unsupported descriptor ABI: {ty}")
+            suffix = [raw.get(i + j) for j in range(1, 5)]
+            if suffix != ["i32", "i32", "i64", "i64"]:
+                raise ValueError(
+                    f"Descriptor must have explicit2D shape/stride fields: {suffix}"
+                )
+            logical[len(logical)] = f"tensordesc<fp16[{match[1]},{match[2]}]>"
+            mapping.append(
+                dict(
+                    logical_index=len(logical) - 1,
+                    physical_indices=list(range(i, i + 5)),
+                    dtype="float16",
+                    block_shape=[int(match[1]), int(match[2])],
+                )
+            )
+            i += 5
+        else:
+            logical[len(logical)] = ty
+            i += 1
+    return logical, mapping
+
+
+@contextlib.contextmanager
+def descriptor_source_reader(path):
+    """Alter only this source's host signature during its constructor, before compilation."""
+    path = Path(path).resolve()
+    with LOCK:
+        original = compiler.IRSource.__init__
+
+        def init(source, filename, context, backend):
+            original(source, filename, context, backend)
+            if Path(filename).resolve() != path:
+                return
+            raw = dict(source.signature)
+            logical, mapping = normalize(raw)
+            source.signature = logical
+            source.host_abi_audit = dict(
+                raw_signature=raw,
+                logical_signature=logical,
+                descriptor_mapping=mapping,
+                input_sha256=sha256(path),
+            )
+
+        compiler.IRSource.__init__ = init
+        try:
+            yield
+        finally:
+            compiler.IRSource.__init__ = original
+            assert compiler.IRSource.__init__ is original
+
+
+def compile_file(path, options):
+    gate()
+    path = Path(path).resolve()
+    root = Path(__file__).resolve().parent
+    declared = json.loads((root / "results/prototype_inputs.json").read_text())[
+        "inputs"
+    ]
+    assert (
+        path.parent == root / "ir" and path.name in declared
+    ), "Undeclared ABI prototype"
+    assert sha256(path) == declared[path.name], "Prototype input changed"
+    original = compiler.IRSource.__init__
+    # Unadapted product is kept as a byte identity reference, not initialized.
+    raw = triton.compile(str(path), options=options)
+    with descriptor_source_reader(path):
+        ck = triton.compile(str(path), options=options)
+    assert compiler.IRSource.__init__ is original
+    assert ck.src.src == raw.src.src == path.read_text()
+    for stage in ["ttgir", "llir", "ptx", "cubin"]:
+        assert (
+            ck.asm[stage] == raw.asm[stage]
+        ), f"ABIreader changed GPU artifact {stage}"
+    expected = [
+        "nvTmaDesc" if DESC.fullmatch(t) else t for t in raw.src.signature.values()
+    ]
+    expanded = expand_signature(ck.src.signature.values(), ck.metadata.tensordesc_meta)
+    assert expanded == expected, (expanded, expected)
+    ck._init_handles()
+    return ck, dict(
+        ck.src.host_abi_audit,
+        native_expanded_signature=expanded,
+        raw_adapted_gpu_artifacts_byte_identical=True,
+        reader_restored=True,
+    )

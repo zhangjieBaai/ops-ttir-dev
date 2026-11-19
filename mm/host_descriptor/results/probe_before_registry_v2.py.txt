@@ -1,0 +1,182 @@
+"""ABI feasibility before performance: original native encoding and launch, no binary repair."""
+
+# flake8: noqa: E402 -- bootstrap lives in the local ABI reader module.
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+import experiment_round2 as tests
+import torch
+import triton.compiler.compiler as compiler
+from bridge import compile_file, descriptor_source_reader, normalize
+from common import allocate, dump_kernel, frozen, save_json, sha256
+from experiment_round1 import idle
+from triton.tools.tensor_descriptor import TensorDescriptor
+
+ROOT = Path(__file__).resolve().parent
+FAMILY = "bm64_bn128_bk64_g8_w4_s4"
+CONFIG = frozen()["families"][FAMILY]
+
+
+def descriptors(a, b, c):
+    return (
+        TensorDescriptor(a, list(a.shape), list(a.stride()), [64, 64]),
+        TensorDescriptor(b, list(b.shape), list(b.stride()), [64, 128]),
+        TensorDescriptor(c, list(c.shape), list(c.stride()), [64, 128]),
+    )
+
+
+def launch(ck, ts, name):
+    a, b, c = ts[:3]
+    m, k = a.shape
+    n = b.shape[1]
+    desc = descriptors(a, b, c)
+    if name == "fg_host_reference":
+        args = (*desc, m, n, k, a.stride(0), b.stride(0), c.stride(0), True)
+    else:
+        args = (*desc, a, b, c, m, n, k, a.stride(0), b.stride(0), c.stride(0))
+    ck[((m + 63) // 64 * ((n + 127) // 128), 1, 1)](*args)
+
+
+def parser_checks():
+    records = []
+    for label, sig in [
+        ("missing_fields", {0: "!tt.tensordesc<tensor<64x64xf16>>", 1: "i32"}),
+        (
+            "wrong_dtype",
+            {
+                0: "!tt.tensordesc<tensor<64x64xf32>>",
+                1: "i32",
+                2: "i32",
+                3: "i64",
+                4: "i64",
+            },
+        ),
+        (
+            "wrong_adjacent",
+            {
+                0: "!tt.tensordesc<tensor<64x64xf16>>",
+                1: "i32",
+                2: "i32",
+                3: "i32",
+                4: "i64",
+            },
+        ),
+    ]:
+        try:
+            normalize(sig)
+        except ValueError:
+            records.append(dict(case=label, rejected=True))
+        else:
+            raise AssertionError("Ambiguous prototype must fail closed")
+    original = compiler.IRSource.__init__
+    try:
+        with descriptor_source_reader(ROOT / "ir/envelope_host_v1.ttir"):
+            raise ValueError("restoration counterexample")
+    except ValueError:
+        pass
+    assert compiler.IRSource.__init__ is original
+    return dict(cases=records, exception_restoration=True)
+
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument("--output", type=Path, required=True)
+    p.add_argument(
+        "--names",
+        nargs="+",
+        default=["fg_host_reference", "envelope_baseline", "envelope_host_v1"],
+    )
+    p.add_argument("--full", action="store_true")
+    p.add_argument("--seed", type=int, default=42)
+    args = p.parse_args()
+    args.output.mkdir(parents=True, exist_ok=False)
+    torch.backends.cuda.matmul.allow_tf32 = False
+    torch.backends.cuda.matmul.allow_fp16_reduced_precision_reduction = False
+    torch.manual_seed(args.seed)
+    result = dict(
+        parser=parser_checks(),
+        records={},
+        passed=True,
+        seed=args.seed,
+        probe_sha256=sha256(__file__),
+        bridge_sha256=sha256(ROOT / "bridge.py"),
+    )
+    for name in args.names:
+        idle()
+        ck, audit = compile_file(ROOT / "ir" / f"{name}.ttir", CONFIG["options"])
+        assert ck.metadata.global_scratch_size == 0
+        row = dict(
+            audit=audit,
+            artifacts=dump_kernel(ck, "host_descriptor/" + name),
+            cases=[],
+            passed=True,
+        )
+        cases = (
+            tests.extended_cases(CONFIG, "full")
+            if args.full
+            else [(1152, 1152, 1152, 0, "normal"), (1280, 1280, 1280, 0, "normal")]
+        )
+        for m, n, k, pad, dist in cases:
+            ts = allocate(m, n, k, pad)
+            a, b, c, storage = ts
+            if dist == "zero":
+                a.zero_()
+            elif dist == "constant":
+                a.fill_(0.25)
+                b.fill_(0.25)
+            elif dist == "large":
+                a.mul_(4)
+                b.mul_(4)
+            elif dist == "small":
+                a.mul_(1e-3)
+                b.mul_(1e-3)
+            elif dist == "alternating":
+                b[::2].copy_(b[1::2])
+                a[:, 1::2].copy_(-a[:, ::2])
+            before = [a.clone(), b.clone()]
+            refs = {
+                "native_fp16": torch.mm(a, b),
+                "native_fp32": torch.mm(a.float(), b.float()).half(),
+            }
+            if max(m, n, k) <= 272:
+                refs["cpu_fp64"] = (
+                    torch.mm(a.cpu().double(), b.cpu().double()).half().cuda()
+                )
+            storage.fill_(float("nan"))
+            launch(ck, ts, name)
+            errors = {
+                key: (c.float() - ref.float()).abs().max().item()
+                for key, ref in refs.items()
+            }
+            passed = bool(torch.isfinite(c).all()) and bool(
+                storage[:, n:].isnan().all()
+            )
+            passed &= all(torch.equal(x, y) for x, y in zip([a, b], before))
+            passed &= all(
+                torch.allclose(c, ref, atol=0.01, rtol=0.001) for ref in refs.values()
+            )
+            case = dict(
+                shape=[m, n, k],
+                pad=pad,
+                distribution=dist,
+                errors=errors,
+                passed=passed,
+            )
+            row["cases"].append(case)
+            row["passed"] &= passed
+            print(name, [m, n, k], dist, passed, errors, flush=True)
+        result["records"][name] = row
+        result["passed"] &= row["passed"]
+        save_json(args.output / f"{name}.json", row)
+        idle()
+        assert row["passed"], "Numerical failure blocks further stages"
+    save_json(args.output / "summary.json", result)
+
+
+if __name__ == "__main__":
+    main()

@@ -8,6 +8,8 @@ TTIR首轮优化已完成六组各8个候选的尝试：仅128×32×64组保留�
 
 随后按要求另建的 [设备TMA匹配工作区分组](tma_workspace/report.md) 实际运行了该TTIR：两边同设native allocator、candidate384bytes/CTA；精度和memcheck通过，但racecheck37条warning，主测/复测约0.703×/0.700×，明确拒绝。原baseline、旧选择和接口保持不变。
 
+用户要求的 [host descriptor可行性原型](host_descriptor/report.md) 已跑通编译、原生加载、零scratch执行、匹配baseline与37项数值/边界检查，依赖显式局部file-source签名适配。memcheck通过，但racecheck仍37条warning，原生源码控制也重现告警；同步门槛未通过，未进入性能阶段或替换optimized。
+
 另有用户授权的 [FlagGems Hopper / FlagTree 与教程对比](comparison/report.md)：同FlagTree环境配对主比较与原upstream环境参照分别报告，不属于纯TTIR改写收益实验，也不替换上述冻结基线。
 
 优化版实际入口为 `optimized.load_kernels()` / `optimized.matmul()`，完整重放执行 `CUDA_VISIBLE_DEVICES=6 bash mm/test_optimized.sh`。原基线验证入口和下面的六份baseline保持不变；[optimization_plan.md](optimization_plan.md)是原基线阶段的冻结契约，用户授权后的优化计划见 [optimization_round1.md](optimization_round1.md)。
