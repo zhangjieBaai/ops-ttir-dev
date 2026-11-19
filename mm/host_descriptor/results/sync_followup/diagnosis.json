@@ -1,0 +1,58 @@
+{
+  "status": "SYNC_GATE_STILL_FAILED_IN_REQUIRED_UPSTREAM_ENV",
+  "original_input": "ir/envelope_host_v1.ttir",
+  "upstream_cubin_sha256": "b464377c8d8273b983bf05b2e410bfcc6a87d179bb96dd8380e2153ff7d0b080",
+  "upstream_ptx_sha256": "4f0137b67832ee738d9441353e436d0cc146ca97ca61dd39ffbeae0007612b0b",
+  "flagtree_ptx_sha256": "2a6d3d4822cf2f5a56e64f9e4ba647a95fbd66e052cffd400e1ea50f3f40f3f9",
+  "flagtree_cubin_sha256": "c4eb209e639d25c7ce533b7a56888bcedc0427277a8883b604a35bbccda1960f",
+  "hazard": {
+    "tool": "ComputeSanitizer2025.2.0",
+    "kind": "WarpLevelProgramming potentialRAW CUDAbarrier operation",
+    "shared_address": "0x18400",
+    "source": "hazard_single_tile.log",
+    "write_thread": 31,
+    "write_sass": "SYNCS.EXCH.64 (mbarrier.init)",
+    "write_pc": "0x820",
+    "read_thread": 0,
+    "read_sass": "SYNCS.ARRIVE.TRANS64 (mbarrier.arrive.expect_tx)",
+    "read_pc": "0xb70",
+    "reproduced_with_single_cta_single_K_iteration": true,
+    "numerical_pass": true,
+    "tool_exit_status": 99
+  },
+  "codegen_observations": {
+    "upstream": "elect-based initializer; no bar.sync between lastinit andfirstexpect_tx; firstbar.sync afterexpect_tx",
+    "flagtree": "tid.x-selected initializer; bar.sync afterinit beforefirstexpect_tx",
+    "scope": "Concrete emitted ordering difference. Does not prove broadercompiler/hardware correctness or single-caused performance gain. DifferentTorch/compiler environments kept separate."
+  },
+  "ttir_diagnostics": {
+    "names": [
+      "host_barrier_prefix",
+      "host_barrier_serial",
+      "host_barrier_edges"
+    ],
+    "number_numeric_checks": 6,
+    "numeric_pass": true,
+    "race_reports": 8,
+    "race_warnings": 8,
+    "tool_exit_status": 99,
+    "result": "Source-level gpu.barrier positions did not separate generated init/first-use; serialfirstbarrier appears beforegeneratedinit"
+  },
+  "flagtree_control": {
+    "source": "source_controls.py:native_host_control",
+    "same_source_as_prior_upstream_control": true,
+    "same_tile_and_launch_configuration": true,
+    "numeric_shapes": [
+      1152,
+      1280
+    ],
+    "numeric_pass": true,
+    "race_reports": 0,
+    "tool_exit_status": 0,
+    "mode": "Separate authorized FlagTree diagnostic only; not qualification of officialTriton3.7 primary path"
+  },
+  "performance_phase": "NOT_RUN",
+  "promoted": false,
+  "old_inputs_and_protocols_unchanged": true,
+  "next_boundary": "Likely requires synchronization handling in TMA lowering or independent officialtoolchain fix; no suchcompiler/downstream edit is made in pureTTIR experiment."
+}

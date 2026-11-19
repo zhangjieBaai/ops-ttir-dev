@@ -51,3 +51,13 @@
 全部原型和失败日志保留。原审查意见通过后，审批归档因KernelForge框架目录的并发外部修改而被自动审计拒绝；MM文件未变。相同计划和已有检查重新绑定到本实验目录审计，最终状态以 `/root/KernelForge-workspace/runs/mm-host-descriptor-local-v1/advisors/` 为准，旧失败记录保留。该框架未注册MM执行adapter，不宣称CLI qualification；审查通过也不授予hostTMA同步正确性或性能收益。
 
 serial诊断记录的中间probe源码后来只清理了一条未使用的`import json`。现已按该记录的SHA256精确重建源码，见 [重建收据](results/serial_source_provenance.json)；历史serial JSON保持原字节，没有改成由当前probe采集，也没有重复执行GPU实验。
+
+## 同步后续定位：初始化与首次使用的顺序
+
+在用户要求继续后，新增的单CTA、单K迭代用例（64×128×64）仍数值通过但racecheck失败。hazard详细报告指向shared地址0x18400：thread31在PC0x820执行`SYNCS.EXCH.64`（mbarrier初始化），thread0在PC0xb70执行`SYNCS.ARRIVE.TRANS64`（首次arrive.expect_tx）。相应官方3.7产物中，init使用elect选出的线程，首次arrive选择thread0，二者之间没有`bar.sync`，第一条CTA barrier在arrive之后。它把告警范围缩到生成的barrier初始化/首次使用顺序，不能再仅称矩阵访存或多轮K缓冲问题。
+
+新增3个**仅正确性诊断**：在TTIR循环首部、首尾加入`gpu.barrier`，以及首部barrier加单循环stage1；六次数值检查通过，但合计8条race warning、进程退出99。产物显示这些源级barrier没有被放入后端生成的init与首次arrive之间；serial版barrier在init之前。未修改下游IR、binary或已编译metadata，也未靠关闭racecheck选项消除报告。它们不是新的性能候选，未进入阶段B。
+
+额外在独立FlagTree0.7.0环境（实际triton3.6、torch2.11）运行**同一个`native_host_control`源码、相同tile/warps/stages/CTAs**的1152/1280两点对照：数值通过，racecheck为0hazards/0errors/0warnings，退出0。该产物以thread0初始化，并在init与首次arrive之间有`bar.sync`。这支持生成同步顺序差异的诊断，**不能替代官方3.7验收**，也没有用它报告性能或把全部差异仅归因于编译器；环境差异保持可见。
+
+原始hazard、SASS、两边原始PTX与工具日志在 [sync_followup](results/sync_followup/)，归纳和哈希在 [diagnosis.json](results/sync_followup/diagnosis.json)。官方3.7路径仍未清除告警，后续可能需要修复TMA lowering或用独立、版本明确的工具链验证；本实验没有擅自修改编译器或迁移主环境。旧`optimized.ttir`继续保持，性能优化仍是NOT_RUN。

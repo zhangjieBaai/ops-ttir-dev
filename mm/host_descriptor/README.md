@@ -23,3 +23,5 @@ CUDA_VISIBLE_DEVICES=1 PYTHONNOUSERSITE=1 LD_LIBRARY_PATH= \
 ```
 
 计划为 [plan.md](plan.md)。未修改Triton安装文件、Python计算kernel、任何下游IR/binary或旧baseline/config/shape映射。全局IRSource构造器只在单线程实验的受锁context内临时包装；这不是多线程库级生产集成。原参数包和底层Tensor在设备启动/同步期间保活；本轮不承诺新stream/cache/生命周期场景均已验证。
+
+同步后续定位见 [diagnosis.json](results/sync_followup/diagnosis.json)：单CTA/单K迭代也重现，告警定位在mbarrier初始化与首次arrive的跨线程顺序。三个额外TTIR barrier位置诊断仍未清除告警。相同原生源码/配置在独立FlagTree环境的两点对照为0告警，其生成代码在init与首次arrive之间有CTA同步；这是不同环境的诊断线索，不是官方3.7路径通过，也不是性能比较。`sync_diagnostic.py`提供小型复现，`make_sync_followup.py`重建不可变v3诊断输入，原输入和旧记录不改。
