@@ -1,5 +1,5 @@
 {
-  "version": "var_mean-row-f32-v2",
+  "version": "var_mean-row-f32-v3",
   "dtype": "float32",
   "layout": "contiguous MxN, dim=-1, disjoint outputs",
   "range": {
@@ -192,6 +192,7 @@
   "compiler_environment": {
     "TRITON_DISABLE_LINE_INFO": "1"
   },
-  "predecessor": "setup_attempts/contract_v1/contract.json",
-  "reference_change_reason": "Unchanged baseline passes CPU FP64 gate but GPU native FP32 offset10000 variance differs by 3.7e-4 relative; retain strict CPU tolerances and report native error separately."
+  "predecessor": "setup_attempts/i32_pid/contract.json",
+  "reference_change_reason": "Unchanged baseline passes CPU FP64 gate but GPU native FP32 offset10000 variance differs by 3.7e-4 relative; retain strict CPU tolerances and report native error separately.",
+  "baseline_correction": "Restore ext.program_id(0) int64 semantics. Entire i32-pid trial is historical and excluded from final speedups."
 }

@@ -1,0 +1,197 @@
+{
+  "version": "var_mean-row-f32-v2",
+  "dtype": "float32",
+  "layout": "contiguous MxN, dim=-1, disjoint outputs",
+  "range": {
+    "M": [
+      1,
+      4096
+    ],
+    "N": [
+      16,
+      16384
+    ],
+    "N_multiple": 16
+  },
+  "correction": [
+    0.0,
+    1.0
+  ],
+  "reference": "CPU torch.var_mean(x.cpu().double(),dim=-1,correction=c) authoritative; native GPU FP32 ATen diagnostic only",
+  "tolerance": {
+    "variance": {
+      "rtol": 0.0002,
+      "atol": 2e-06
+    },
+    "mean": {
+      "rtol": 2e-05,
+      "atol": 2e-05
+    }
+  },
+  "options": {
+    "num_warps": 4,
+    "num_ctas": 1,
+    "num_stages": 3,
+    "enable_fp_fusion": true
+  },
+  "performance": {
+    "shapes": [
+      [
+        1,
+        128
+      ],
+      [
+        1,
+        512
+      ],
+      [
+        1,
+        1040
+      ],
+      [
+        1,
+        4096
+      ],
+      [
+        1,
+        8192
+      ],
+      [
+        1,
+        16384
+      ],
+      [
+        17,
+        128
+      ],
+      [
+        17,
+        512
+      ],
+      [
+        17,
+        1040
+      ],
+      [
+        17,
+        4096
+      ],
+      [
+        17,
+        8192
+      ],
+      [
+        17,
+        16384
+      ],
+      [
+        128,
+        128
+      ],
+      [
+        128,
+        512
+      ],
+      [
+        128,
+        1040
+      ],
+      [
+        128,
+        4096
+      ],
+      [
+        128,
+        8192
+      ],
+      [
+        128,
+        16384
+      ],
+      [
+        1024,
+        128
+      ],
+      [
+        1024,
+        512
+      ],
+      [
+        1024,
+        1040
+      ],
+      [
+        1024,
+        4096
+      ],
+      [
+        1024,
+        8192
+      ],
+      [
+        1024,
+        16384
+      ],
+      [
+        4096,
+        128
+      ],
+      [
+        4096,
+        512
+      ],
+      [
+        4096,
+        1040
+      ],
+      [
+        4096,
+        4096
+      ],
+      [
+        4096,
+        8192
+      ],
+      [
+        4096,
+        16384
+      ]
+    ],
+    "correction": 1.0,
+    "rounds": 7,
+    "repeat_rounds": 5,
+    "rep_ms": 20,
+    "stabilize_ms": 50,
+    "metric": "preallocated CUDA graph complete row-kernel sequence; no host/allocation/compile/load",
+    "weights": "equal per shape",
+    "tuning_indices": [
+      0,
+      2,
+      4,
+      6,
+      9,
+      11,
+      14,
+      16,
+      18,
+      21,
+      25,
+      29
+    ],
+    "acceptance": "validation geometric median speedup >1.02; worst shape >=0.90, then full matrix and repeat; no promise of universal gain"
+  },
+  "excluded": [
+    "FP16/BF16",
+    "global all-dim reduction",
+    "strided input / dim_compress overhead",
+    "NaN/Inf inputs",
+    "N not divisible by 16",
+    "in-place/aliasing",
+    "API/end-to-end performance"
+  ],
+  "compiler_environment": {
+    "TRITON_DISABLE_LINE_INFO": "1"
+  },
+  "predecessor": "setup_attempts/contract_v1/contract.json",
+  "reference_change_reason": "Unchanged baseline passes CPU FP64 gate but GPU native FP32 offset10000 variance differs by 3.7e-4 relative; retain strict CPU tolerances and report native error separately."
+}

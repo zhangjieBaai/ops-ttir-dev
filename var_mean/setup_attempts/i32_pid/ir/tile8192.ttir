@@ -1,0 +1,59 @@
+module {
+  tt.func public @var_mean_welford_kernel(%X: !tt.ptr<f32> {tt.divisibility = 16 : i32}, %Var: !tt.ptr<f32> {tt.divisibility = 16 : i32}, %Mean: !tt.ptr<f32> {tt.divisibility = 16 : i32}, %M: i32, %N: i32, %correction: f32 attributes {noinline = false} {
+    %c8192_i32 = arith.constant 8192 : i32
+    %c0_i32 = arith.constant 0 : i32
+    %cst = arith.constant dense<0.000000e+00> : tensor<8192xf32>
+    %0 = tt.get_program_id x : i32
+    %1 = arith.muli %0, %N : i32
+    %2 = tt.addptr %X, %1 : !tt.ptr<f32>, i32
+    %3 = tt.addptr %Var, %0 : !tt.ptr<f32>, i32
+    %4 = tt.addptr %Mean, %0 : !tt.ptr<f32>, i32
+    %_sum = scf.for %off = %c0_i32 to %N step %c8192_i32 iter_args(%_sum_0 = %cst) -> (tensor<8192xf32>)  : i32 {
+      %13 = tt.make_range {end = 8192 : i32, start = 0 : i32} : tensor<8192xi32>
+      %14 = tt.splat %off : i32 -> tensor<8192xi32>
+      %15 = arith.addi %14, %13 : tensor<8192xi32>
+      %16 = tt.splat %N : i32 -> tensor<8192xi32>
+      %17 = arith.cmpi slt, %15, %16 : tensor<8192xi32>
+      %18 = tt.splat %2 : !tt.ptr<f32> -> tensor<8192x!tt.ptr<f32>>
+      %19 = tt.addptr %18, %15 : tensor<8192x!tt.ptr<f32>>, tensor<8192xi32>
+      %20 = tt.load %19, %17, %cst : tensor<8192x!tt.ptr<f32>>
+      %21 = arith.addf %_sum_0, %20 : tensor<8192xf32>
+      scf.yield %21 : tensor<8192xf32>
+    }
+    %5 = tt.reshape %_sum allow_reorder : tensor<8192xf32> -> tensor<8192xf32>
+    %6 = "tt.reduce"(%5) <{axis = 0 : i32}> ({
+    ^bb0(%arg6: f32, %arg7: f32:
+      %13 = arith.addf %arg6, %arg7 : f32
+      tt.reduce.return %13 : f32
+    }) : (tensor<8192xf32>) -> f32
+    %7 = arith.sitofp %N : i32 to f32
+    %8 = arith.divf %6, %7 : f32
+    %_acc = scf.for %off = %c0_i32 to %N step %c8192_i32 iter_args(%_acc_0 = %cst) -> (tensor<8192xf32>)  : i32 {
+      %13 = tt.make_range {end = 8192 : i32, start = 0 : i32} : tensor<8192xi32>
+      %14 = tt.splat %off : i32 -> tensor<8192xi32>
+      %15 = arith.addi %14, %13 : tensor<8192xi32>
+      %16 = tt.splat %N : i32 -> tensor<8192xi32>
+      %17 = arith.cmpi slt, %15, %16 : tensor<8192xi32>
+      %18 = tt.splat %2 : !tt.ptr<f32> -> tensor<8192x!tt.ptr<f32>>
+      %19 = tt.addptr %18, %15 : tensor<8192x!tt.ptr<f32>>, tensor<8192xi32>
+      %20 = tt.load %19, %17, %cst : tensor<8192x!tt.ptr<f32>>
+      %21 = tt.splat %8 : f32 -> tensor<8192xf32>
+      %22 = arith.subf %20, %21 : tensor<8192xf32>
+      %23 = arith.select %17, %22, %cst : tensor<8192xi1>, tensor<8192xf32>
+      %24 = arith.mulf %23, %23 : tensor<8192xf32>
+      %25 = arith.addf %_acc_0, %24 : tensor<8192xf32>
+      scf.yield %25 : tensor<8192xf32>
+    }
+    %9 = tt.reshape %_acc allow_reorder : tensor<8192xf32> -> tensor<8192xf32>
+    %10 = "tt.reduce"(%9) <{axis = 0 : i32}> ({
+    ^bb0(%arg6: f32, %arg7: f32:
+      %13 = arith.addf %arg6, %arg7 : f32
+      tt.reduce.return %13 : f32
+    }) : (tensor<8192xf32>) -> f32
+    %11 = arith.subf %7, %correction : f32
+    %12 = arith.divf %10, %11 : f32
+    tt.store %4, %8 : !tt.ptr<f32>
+    tt.store %3, %12 : !tt.ptr<f32>
+    tt.return
+  }
+}

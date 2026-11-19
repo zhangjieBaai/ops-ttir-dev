@@ -70,6 +70,16 @@ def provenance():
         telemetry=telemetry(),
         torch_version=torch.__version__,
         torch_path=torch.__file__,
+        loaded_libraries=sorted(
+            {
+                line.split()[-1]
+                for line in Path("/proc/self/maps").read_text().splitlines()
+                if any(
+                    s in line
+                    for s in ["libcuda", "libtriton", "libnv", "libtorch_cuda"]
+                )
+            }
+        ),
         clocks_locked="NOT_VERIFIED; no clock-setting command issued",
         cache="no explicit cache flush; repeated same-input CUDA graph replay",
     )

@@ -1,6 +1,6 @@
 # var_mean TTIR experiment r1
 
-Contract owner: contract.json (var_mean-row-f32-v2). Source: upstream/provenance.json.
+Contract owner: contract.json (var_mean-row-f32-v3). Source: upstream/provenance.json.
 30 preregistered shapes = M in {1,17,128,1024,4096} x N in {128,512,1040,4096,8192,16384}.
 12 tuning points specified by zero-based indices in contract; remaining 18 validation points held until candidate selection. Equal point weights. After exposure no claim of untouched holdout for later revisions.
 
@@ -17,3 +17,5 @@ Archive immutable baseline, all candidates and negative results, exact commands/
 Pipeline setup finding: default line-info file parser maps one unknown location to input line45; PTX/cubin identical but LLVM debug metadata differs. Attempt archived under setup_attempts/debug_locations. Freeze TRITON_DISABLE_LINE_INFO=1 symmetrically before source export/file compile, requiring exact LLVM/PTX/cubin identity in final baseline.
 
 Setup numerical finding: original baseline passed CPU FP64 tolerance but strict GPU FP32 native gate failed offset10000 (relative3.7e-4). Contract-v1 and pipeline archived; v2 keeps CPU tolerance unchanged, uses CPU FP64 as authoritative, records native GPU discrepancies without gating on its less accurate offset result. Complete baseline accuracy and A/A plus duplicated-launch timing checkpoint before ranking candidates.
+
+Round2 provenance correction: ext.program_id casts to int64; restore exact int64 pid in frozen extraction. Entire int32 setup round retained under setup_attempts/i32_pid, no original-implementation speed claim uses its numbers. All performance points previously exposed are now regression, not fresh holdout. Replay same candidate families from corrected baseline; independently validate and pair all30 points on physicalGPU5. Use equal options/launcher throughout.

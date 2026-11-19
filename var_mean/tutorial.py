@@ -15,7 +15,7 @@ def var_mean_welford_kernel(
     BLOCK_N: tl.constexpr,
 ):
     # One row per program to avoid autotune correctness issues on some backends.
-    pid = tl.program_id(0)
+    pid = tl.program_id(0).to(tl.int64)
     X = X + pid * N
     Var = Var + pid
     Mean = Mean + pid

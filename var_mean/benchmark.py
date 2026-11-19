@@ -4,9 +4,11 @@ import argparse
 import fcntl
 import json
 import math
+import os
 import random
 import statistics
 import subprocess
+import threading
 import time
 
 import numpy as np
@@ -70,13 +72,14 @@ def main():
     p.add_argument("--rep", type=int, default=20)
     p.add_argument("--seed", type=int, default=42)
     args = p.parse_args()
-    lock = open("/root/tmp/var_mean_GPU7.lock", "w")
-    fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-    assert __import__("os").environ["CUDA_VISIBLE_DEVICES"] == "7"
+    device = os.environ["CUDA_VISIBLE_DEVICES"]
+    assert device.isdecimal(), "Select one physical GPU index"
     gpu_uuid = subprocess.check_output(
-        ["nvidia-smi", "-i", "7", "--query-gpu=uuid", "--format=csv,noheader"],
+        ["nvidia-smi", "-i", device, "--query-gpu=uuid", "--format=csv,noheader"],
         text=True,
     ).strip()
+    lock = open(f"/root/tmp/ttir-device-{gpu_uuid}.lock", "w")
+    fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
     running = subprocess.check_output(
         ["nvidia-smi", "--query-compute-apps=gpu_uuid,pid", "--format=csv,noheader"],
         text=True,
@@ -103,6 +106,15 @@ def main():
         n: identity("baseline" if n in ["aa", "double"] else n, k)
         for n, k in kernels.items()
     }
+    for name in set(["baseline", *args.names]) - {"aa", "double"}:
+        assert (
+            resources[name]["products"]["cubin"]
+            == accuracy["identities"][name]["products"]["cubin"]
+        )
+    assert (
+        resources["baseline"]["products"]["cubin"]
+        == pipeline["baseline"]["products"]["cubin"]
+    )
     indices = range(len(SHAPES))
     tuning = CONTRACT["performance"]["tuning_indices"]
     if args.suite == "tuning":
@@ -115,6 +127,38 @@ def main():
     torch.manual_seed(args.seed)
     before = provenance()
     records = []
+    load_samples = []
+    stop_monitor = threading.Event()
+
+    def monitor():
+        while not stop_monitor.is_set():
+            try:
+                state = subprocess.check_output(
+                    [
+                        "nvidia-smi",
+                        "-i",
+                        device,
+                        "--query-gpu=timestamp,uuid,clocks.sm,clocks.mem,power.draw,"
+                        "temperature.gpu,utilization.gpu,clocks_event_reasons.active",
+                        "--format=csv,noheader",
+                    ],
+                    text=True,
+                )
+                processes = subprocess.check_output(
+                    [
+                        "nvidia-smi",
+                        "--query-compute-apps=gpu_uuid,pid",
+                        "--format=csv,noheader",
+                    ],
+                    text=True,
+                )
+                load_samples.append(dict(state=state, processes=processes))
+            except Exception as exc:
+                load_samples.append(dict(error=str(exc)))
+            stop_monitor.wait(0.5)
+
+    monitor_thread = threading.Thread(target=monitor, daemon=True)
+    monitor_thread.start()
     for i in indices:
         m, n = SHAPES[i]
         ts = allocate(m, n)
@@ -166,6 +210,8 @@ def main():
             )
             print(name, [m, n], round(statistics.median(ratios), 4), flush=True)
     torch.cuda.synchronize()
+    stop_monitor.set()
+    monitor_thread.join()
     running = subprocess.check_output(
         ["nvidia-smi", "--query-compute-apps=gpu_uuid,pid", "--format=csv,noheader"],
         text=True,
@@ -173,15 +219,22 @@ def main():
     foreign = [
         line
         for line in running.splitlines()
-        if gpu_uuid in line
-        and line.split(",")[-1].strip() != str(__import__("os").getpid())
+        if gpu_uuid in line and line.split(",")[-1].strip() != str(os.getpid())
     ]
-    assert not foreign, foreign
+    for sample in load_samples:
+        foreign.extend(
+            line
+            for line in sample.get("processes", "").splitlines()
+            if gpu_uuid in line and line.split(",")[-1].strip() != str(os.getpid())
+        )
     save(
         args.output,
         dict(
             provenance=before,
+            valid=not foreign and not any("error" in s for s in load_samples),
+            foreign_process_samples=foreign,
             telemetry_after=telemetry(),
+            load_samples=load_samples,
             processes_after=running,
             gpu_uuid=gpu_uuid,
             accuracy_sha256=digest(args.accuracy),
@@ -198,6 +251,8 @@ def main():
         ),
     )
     print(json.dumps(summary(records), indent=2))
+    assert not foreign, f"Interference detected. Invalid raw samples saved: {foreign}"
+    assert not any("error" in s for s in load_samples), "GPU telemetry was unavailable"
 
 
 if __name__ == "__main__":
