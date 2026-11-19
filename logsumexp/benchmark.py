@@ -151,6 +151,7 @@ def main():
                 pairs = {name: [] for name in args.names}
                 controls = []
                 for turn in range(args.rounds):
+                    check_contention()
                     candidates = [*args.names, "A/A"]
                     rng.shuffle(candidates)
                     for candidate in candidates:
@@ -180,6 +181,7 @@ def main():
                         (controls if candidate == "A/A" else pairs[candidate]).append(
                             row
                         )
+                        check_contention()
                 cm = statistics.median(p["speedup"] for p in controls)
                 result["controls"].append(
                     dict(

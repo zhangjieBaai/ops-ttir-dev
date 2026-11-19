@@ -1,0 +1,215 @@
+{
+  "evidence_level": "B: 20 tuning shapes, 3 paired rounds, not final performance",
+  "valid_screen": "logsumexp/results/runs/round1_screen_gpu0/benchmark.json",
+  "candidates": {
+    "r1_i32": {
+      "arithmetic": 0.999646188337575,
+      "geometric": 0.9995158451984866,
+      "worst": 0.9569137296219313,
+      "best": 1.0335058823620318,
+      "worst_shape": [
+        1024,
+        1008,
+        1
+      ],
+      "bootstrap_95": [
+        0.9966981007606108,
+        1.0012174141278216
+      ],
+      "by_path": {
+        "inner": {
+          "arithmetic": 0.9931036180532059,
+          "geometric": 0.9930003030052067,
+          "worst": 0.9569137296219313,
+          "best": 1.0128676698446248,
+          "worst_shape": [
+            1024,
+            1008,
+            1
+          ]
+        },
+        "non_inner": {
+          "arithmetic": 1.0094600437641286,
+          "geometric": 1.0093694052104802,
+          "worst": 0.9905265026183147,
+          "best": 1.0335058823620318,
+          "worst_shape": [
+            256,
+            512,
+            64
+          ]
+        }
+      },
+      "validation": null
+    },
+    "r1_trim": {
+      "arithmetic": 1.0216107189472619,
+      "geometric": 1.0203233318102558,
+      "worst": 0.9865017317231085,
+      "best": 1.17890388194824,
+      "worst_shape": [
+        1,
+        8192,
+        64
+      ],
+      "bootstrap_95": [
+        1.0181079919563125,
+        1.0218651253789979
+      ],
+      "by_path": {
+        "inner": {
+          "arithmetic": 1.000924858061843,
+          "geometric": 1.0009220857088432,
+          "worst": 0.9975826382874554,
+          "best": 1.006570799223944,
+          "worst_shape": [
+            1024,
+            8192,
+            1
+          ]
+        },
+        "non_inner": {
+          "arithmetic": 1.05263951027539,
+          "geometric": 1.0501325888742632,
+          "worst": 0.9865017317231085,
+          "best": 1.17890388194824,
+          "worst_shape": [
+            1,
+            8192,
+            64
+          ]
+        }
+      },
+      "validation": null
+    },
+    "r1_two_pass": {
+      "arithmetic": 0.9642182121064882,
+      "geometric": 0.9541037692223049,
+      "worst": 0.6407596035116853,
+      "best": 1.215226902290711,
+      "worst_shape": [
+        1024,
+        65536,
+        1
+      ],
+      "bootstrap_95": [
+        0.9530048682198873,
+        0.9558369413173416
+      ],
+      "by_path": {
+        "inner": {
+          "arithmetic": 0.9868266238306606,
+          "geometric": 0.9782010544669025,
+          "worst": 0.6407596035116853,
+          "best": 1.215226902290711,
+          "worst_shape": [
+            1024,
+            65536,
+            1
+          ]
+        },
+        "non_inner": {
+          "arithmetic": 0.9303055945202297,
+          "geometric": 0.9190662938072887,
+          "worst": 0.6813166350294593,
+          "best": 1.0474955554527623,
+          "worst_shape": [
+            256,
+            8192,
+            64
+          ]
+        }
+      },
+      "validation": null
+    },
+    "r1_combined": {
+      "arithmetic": 0.9902124456537987,
+      "geometric": 0.9785914150011137,
+      "worst": 0.6409651554794159,
+      "best": 1.2162755168407349,
+      "worst_shape": [
+        1024,
+        65536,
+        1
+      ],
+      "bootstrap_95": [
+        0.9772947047335145,
+        0.9798672273573648
+      ],
+      "by_path": {
+        "inner": {
+          "arithmetic": 0.98151429694894,
+          "geometric": 0.9729793720615044,
+          "worst": 0.6409651554794159,
+          "best": 1.2162755168407349,
+          "worst_shape": [
+            1024,
+            65536,
+            1
+          ]
+        },
+        "non_inner": {
+          "arithmetic": 1.0032596687110868,
+          "geometric": 0.9870702308542454,
+          "worst": 0.717731923450404,
+          "best": 1.2119037992766506,
+          "worst_shape": [
+            256,
+            8192,
+            64
+          ]
+        }
+      },
+      "validation": null
+    }
+  },
+  "mixed": {
+    "r1_mixed": {
+      "arithmetic": 0.9928227870233837,
+      "geometric": 0.9855256601696137,
+      "worst": 0.680749708641432,
+      "best": 1.1843536661219995,
+      "worst_shape": [
+        256,
+        8192,
+        64
+      ],
+      "bootstrap_95": [
+        0.9844251399046291,
+        0.9863226817236944
+      ],
+      "by_path": {
+        "inner": {
+          "arithmetic": 0.9995221985245835,
+          "geometric": 0.9995198600208756,
+          "worst": 0.9933799853506967,
+          "best": 1.0032083840151675,
+          "worst_shape": [
+            1,
+            8192,
+            1
+          ]
+        },
+        "non_inner": {
+          "arithmetic": 0.9827736697715839,
+          "geometric": 0.9649008735736362,
+          "worst": 0.680749708641432,
+          "best": 1.1843536661219995,
+          "worst_shape": [
+            256,
+            8192,
+            64
+          ]
+        }
+      },
+      "validation": null
+    }
+  },
+  "invalid_run": "results/runs/round1_screen/invalid_timing.json",
+  "decision": "r1_trim frozen as finalist; no additional candidate changes after validation timing exposure",
+  "reflection": {
+    "observation": "Two-pass lower register counts do not establish performance; rereading 2x input causes some long/wide workloads to regress. Cause is a hypothesis without profiler/ablation.",
+    "next_action": "Stop two-pass branch for this round; complete frozen r1_trim acceptance."
+  },
+  "sanitizer_invocation_failure": "Initial regex: filter syntax rejected before execution; retained log, corrected to kns=logsumexp_kernel. No kernel failure."
+}

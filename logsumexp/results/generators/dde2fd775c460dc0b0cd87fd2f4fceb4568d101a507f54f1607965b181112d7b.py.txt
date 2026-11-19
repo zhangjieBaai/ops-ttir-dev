@@ -1,0 +1,30 @@
+"""Fifth hypothesis: retain inner baseline; combine trim/two-pass for non-inner."""
+
+from common import ROOT, ir_path, manifest, save_json, sha256
+from make_candidates import trim_padding, two_pass, without_locations
+
+
+def main():
+    records = {}
+    for group, config in manifest()["groups"].items():
+        baseline = ir_path(group, "baseline")
+        text = baseline.read_text()
+        if "TILE_K" in config["meta"]:
+            text = two_pass(trim_padding(without_locations(text), config))
+        path = ir_path(group, "r1_mixed")
+        with path.open("x") as stream:
+            stream.write(text)
+        records[group] = dict(sha256=sha256(path), baseline_sha256=sha256(baseline))
+    save_json(
+        ROOT / "results/candidate_mixed.json",
+        dict(
+            groups=records,
+            generator_sha256=sha256(__file__),
+            parent_generator_sha256=sha256(ROOT / "make_candidates.py"),
+            hypothesis="Two-pass rereads may hurt large contiguous inner rows; retain inner baseline and optimize non-inner independently. Not a measured claim.",
+        ),
+    )
+
+
+if __name__ == "__main__":
+    main()
