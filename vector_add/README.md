@@ -1,8 +1,10 @@
 # Vector add: direct TTIR optimization
 
-本轮完整矩阵未达到预设 1.02x 晋升门槛，`optimized.ttir` 保留 baseline。
-streaming store 在 N=2^22 有约 1.206x 局部收益，16 点几何均值仅 1.0131x。
-实验细节和证据见 [report.md](report.md)；最终选择见 `results/selection.json`。
+当前 `optimized.ttir` 已按用户接受局部收益的指示，采用 `r1_store_cs`。
+原始 GPU 7 实验在 N=2^22 有约 1.206x 局部收益；原 1.02x 整体晋升门槛
+仍记为未达到，此次选择明确记录了用户授权的政策变更。
+当前正式对比见 [promotion_report_cs.md](promotion_report_cs.md)，选择记录见
+`results/selection.json`。此前未晋升实验的历史报告见 [report.md](report.md)。
 
 NCU 诊断和待执行的第二轮计划见 [optimization_plan_v2.md](optimization_plan_v2.md)：
 小尺寸网格不足，中等尺寸有缓存/分组机会，大尺寸 DRAM 吞吐已约 92%。

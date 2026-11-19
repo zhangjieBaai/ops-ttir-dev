@@ -1,5 +1,9 @@
 # Vector add TTIR experiment
 
+Historical v1 decision: this report records the original unpromoted state.
+The user subsequently accepted the local benefit; the current selection and
+formal alias comparison are documented in [promotion_report_cs.md](promotion_report_cs.md).
+
 ## Result
 
 The upstream Triton tutorial baseline was exported and replayed through the same

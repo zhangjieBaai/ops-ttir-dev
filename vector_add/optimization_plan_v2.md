@@ -1,7 +1,9 @@
 # Vector add 第二轮 TTIR 优化计划与 NCU 诊断
 
 状态：**NCU 诊断已完成；下列新 TTIR 候选尚未生成、编译或执行。**
-第一轮 `optimized.ttir` 继续等于 baseline，本计划不改变历史结果或选择。
+本计划写成时，第一轮 `optimized.ttir` 等于 baseline。
+后续用户接受了局部收益并晋升 `.cs`；当前状态见
+[晋升报告](promotion_report_cs.md)。本计划的新分派候选仍未执行。
 
 ## 结论与优先级
 

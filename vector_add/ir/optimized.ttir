@@ -22,7 +22,7 @@ module {
     %output = arith.addf %x_4, %y_6 : tensor<1024xf32> loc(#loc28)
     %0 = tt.splat %output_ptr : !tt.ptr<f32> -> tensor<1024x!tt.ptr<f32>> loc(#loc12)
     %1 = tt.addptr %0, %offsets_1 : tensor<1024x!tt.ptr<f32>>, tensor<1024xi32> loc(#loc12)
-    tt.store %1, %output, %mask_2 : tensor<1024x!tt.ptr<f32>> loc(#loc13)
+    tt.store %1, %output, %mask_2 cacheModifier = cs : tensor<1024x!tt.ptr<f32>> loc(#loc13)
     tt.return loc(#loc14)
   } loc(#loc)
 } loc(#loc)
