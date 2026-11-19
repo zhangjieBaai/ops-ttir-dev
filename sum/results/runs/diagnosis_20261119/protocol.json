@@ -1,0 +1,12 @@
+{
+  "purpose": "Bottleneck diagnosis, no new candidate or performance promotion",
+  "device": "GPU5 NVIDIA H100, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51",
+  "scope": "Frozen FP32 full sum and exact existing TTIR/cubin hashes; diagnostic point subset, not new 30-shape acceptance",
+  "sizes": [1024, 65536, 1048576, 8388608, 16777216, 67108864],
+  "questions": ["Stage2 fixed cost and small-grid underfill", "L2-resident vs DRAM-resident regime transition", "Whether i32 register reduction changes achieved occupancy but not effective bandwidth", "Barrier/dependency waits and potential benefit from balanced local accumulation"],
+  "normal_timing": "5 randomized measurement rounds of stage1,stage2,total; same do_bench_cudagraph,rep20ms,100ms graph warmup; isolated stage sums need not equal combined total",
+  "ncu": "2025.2, section-first, profilerStart/Stop after100 warmups; cache-control none, clock-control none; profiler time/counters diagnostic only",
+  "nsys": "2025.3,node timeline of100 captured two-stage calls for small input; tracing overhead disclosed",
+  "boundaries": "Do not change frozen baseline,candidates,selection,benchmark or production FlagGems. Discuss same-contract TTIR hypotheses separately from new experiment contracts.",
+  "budget": "At most12 representative shape/version profiles, section expansion only for unresolved questions; no optimization search this turn"
+}

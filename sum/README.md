@@ -4,6 +4,9 @@
 2 个候选完成 30 shape × 7 轮主测及独立进程复测，几何平均均约 1.000×。
 完整结果、逐点耗时和误差见 [report.md](report.md)。
 
+后续 NCU / Nsight Systems 诊断与优化优先级见 [diagnosis.md](diagnosis.md)。
+诊断沿用冻结 kernel，没有生成新候选或变更当前选择。
+
 研究范围为指定 FlagGems `sum.py` 的 FP32 连续输入全量两阶段归约，
 不是 `sum_dim`、其他 dtype 或生产代码集成。30 个性能 shape 已冻结在
 [optimization_plan.md](optimization_plan.md)，实际 shape→两阶段 TTIR 映射见
