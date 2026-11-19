@@ -48,3 +48,7 @@ CUDA_VISIBLE_DEVICES=3 RESULTS_DIR=layer_norm/results/runs/manual_01 \
 H100 / SM90；FP16 输入、权重、偏置、输出；FP32 累加和统计量。8 warps、1 CTA、3 stages。输入列连续，X/Y 行 stride 相同，N 和 stride 是 16 的倍数，不支持别名。性能矩阵为 M=4096、N=1024…15872、间隔 512。计时是预分配输出的重复 CUDA graph kernel 时间，不含 CPU launch 或分配时间。
 
 `artifacts/` 保存可再生编译阶段，已由 Git 忽略。正确性和性能原始样本、环境信息、IR/cubin 哈希保存在 `results/` 并纳入 Git。
+
+## Backward dX 实验
+
+前向实验之外，独立的教程dX计算段提取与TTIR优化位于 [backward_dx/](backward_dx/README.md)。该实验不包含dW/dB或梯度累加锁，不能与完整fused backward耗时混比。

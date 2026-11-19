@@ -2,6 +2,7 @@
 
 import argparse
 import hashlib
+import inspect
 import tempfile
 
 import torch
@@ -17,16 +18,20 @@ from common import (
     save,
     verify_environment,
 )
+from triton._C import libtriton
 from triton._C.libtriton import ir
-from triton.backends.nvidia.compiler import CUDABackend
+from triton.backends.nvidia.compiler import CUDABackend, get_ptxas
 from tutorial import layer_norm_bwd_dx
 
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--output", required=True)
+    p.add_argument("--check-selected", action="store_true")
     args = p.parse_args()
     environment = verify_environment()
+    target = triton.runtime.driver.active.get_current_target()
+    assert target.backend == "cuda" and target.arch == 90
     torch.manual_seed(42)
     groups = {}
     for block in BLOCKS:
@@ -73,6 +78,22 @@ def main():
         assert texts[0] == texts[1]
         launch(file_ck, ts)
         torch.testing.assert_close(dx, ref, rtol=0, atol=0)
+        if args.check_selected:
+            import json
+
+            selection = json.load(open(ROOT / "results/selection.json"))["families"][
+                str(block)
+            ]
+            opt = compile_ir("optimized", block)
+            assert digest(ROOT / f"ir/b{block}/optimized.ttir") == selection["sha256"]
+            assert (
+                opt.asm["cubin"]
+                == compile_ir(selection["candidate"], block).asm["cubin"]
+            )
+            assert all(
+                opt.metadata._asdict()[key] == file_ck.metadata._asdict()[key]
+                for key in parsed.__dict__
+            )
         groups[str(block)] = dict(
             passed=True,
             options=ck.metadata._asdict(),
@@ -91,6 +112,11 @@ def main():
             passed=True,
             environment=environment,
             source_sha256=digest(ROOT / "tutorial.py"),
+            toolchain=dict(
+                backend_sha256=digest(inspect.getfile(CUDABackend)),
+                libtriton_sha256=digest(libtriton.__file__),
+                ptxas_sha256=digest(get_ptxas(90).path),
+            ),
             groups=groups,
         ),
     )

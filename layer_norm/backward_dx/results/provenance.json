@@ -1,0 +1,13 @@
+{
+  "pipeline": "CUDA_VISIBLE_DEVICES=7 /root/venvs/ir-ops-dev/bin/python layer_norm/backward_dx/export_baseline.py --check-selected --output <new-pipeline.json>",
+  "correctness": "CUDA_VISIBLE_DEVICES=7 /root/venvs/ir-ops-dev/bin/python layer_norm/backward_dx/validate.py baseline optimized --output <new-accuracy.json>",
+  "main": "CUDA_VISIBLE_DEVICES=7 /root/venvs/ir-ops-dev/bin/python layer_norm/backward_dx/benchmark.py joint_coefficients grouped2048 --full --rounds 7 --rep 20 --validation layer_norm/backward_dx/results/accuracy_all.json --output <new-full.json>",
+  "repeat": "Same benchmark, --full --rounds 5 --rep 10 --seed 123 --validation layer_norm/backward_dx/results/accuracy_repeat.json",
+  "selected": "CUDA_VISIBLE_DEVICES=7 /root/venvs/ir-ops-dev/bin/python layer_norm/backward_dx/benchmark.py optimized --full --rounds 7 --rep 20 --validation layer_norm/backward_dx/results/selected_accuracy.json --output <new-selected.json>",
+  "source_baseline_commit": "d603c41",
+  "pre_final_commit": "998789c04b57d12012168adb3f1b1edfab65ca03",
+  "extraction": "dX-only statements; no dW/dB/locks in either measured version",
+  "gpu": "GPU7; GPU-b024aea2-2ffa-7211-b551-8e5575887423; H100 80GB HBM3",
+  "promotion": "Main-only per-family selection; independently qualify >=1.02 geo / >=0.95 worst; otherwise baseline. Complete selection in selection.json",
+  "failures": "accuracy_round1.log: Python helper import failed before candidate generation; fixed in local transformer; no GPU candidate execution in failed run"
+}
