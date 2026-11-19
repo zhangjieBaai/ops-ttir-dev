@@ -2,17 +2,22 @@
 
 **目标达成：主测几何平均1.346768×，独立复测1.345741×；算术平均分别1.410644×、1.409556×。**
 
-收益属于新实验组 `sum_launch_v2`：n≤16384直接由一个CTA完成归约，移除原第二次短kernel；其余15点保留原两阶段实现。它改变了启动序列与mid约定，**不是原固定启动契约下仅修改TTIR的34.7%收益**。严格两阶段TTIR尾部候选仅初筛约1.000429×，未晋升。
+收益属于新实验组 `sum_launch_v2`：n≤16384直接由一个CTA（GPU线程块）完成归约，移除原第二次短kernel；其余15点保留原两阶段实现。它改变了启动序列与mid约定，**不是原固定启动契约下仅修改TTIR的34.7%收益**。
+严格两阶段TTIR尾部候选仅初筛约1.000429×，未晋升。
 
 统计口径：沿用原30个shape逐点等权的配对加速比。若每个shape各调用一次，把所有耗时累加后再相比，主测仅1.060850×、复测1.060897×；大输入占据多数总时间，因此不能把34.7%外推成任意应用端到端收益。
 
 ## 冻结范围与对照
 
-日期2026-11-19（北京时间）。FP32连续一维全量sum，输出FP32，原30点不增删；不覆盖dim、FP16/BF16、整数、非连续和空输入。源码及原baseline仍来自FlagGems commit `ef8aea78fed8321c3e02a15bf31e847cd0579e4f`。生产FlagGems未修改。
+日期2026-11-19（北京时间）。FP32连续一维全量sum，输出FP32，原30点不增删；不覆盖dim、FP16/BF16、整数、非连续和空输入。
+源码及原baseline（用于对照的两阶段实现）仍来自FlagGems commit `ef8aea78fed8321c3e02a15bf31e847cd0579e4f`。生产FlagGems未修改。
 
-本轮协议：[optimization_plan_round2.md](optimization_plan_round2.md)。threshold=16384在候选计时前冻结，未根据逐点结果挑选路径；没有继续调整阈值。全部30点已在前轮和诊断中使用，本轮是固定工作负载的优化复核，**没有独立holdout**。seed123是独立进程复测，不是新shape泛化证据。
+本轮协议：[optimization_plan_round2.md](optimization_plan_round2.md)。threshold=16384在候选计时前冻结，未根据逐点结果挑选路径；没有继续调整阈值。
+全部30点已在前轮和诊断中使用，本轮是固定工作负载的优化复核，**没有独立holdout**。seed123是独立进程复测，不是新shape泛化证据。
 
-统一官方venv `/root/venvs/ir-ops-dev/bin/python`，Python3.12.3、Triton3.7.0、PyTorch2.12.0+cu130，H100 SM90。GPU4 UUID `GPU-7f7377cd-12e4-c549-c539-32bdeb268511`；所有主测、复测、sanitizer使用同卡。UUID规范化锁、约1秒一次其他PID/频率/功耗/温度采样均保留；未采样到同卡其他compute进程或监控异常，但不能排除采样间隙活动。
+统一官方venv `/root/venvs/ir-ops-dev/bin/python`，Python3.12.3、Triton3.7.0、PyTorch2.12.0+cu130，H100 SM90。
+GPU4 UUID `GPU-7f7377cd-12e4-c549-c539-32bdeb268511`；所有主测、复测、sanitizer使用同卡。UUID规范化锁、约1秒一次其他PID/频率/功耗/温度采样均保留；
+未采样到同卡其他compute进程或监控异常，但不能排除采样间隙活动。
 
 ## 两条路线的区别
 
@@ -21,23 +26,33 @@
 | strict r2_tail | stage1完整CTA无mask load，尾部保留mask；其余不变 | 原两阶段相同签名、grid、workspace、options | 83例×2通过，11点3轮B级初筛几何1.000429×，不足目标；未做完整收益验收 |
 | sum_launch_v2 | 小输入从一份stage1 TTIR扩大张量宽度为next_power_of_2(n)，grid=1，第二指针改绑out，只启动该kernel | 原两阶段为每shape匹配reference，单CTA为新启动契约candidate；相同输入/out、同compiler/runtime/timer | 两轮完整30点均超过1.10×，选中 |
 
-没有修改Python Triton kernel后重导出新算法，没有手改TTGIR/LLVM/PTX/cubin或注入binary。`make_round2.py`直接重写冻结TTIR，15个小shape各保留其真实签名和runtime参数选择；n=1的M已在源基线特化，只有两个运行时指针，CPU检查和设备精度均通过。
+没有修改Python Triton kernel后重导出新算法，没有手改TTGIR/LLVM/PTX/cubin或注入binary。
+`make_round2.py`直接重写冻结TTIR（Triton的中间表示），15个小shape各保留其真实签名和runtime参数选择；n=1的M已在源基线（用于比较的原实现）特化，只有两个运行时指针，CPU检查和设备精度均通过。
 
-两版都从TTIR文件经同一个`compile_path`函数调用原生`triton.compile`，完整解析options一致：num_warps=4,num_ctas=1,num_stages=3,enable_fp_fusion=True及其余官方默认值，SM90 target一致。没有单独调warp数或改后端。文件入口从make_ttgir继续。所有两版实际cubin、resources和阶段hash保留。
+两版都从TTIR文件经同一个`compile_path`函数调用原生`triton.compile`，
+完整解析options一致：num_warps=4,num_ctas=1,num_stages=3,enable_fp_fusion=True及其余官方默认值，SM90 target一致。没有单独调warp数或改后端。文件入口从make_ttgir继续。
+所有两版实际cubin、resources和阶段hash（文件内容校验值）保留。
 
-本轮先逐30点重新核查原源码TTIR与文件baseline的LLVM/PTX/完整cubin字节一致及输出逐位一致。round2 compiler再核对其编译baseline全部阶段hash与该pipeline相同。新候选不要求与原baseline机器码相同，签名/映射/真实options逐点保留在[round2_manifest.json](round2_manifest.json)、[pipeline_v2.json](results/runs/r2_launch/pipeline_v2.json)。
+本轮先逐30点重新核查原源码TTIR与文件baseline的LLVM/PTX/完整cubin字节一致及输出逐位一致。round2 compiler再核对其编译baseline全部阶段hash与该pipeline相同。
+新候选不要求与原baseline机器码相同，签名/映射/真实options逐点保留在[round2_manifest.json](round2_manifest.json)、
+[pipeline_v2.json](results/runs/r2_launch/pipeline_v2.json)。
 
 ## 精度、内存与同步检查
 
-普通数值测试213个输入实例×baseline/candidate，共426次检查，包括所有30点随机输入、小输入每点全部压力分布和NaN/±Inf分类，以及原大输入压力用例。输出同时对照CPU FP64和native ATen FP32；两阶段路径检查所有中间部分和。单kernel路径mid不再是有用输出，明确检查其保持sentinel且完全未写；两条路径都检查输入不变、mid/out尾部canary、输出覆盖。
+普通数值测试213个输入实例×baseline/candidate，共426次检查，包括所有30点随机输入、小输入每点全部压力分布和NaN/±Inf分类，以及原大输入压力用例。输出同时对照CPU FP64和native ATen FP32；
+两阶段路径检查所有中间部分和。单kernel路径mid不再是有用输出，明确检查其保持sentinel（预填的标记值）且完全未写；两条路径都检查输入不变、mid/out尾部canary、输出覆盖。
 
-沿用误差标准 `abs(error) <= 2e-5 + 2e-6 * sum(abs(x))`，它是L1缩放标准，不能称为紧输出相对误差。小输入区域baseline最大绝对误差0.2580566，候选0.2419434（n=4096,offset）；全范围最大误差3001.1846313（n=67108864,offset），该点使用原两阶段，baseline和candidate相同。所有检查中误差/允许界最大约0.03150。[原始精度](results/runs/r2_launch/accuracy_v2.json)保留逐例值。
+沿用误差标准 `abs(error) <= 2e-5 + 2e-6 * sum(abs(x))`，它是L1缩放标准，不能称为紧输出相对误差。小输入区域baseline最大绝对误差0.2580566，候选0.2419434（n=4096,offset）；
+全范围最大误差3001.1846313（n=67108864,offset），该点使用原两阶段，baseline和candidate相同。所有检查中误差/允许界最大约0.03150。
+[原始精度](results/runs/r2_launch/accuracy_v2.json)保留逐例值。
 
-最终memcheck和racecheck各179个输入×两版=358次检查，覆盖全部30点随机和所有小shape压力/特殊值：[memcheck](results/runs/r2_launch/memcheck.log) 0 errors；[racecheck](results/runs/r2_launch/racecheck.log) 0 hazards、0 errors、0 warnings。未将未测的大shape额外压力sanitizer声称为通过。
+最终memcheck和racecheck各179个输入×两版=358次检查，覆盖全部30点随机和所有小shape压力/特殊值：[memcheck](results/runs/r2_launch/memcheck.log) 0 errors；
+[racecheck](results/runs/r2_launch/racecheck.log) 0 hazards、0 errors、0 warnings。未将未测的大shape额外压力sanitizer声称为通过。
 
 ## 正式计时与结果
 
-无profiler，预分配输入/mid/out，完整算子设备序列全部进入同一个`triton.testing.do_bench_cudagraph`。旧版两个kernel，新版小输入一个kernel；编译、加载、分配和Python主机issue时间不计入。20次普通预热+100ms graph预热，7轮rep=20ms，随机配对顺序，保存每次replay值和A/A。两版都不清缓存、不主动锁频，实际时钟采样可查。
+无profiler，预分配输入/mid/out，完整算子设备序列全部进入同一个`triton.testing.do_bench_cudagraph`。旧版两个kernel，新版小输入一个kernel；编译、加载、分配和Python主机issue时间不计入。
+20次普通预热+100ms graph预热，7轮rep=20ms，随机配对顺序，保存每次replay值和A/A。两版都不清缓存、不主动锁频，实际时钟采样可查。
 
 主测seed42和独立进程seed123均完整30点。先取每点7个配对比的中位数，再做30点等权算术/几何平均；95%区间按逐点配对轮次bootstrap2000次，它不包含跨日期/设备变异。
 
@@ -89,16 +104,29 @@
 
 ## 选择与复现
 
-[selection_round2.json](results/selection_round2.json)按冻结目标选择r2_single16384。选择脚本重新核对当前TTIR/cubin与数值、pipeline、两轮timing、memcheck、racecheck的身份、协议/映射/driver哈希、同卡UUID和控制状态，避免旧选择脚本未来晋升的未绑定哈希风险。所有selected别名重新原生编译后与对应候选完整cubin字节一致；没有复制load metadata或替换binary。
+[selection_round2.json](results/selection_round2.json)按冻结目标选择r2_single16384。
+选择脚本重新核对当前TTIR/cubin的哈希（从文件内容计算的校验值），确认验证记录对应同一份文件。
+检查覆盖数值、pipeline、两轮timing、memcheck和racecheck。
+协议、映射和driver版本也必须一致。
+此外检查同卡UUID和控制状态，避免使用不匹配的历史证据晋升候选。
+所有selected别名重新原生编译后，与对应候选的完整cubin字节一致。没有复制load metadata或替换binary。
 
-新的别名位于`ir/launch_v2/selected/n<shape>/stage*.ttir`，新选择映射包含45个实际stage文件。旧`ir/<group>/optimized.ttir`和旧selection.json均保留前轮baseline，不静默改写历史。
+新的别名位于`ir/launch_v2/selected/n<shape>/stage*.ttir`，新选择映射包含45个实际stage文件。
+旧`ir/<group>/optimized.ttir`和旧selection.json均保留前轮baseline，不静默改写历史。
 
 ```bash
 CUDA_VISIBLE_DEVICES=4 bash sum/test_round2.sh
 ```
 
-脚本先源码pipeline，再round2 pipeline、数值和完整30点计时，每次新目录保存结果。主入口`round2.py`只使用冻结映射中的30种输入。`make_round2.py --single`是不可变生成入口，manifest存在时拒绝覆盖；从现有工作目录复现不需要重导出baseline。
+脚本先源码pipeline，再round2 pipeline、数值和完整30点计时，每次新目录保存结果。主入口`round2.py`只使用冻结映射中的30种输入。
+`make_round2.py --single`是不可变生成入口，manifest存在时拒绝覆盖；从现有工作目录复现不需要重导出baseline。
 
-初版pipeline/accuracy日志保留，driver增加采样和artifact JSON规范化比较后，以`pipeline_v2.json`和`accuracy_v2.json`为实际验收文件。strict tail初筛未增加周期监控，只有A/A和前后设备状态证据，因此保留为B级探索结果，不用于正式晋升或声称全矩阵通过。
+初版pipeline/accuracy日志保留，driver增加采样和artifact JSON规范化比较后，以`pipeline_v2.json`和`accuracy_v2.json`为实际验收文件。
+strict tail初筛未增加周期监控，只有A/A和前后设备状态证据，因此保留为B级探索结果，不用于正式晋升或声称全矩阵通过。
 
-达到目标后停止搜索，没有额外做无必要的NCU或配置穷举。已使用KernelForge的[framework-workflow](/root/KernelForge/skills/framework-workflow/SKILL.md)、[optimize-kernel](/root/KernelForge/skills/optimize-kernel/SKILL.md)、[benchmark-evidence](/root/KernelForge/skills/benchmark-evidence/SKILL.md)、[review-agent](/root/KernelForge/skills/review-agent/SKILL.md)；plan审查已批准，新启动边界及工作负载复用均明确披露。最终审查记录归属 `/root/KernelForge-workspace/runs/sum-round2-10pct/`。
+达到目标后停止搜索，没有额外做无必要的NCU或配置穷举。
+已使用KernelForge的[framework-workflow](/root/KernelForge/skills/framework-workflow/SKILL.md)、
+[optimize-kernel](/root/KernelForge/skills/optimize-kernel/SKILL.md)、
+[benchmark-evidence](/root/KernelForge/skills/benchmark-evidence/SKILL.md)、
+[review-agent](/root/KernelForge/skills/review-agent/SKILL.md)；plan审查已批准，新启动边界及工作负载复用均明确披露。
+最终审查记录归属 `/root/KernelForge-workspace/runs/sum-round2-10pct/`。
