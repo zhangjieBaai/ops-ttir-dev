@@ -36,16 +36,25 @@ from common import (
 SIZES = [1024, 65536, 1048576, 8388608, 16777216, 67108864]
 
 
+def normalize_uuid(value):
+    return value.strip().removeprefix("GPU-").lower()
+
+
+def parse_other_processes(result, uuid, current_pid):
+    return [
+        int(line.split(",")[1])
+        for line in result.splitlines()
+        if normalize_uuid(line.split(",")[0]) == normalize_uuid(uuid)
+        and int(line.split(",")[1]) != current_pid
+    ]
+
+
 def other_processes(uuid):
     result = subprocess.check_output(
         ["nvidia-smi", "--query-compute-apps=gpu_uuid,pid", "--format=csv,noheader"],
         text=True,
     )
-    return [
-        int(line.split(",")[1])
-        for line in result.splitlines()
-        if line.split(",")[0].strip() == uuid and int(line.split(",")[1]) != os.getpid()
-    ]
+    return parse_other_processes(result, uuid, os.getpid())
 
 
 def stage_calls(kernels, tensors, manifest):
@@ -80,7 +89,7 @@ def main():
     gate()
     manifest = frozen()
     assert all(str(n) in manifest["shapes"] for n in args.sizes)
-    uuid = str(torch.cuda.get_device_properties(0).uuid)
+    uuid = "GPU-" + normalize_uuid(str(torch.cuda.get_device_properties(0).uuid))
     lock = open(f"/root/tmp/ttir-device-{uuid}.lock", "w")
     fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
     assert not other_processes(uuid), "Selected device has another compute process"

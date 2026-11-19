@@ -16,7 +16,10 @@
 - NCU 2025.2：6点 baseline 的 SOL/launch/occupancy 初查；32MiB、256MiB 输入的 baseline/i32 深查；非对齐64MiB附近输入的 baseline/cg 对照及 sector 计数补查。
 - Nsight Systems 2025.3：n=1024，单次 graph replay 内含100次完整 sum、200个 kernel 节点。
 
-使用设备 UUID 锁和约1秒一次进程/时钟/温度/功耗采样，所有绑定记录均未观察到其他 GPU5 compute 进程。
+使用设备 UUID 锁和约1秒一次进程/时钟/温度/功耗采样。
+**隔离检查修订：**首次采集使用的UUID比较漏掉了`GPU-`前缀差异，因此历史`other_pids=[]`/`uncontended=true`无效，
+其进程隔离状态为未验证，不能据此证明没有竞争负载。下文初次表格保留原数值，视为待复核诊断。
+已修复两侧UUID规范化并补上CPU反例测试，重新采集的关键结果见文末“隔离修正后的复核”。
 采样不能排除采样间隙内的短暂活动；没有主动锁频。NCU 也明确提示了未锁频。
 所有诊断计数和时间分解为 C 级范围证据；新优化的收益仍是 D 级假设。
 已有候选的无整体收益结论沿用首轮完整配对证据，不能由 profiler 时间重新排名。
@@ -199,3 +202,54 @@ L2读sector请求增加约34.2%，HBM实际读取字节只变化约0.005%。不�
 [framework-workflow](/root/KernelForge/skills/framework-workflow/SKILL.md)、
 [benchmark-evidence](/root/KernelForge/skills/benchmark-evidence/SKILL.md)、
 [review-agent](/root/KernelForge/skills/review-agent/SKILL.md)。本报告是下一轮实验依据，不是新的收益验收。
+
+
+## 隔离修正后的复核（当前结论依据）
+
+审查SUM-DIAG-01发现UUID前缀错误后，保留全部初次记录，修复了`normalize_uuid`与进程过滤、统一锁名为带GPU-的UUID。
+CPU反例验证选中卡外国进程能被检出、自身进程和其他卡被排除，见[uuid_test.json](results/runs/diagnosis_20261119_fixed/uuid_test.json)。
+然后在同一GPU5重新采集全部6点阶段计时、最大输入baseline/i32的SOL+占用率、奇数输入baseline/cg的SOL+sector计数，以及小输入nsys图。
+修正版每个进程的约1秒采样均未检出其他同卡进程，也没有监控异常；仍不能排除采样间隙活动。
+初次数据的隔离状态保持“未验证”，没有把历史uncontended字段追认为正确。
+
+[修正版stage_timing.json](results/runs/diagnosis_20261119_fixed/stage_timing.json)中的原始中位数（µs）：
+
+| n | stage1 | stage2 | total |
+|---:|---:|---:|---:|
+| 1024 | 1.2570 | 1.2643 | 2.5479 |
+| 65536 | 1.5917 | 1.3359 | 2.9211 |
+| 1048576 | 2.0534 | 1.3905 | 3.5726 |
+| 8388608 | 5.8909 | 1.4068 | 7.4925 |
+| 16777216 | 22.8849 | 1.5856 | 24.6843 |
+| 67108864 | 85.2489 | 1.9324 | 88.1760 |
+
+最大输入有效读带宽仍约3.149TB/s，32MiB点约5.696TB/s（后者含缓存）。
+修正后[large.csv](results/runs/diagnosis_20261119_fixed/large.csv)的stage1原始值：
+
+| Metric Name | ID0 baseline | ID2 i32 | 单位 |
+|---|---:|---:|---|
+| launch__registers_per_thread | 56 | 32 | register/thread |
+| sm__warps_active.avg.pct_of_peak_sustained_active | 54.12 | 93.71 | % |
+| gpu__dram_throughput.avg.pct_of_peak_sustained_elapsed | 91.71 | 92.32 | % |
+| gpu__time_duration.sum | 88512 | 86976 | ns |
+
+这些是profiler计数，不以该次1.8%左右时差推翻原正式配对约1.000×的无收益结论。
+占用率大幅增加、带宽接近不变的诊断仍成立。
+
+修正后[tail.csv](results/runs/diagnosis_20261119_fixed/tail.csv) stage1原始值：
+
+| Metric Name | ID0 baseline | ID2 cg | 单位 |
+|---|---:|---:|---|
+| l1tex__t_sector_hit_rate.pct | 74.96 | 0.01 | % |
+| l1tex__t_sectors_pipe_lsu_mem_global_op_ld.sum | 8388608 | 8388608 | sector |
+| lts__t_sectors_srcunit_tex_op_read.sum | 2097324 | 2541220 | sector |
+| dram__bytes_read.sum | 67122432 | 67115008 | byte |
+| gpu__time_duration.sum | 27072 | 39104 | ns |
+
+此轮L2读sector请求增加21.2%，HBM字节几乎相同。与初次34.2%的幅度不同，说明具体缓存请求幅度有变异；
+不能把34.2%当固定机制常数。两次共同支持的范围结论是：cg取消L1复用、增加L2请求而非显著增加HBM字节，且此前正式配对已测得退步。
+因此候选优先级不变，未来仍需用原.ca baseline配对验证向量加载路线，不能用cg作为人为偏弱参考。
+
+本次修复只影响诊断脚本和报告，冻结实验、优化候选及选择未改变。
+
+修正后的nsys复核也捕获200个节点，总span 247.139µs、活跃228.771µs、间隙中位0.096µs。见[复核摘要](results/runs/diagnosis_20261119_fixed/timeline_summary.json)；仍为带跟踪开销的诊断。
