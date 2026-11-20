@@ -45,7 +45,12 @@ def main():
     parser.add_argument("--output", required=True)
     parser.add_argument("--rounds", type=int, default=7)
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument(
+        "--pipeline", type=Path, default=HERE / "results/pipeline_gpu4.json"
+    )
+    parser.add_argument("--shape-indices", nargs="+", type=int)
     args = parser.parse_args()
+    source_before = digest(__file__)
     device = os.environ["CUDA_VISIBLE_DEVICES"]
     assert device.isdecimal()
     uuid = subprocess.check_output(
@@ -57,7 +62,7 @@ def main():
     assert uuid not in process_list(), "Device occupied before initialization"
     manifest = json.loads((HERE / "manifest.json").read_text())
     accuracy = json.loads(Path(args.accuracy).read_text())
-    pipeline = json.loads((HERE / "results/pipeline_gpu4.json").read_text())
+    pipeline = json.loads(args.pipeline.read_text())
     assert accuracy["passed"] and pipeline["passed"]
     assert (
         manifest["contract_sha256"]
@@ -123,7 +128,16 @@ def main():
     monitor_thread = threading.Thread(target=monitor, daemon=True)
     monitor_thread.start()
     records = []
-    for m, n in SHAPES:
+    indices = (
+        args.shape_indices
+        if args.shape_indices is not None
+        else list(range(len(SHAPES)))
+    )
+    assert len(indices) == len(set(indices)) and all(
+        0 <= index < len(SHAPES) for index in indices
+    )
+    for index in indices:
+        m, n = SHAPES[index]
         ts = allocate(m, n)
         calls = {bits: (lambda ck=ck: launch(ck, ts)) for bits, ck in kernels.items()}
         for call in calls.values():
@@ -154,7 +168,8 @@ def main():
             for line in sample.get("processes", "").splitlines()
             if uuid in line and line.split(",")[-1].strip() != str(os.getpid())
         )
-    valid = not foreign and not any("error" in s for s in traces)
+    source_unchanged = digest(__file__) == source_before
+    valid = not foreign and not any("error" in s for s in traces) and source_unchanged
     save(
         args.output,
         dict(
@@ -162,8 +177,12 @@ def main():
             provenance=meta,
             manifest_sha256=digest(HERE / "manifest.json"),
             runner_sha256=digest(__file__),
+            runner_before_sha256=source_before,
+            runner_unchanged=source_unchanged,
             accuracy_sha256=digest(args.accuracy),
-            pipeline_sha256=digest(HERE / "results/pipeline_gpu4.json"),
+            pipeline_sha256=digest(args.pipeline),
+            pipeline_path=str(args.pipeline),
+            shape_indices=indices,
             identities=identities,
             original_baseline=identity("baseline", original),
             canonical_cubin_identical=True,

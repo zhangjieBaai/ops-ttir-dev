@@ -108,13 +108,18 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=HERE / "report_final.md")
     parser.add_argument("--results-dir", type=Path, default=HERE / "results")
+    parser.add_argument("--timing-suffix", default="_verified")
     args = parser.parse_args()
+    suffix = args.timing_suffix
     results = args.results_dir
     manifest = load(HERE / "manifest.json")
-    main_data = load(results / "main.json")
-    repeat = load(results / "repeat.json")
+    main_data = load(results / f"main{suffix}.json")
+    repeat = load(results / f"repeat{suffix}.json")
     assert main_data["gpu_uuid"] == repeat["gpu_uuid"]
     assert main_data["runner_sha256"] == repeat["runner_sha256"]
+    if suffix:
+        assert main_data["runner_unchanged"] and repeat["runner_unchanged"]
+        assert main_data["pipeline_sha256"] == repeat["pipeline_sha256"]
     assert main_data["manifest_sha256"] == repeat["manifest_sha256"]
     assert [r["shape"] for r in main_data["records"]] == [
         r["shape"] for r in repeat["records"]
@@ -136,7 +141,7 @@ def main():
     )
     first, second = analyze(main_data, manifest), analyze(repeat, manifest)
     derived = dict(main=first, repeat=second, source_variants=source["variants"])
-    result_path = results / "derived.json"
+    result_path = results / f"derived{suffix}.json"
     if result_path.exists():
         assert load(result_path) == derived
     else:
@@ -148,10 +153,10 @@ def main():
     lines = [
         "# var_mean 三项改动的完整消融实验",
         "",
-        f"完整组合对冻结基线的30点几何加速为 **{fmt(full)}**，独立进程复测 "
+        f"完整组合对基线（优化前的原始实现）的30点几何加速为 **{fmt(full)}**，独立进程复测 "
         f"**{fmt(second['all']['all_variants']['000->111'])}**。",
         "这是相同输入、预分配输出的 CUDA graph kernel 时间。下表的百分比表示吞吐意义的加速比增量；",
-        "耗时降幅为 `1-1/加速比`，两者不要混用。方括号是配对块条件 bootstrap 95% 区间。",
+        "耗时降幅为 `1-1/加速比`，两者不要混用。方括号是配对块条件 bootstrap 95% 区间，即对固定shape的计时块重新抽样估计的不确定性。",
         "",
         "| 改动 | 单独加入基线：加速比与区间 | 单独加速增量 | 最终组合中加入该项：加速比与区间 | Triton源码可实现 |",
         "|---|---:|---:|---:|---|",
@@ -165,7 +170,7 @@ def main():
         one = all_first["edges"][standalone[factor]]
         marginal = all_first["edges"][removal[factor]]
         lines.append(
-            f"| {descriptions[factor]} | {fmt(one)} | {one['speedup_percent']:+.2f}% | {fmt(marginal)} | 是，见编译与运行探针 |"
+            f"| {descriptions[factor]} | {fmt(one)} | {one['speedup_percent']:+.2f}% | {fmt(marginal)} | 是，见源码编译与运行验证 |"
         )
     ac = first["all"]["all_variants"]["000->101"]
     ac_repeat = second["all"]["all_variants"]["000->101"]
@@ -188,7 +193,7 @@ def main():
         "- B：仅N>1024时采用256宽两遍中心化循环；N≤1024仍保留原1024宽循环。",
         "  B单独打开需要运行时分支，该实际分支成本也包含在测量里。它与此前“所有N都改为256”的候选不是同一版本。",
         "- C：为N添加`tt.divisibility=16`前提；输入契约和主机包装已检查N可被16整除。提示不改变输入数值。",
-        "- 三位编码顺序为ABC。000的PTX和完整cubin与原baseline字节一致；111的TTIR与原optimized字节一致。",
+        "- 三位编码顺序为ABC。000的PTX和完整cubin与原baseline（原始对照版本）字节一致；111的TTIR与原optimized字节一致。",
         "- 继承`var_mean-row-f32-v3`：连续FP32二维输入，最后一维按行归约，correction=0/1；",
         "  不包含全张量两阶段、FP16/BF16、非连续输入和API端到端时间。未改已有最优选择或FlagGems算子源码。",
         "- 30shape固定为M∈{1,17,128,1024,4096}×N∈{128,512,1040,4096,8192,16384}，性能correction=1，等权。",
@@ -232,7 +237,7 @@ def main():
         "## 上游Triton能否实现",
         "",
         "三项均在本机固定的官方Triton3.7.0上编译、运行并通过CPU FP64比较，不是仅依据语法推测。",
-        "源码算法在[source_probes.py](source_probes.py)，对齐包装在[source_probes_v3.py](source_probes_v3.py)，"
+        "源码算法在[source_probes.py](source_probes.py)，对齐包装在[source_probes_v3.py](source_probes_v3.py)。",
         "最终记录见[source_feasibility_v3.json](results/source_feasibility_v3.json)。",
         "",
         "| 改动 | 源码写法 | 已验证内容 |",
@@ -241,7 +246,7 @@ def main():
         "| B | 长行分支调用`BLOCK=256`的`for off in range(0,N,BLOCK)`两遍归约，短行`BLOCK=1024` | 同一运行时N签名与int64行索引可表达 |",
         "| C | 允许N参与JIT对齐特化，保持N为运行时参数 | 入口参数上的提示在本例被丢弃，正确方式见下文 |",
         "",
-        "C的三个探针结果需要区分：",
+        "C的三种验证方式需要区分：",
         "",
         "1. 在被do_not_specialize禁用特化的入口N上调用`tl.multiple_of(N,16)`：数值正确，但C开关两侧TTIR/PTX/cubin相同，提示未保留。",
         "2. 对`N.to(tl.int64)`调用`tl.multiple_of`：cast上保留了整除属性，但没有恢复本例目标向量化load。",
@@ -252,11 +257,11 @@ def main():
         "前两组记录分别保留在[source_feasibility.json](results/source_feasibility.json)与"
         "[source_feasibility_v2.json](results/source_feasibility_v2.json)。",
         "因此C能在Triton层实现，但本例不能把一个被编译器丢弃的提示写法当作实现证据。",
-        "本地固定版本的`triton.language.multiple_of`文档及core.py哈希保存在探针记录；不能仅凭文档推断该提示在每个位置都有效。",
+        "本地固定版本的`triton.language.multiple_of`文档及core.py哈希（由内容计算的文件校验值）保存在验证记录；不能仅凭文档推断该提示在每个位置都有效。",
         "在线文档检索接口本次不可用，因此以实际安装的固定版本源码、导出TTIR和设备执行为依据。",
         "[属性与向量化审计](results/source_audit_final.json)逐一核对三组导出TTIR/PTX及其哈希，关键源码导出保存在source_ir。",
         "这里证明源码可实现相应算法与提示，不声称所有源代码写法都会产生相同TTIR/机器码或相同性能。",
-        "源码探针没有参与本报告的TTIR性能计时。",
+        "源码可行性验证没有参与本报告的TTIR性能计时。",
         "",
         "| 源码ABC | N保持运行时参数 | 导出TTIR中的整除属性（摘要） |",
         "|---|---|---|",
@@ -289,8 +294,8 @@ def main():
             + " | ".join(f"{v:.4f}×" for v in values)
             + " |"
         )
-    controls = load(results / "controls.json")
-    repeat_controls = load(results / "repeat_controls.json")
+    controls = load(results / f"controls{suffix}.json")
+    repeat_controls = load(results / f"repeat_controls{suffix}.json")
     assert controls["valid"] and repeat_controls["valid"]
     aa1 = {tuple(r["shape"]): r for r in controls["records"] if r["name"] == "aa"}
     aa2 = {
@@ -307,7 +312,7 @@ def main():
         f"设备为物理GPU4 H100，UUID `{main_data['gpu_uuid']}`。官方Triton3.7.0，独立venv Python3.12.3，完整环境与工具哈希见pipeline。",
         "两版和所有组合均为4warps、3stages、1CTA、FP fusion开启，原生TTIR文件编译与同一CompiledKernel启动方式；",
         "baseline源码路径与文件路径的30点LLVM/PTX/cubin和两项输出一致。",
-        "同shape、同输入、每一块随机排列全部8版，主测7块、独立进程seed123复测5块，每版rep=20ms；",
+        "同shape、同输入，每一块随机排列全部8版。主测7块，独立进程seed123复测5块，每版rep=20ms。",
         "每版先10次启动和50ms不计时graph预热，编译/加载/预热均不计入时间。计时按物理UUID加协作锁；",
         "负载期间采样功耗、时钟、温度和GPU进程，未发现本卡外部进程。采样不能排除所有瞬时干扰。",
         "未主动锁频、未清缓存，不是冷缓存或端到端数据。全部shape以前暴露，属于消融和回归确认，不是新holdout。",
@@ -327,6 +332,9 @@ def main():
         "",
         "早期生成器遗漏分支局部张量常量，编译/精确身份门槛阻止了其计时；失败文件保存在failed_generation_v1。",
         "GPU5在计时前被占用，入口拒绝启动；切换GPU4后两轮未混卡，保留setup中的失败日志与原计划。",
+        "初次计时有编译核查记录关联和保存脚本版本的问题，原始数据保留，不用于本报告最终统计。",
+        f"本报告使用修正后固定脚本新跑的main{suffix}/repeat{suffix}数据。两轮均关联本轮GPU4核查记录。",
+        "计时脚本检查运行前后自身校验值一致。新复现也显式传入本轮pipeline，产物审计写入新结果目录。",
         "",
         "## 证据与复现",
         "",
@@ -338,6 +346,8 @@ def main():
     ]
     text = "\n".join(lines) + "\n"
     relative_results = os.path.relpath(results, args.output.parent)
+    for name in ["main", "repeat", "derived"]:
+        text = text.replace(f"(results/{name}.json)", f"(results/{name}{suffix}.json)")
     text = text.replace("(results/", f"({relative_results}/")
     for name in ["source_probes.py", "source_probes_v3.py", "manifest.json"]:
         text = text.replace(

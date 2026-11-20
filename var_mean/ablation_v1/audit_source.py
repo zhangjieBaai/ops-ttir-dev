@@ -51,8 +51,17 @@ def main():
                 if bits[-1] == "1":
                     assert vector4 > 0
             if bits in ["000", "001", "110", "111"]:
-                destination = HERE / f"source_ir/probe_v{version}/{bits}.ptx"
-                destination.write_bytes(ptx_path.read_bytes())
+                destination = results / f"source_ir/probe_v{version}/{bits}.ptx"
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                destination_ttir = destination.with_suffix(".ttir")
+                if destination_ttir.exists():
+                    assert destination_ttir.read_bytes() == ttir_path.read_bytes()
+                else:
+                    destination_ttir.write_bytes(ttir_path.read_bytes())
+                if destination.exists():
+                    assert destination.read_bytes() == ptx_path.read_bytes()
+                else:
+                    destination.write_bytes(ptx_path.read_bytes())
             variants[bits] = dict(
                 n_argument_divisibility16=n_arg_hint,
                 cast_divisibility16=ext_hint,
