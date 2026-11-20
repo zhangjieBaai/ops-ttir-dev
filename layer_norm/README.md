@@ -1,5 +1,7 @@
 # LayerNorm TTIR 实验
 
+[前向消融实验](report_ablation.md)：逐项加入、从最终版移除、完整30点主测/独立复测，以及公开Triton源码对照。实现见[ablation_triton.py](ablation_triton.py)，原始样本与CSV在`results/ablation/`。
+
 官方 Triton v3.7.0 LayerNorm 前向实现导出为冻结的 `ir/baseline.ttir`。`ir/optimized.ttir` 是当前选中的 TTIR 优化版。两者经相同 Triton 原生后端编译和相同 launcher 执行；不通过独立 `llc → ptxas` 编译。
 
 ## 测试入口
