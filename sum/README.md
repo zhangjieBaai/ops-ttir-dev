@@ -1,5 +1,9 @@
 # Sum 直接 TTIR 优化实验
 
+逐项收益、组合消融和公开Triton等价实现见[消融报告](report_ablation.md)。
+本轮全部30点重新配对测量，最终收益主要来自移除第二个短kernel；其余单项未产生整体正收益。
+可运行的公开Triton封装见[ablation_example.py](ablation_example.py)。
+
 第二轮达到30点等权平均加速超过10%的目标：**几何平均主测1.347×、独立复测1.346×**，
 算术平均分别1.411×、1.410×。n≤16384改用一个CTA、一个kernel，其余shape保留原两阶段。
 这是单列的 `sum_launch_v2` 新启动契约，不能称为原固定启动契约下的纯TTIR收益。
