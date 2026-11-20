@@ -22,23 +22,21 @@ but every compilation regenerates and records stage hashes and resources.
 
 Kernel graph replay excludes allocation, Python submission, compilation and
 loading. This experiment does not modify or qualify FlagGems public APIs.
-Current result: [report_round3.md](report_round3.md),
-[selection](results/selection_round3.json), [acceptance](results/acceptance_round3.json).
-Selected `r3_mix` meets the requested >10% average speedup on the frozen 30 cases:
-arithmetic 1.1212x main / 1.1195x independent repeat; geometric 1.1028x / 1.1014x.
-The main geometric 95% interval crosses 1.10; point-estimate attainment and
-interval uncertainty are reported separately. Relative to round-two parent,
-geometric gain is 1.0391x / 1.0383x; worst case 0.9376x / 0.9325x.
-Large inner rows use a FP16 maximum before FP32 exponential/sum, and a guarded
-full65536 tile replaces the online path. Small inner and all non-inner retain
-round-two code. All 51-point pipeline, two-seed accuracy and sanitizers pass.
-Two first repeat timings failed A/A and were excluded wholesale; their raw
-receipts and invalidity records remain. Final accepted repeats use *_v2.json.
-Old 20/10 partition is reused regression coverage, never a fresh holdout.
+Current result: [report_round4.md](report_round4.md),
+[selection](results/selection_round4.json), [acceptance](results/acceptance_round4.json).
+Selected `r4_focus` targets previously flat shapes: 8-row CTA batching for
+small inner inputs (same host grid, masked unique row ownership), 32-lane
+streams for one-row small inputs, and bounded i32 non-inner indexing.
+Whole 30-case geometric speedup vs original baseline: 1.1221x main /
+1.1234x repeat; arithmetic 1.1401x / 1.1417x. The separately frozen 15-case
+subset and every per-shape result are reported without hiding unchanged points.
+All 51-point pipeline, two-seed accuracy and sanitizers pass. Failed candidates
+and the invalid first screen are retained; no claim that every flat case improved.
 
-Historical reports: [round one](report_round1.md), [round two](report_round2.md).
-Previous parent selections/acceptance are archived in `results/runs/r2_setup/`
-and `results/runs/r3_setup/`. Original baseline and candidates remain immutable.
+Historical reports: [round one](report_round1.md), [round two](report_round2.md),
+[round three](report_round3.md). Previous selections/acceptance are archived
+in the corresponding `results/runs/r*_setup/` directories. Original baseline,
+IR candidates, options and shape mapping remain immutable.
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 bash logsumexp/test_accuracy.sh

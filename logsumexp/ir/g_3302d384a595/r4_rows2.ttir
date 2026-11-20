@@ -1,0 +1,61 @@
+module {
+  tt.func public @logsumexp_kernel_inner(%output_ptr: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %input_ptr: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %M: i32, %N: i32 {tt.divisibility = 16 : i32}) attributes {noinline = false} {
+    %r4_r = arith.constant 2 : i32
+    %r4_zero_i = arith.constant 0 : i32
+    %r4_pid = tt.get_program_id x : i32
+    %r4_remainder = arith.remui %r4_pid, %r4_r : i32
+    %r4_active = arith.cmpi eq, %r4_remainder, %r4_zero_i : i32
+    scf.if %r4_active {
+    %r4_neg = arith.constant dense<0xFC00> : tensor<2x1024xf16>
+    %r4_inf = arith.constant dense<0xFF800000> : tensor<2xf32>
+    %r4_zero = arith.constant dense<0.000000e+00> : tensor<2xf32>
+    %r4_rows = tt.make_range {end = 2 : i32, start = 0 : i32} : tensor<2xi32>
+    %r4_pidv = tt.splat %r4_pid : i32 -> tensor<2xi32>
+    %r4_mids = arith.addi %r4_pidv, %r4_rows : tensor<2xi32>
+    %r4_mv = tt.splat %M : i32 -> tensor<2xi32>
+    %r4_mmask = arith.cmpi slt, %r4_mids, %r4_mv : tensor<2xi32>
+    %r4_mexpand = tt.expand_dims %r4_mids {axis = 1 : i32} : tensor<2xi32> -> tensor<2x1xi32>
+    %r4_mmaskex = tt.expand_dims %r4_mmask {axis = 1 : i32} : tensor<2xi1> -> tensor<2x1xi1>
+    %r4_nv = tt.splat %N : i32 -> tensor<2x1xi32>
+    %r4_base = arith.muli %r4_mexpand, %r4_nv : tensor<2x1xi32>
+    %r4_cols = tt.make_range {end = 1024 : i32, start = 0 : i32} : tensor<1024xi32>
+    %r4_cex = tt.expand_dims %r4_cols {axis = 0 : i32} : tensor<1024xi32> -> tensor<1x1024xi32>
+    %r4_ncols = tt.splat %N : i32 -> tensor<1x1024xi32>
+    %r4_nmask = arith.cmpi slt, %r4_cex, %r4_ncols : tensor<1x1024xi32>
+    %r4_baseb = tt.broadcast %r4_base : tensor<2x1xi32> -> tensor<2x1024xi32>
+    %r4_cb = tt.broadcast %r4_cex : tensor<1x1024xi32> -> tensor<2x1024xi32>
+    %r4_offsets = arith.addi %r4_baseb, %r4_cb : tensor<2x1024xi32>
+    %r4_mb = tt.broadcast %r4_mmaskex : tensor<2x1xi1> -> tensor<2x1024xi1>
+    %r4_nb = tt.broadcast %r4_nmask : tensor<1x1024xi1> -> tensor<2x1024xi1>
+    %r4_mask = arith.andi %r4_mb, %r4_nb : tensor<2x1024xi1>
+    %r4_ptr = tt.splat %input_ptr : !tt.ptr<f16> -> tensor<2x1024x!tt.ptr<f16>>
+    %r4_ptrs = tt.addptr %r4_ptr, %r4_offsets : tensor<2x1024x!tt.ptr<f16>>, tensor<2x1024xi32>
+    %r4_x16 = tt.load %r4_ptrs, %r4_mask, %r4_neg : tensor<2x1024x!tt.ptr<f16>>
+    %r4_x = arith.extf %r4_x16 : tensor<2x1024xf16> to tensor<2x1024xf32>
+    %r4_max = "tt.reduce"(%r4_x) <{axis = 1 : i32}> ({
+    ^bb0(%r4_max_a: f32, %r4_max_b: f32):
+      %r4_max_v = arith.maxnumf %r4_max_a, %r4_max_b : f32
+      tt.reduce.return %r4_max_v : f32
+    }) : (tensor<2x1024xf32>) -> tensor<2xf32>
+    %r4_allinf = arith.cmpf oeq, %r4_max, %r4_inf : tensor<2xf32>
+    %r4_safe = arith.select %r4_allinf, %r4_zero, %r4_max : tensor<2xi1>, tensor<2xf32>
+    %r4_maxex = tt.expand_dims %r4_safe {axis = 1 : i32} : tensor<2xf32> -> tensor<2x1xf32>
+    %r4_maxb = tt.broadcast %r4_maxex : tensor<2x1xf32> -> tensor<2x1024xf32>
+    %r4_delta = arith.subf %r4_x, %r4_maxb : tensor<2x1024xf32>
+    %r4_exp = math.exp %r4_delta : tensor<2x1024xf32>
+    %r4_sum = "tt.reduce"(%r4_exp) <{axis = 1 : i32}> ({
+    ^bb0(%r4_sum_a: f32, %r4_sum_b: f32):
+      %r4_sum_v = arith.addf %r4_sum_a, %r4_sum_b : f32
+      tt.reduce.return %r4_sum_v : f32
+    }) : (tensor<2x1024xf32>) -> tensor<2xf32>
+    %r4_log = math.log %r4_sum : tensor<2xf32>
+    %r4_value = arith.addf %r4_safe, %r4_log : tensor<2xf32>
+    %r4_out = arith.select %r4_allinf, %r4_max, %r4_value : tensor<2xi1>, tensor<2xf32>
+    %r4_y16 = arith.truncf %r4_out : tensor<2xf32> to tensor<2xf16>
+    %r4_yptr = tt.splat %output_ptr : !tt.ptr<f16> -> tensor<2x!tt.ptr<f16>>
+    %r4_yptrs = tt.addptr %r4_yptr, %r4_mids : tensor<2x!tt.ptr<f16>>, tensor<2xi32>
+    tt.store %r4_yptrs, %r4_y16, %r4_mmask : tensor<2x!tt.ptr<f16>>
+    }
+    tt.return
+  }
+}

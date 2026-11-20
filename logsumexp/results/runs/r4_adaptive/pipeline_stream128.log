@@ -1,0 +1,20 @@
+PASS pipeline 1x128x1 g_c6892bb035fa
+PASS pipeline 1x1008x1 g_4d6c54a25a3a
+loc("/root/ops-ttir-dev/logsumexp/ir/g_2c3d9cf9cc2b/r4_stream128.ttir":200:29): error: use of undeclared SSA value name
+loc("/root/ops-ttir-dev/logsumexp/ir/g_2c3d9cf9cc2b/r4_stream128.ttir":336:27): error: use of undeclared SSA value name
+Traceback (most recent call last):
+  File "/root/ops-ttir-dev/logsumexp/verify_pipeline.py", line 144, in <module>
+    main()
+  File "/root/ops-ttir-dev/logsumexp/verify_pipeline.py", line 101, in main
+    ck = compile_ir(group, name)
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/ops-ttir-dev/logsumexp/common.py", line 197, in compile_ir
+    ck = triton.compile(str(path), options=config["options"])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/compiler/compiler.py", line 240, in compile
+    src = IRSource(src, context, backend)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/compiler/compiler.py", line 107, in __init__
+    self.module = ir.parse_mlir_module(self.path, context)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Parse MLIR file failed.
