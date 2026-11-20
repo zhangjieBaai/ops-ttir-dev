@@ -17,3 +17,5 @@ CUDA_VISIBLE_DEVICES=5 bash var_mean/test_performance.sh
 性能矩阵为 M∈{1,17,128,1024,4096} × N∈{128,512,1040,4096,8192,16384}。支持契约要求1≤M≤4096、16≤N≤16384、N是16的倍数、correction=0/1，无别名。全张量两阶段路径、FP16/BF16、非连续输入和端到端 API 性能不在本轮结论范围内。30点已有历史暴露，不作为新 holdout。
 
 契约：[contract.json](contract.json)。原始证据：[results/runs/r2](results/runs/r2/)。最终选择：[selection.json](results/runs/r2/selection.json)。基线冻结提交：`3c65f20`。KernelForge的审查记录位于 `/root/KernelForge-workspace/runs/var-mean-ttir-r2/`；本实验未添加其算子执行适配器。
+
+三项改动的完整2³消融和上游Triton可表达性验证见 [消融报告](ablation_v1/report_final.md)。其中包含单项收益、最终上下文中的负交互、全部12个条件比较，以及入口参数提示被丢弃的源码反例。

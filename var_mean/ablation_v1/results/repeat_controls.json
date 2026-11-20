@@ -1,0 +1,790 @@
+{
+  "provenance": {
+    "command": [
+      "/root/venvs/ir-ops-dev/bin/python",
+      "var_mean/benchmark.py",
+      "--names",
+      "aa",
+      "double",
+      "--accuracy",
+      "var_mean/ablation_v1/results/repeat_accuracy.json",
+      "--pipeline",
+      "var_mean/ablation_v1/results/pipeline_gpu4.json",
+      "--suite",
+      "controls",
+      "--rounds",
+      "5",
+      "--seed",
+      "123",
+      "--output",
+      "var_mean/ablation_v1/results/repeat_controls.json"
+    ],
+    "git_commit": "ed6e6598ef8da6b9a7d70511206adcfe15249916",
+    "contract_sha256": "2e2267012228ff33bd184e402df44af1e8a018aa694a03c0673042269e09339e",
+    "scripts": {
+      "common.py": "0049c8a380932b987a042e71c40218d37e1ef1e6ae3068e0599a2a3ac75b04fc",
+      "export_baseline.py": "97cd8a837358bbdb404821264db27f58357af31da781eab1c2a7a499e3b8c722",
+      "verify_pipeline.py": "b771671be51c5365e53785576f9361a438ee666a7dd6f6547105984557d3adf6",
+      "validate.py": "476b4b00abd62b950563002c9a0719379418c3200e5e7ac7c00e6f27596fc907",
+      "make_candidates.py": "6308c9812ff302ef07168b7f06b2e9c65175ca671dc1b6002b3f330ba21bf81f",
+      "benchmark.py": "0c06258fd6e00a2e1c4963fcd6fb3166737d81d716e63cad5977f2e205a23ce4",
+      "make_dispatch.py": "4bf633f9ff7fc4f5a0e2fbf258486482f6039a71a0fce0c27bc856983eb378fb",
+      "make_hybrid.py": "d399afe54266be47bbfd5d2de2e893dd2439326b7780132bf23796465040bf1d",
+      "tutorial.py": "66a1ccfdc059536f3a0bc7630242b59079393a59eab8826e6d1d8ae42078c83d",
+      "verify_extraction.py": "f0013736971108492e138e82aa1104c00a094908499b2cb9191ca1e99cdb3910",
+      "select_candidate.py": "1bc9d3a098235c6de045c68461020df47f8959ffdaa576635082dcd71701ca9c",
+      "report.py": "323fc5b0934f54d400cc43ebe8f2702136a6e29e771fa0e033c2448d1f81cced"
+    },
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "4",
+      "NVIDIA_REQUIRE_CUDA": "cuda>=9.0",
+      "COPILOT_CLI_ENABLED_FEATURE_FLAGS": "SHELL_SPAWN_BACKEND",
+      "TORCH_CUDA_ARCH_LIST": "7.5 8.0 8.6 9.0 10.0 12.0+PTX",
+      "COPILOT_OTEL_FILE_EXPORTER_PATH": "/dev/null",
+      "CUDA_ARCH_LIST": "7.5 8.0 8.6 9.0 10.0 12.0",
+      "CUDA_VERSION": "12.9.0.043",
+      "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": "python",
+      "LIBRARY_PATH": "/usr/local/cuda/lib64/stubs:",
+      "PYTHONIOENCODING": "utf-8",
+      "LD_LIBRARY_PATH": "/usr/local/lib/python3.12/dist-packages/torch/lib:/usr/local/lib/python3.12/dist-packages/torch_tensorrt/lib:/usr/local/cuda/compat/lib:/usr/local/nvidia/lib:/usr/local/nvidia/lib64",
+      "CUDA_DRIVER_VERSION": "575.51.03",
+      "_CUDA_COMPAT_PATH": "/usr/local/cuda/compat",
+      "CUDA_HOME": "/usr/local/cuda",
+      "CUDA_MODULE_LOADING": "LAZY",
+      "PATH": "/root/.codex/tmp/arg0-linux/codex-arg0qnDL3y:/usr/local/lib/python3.12/dist-packages/mlir/llvm_artifact/bin:/usr/local/lib/python3.12/dist-packages/torch_tensorrt/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/mpi/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/ucx/bin:/opt/amazon/efa/bin:/opt/tensorrt/bin:/root/.vscode-server/extensions/openai.chatgpt-26.1106.51428/bin/linux-x86_64",
+      "TRITON_DISABLE_LINE_INFO": "1"
+    },
+    "telemetry": "index, uuid, name, driver_version, pstate, clocks.current.sm [MHz], clocks.current.memory [MHz], power.draw [W], temperature.gpu, utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, P0, 345 MHz, 2619 MHz, 73.59 W, 30, 0 %, 84 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, P0, 345 MHz, 2619 MHz, 72.95 W, 30, 0 %, 126 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, P0, 345 MHz, 2619 MHz, 70.58 W, 28, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, P0, 345 MHz, 2619 MHz, 74.09 W, 30, 0 %, 118 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, P0, 1830 MHz, 2619 MHz, 90.83 W, 38, 1 %, 643 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, P0, 1830 MHz, 2619 MHz, 132.17 W, 33, 89 %, 813 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, P0, 345 MHz, 2619 MHz, 70.64 W, 30, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, P0, 345 MHz, 2619 MHz, 73.65 W, 29, 0 %, 30 MiB\n",
+    "torch_version": "2.12.0+cu130",
+    "torch_path": "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/torch/__init__.py",
+    "loaded_libraries": [
+      "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/nvidia/cu13/lib/libcudart.so.13",
+      "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/nvidia/cu13/lib/libnvJitLink.so.13",
+      "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/nvidia/cu13/lib/libnvrtc-builtins.so.13.0",
+      "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/nvidia/cu13/lib/libnvrtc.so.13",
+      "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/nvidia/nvshmem/lib/libnvshmem_host.so.3",
+      "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so",
+      "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/_C/libtriton.so",
+      "/usr/lib/x86_64-linux-gnu/libcuda.so.580.126.20"
+    ],
+    "clocks_locked": "NOT_VERIFIED; no clock-setting command issued",
+    "cache": "no explicit cache flush; repeated same-input CUDA graph replay"
+  },
+  "valid": true,
+  "foreign_process_samples": [],
+  "telemetry_after": "index, uuid, name, driver_version, pstate, clocks.current.sm [MHz], clocks.current.memory [MHz], power.draw [W], temperature.gpu, utilization.gpu [%], memory.used [MiB]\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, P0, 345 MHz, 2619 MHz, 73.59 W, 30, 0 %, 84 MiB\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, P0, 345 MHz, 2619 MHz, 73.00 W, 30, 0 %, 126 MiB\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, P0, 345 MHz, 2619 MHz, 70.59 W, 28, 0 %, 112 MiB\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, P0, 1830 MHz, 2619 MHz, 131.15 W, 31, 0 %, 1383 MiB\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, P0, 1830 MHz, 2619 MHz, 415.44 W, 40, 0 %, 1073 MiB\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, P0, 1830 MHz, 2619 MHz, 162.83 W, 33, 87 %, 833 MiB\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, P0, 345 MHz, 2619 MHz, 70.53 W, 30, 0 %, 130 MiB\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, P0, 345 MHz, 2619 MHz, 73.60 W, 28, 0 %, 30 MiB\n",
+  "load_samples": [
+    {
+      "state": "2026/11/20 12:56:04.115, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 1830 MHz, 2619 MHz, 103.21 W, 38, 0 %, 0x0000000000000000\n",
+      "processes": "GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 2010472\nGPU-8b3add97-9c35-553e-695d-14cac5a9ea51, 2005724\n"
+    },
+    {
+      "state": "2026/11/20 12:56:05.022, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 1830 MHz, 2619 MHz, 142.24 W, 38, 66 %, 0x0000000000000000\n",
+      "processes": "GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 2010472\nGPU-8b3add97-9c35-553e-695d-14cac5a9ea51, 2005724\n"
+    },
+    {
+      "state": "2026/11/20 12:56:05.849, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 1830 MHz, 2619 MHz, 179.26 W, 40, 69 %, 0x0000000000000000\n",
+      "processes": "GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 2010472\nGPU-8b3add97-9c35-553e-695d-14cac5a9ea51, 2005724\n"
+    },
+    {
+      "state": "2026/11/20 12:56:06.642, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 1830 MHz, 2619 MHz, 213.56 W, 40, 87 %, 0x0000000000000000\n",
+      "processes": "GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 2010472\nGPU-8b3add97-9c35-553e-695d-14cac5a9ea51, 2005724\n"
+    },
+    {
+      "state": "2026/11/20 12:56:07.415, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 1830 MHz, 2619 MHz, 213.39 W, 40, 88 %, 0x0000000000000000\n",
+      "processes": "GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 2010472\nGPU-8b3add97-9c35-553e-695d-14cac5a9ea51, 2005724\n"
+    },
+    {
+      "state": "2026/11/20 12:56:08.176, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 1830 MHz, 2619 MHz, 212.49 W, 40, 95 %, 0x0000000000000000\n",
+      "processes": "GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 2010472\nGPU-8b3add97-9c35-553e-695d-14cac5a9ea51, 2005724\n"
+    },
+    {
+      "state": "2026/11/20 12:56:08.960, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 1830 MHz, 2619 MHz, 213.41 W, 40, 100 %, 0x0000000000000000\n",
+      "processes": "GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 2010472\nGPU-8b3add97-9c35-553e-695d-14cac5a9ea51, 2005724\n"
+    },
+    {
+      "state": "2026/11/20 12:56:09.836, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 1830 MHz, 2619 MHz, 213.67 W, 39, 87 %, 0x0000000000000000\n",
+      "processes": "GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 2010472\nGPU-8b3add97-9c35-553e-695d-14cac5a9ea51, 2005724\n"
+    },
+    {
+      "state": "2026/11/20 12:56:10.828, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 1830 MHz, 2619 MHz, 605.71 W, 46, 100 %, 0x0000000000000000\n",
+      "processes": "GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 2010472\nGPU-8b3add97-9c35-553e-695d-14cac5a9ea51, 2005724\n"
+    },
+    {
+      "state": "2026/11/20 12:56:11.598, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 1830 MHz, 2619 MHz, 631.66 W, 47, 100 %, 0x0000000000000000\n",
+      "processes": "GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 2010472\nGPU-8b3add97-9c35-553e-695d-14cac5a9ea51, 2005724\n"
+    },
+    {
+      "state": "2026/11/20 12:56:12.479, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 1830 MHz, 2619 MHz, 630.23 W, 47, 100 %, 0x0000000000000000\n",
+      "processes": "GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 2010472\nGPU-8b3add97-9c35-553e-695d-14cac5a9ea51, 2005724\n"
+    },
+    {
+      "state": "2026/11/20 12:56:13.255, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 1830 MHz, 2619 MHz, 630.75 W, 47, 100 %, 0x0000000000000000\n",
+      "processes": "GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 2010472\nGPU-8b3add97-9c35-553e-695d-14cac5a9ea51, 2005724\n"
+    },
+    {
+      "state": "2026/11/20 12:56:14.191, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, 1830 MHz, 2619 MHz, 633.47 W, 48, 100 %, 0x0000000000000000\n",
+      "processes": "GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, 2010771\nGPU-7f7377cd-12e4-c549-c539-32bdeb268511, 2010472\nGPU-8b3add97-9c35-553e-695d-14cac5a9ea51, 2005724\n"
+    }
+  ],
+  "processes_after": "GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, 2010771\nGPU-7f7377cd-12e4-c549-c539-32bdeb268511, 2010472\nGPU-8b3add97-9c35-553e-695d-14cac5a9ea51, 2005724\n",
+  "gpu_uuid": "GPU-7f7377cd-12e4-c549-c539-32bdeb268511",
+  "accuracy_sha256": "ce04496e4d4c59e977f6bc0e45630fb6508b7115ad5d6193f31ca940c520ff97",
+  "pipeline_sha256": "b7c53e09f9f5d3bfe70a64d14fa306ca0cf1c397680978e165ed9f43337591d2",
+  "resources": {
+    "double": {
+      "ttir_path": "/root/ops-ttir-dev/var_mean/ir/baseline.ttir",
+      "ttir_sha256": "15298caf68470c10aa3d4e7dda94c5322d4c7c4091778622a6ed01faed06ef09",
+      "products": {
+        "ttir": "68447c96999e21d3e5021f7d4659dff14848fd07e01217bbe3dc705ddaab0383",
+        "ttgir": "84a73063f417131fb562fe1d3c89daacd8f1493ff10b13f6bf46f34ed90d4127",
+        "llir": "2f68d0e6d8bf404f0b4c43045373ffe658a86b4ade85079b4902f067996f4314",
+        "ptx": "e383425e83e79f62a849d511c74029d40232732abc8d49cc035df1fdc6b65a50",
+        "cubin": "2dab67352d849c25158ba24e82212c82d0d17cd5937672c21a42a833946c6029"
+      },
+      "options": {
+        "TRITON_DISABLE_LINE_INFO": "true",
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "638f775c5db46c30b8a9234afd87e79aa37dda957b5b8e0f772c6380f09f2f1f",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "var_mean_welford_kernel",
+        "num_ctas": 1,
+        "num_stages": 3,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 16,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32
+      },
+      "n_regs": 32,
+      "n_spills": 0,
+      "shared": 16
+    },
+    "aa": {
+      "ttir_path": "/root/ops-ttir-dev/var_mean/ir/baseline.ttir",
+      "ttir_sha256": "15298caf68470c10aa3d4e7dda94c5322d4c7c4091778622a6ed01faed06ef09",
+      "products": {
+        "ttir": "68447c96999e21d3e5021f7d4659dff14848fd07e01217bbe3dc705ddaab0383",
+        "ttgir": "84a73063f417131fb562fe1d3c89daacd8f1493ff10b13f6bf46f34ed90d4127",
+        "llir": "2f68d0e6d8bf404f0b4c43045373ffe658a86b4ade85079b4902f067996f4314",
+        "ptx": "e383425e83e79f62a849d511c74029d40232732abc8d49cc035df1fdc6b65a50",
+        "cubin": "2dab67352d849c25158ba24e82212c82d0d17cd5937672c21a42a833946c6029"
+      },
+      "options": {
+        "TRITON_DISABLE_LINE_INFO": "true",
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "638f775c5db46c30b8a9234afd87e79aa37dda957b5b8e0f772c6380f09f2f1f",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "var_mean_welford_kernel",
+        "num_ctas": 1,
+        "num_stages": 3,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 16,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32
+      },
+      "n_regs": 32,
+      "n_spills": 0,
+      "shared": 16
+    },
+    "baseline": {
+      "ttir_path": "/root/ops-ttir-dev/var_mean/ir/baseline.ttir",
+      "ttir_sha256": "15298caf68470c10aa3d4e7dda94c5322d4c7c4091778622a6ed01faed06ef09",
+      "products": {
+        "ttir": "68447c96999e21d3e5021f7d4659dff14848fd07e01217bbe3dc705ddaab0383",
+        "ttgir": "84a73063f417131fb562fe1d3c89daacd8f1493ff10b13f6bf46f34ed90d4127",
+        "llir": "2f68d0e6d8bf404f0b4c43045373ffe658a86b4ade85079b4902f067996f4314",
+        "ptx": "e383425e83e79f62a849d511c74029d40232732abc8d49cc035df1fdc6b65a50",
+        "cubin": "2dab67352d849c25158ba24e82212c82d0d17cd5937672c21a42a833946c6029"
+      },
+      "options": {
+        "TRITON_DISABLE_LINE_INFO": "true",
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "638f775c5db46c30b8a9234afd87e79aa37dda957b5b8e0f772c6380f09f2f1f",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "var_mean_welford_kernel",
+        "num_ctas": 1,
+        "num_stages": 3,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 16,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32
+      },
+      "n_regs": 32,
+      "n_spills": 0,
+      "shared": 16
+    }
+  },
+  "suite": "controls",
+  "seed": 123,
+  "rounds": 5,
+  "rep_ms": 20,
+  "metric": "preallocated CUDA graph complete row-kernel sequence; no host/allocation/compile/load",
+  "records": [
+    {
+      "name": "aa",
+      "shape": [
+        1,
+        128
+      ],
+      "group": "row_f32_b1024_w4",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "aa",
+            "baseline"
+          ],
+          "baseline_us": 1.7422067658336844,
+          "candidate_us": 1.7422767606516048,
+          "ratio": 0.9999598256605947
+        },
+        {
+          "round": 1,
+          "order": [
+            "baseline",
+            "aa"
+          ],
+          "baseline_us": 1.7431423559734716,
+          "candidate_us": 1.7424048031414592,
+          "ratio": 1.0004232959130293
+        },
+        {
+          "round": 2,
+          "order": [
+            "aa",
+            "baseline"
+          ],
+          "baseline_us": 1.7294536714189923,
+          "candidate_us": 1.729403590701334,
+          "ratio": 1.0000289583749724
+        },
+        {
+          "round": 3,
+          "order": [
+            "baseline",
+            "aa"
+          ],
+          "baseline_us": 1.742201496294651,
+          "candidate_us": 1.729832832289185,
+          "ratio": 1.0071502076816856
+        },
+        {
+          "round": 4,
+          "order": [
+            "baseline",
+            "aa"
+          ],
+          "baseline_us": 1.7439800053834915,
+          "candidate_us": 1.7486496339221511,
+          "ratio": 0.9973295802383317
+        }
+      ],
+      "paired_ratios": [
+        0.9999598256605947,
+        1.0004232959130293,
+        1.0000289583749724,
+        1.0071502076816856,
+        0.9973295802383317
+      ],
+      "speedup": 1.0000289583749724,
+      "baseline_us": 1.7422067658336844,
+      "candidate_us": 1.7422767606516048
+    },
+    {
+      "name": "double",
+      "shape": [
+        1,
+        128
+      ],
+      "group": "row_f32_b1024_w4",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "double",
+            "baseline"
+          ],
+          "baseline_us": 1.7427068570185718,
+          "candidate_us": 3.4838168505106393,
+          "ratio": 0.5002291830476493
+        },
+        {
+          "round": 1,
+          "order": [
+            "double",
+            "baseline"
+          ],
+          "baseline_us": 1.7242644034131793,
+          "candidate_us": 3.4459461778677993,
+          "ratio": 0.500374734372688
+        },
+        {
+          "round": 2,
+          "order": [
+            "baseline",
+            "double"
+          ],
+          "baseline_us": 1.7427810375507062,
+          "candidate_us": 3.4429911868160508,
+          "ratio": 0.5061822534499035
+        },
+        {
+          "round": 3,
+          "order": [
+            "baseline",
+            "double"
+          ],
+          "baseline_us": 1.714823496006334,
+          "candidate_us": 3.4272201413998196,
+          "ratio": 0.5003540552565522
+        },
+        {
+          "round": 4,
+          "order": [
+            "baseline",
+            "double"
+          ],
+          "baseline_us": 1.7149410095776174,
+          "candidate_us": 3.423714139898526,
+          "ratio": 0.5009007585044603
+        }
+      ],
+      "paired_ratios": [
+        0.5002291830476493,
+        0.500374734372688,
+        0.5061822534499035,
+        0.5003540552565522,
+        0.5009007585044603
+      ],
+      "speedup": 0.500374734372688,
+      "baseline_us": 1.7242644034131793,
+      "candidate_us": 3.4429911868160508
+    },
+    {
+      "name": "aa",
+      "shape": [
+        128,
+        16384
+      ],
+      "group": "row_f32_b1024_w4",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "aa",
+            "baseline"
+          ],
+          "baseline_us": 11.194860353920573,
+          "candidate_us": 11.194497914754264,
+          "ratio": 1.0000323765450732
+        },
+        {
+          "round": 1,
+          "order": [
+            "aa",
+            "baseline"
+          ],
+          "baseline_us": 11.194634602747119,
+          "candidate_us": 11.194561667445877,
+          "ratio": 1.0000065152440452
+        },
+        {
+          "round": 2,
+          "order": [
+            "aa",
+            "baseline"
+          ],
+          "baseline_us": 11.171752863768614,
+          "candidate_us": 11.194216612977748,
+          "ratio": 0.9979932718844219
+        },
+        {
+          "round": 3,
+          "order": [
+            "baseline",
+            "aa"
+          ],
+          "baseline_us": 11.194683148310734,
+          "candidate_us": 11.171499483599634,
+          "ratio": 1.002075250931635
+        },
+        {
+          "round": 4,
+          "order": [
+            "baseline",
+            "aa"
+          ],
+          "baseline_us": 11.173782861820785,
+          "candidate_us": 11.17813241552319,
+          "ratio": 0.9996108872626731
+        }
+      ],
+      "paired_ratios": [
+        1.0000323765450732,
+        1.0000065152440452,
+        0.9979932718844219,
+        1.002075250931635,
+        0.9996108872626731
+      ],
+      "speedup": 1.0000065152440452,
+      "baseline_us": 11.194634602747119,
+      "candidate_us": 11.194216612977748
+    },
+    {
+      "name": "double",
+      "shape": [
+        128,
+        16384
+      ],
+      "group": "row_f32_b1024_w4",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "double",
+            "baseline"
+          ],
+          "baseline_us": 11.179251995312391,
+          "candidate_us": 22.35908762953469,
+          "ratio": 0.4999869485079271
+        },
+        {
+          "round": 1,
+          "order": [
+            "double",
+            "baseline"
+          ],
+          "baseline_us": 11.195177016066639,
+          "candidate_us": 22.35766110004195,
+          "ratio": 0.5007311348880601
+        },
+        {
+          "round": 2,
+          "order": [
+            "double",
+            "baseline"
+          ],
+          "baseline_us": 11.194635785761335,
+          "candidate_us": 22.389824841473555,
+          "ratio": 0.49998764461189843
+        },
+        {
+          "round": 3,
+          "order": [
+            "baseline",
+            "double"
+          ],
+          "baseline_us": 11.178608354694116,
+          "candidate_us": 22.388171763555242,
+          "ratio": 0.4993086739173272
+        },
+        {
+          "round": 4,
+          "order": [
+            "double",
+            "baseline"
+          ],
+          "baseline_us": 11.182564045309489,
+          "candidate_us": 22.38859944195959,
+          "ratio": 0.49947581912389244
+        }
+      ],
+      "paired_ratios": [
+        0.4999869485079271,
+        0.5007311348880601,
+        0.49998764461189843,
+        0.4993086739173272,
+        0.49947581912389244
+      ],
+      "speedup": 0.4999869485079271,
+      "baseline_us": 11.182564045309489,
+      "candidate_us": 22.388171763555242
+    },
+    {
+      "name": "aa",
+      "shape": [
+        4096,
+        16384
+      ],
+      "group": "row_f32_b1024_w4",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "baseline",
+            "aa"
+          ],
+          "baseline_us": 172.97099933289644,
+          "candidate_us": 172.9820067422432,
+          "ratio": 0.9999363667380553
+        },
+        {
+          "round": 1,
+          "order": [
+            "aa",
+            "baseline"
+          ],
+          "baseline_us": 172.93774119594642,
+          "candidate_us": 172.89462507816782,
+          "ratio": 1.0002493780113701
+        },
+        {
+          "round": 2,
+          "order": [
+            "aa",
+            "baseline"
+          ],
+          "baseline_us": 172.95281426948415,
+          "candidate_us": 172.93266162537694,
+          "ratio": 1.0001165346321383
+        },
+        {
+          "round": 3,
+          "order": [
+            "baseline",
+            "aa"
+          ],
+          "baseline_us": 172.95637967293723,
+          "candidate_us": 172.95716268974437,
+          "ratio": 0.9999954727702804
+        },
+        {
+          "round": 4,
+          "order": [
+            "baseline",
+            "aa"
+          ],
+          "baseline_us": 172.92690444410894,
+          "candidate_us": 172.9507647062603,
+          "ratio": 0.9998620401465592
+        }
+      ],
+      "paired_ratios": [
+        0.9999363667380553,
+        1.0002493780113701,
+        1.0001165346321383,
+        0.9999954727702804,
+        0.9998620401465592
+      ],
+      "speedup": 0.9999954727702804,
+      "baseline_us": 172.95281426948415,
+      "candidate_us": 172.9507647062603
+    },
+    {
+      "name": "double",
+      "shape": [
+        4096,
+        16384
+      ],
+      "group": "row_f32_b1024_w4",
+      "pairs": [
+        {
+          "round": 0,
+          "order": [
+            "double",
+            "baseline"
+          ],
+          "baseline_us": 172.90591189735812,
+          "candidate_us": 345.8788955420778,
+          "ratio": 0.4999030415728944
+        },
+        {
+          "round": 1,
+          "order": [
+            "double",
+            "baseline"
+          ],
+          "baseline_us": 172.95368261504592,
+          "candidate_us": 346.0043790047629,
+          "ratio": 0.4998598084582772
+        },
+        {
+          "round": 2,
+          "order": [
+            "double",
+            "baseline"
+          ],
+          "baseline_us": 172.95334631936592,
+          "candidate_us": 345.88597615559894,
+          "ratio": 0.5000299469833428
+        },
+        {
+          "round": 3,
+          "order": [
+            "double",
+            "baseline"
+          ],
+          "baseline_us": 172.94405552378873,
+          "candidate_us": 345.90972431919033,
+          "ratio": 0.49996875879732
+        },
+        {
+          "round": 4,
+          "order": [
+            "double",
+            "baseline"
+          ],
+          "baseline_us": 172.94223350391053,
+          "candidate_us": 345.8923205994723,
+          "ratio": 0.49998864734603293
+        }
+      ],
+      "paired_ratios": [
+        0.4999030415728944,
+        0.4998598084582772,
+        0.5000299469833428,
+        0.49996875879732,
+        0.49998864734603293
+      ],
+      "speedup": 0.49996875879732,
+      "baseline_us": 172.94405552378873,
+      "candidate_us": 345.8923205994723
+    }
+  ],
+  "summary": {
+    "aa": {
+      "geomean": 1.0000103153660498,
+      "arithmetic": 1.0000103154630993,
+      "worst": 0.9999954727702804,
+      "ci95_conditional_bootstrap": [
+        0.9990900436759882,
+        1.0023784086478942
+      ],
+      "points": 3
+    },
+    "double": {
+      "geomean": 0.5001101121815164,
+      "arithmetic": 0.5001101472259784,
+      "worst": 0.49996875879732,
+      "ci95_conditional_bootstrap": [
+        0.49988360445745733,
+        0.5020374906271877
+      ],
+      "points": 3
+    }
+  },
+  "completed_at": 1795150575.433574
+}
