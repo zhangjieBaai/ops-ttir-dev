@@ -1,0 +1,166 @@
+#loc = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":22:0)
+#loc2 = loc(unknown)
+#loc23 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":66:18)
+#loc29 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":68:24)
+#loc33 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":75:18)
+#loc40 = loc("scores_ptr"(#loc))
+#loc41 = loc("bias_ptr"(#loc))
+#loc42 = loc("group_scores_ptr"(#loc))
+#loc43 = loc("num_experts_per_group"(#loc))
+#loc44 = loc("n_group"(#loc))
+#loc45 = loc("stride_scores_token"(#loc))
+#loc46 = loc("stride_group_scores_token"(#loc))
+#loc67 = loc("max1"(#loc23))
+#loc71 = loc("count_max1"(#loc29))
+#loc74 = loc("max2"(#loc33))
+#loc78 = loc(callsite(#loc2 at #loc67))
+#loc80 = loc(callsite(#loc2 at #loc71))
+#loc82 = loc(callsite(#loc2 at #loc74))
+module {
+  tt.func public @topk_with_k2_triton(%scores_ptr: !tt.ptr<f32> {tt.divisibility = 16 : i32} loc("scores_ptr"(#loc)), %bias_ptr: !tt.ptr<f32> {tt.divisibility = 16 : i32} loc("bias_ptr"(#loc)), %group_scores_ptr: !tt.ptr<f32> {tt.divisibility = 16 : i32} loc("group_scores_ptr"(#loc)), %num_experts_per_group: i32 {tt.divisibility = 16 : i32} loc("num_experts_per_group"(#loc)), %n_group: i32 loc("n_group"(#loc)), %stride_scores_token: i32 {tt.divisibility = 16 : i32} loc("stride_scores_token"(#loc)), %stride_group_scores_token: i32 loc("stride_group_scores_token"(#loc))) attributes {noinline = false} {
+    %x2 = arith.constant 1 : i32 loc(#loc47)
+    %cst = arith.constant dense<5.000000e-01> : tensor<64xf32> loc(#loc2)
+    %b = arith.constant dense<0.000000e+00> : tensor<64xf32> loc(#loc48)
+    %cst_0 = arith.constant dense<0xFF800000> : tensor<64xf32> loc(#loc2)
+    %pid = tt.get_program_id x : i32 loc(#loc49)
+    %token_id = arith.divsi %pid, %n_group : i32 loc(#loc50)
+    %group_id = arith.remsi %pid, %n_group : i32 loc(#loc51)
+    %lane = tt.make_range {end = 64 : i32, start = 0 : i32} : tensor<64xi32> loc(#loc52)
+    %mask = tt.splat %num_experts_per_group : i32 -> tensor<64xi32> loc(#loc53)
+    %mask_1 = arith.cmpi slt, %lane, %mask : tensor<64xi32> loc(#loc53)
+    %scores_offset = arith.muli %token_id, %stride_scores_token : i32 loc(#loc54)
+    %scores_offset_2 = arith.muli %group_id, %num_experts_per_group : i32 loc(#loc55)
+    %scores_offset_3 = arith.addi %scores_offset, %scores_offset_2 : i32 loc(#loc56)
+    %x = tt.addptr %scores_ptr, %scores_offset_3 : !tt.ptr<f32>, i32 loc(#loc57)
+    %x_4 = tt.splat %x : !tt.ptr<f32> -> tensor<64x!tt.ptr<f32>> loc(#loc58)
+    %x_5 = tt.addptr %x_4, %lane : tensor<64x!tt.ptr<f32>>, tensor<64xi32> loc(#loc58)
+    %x_6 = tt.load %x_5, %mask_1, %cst_0 : tensor<64x!tt.ptr<f32>> loc(#loc59)
+    %b_7 = tt.addptr %bias_ptr, %scores_offset_2 : !tt.ptr<f32>, i32 loc(#loc60)
+    %b_8 = tt.splat %b_7 : !tt.ptr<f32> -> tensor<64x!tt.ptr<f32>> loc(#loc61)
+    %b_9 = tt.addptr %b_8, %lane : tensor<64x!tt.ptr<f32>>, tensor<64xi32> loc(#loc61)
+    %b_10 = tt.load %b_9, %mask_1, %b : tensor<64x!tt.ptr<f32>> loc(#loc48)
+    %x_f32 = arith.mulf %x_6, %cst : tensor<64xf32> loc(#loc62)
+    %x_f32_11 = tt.extern_elementwise %x_f32 {libname = "", libpath = "", pure = true, symbol = "__nv_tanhf"} : (tensor<64xf32>) -> tensor<64xf32> loc(#loc63)
+    %x_f32_12 = arith.mulf %x_f32_11, %cst : tensor<64xf32> loc(#loc64)
+    %x_f32_13 = arith.addf %x_f32_12, %cst : tensor<64xf32> loc(#loc65)
+    %x_14 = arith.addf %x_f32_13, %b_10 : tensor<64xf32> loc(#loc66)
+    %mr4_zero = arith.constant dense<0.0> : tensor<64xf32>
+    %mr4_iszero = arith.cmpf oeq, %x_14, %mr4_zero : tensor<64xf32>
+    %mr4_normal = arith.select %mr4_iszero, %mr4_zero, %x_14 : tensor<64xi1>, tensor<64xf32>
+    %mr4_bits = tt.bitcast %mr4_normal : tensor<64xf32> -> tensor<64xi32>
+    %mr4_shift = arith.constant dense<31> : tensor<64xi32>
+    %mr4_signbit = arith.constant dense<-2147483648> : tensor<64xi32>
+    %mr4_sign = arith.shrsi %mr4_bits, %mr4_shift : tensor<64xi32>
+    %mr4_flip = arith.ori %mr4_sign, %mr4_signbit : tensor<64xi32>
+    %mr4_keys = arith.xori %mr4_bits, %mr4_flip : tensor<64xi32>
+    %mr4_removed = arith.constant dense<8388607> : tensor<64xi32>
+    %mr4_scalarzero = arith.constant 0 : i32
+    %mr4_scalarall = arith.constant -1 : i32
+    %mr4_scalarsign = arith.constant -2147483648 : i32
+    %mr4_max1 = "tt.reduce"(%mr4_keys) <{axis = 0 : i32}> ({
+    ^bb0(%l: i32, %r: i32):
+      %v = arith.maxui %l, %r : i32
+      tt.reduce.return %v : i32
+    }) : (tensor<64xi32>) -> i32
+    %is_max1 = tt.splat %mr4_max1 : i32 -> tensor<64xi32> loc(#loc68)
+    %is_max1_15 = arith.cmpi eq, %mr4_keys, %is_max1 : tensor<64xi32> loc(#loc68)
+    %is_max1_16 = arith.andi %is_max1_15, %mask_1 : tensor<64xi1> loc(#loc69)
+    %count_max1 = arith.extui %is_max1_16 : tensor<64xi1> to tensor<64xi32> loc(#loc70)
+    %count_max1_17 = "tt.reduce"(%count_max1) <{axis = 0 : i32}> ({
+    ^bb0(%count_max1_23: i32 loc(callsite(#loc2 at #loc71)), %count_max1_24: i32 loc(callsite(#loc2 at #loc71))):
+      %count_max1_25 = arith.addi %count_max1_23, %count_max1_24 : i32 loc(#loc84)
+      tt.reduce.return %count_max1_25 : i32 loc(#loc79)
+    }) : (tensor<64xi32>) -> i32 loc(#loc79)
+    %x2_18 = arith.cmpi eq, %count_max1_17, %x2 : i32 loc(#loc47)
+    %x2_19 = tt.splat %x2_18 : i1 -> tensor<64xi1> loc(#loc72)
+    %x2_20 = arith.andi %is_max1_16, %x2_19 : tensor<64xi1> loc(#loc72)
+    %x2_21 = arith.select %x2_20, %mr4_removed, %mr4_keys : tensor<64xi1>, tensor<64xi32> loc(#loc73)
+    %mr4_max2 = "tt.reduce"(%x2_21) <{axis = 0 : i32}> ({
+    ^bb0(%l: i32, %r: i32):
+      %v = arith.maxui %l, %r : i32
+      tt.reduce.return %v : i32
+    }) : (tensor<64xi32>) -> i32
+    %mr4_pos1 = arith.cmpi slt, %mr4_max1, %mr4_scalarzero : i32
+    %mr4_undo1 = arith.select %mr4_pos1, %mr4_scalarsign, %mr4_scalarall : i32
+    %mr4_decoded1 = arith.xori %mr4_max1, %mr4_undo1 : i32
+    %max1 = tt.bitcast %mr4_decoded1 : i32 -> f32
+    %mr4_pos2 = arith.cmpi slt, %mr4_max2, %mr4_scalarzero : i32
+    %mr4_undo2 = arith.select %mr4_pos2, %mr4_scalarsign, %mr4_scalarall : i32
+    %mr4_decoded2 = arith.xori %mr4_max2, %mr4_undo2 : i32
+    %max2 = tt.bitcast %mr4_decoded2 : i32 -> f32
+    %group_scores_offset = arith.muli %token_id, %stride_group_scores_token : i32 loc(#loc75)
+    %group_scores_offset_22 = arith.addi %group_scores_offset, %group_id : i32 loc(#loc76)
+    %0 = tt.addptr %group_scores_ptr, %group_scores_offset_22 : !tt.ptr<f32>, i32 loc(#loc36)
+    %1 = arith.addf %max1, %max2 : f32 loc(#loc37)
+    tt.store %0, %1 : !tt.ptr<f32> loc(#loc38)
+    tt.return loc(#loc39)
+  } loc(#loc)
+} loc(#loc)
+#loc1 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":71:33)
+#loc3 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":52:8)
+#loc4 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":34:24)
+#loc5 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":36:22)
+#loc6 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":37:21)
+#loc7 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":39:24)
+#loc8 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":40:18)
+#loc9 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":42:31)
+#loc10 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":42:64)
+#loc11 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":42:53)
+#loc12 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":46:21)
+#loc13 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":46:37)
+#loc14 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":46:8)
+#loc15 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":52:19)
+#loc16 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":52:33)
+#loc17 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":59:43)
+#loc18 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":59:37)
+#loc19 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":59:22)
+#loc20 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":59:52)
+#loc21 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":62:12)
+#loc22 = loc("/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/language/standard.py":191:40)
+#loc24 = loc("/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/language/standard.py":170:27)
+#loc25 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":67:24)
+#loc26 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":67:32)
+#loc27 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":68:35)
+#loc28 = loc("/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/language/standard.py":293:36)
+#loc30 = loc("/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/language/standard.py":263:15)
+#loc31 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":71:19)
+#loc32 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":73:8)
+#loc34 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":77:37)
+#loc35 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":77:65)
+#loc36 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":79:27)
+#loc37 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":80:16)
+#loc38 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":80:8)
+#loc39 = loc("/root/ops-ttir-dev/moe_routing/frozen_kernels.py":78:4)
+#loc47 = loc("x2"(#loc1))
+#loc48 = loc("b"(#loc3))
+#loc49 = loc("pid"(#loc4))
+#loc50 = loc("token_id"(#loc5))
+#loc51 = loc("group_id"(#loc6))
+#loc52 = loc("lane"(#loc7))
+#loc53 = loc("mask"(#loc8))
+#loc54 = loc("scores_offset"(#loc9))
+#loc55 = loc("scores_offset"(#loc10))
+#loc56 = loc("scores_offset"(#loc11))
+#loc57 = loc("x"(#loc12))
+#loc58 = loc("x"(#loc13))
+#loc59 = loc("x"(#loc14))
+#loc60 = loc("b"(#loc15))
+#loc61 = loc("b"(#loc16))
+#loc62 = loc("x_f32"(#loc17))
+#loc63 = loc("x_f32"(#loc18))
+#loc64 = loc("x_f32"(#loc19))
+#loc65 = loc("x_f32"(#loc20))
+#loc66 = loc("x"(#loc21))
+#loc68 = loc("is_max1"(#loc25))
+#loc69 = loc("is_max1"(#loc26))
+#loc70 = loc("count_max1"(#loc27))
+#loc72 = loc("x2"(#loc31))
+#loc73 = loc("x2"(#loc32))
+#loc75 = loc("group_scores_offset"(#loc34))
+#loc76 = loc("group_scores_offset"(#loc35))
+#loc77 = loc(callsite(#loc22 at #loc67))
+#loc79 = loc(callsite(#loc28 at #loc71))
+#loc81 = loc(callsite(#loc22 at #loc74))
+#loc83 = loc(callsite(#loc24 at #loc77))
+#loc84 = loc(callsite(#loc30 at #loc79))
+#loc85 = loc(callsite(#loc24 at #loc81))

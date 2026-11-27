@@ -1,5 +1,7 @@
 # Sum 直接 TTIR 优化实验
 
+当前统一展示见[完整结果](report.md)：每个shape只列基线时间、优化时间、加速比，保留算术/几何平均和方法收益。
+
 逐项收益、组合消融和公开Triton等价实现见[消融报告](report_ablation.md)。
 本轮全部30点重新配对测量，最终收益主要来自移除第二个短kernel；其余单项未产生整体正收益。
 可运行的公开Triton封装见[ablation_example.py](ablation_example.py)。

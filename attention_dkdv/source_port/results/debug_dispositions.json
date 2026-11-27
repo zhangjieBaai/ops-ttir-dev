@@ -1,0 +1,24 @@
+{
+  "accuracy_main": {
+    "status": "failed_harness",
+    "cause": "Native AST CompiledKernel launcher needs the original runtime + constexpr bindings; the reused TTIR launcher omitted those bindings, causing Python SystemError before valid source-route launch. The process later stalled in a bad launch and was explicitly terminated.",
+    "numerical_contract_changed": false,
+    "performance_taken": false
+  },
+  "pipeline_main": {
+    "status": "failed_harness",
+    "cause": "Same AST launcher binding error; source-to-TTIR byte-equality assertions had already passed for the attempted group, output comparison could not run."
+  },
+  "pipeline_main_v2": {
+    "status": "failed_metadata_comparison",
+    "cause": "Compiler metadata normalizes some nested option tuples to lists; literal Python equality was too strict. JSON-normalized comparison of every full option field is used in v3. No compiler options changed."
+  },
+  "accuracy_main_v2": {
+    "status": "excluded",
+    "checks_passed": 84,
+    "cause": "Launcher corrected and all numeric checks passed, but previous failed validation process was still resident. Excluded and repeated in isolation; no performance taken."
+  },
+  "pipeline_main_v3": {"status": "qualified", "points_passed": 12},
+  "accuracy_main_v3": {"status": "qualified", "checks_passed": 84},
+  "original_contract": "All runs use exactly the existing 28 input cases, distributions, FP64 reference, rtol=0.03/atol=0.008; no tolerance changes and no case removals."
+}

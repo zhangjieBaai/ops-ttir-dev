@@ -1,0 +1,208 @@
+"""Two direct-TTIR r6 live-state transformations on immutable r5 parents."""
+
+import hashlib
+import json
+import re
+from pathlib import Path
+
+BASE = Path(__file__).resolve().parent
+ROOT = BASE / "r6"
+OP = BASE.parent
+TOKEN = re.compile(r"%\w+(?:#\d+)?")
+DEF = re.compile(r"\s*(%\w+)(?::(\d+))? = ")
+GROUPS = ["d64_c0", "d64_c1", "d128_c0", "d128_c1"]
+
+
+def immutable(path, text):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if path.exists():
+        assert path.read_text() == text, path
+    else:
+        path.write_text(text)
+
+
+def refs(text):
+    return set(TOKEN.findall(text))
+
+
+def dv_late(text):
+    lines = text.splitlines(keepends=True)
+    loops = []
+    for i, line in enumerate(lines):
+        if " = scf.for " in line and "iter_args" in line:
+            j = next(k for k in range(i + 1, len(lines)) if "scf.yield" in lines[k])
+            loops.append((i, j))
+    for i, j in reversed(loops):
+        body = lines[i + 1 : j]
+        moved = [
+            line
+            for line in body
+            if re.match(r"\s+%ppT(?:_\w+)? = arith.truncf", line)
+            or re.match(r"\s+%dv_\w+ = tt.dot", line)
+        ]
+        assert len(moved) == 2, moved
+        body = [line for line in body if line not in moved]
+        pos = next(
+            k for k, line in enumerate(body) if re.match(r"\s+%dk_\w+ = tt.dot", line)
+        )
+        body[pos + 1 : pos + 1] = moved
+        lines[i + 1 : j] = body
+    return "".join(lines)
+
+
+def nodes(lines):
+    result = []
+    i = 0
+    while i < len(lines):
+        if " = scf.for " in lines[i] and "iter_args" in lines[i]:
+            j = next(k for k in range(i + 1, len(lines)) if "scf.yield" in lines[k])
+            assert lines[j + 1].lstrip().startswith("}"), lines[j + 1]
+            result.append((lines[i], lines[i + 1 : j], lines[j], lines[j + 1]))
+            i = j + 2
+        else:
+            result.append(lines[i])
+            i += 1
+    return result
+
+
+def prune(lines, seeds, store_kind=None):
+    """Backward SSA slice; loops retain precisely the carried state closure."""
+    needed = set(seeds)
+    output = []
+    for node in reversed(nodes(lines)):
+        if isinstance(node, str):
+            if "tt.store " in node:
+                if store_kind and re.search(
+                    r"tt.store %" + store_kind + r"_ptrs", node
+                ):
+                    output.insert(0, node)
+                    needed.update(refs(node))
+                continue
+            match = DEF.match(node)
+            if match:
+                name = match[1]
+                if name in needed:
+                    output.insert(0, node)
+                    needed.remove(name)
+                    needed.update(refs(node[match.end() :]))
+            else:
+                assert not node.strip(), node
+            continue
+        header, body, yielded, footer = node
+        match = DEF.match(header)
+        name = match[1]
+        n = int(match[2])
+        pairs = re.findall(
+            r"(%\w+) = (%\w+(?:#\d+)?)", header.split("iter_args(")[1].split(")")[0]
+        )
+        vals = TOKEN.findall(yielded.split(" : ")[0])
+        types = header.split(" -> (")[1].split(")")[0].split(", ")
+        assert len(pairs) == len(vals) == len(types) == n
+        keep = {k for k in range(n) if f"{name}#{k}" in needed}
+        if not keep:
+            continue
+        while True:
+            retained, external = prune(body, {vals[k] for k in keep})
+            extra = {k for k, (arg, _) in enumerate(pairs) if arg in external}
+            if extra <= keep:
+                break
+            keep |= extra
+        indices = sorted(keep)
+        mapping = {f"{name}#{old}": f"{name}#{new}" for new, old in enumerate(indices)}
+        output = [TOKEN.sub(lambda m: mapping.get(m[0], m[0]), part) for part in output]
+        needed.difference_update(f"{name}#{k}" for k in range(n))
+        for arg, _ in pairs:
+            external.discard(arg)
+        iv = re.search(r"scf.for (%\w+)", header)[1]
+        external.discard(iv)
+        prefix = header.split("iter_args(")[0]
+        bounds = refs(prefix[match.end() :]) - {iv}
+        needed.update(external | bounds | {pairs[k][1] for k in indices})
+        args = ", ".join(f"{pairs[k][0]} = {pairs[k][1]}" for k in indices)
+        tys = ", ".join(types[k] for k in indices)
+        newheader = prefix.replace(f"{name}:{n}", f"{name}:{len(indices)}")
+        newheader += (
+            "iter_args("
+            + args
+            + ") -> ("
+            + tys
+            + ")"
+            + header.split(" -> (")[1].split(")", 1)[1]
+        )
+        suffix = yielded.split(" : ")[1]
+        suffix = suffix[suffix.index(" loc(") :] if " loc(" in suffix else "\n"
+        indent = yielded[: len(yielded) - len(yielded.lstrip())]
+        newyield = (
+            indent
+            + "scf.yield "
+            + ", ".join(vals[k] for k in indices)
+            + " : "
+            + tys
+            + suffix
+        )
+        output.insert(0, newheader + "".join(retained) + newyield + footer)
+    return output, needed
+
+
+def rename(text, suffix):
+    defined = set(re.findall(r"(%\w+)(?::\d+)?\s*=", text))
+    mapping = {v: "%" + suffix.strip("_") + "_" + v[1:] for v in defined}
+    return re.sub(r"%\w+", lambda m: mapping.get(m[0], m[0]), text)
+
+
+def fission(text, causal):
+    lines = text.splitlines(keepends=True)
+    if not causal:
+        start = next(i for i, x in enumerate(lines) if "      %offs_k =" in x)
+        end = next(i for i, x in enumerate(lines) if i > start and x == "    }\n")
+        spans = [(start, end)]
+    else:
+        starts = [
+            i for i, x in enumerate(lines) if re.match(r"    %r2_fixed_[01] =", x)
+        ]
+        assert len(starts) == 2
+        end = next(i for i, x in enumerate(lines) if "    tt.return" in x)
+        spans = [(starts[0], starts[1]), (starts[1], end)]
+    for start, end in reversed(spans):
+        result = []
+        for kind, suffix in [("dv", "_r6v"), ("dk", "_r6k")]:
+            body, external = prune(lines[start:end], set(), kind)
+            assert not any("#" in x for x in external), external
+            body = "".join(body)
+            assert body.count("tt.store") == 1, body
+            result.append(rename(body, suffix))
+        lines[start:end] = result
+    return "".join(lines)
+
+
+def main():
+    manifest = {}
+    for group in GROUPS:
+        baseline = (OP / "ir" / group / "baseline.ttir").read_text()
+        anchor = (OP / "round2/ir" / group / "optimized.ttir").read_text()
+        parent = (BASE / "r5/ir" / group / "optimized.ttir").read_text()
+        folder = ROOT / "ir" / group
+        for name, content in [
+            ("baseline", baseline),
+            ("anchor", anchor),
+            ("parent", parent),
+        ]:
+            immutable(folder / (name + ".ttir"), content)
+        variants = {"r6_dv_late": parent, "r6_fission_v_then_k_v2": parent}
+        if group.startswith("d128"):
+            variants = {
+                "r6_dv_late": dv_late(parent),
+                "r6_fission_v_then_k_v2": fission(parent, group.endswith("c1")),
+            }
+        manifest[group] = {"candidates": {}}
+        for name, content in variants.items():
+            immutable(folder / (name + ".ttir"), content)
+            manifest[group]["candidates"][name] = {
+                "sha256": hashlib.sha256(content.encode()).hexdigest(),
+                "parent_identical": content == parent,
+            }
+    immutable(ROOT / "manifest.json", json.dumps(manifest, indent=2) + "\n")
+
+
+if __name__ == "__main__":
+    main()

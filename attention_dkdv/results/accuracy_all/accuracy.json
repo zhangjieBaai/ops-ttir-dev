@@ -1,0 +1,6776 @@
+{
+  "environment": {
+    "python": "/root/venvs/ir-ops-dev/bin/python",
+    "prefix": "/root/venvs/ir-ops-dev",
+    "triton": "3.7.0",
+    "triton_path": "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/__init__.py",
+    "libtriton_path": "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/_C/libtriton.so",
+    "include_system_site_packages": false,
+    "sys_path": [
+      "/root/ops-ttir-dev/attention_dkdv",
+      "/usr/lib/python312.zip",
+      "/usr/lib/python3.12",
+      "/usr/lib/python3.12/lib-dynload",
+      "/root/venvs/ir-ops-dev/lib/python3.12/site-packages"
+    ],
+    "flagtree_flagprism_distributions": [],
+    "flagtree_flagprism_source_markers": [],
+    "installer": "pip\n",
+    "direct_url": null,
+    "verified_record_entries": 362,
+    "torch": "2.12.0+cu130",
+    "gpu": "uuid, name, driver_version, clocks.current.sm [MHz], clocks.current.memory [MHz], power.draw [W], temperature.gpu\nGPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 2619 MHz, 72.80 W, 29\n",
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "4",
+      "CUDA_ARCH_LIST": "7.5 8.0 8.6 9.0 10.0 12.0",
+      "CUDA_VERSION": "12.9.0.043",
+      "PYTHONIOENCODING": "utf-8",
+      "LD_LIBRARY_PATH": "/usr/local/lib/python3.12/dist-packages/torch/lib:/usr/local/lib/python3.12/dist-packages/torch_tensorrt/lib:/usr/local/cuda/compat/lib:/usr/local/nvidia/lib:/usr/local/nvidia/lib64",
+      "CUDA_DRIVER_VERSION": "575.51.03",
+      "CUDA_HOME": "/usr/local/cuda",
+      "CUDA_MODULE_LOADING": "LAZY"
+    },
+    "clocks_locked": false,
+    "cache_policy": "Repeated graph warm cache; no flush"
+  },
+  "seed": 20,
+  "rtol": 0.03,
+  "atol": 0.008,
+  "compile": {
+    "('baseline', 64, False)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "696cd75ea2a6f2265660dfb86c46249ba98b8ddc17800356bc92799276d6d8e0",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 74752,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 0,
+        "ttir_sha256": "e960abc19050f47c9e9349fa64e6b8f01e35321956bc1fe8d99535308f56df47",
+        "hashes": {
+          "ttir": "85c41651061cc695aee13a53810b5d596426bd07654b8cc0f6c8884b8d6be3f8",
+          "ttgir": "48d0bdb645de21686a0c3f4ec73babed52c6f6cba8e870c23d6e7bb6c87c5765",
+          "llir": "d570ff070f85c4813e1540c62ca55600bc36606aeaf9ea595dcb930e44da449f",
+          "ptx": "fac2c0ccf04ada424f80d4e9701b11a9b829c1dcba5af99397a0cd0e77df5b56",
+          "cubin": "abc3d12d26008328af8edbd41316826e1fbb6032f0b2707b3642aa0b9bdd089d"
+        }
+      }
+    },
+    "('r1_unsigned', 64, False)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "205a276c10f4115d0d59f4f8c9d2d83c8995ef1c8b88c61655d6e2d11a4c5652",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 74752,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 2,
+        "ttir_sha256": "948dac233e5b98ca7802c5c18a9e23ee3a050cb13778afa40945c5266045df41",
+        "hashes": {
+          "ttir": "963a1808b42c3efa78ade36b147d1e52a7b494dfafa112a0c755a9816bdde42f",
+          "ttgir": "5129921b48e48e4c77d8f2f808dea1629a8038c9e8e30c264564a3b36c74f14d",
+          "llir": "7ccc5bb6bb392976c84275fda03401a1aa5149fdfe3c73155b6af579e6c21087",
+          "ptx": "3d199a6a9c21a9f5c32ee8e9643d8916afe57cca841da4fd0ab2496256969484",
+          "cubin": "ca3a7063ee673e0ebe888005bb8f12c3ad4bdadb061bfb8f4749a75ad347a19f"
+        }
+      }
+    },
+    "('r1_delta_early', 64, False)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "1026927209d369d7664d5f9bdab3d54c340218a461eb51fe82c109f5c182f217",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 74752,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 0,
+        "ttir_sha256": "fa6ae9407d4cf53cbe18496264646ea8005322a104e1f0463bc375e2a2fe920a",
+        "hashes": {
+          "ttir": "be2dd1447f40fa048d41ec2e233ba284c33c65eed786ccdefc307ac39b6efc9f",
+          "ttgir": "42a93d7e36c6297ddeeed86fb6252839f878c3ea631ac8dfdfe833a7f67dd1fd",
+          "llir": "5855e22cfa62f8bde19a87acf986ce304380faac995147cf66b8c2aa1d51afbc",
+          "ptx": "bb83944e77f7478ecb3657221d21a4b918d4b68f4b7d7338d0c8f546501917fe",
+          "cubin": "f7bd45e63e4657c524d6c69344fa1f3fd0ff7b61aebf26b43fe467b7a861779d"
+        }
+      }
+    },
+    "('r1_dv_late', 64, False)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "e66a8439a3fb1ca297266589230f273a351f4a41ebbab1c476a4aee98d9e9bf9",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 74752,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 250,
+        "n_spills": 0,
+        "ttir_sha256": "a287ce9b82495cc8c0d99aa48d11878cea89a0b2eba1a6eede1afa99c27bd3b7",
+        "hashes": {
+          "ttir": "5e87d66d62a6112550ea38f2f3f864c70bd724550453867a658ddec6fd5e9664",
+          "ttgir": "c8a95086b68fe4b4ad71f0d46f2536d14a3b82e1d634ea94cb2e2a12f945eb66",
+          "llir": "97203e10516f0df9dbe96a31ba5e35c5dd70598488fb0f4b324ea72bfd39ecdc",
+          "ptx": "d5176d670717cd4e2223424c8c4642d35942d0b5406f0484ac6ef980f2e9a086",
+          "cubin": "659dfa801d30870381e7dd43f0c54fadf3b9a5f9b69f418c383bcc3659609d06"
+        }
+      }
+    },
+    "('r1_dp_early', 64, False)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "33ab1b5e3dacbe80c9158be35afe1dadd080cfad98f62c03a2edb4e0e354a035",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 74752,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 0,
+        "ttir_sha256": "afee8ba847b06222dacb418b89bafa9189bba3d80555400c377ed52f25f6a4c5",
+        "hashes": {
+          "ttir": "50bc36070032b788c3eecc0328a45605e74f26556658fba32737946b9343f435",
+          "ttgir": "7ec3a608227ff1bd89ca7ddf5cb82a4ef1e7604e86c4aba94cacd1b4c3de46d3",
+          "llir": "e254f73bcb34455f56a5a1318e67718d05fd6c9de2d1c77754f1ac4625c69085",
+          "ptx": "6c593e37f148f883a35273f3c6fd89d47911b195b4a99746003f2c5d0283e81d",
+          "cubin": "a95109c67c3d7f3f2c3be6905c0c535e8410edb56288fd04562151f9a6b47051"
+        }
+      }
+    },
+    "('r1_load_cg', 64, False)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "263fa61f243380dc45cf5922f2d7f0b4e86a4ab566776270564e8160abbc3b25",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 74752,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 0,
+        "ttir_sha256": "8e535abb3fbedc766bba1dabfb9d5ab99f0d2f1736d615d7b4dea4670f4dab26",
+        "hashes": {
+          "ttir": "56bea3728e15884bbe9b3e304cf7bd746c4862a3dd2db99e4ebb16f983565edf",
+          "ttgir": "0744b90f1d1e9d2241cad60db4b328f03b4f1649f756d10a7941bdfb13f012a3",
+          "llir": "e68d4b5cf6c01a3f5a8cb2e5c6796f21b578c7291faff2b6e794ed34380bd389",
+          "ptx": "e735f1ad0c8e4fd5bfd5655227ab29b977e32fe6403d3f54a28d76d1e675606a",
+          "cubin": "bc9d477541907879a70d8657c75a3d28b4736ff66eb194592ff982119aba2084"
+        }
+      }
+    },
+    "('r1_fold_heads', 64, False)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "ff533ad090c682f60c07a2d4ef6cdb9d64cbc7c4b3285e61a0a6868e68f08ccf",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 74752,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 2,
+        "ttir_sha256": "029fc34bca04744d9f05ae7fa05dcd8d623c1a6ed0259e4eeacbe825915b87eb",
+        "hashes": {
+          "ttir": "5b466cee3a9223645f7c9ac6920c16fa2a89cd083ac92fef609dee86276c5593",
+          "ttgir": "97747cda8e86f9dcc9912fc88d4bd7ac6da53c8736896dbebf2e9a9357c22dc0",
+          "llir": "cb795a18e483db7684e42e2d9991e4e8c52d08078168e5ea32bda8f16dede682",
+          "ptx": "72d8922c6a397d67f0c6c3ab339332abff5bf0d765a5a043c01e39885f2e3c2a",
+          "cubin": "27ef7c3378a6d8835f8b978418028098a4a6daa0e71d9148d45e6eeb76f26641"
+        }
+      }
+    },
+    "('r1_dv_late_unsigned', 64, False)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "d4ca3490178dbb71aaec7a2ade20be467d5034657177fda51329c11b131e90ef",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 74752,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 0,
+        "ttir_sha256": "f28933e7042b66c079f0ed9d1d5b9f53a892040428703bd3341edec31d6818f3",
+        "hashes": {
+          "ttir": "f601b3413b8e0dc2561a2cb9318a8dd0c07827866c8c2218ed606b68660227d2",
+          "ttgir": "65c761cce4a047b489a849fae2572cad40659d439fed8dd65ed64f7094299854",
+          "llir": "6c770152e6a1bf96ee1ae33eba10bc34ea54a681caf70425384c2ae0f676750a",
+          "ptx": "9e4a4b18b33b2bd9046dc15a5517f1ac41dff30a291efee0e67e96e397823c4a",
+          "cubin": "7e3676033b6c406821884931d2cfe13b2ab5c8fdc55fc0e192cd25c006ccb3fd"
+        }
+      }
+    },
+    "('baseline', 64, True)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "955ed8119fb4df451661d05d2a85007f34380851c5d65a15fa8feb196e109b9c",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 74752,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 0,
+        "ttir_sha256": "e1b59e7da5f68c072d7742df7679037933ba5d364ffe709e61453d30faf204cc",
+        "hashes": {
+          "ttir": "c610d77b9c7a53edf2a43e5b2a38af1732b26ec76a7f6b174125a60282ff17b7",
+          "ttgir": "5d5b1944f307c678850fc0a6f548696217a37f4808cb7a01bca93b4ce2d19020",
+          "llir": "ff022249ef26c15cb2b460e028a88590ce1f6aa35f66e9fd092c0fd00c835fe1",
+          "ptx": "df83d19648bd0bcb4deb681fdc9a0e87e7fc5ed80e9b6cd91c293a94f9c523c4",
+          "cubin": "a83c0e13191b73520c8da5d76f556c1855217f897b40f97e96165924a1130696"
+        }
+      }
+    },
+    "('r1_unsigned', 64, True)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "06cbeac72919fa24974abd1c520278a6c684fe559e6e7bd9588b2c1e58926413",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 74752,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 0,
+        "ttir_sha256": "fcfc0b72a8096799107ab7fc1f5293a800be270e14ee7d9f336ba052e84ceef7",
+        "hashes": {
+          "ttir": "6268f8ee025b7459fb1898ee049165577a58bfcd6b6531f61f91b08c72e22ebc",
+          "ttgir": "ad4afa2c297682c3b8b348e08ac78af02109a03aa137791a6a69dee88669c4e1",
+          "llir": "dd105118c0fbfb3c8ab8569fd653814cb06accef8e7f1e88a8b951bd92d72b2c",
+          "ptx": "25f7b644bc04e5c36eb44c182dd8c1b31bf08f0dcf6d028bb31c01583ef86d1f",
+          "cubin": "78b52650393bba1dc316242a54f1727199424fb82090407c13e8cc458657feee"
+        }
+      }
+    },
+    "('r1_delta_early', 64, True)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "e1389121bdfdd7c7da16d24d11adf143c8233019a78b328bb6b4a6a7b70c4c1d",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 74752,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 0,
+        "ttir_sha256": "157e8ff0309e3f57db3b259f4295ce4c209241342f151d0c9b9e4f71ec38c5e7",
+        "hashes": {
+          "ttir": "602bc7cd8cc2eaa752bfc5203e139d47d723a7cdef96f5a32b8314f6584a239a",
+          "ttgir": "4abe90e82a6842e4cf5b895d9c3f2890a8823c4134aac53105bc1960c6e95232",
+          "llir": "8dfcacb9e63ba165419c2398e1819c7ddc296654c0b278000e4ff88ba39e988c",
+          "ptx": "43df8f2d549ac88f89b4a09a8693df58c7ceb34fefbae0fd5629b200481f0593",
+          "cubin": "902eaaad4c0b6cb559925b19babd71885810f8fd4815e5989076a164ffa6190e"
+        }
+      }
+    },
+    "('r1_dv_late', 64, True)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "58a2cf10bff794b99e7d649bf5c51b83a6db552295a094990a2f117ad9b4219d",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 74752,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 0,
+        "ttir_sha256": "415fcc81a77b7ca5555a8294576ad1b03105a1364c1180506e7e02b75b839520",
+        "hashes": {
+          "ttir": "57cf9501d6ddc48c9b6f35cfa827bb658b6ff89952d9a204958d9952a0028078",
+          "ttgir": "a4b820619b6ab14e18b95091a62996c4214c7341514dd22d15ea000eea27935b",
+          "llir": "b9e91621803a10be217f950a8ca3ad96705e48d1c9e1f4fb151b4af2d327117f",
+          "ptx": "225b9d91a98ed3f0eb800d77df6cd84e7845ce2c8ccd38cf403dfe03255a1ba9",
+          "cubin": "527f5e9fc0af2204a8a867c3234cb8196aa32dcc9acc61f41dd87d180835b390"
+        }
+      }
+    },
+    "('r1_dp_early', 64, True)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "d066f4d7fa0ce26d14f595847fee42053c60a7ca03204501918c2f9f184a73f0",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 74752,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 0,
+        "ttir_sha256": "6fecb822cfb85fa3473908667ad1dbde090915ecfc20b780686aa9c82f7c18ac",
+        "hashes": {
+          "ttir": "67dfc8f4c33ae9d67aa3b8c1311da464e32f478a9aeb6e5503d74c2eb5b7938f",
+          "ttgir": "cbaebd8089d088587ab48379250a7d99ffdefe260c2ed6cb721de585f3621d0c",
+          "llir": "1c8954b558b47c089785e66bb2079aac6e8ffc6eeef9e34d1988d935241b43cb",
+          "ptx": "862655fb0b4efe98e9e254b0c58df533e8736981aad180cea3d52b735f6afff8",
+          "cubin": "7750717193f876110843c0b1ef6ee9222c8d4da2fb46135f030d32bb3c64bd91"
+        }
+      }
+    },
+    "('r1_load_cg', 64, True)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "ac195d378bc7002c2c4b36a842255f7e0402a20fa80fcf5a7179b003a8d7067d",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 74752,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 0,
+        "ttir_sha256": "9fc333a89a17314c189718032803e8361119fa0886b8960aa0b0685c0d233d8e",
+        "hashes": {
+          "ttir": "95167f74d004082818ef6b39e931b711dfc60f28d7d8a591158e39b33a6d90a4",
+          "ttgir": "5635b7341c351361f49c1f05458aff2c4c3912a07b855bdf0a61938b480f0f2e",
+          "llir": "3289f888d61d9bc6550b1a845899a0ff77fb0922a644226c72b43769ba90a427",
+          "ptx": "ba204930ce72180b26611810531e0f922941b15193fd78563a0e69a8660d4e5d",
+          "cubin": "c558e4ddfd605d67dcece9ebd2081acec97964212ba0a5ee29d8c88b741be556"
+        }
+      }
+    },
+    "('r1_fold_heads', 64, True)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "3723d4dbf0f275abe8210362e01cad5526d07b69965a12ff054a3d56914ce86a",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 74752,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 0,
+        "ttir_sha256": "40ae013013f2b4f6dd1b1e31d2ac1e78409a5398279a1a3aa7bdde97bace80f1",
+        "hashes": {
+          "ttir": "6bab382cbd4ef483707d1d28e70cf30298bc220e59f158fedfd16c91c146e070",
+          "ttgir": "f73a5e21b8a033db41511196a0419a03049bd71875b782c2a4dcbf30dc9eb5b3",
+          "llir": "df3d71d76301f4c90115bbc4fed76f74f08456edd7fbb59a49a9cadb45fd0527",
+          "ptx": "edfd7563961c5408d22aeae34e1a98eaa6e6b794a2301906066364adc431763e",
+          "cubin": "a72e7ec2ae17127efa0e638617869ced7a1981bd20afeaa94427d5f5d1186db1"
+        }
+      }
+    },
+    "('r1_dv_late_unsigned', 64, True)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "27d8e06fbac37caac539a76ddf4e8e96a51f8c498e488f51916ba0975cd90c15",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 74752,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 0,
+        "ttir_sha256": "00097a43de1ed102ae7116542725d7336872a54eea1b559372f6218de1835550",
+        "hashes": {
+          "ttir": "1d57c9d7e64dade4be7460fc1676f0fbed2846e01fbb2704b0b9843d4da9167e",
+          "ttgir": "ff1867db54c15254bf590235555e955cb4ed8b25070668a14347889d14d5742d",
+          "llir": "0899fd28996f126aa8a4892410294e4e1571e154a3c352a45d54767585c757be",
+          "ptx": "b8a7aedec3f7ef91871405d546ab3ef530418cd8c701fd0d399d3497c6772001",
+          "cubin": "dccf86bc1f0326a023f51f248f7509927f44f51420318a27e0fe2d61adb707b1"
+        }
+      }
+    },
+    "('baseline', 128, False)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "ec5bbd7cbf29cc33582618029a92d0faaa6448b2475545433b597bcad73ce14b",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 148480,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 178,
+        "ttir_sha256": "2be2ea80163d9f30f875edfc7b5a059312fe8447d475c3741a8bc053f00bec24",
+        "hashes": {
+          "ttir": "d8f82e0c2a2b8aa6ee23751b998209bb35859f501f84e31b4265b31a2bd74e57",
+          "ttgir": "1eaa15e9a7ebe597520bbe9d94c954fdf8c93c4b1b37012b4bbf2707946b864a",
+          "llir": "c7589de962ffb4e9183e6c4028b350a089d29f6ccc2fa20a7be221ba651fa26c",
+          "ptx": "0761848e07a1409be6571a421c658b291675be2ced1d207d717e6841415f0b70",
+          "cubin": "b8a807c3362f9f7e08cdda40cfead22543bee7690969f1d86757cf0162054694"
+        }
+      }
+    },
+    "('r1_unsigned', 128, False)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "1000e1c354d64988270084ffbc5f0538b8df8312016fd9a6d76ff990c5bd346e",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 148480,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 174,
+        "ttir_sha256": "d2470b4a12eb17cc1023bc56ed553de9079f8942a2c903db2c889333e5fcc3f8",
+        "hashes": {
+          "ttir": "17d945d77793736a86b8a331d9f00c7e286dadaa05f3ec4f7981ed0950c5b4fb",
+          "ttgir": "b0dd37ba97949ffae0789961ce09eb197a665d1464f7bded22d5a12ee57a0611",
+          "llir": "7c179b638480e8e929225065bb55b5f249564e3fabe14b85bf0b5989f26a5581",
+          "ptx": "d25d1fff62b772ae0169ad9c885798d9a6c363a7cfbad90144bfd14575fa159d",
+          "cubin": "45e3a434e1f1d3f69695924d003199a222853b51a5059e3649b9e567eb597b89"
+        }
+      }
+    },
+    "('r1_delta_early', 128, False)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "c0038f10b642aa9f85f51fc25018c6b6b79cb33565ec27176c7c4c3bd777e70d",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 148480,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 186,
+        "ttir_sha256": "4dda02aa36b3a9df7226d51fe7fce64809b85ac0ceecccd3831e4a22aebce0d9",
+        "hashes": {
+          "ttir": "958f386e3841adec5fdb3a9195de41a4f43a9d90492ec8044d032564b1a8b004",
+          "ttgir": "3011893d8781f88fca1e51a2cc869fd3633010259aa8b1063b1a9b9c4a164e73",
+          "llir": "aa84d31008375f27c0b9b91ec7934bccc75d9e79c1ac38e373fa8098adaf5767",
+          "ptx": "d787b6352fbb671f640df1bf3ac65f4969a1bae01ce9bae3ba69a78b33c2836b",
+          "cubin": "8d5589fb9c9e808494c726d291e9184e7444f97b26a37421d107cda8bbc494d9"
+        }
+      }
+    },
+    "('r1_dv_late', 128, False)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "b65f8ed80394d7ed597ed5b39c2a827042ea726a20bcc883a64198217dce82f7",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 148480,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 204,
+        "ttir_sha256": "40070a51990dd8d619643a43d77d9c3332dfbd11c98ff64feb020b31de5e2492",
+        "hashes": {
+          "ttir": "d58d90db39ee26443e1511f349e17c909afec9d7e1a1169d5008c73f9951fe1c",
+          "ttgir": "c588c61cd0d963184069b354046b87c1b9662ff45adc07ae761183307ff0fb49",
+          "llir": "fa9d26979a9719d2e9c82bdb51fb01d7d51eb9008874f9336a736fb6e1792a13",
+          "ptx": "5d9bfebbc87284052ab5685ca7abf4f6f3167ec36e1f10fcb7f226af7c9ef3e3",
+          "cubin": "fb097938aaaad8ff12e071ca109e267a355f901714c5c8b6edea636e8ecd8710"
+        }
+      }
+    },
+    "('r1_dp_early', 128, False)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "782e753b34866ba5c6acd76d9d6aee450f4ebd409cda440e32b6fd5bb299f75d",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 148480,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 190,
+        "ttir_sha256": "4aa4234c198d41e0db63887ba879480cc7e692a9c28962b71c0b317e5aee90b0",
+        "hashes": {
+          "ttir": "63956149af7b4b51fa40ab768455fec2bc1095372bedb8b20ae6c64a1f58381f",
+          "ttgir": "4ed5d158fbbb85f9de84e172fb0f66fa797a0e9ee543580fdeb2714a4e98e4a2",
+          "llir": "459596d8984cb8f62d65a81578b1b5185a88a12fbf491334872e85480477ac51",
+          "ptx": "3d2a103b767f3459f37d4a20ce96b367b6c9c38f711260e6a11c7d2f82b74402",
+          "cubin": "697c43fda783523df2e564899db055087e873a763245ae87fccefc7ddaf16b51"
+        }
+      }
+    },
+    "('r1_load_cg', 128, False)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "5c0986d7ba11eb2845cb9d79c2d61060f27cabb7f8c46afe4ba65ca762645209",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 148480,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 178,
+        "ttir_sha256": "4fd1ffa8838c2c0a756f2228d6352be5d8efb570549f08b94090a88284a02974",
+        "hashes": {
+          "ttir": "a802a35a1f84927b721ff3c2aca95817d554a320b1f5caad09a2c9e6c65698d8",
+          "ttgir": "0e0801b1fce5fabb0525491b08aaedbb44662cbc12306127d69d65970fd7e9d3",
+          "llir": "6e4f732628e86b1c83dadad836c22dd622e0713e50334d63609fbac7ad7eee54",
+          "ptx": "1fd4a1e8efa648f15a9e4eab27e3c66c59b906953f8bfe1a9d9b594e7afc72e4",
+          "cubin": "e65b0d4803e1d0e0b9e841e07f2778bacbb3abb5130855463ee337b8fd1f8bd2"
+        }
+      }
+    },
+    "('r1_fold_heads', 128, False)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "2fd56c60bb596a04e261cfe0ac6edb0f9b0c6e3751f359109cf668d9a4b6b7f9",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 148480,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 176,
+        "ttir_sha256": "d480382f423b43f8fffabe3fb4f5b28ad755d4c06c8de4cca0ba73b84e6842ed",
+        "hashes": {
+          "ttir": "ccf1b0ea0fdf5ae6664ee5cc5c784e7d55529713ce0c6808e7d4341ccf2ed6d7",
+          "ttgir": "0349c6118bac1d0798118bf57a543a5c80a81e9ef58a09de180bcb9fba1ff386",
+          "llir": "4fb727591309a87a583288577084e330b6ffa17b1e54156b716458cbf89ca51a",
+          "ptx": "f42b7ba78ad9012d8213ecee03c6d1eb1a51387d6878190a459d73007b33a179",
+          "cubin": "61c48aab352963c193847d77555d512aa97e892faee73dd8ba4599f630bd4c2e"
+        }
+      }
+    },
+    "('r1_dv_late_unsigned', 128, False)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "15bfbdf7b502fc2fa46a326ce8b1b6ff22c6e0211db50bd7dbb52b546e292f1a",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 148480,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 204,
+        "ttir_sha256": "ea21f17f649c7833baa8b0bafa0967d8580f88e216149af3fe1ea09c53823370",
+        "hashes": {
+          "ttir": "3d928435d20b2fcb64d7342801ed06e843615a1dfc0ddad23f63102079b7b21d",
+          "ttgir": "07c664ff1d428dc7666a740d8783554e5b4151b6a070965ef81207853c797b29",
+          "llir": "8038a3ff4cdf86385cc8b428af6e7e53ad715c015fb78fa22727caada95936b4",
+          "ptx": "11149b59e0203a98453f556a8c5b3fc7f924beebc369ddfb22370c6b4626bb3e",
+          "cubin": "b5b377d28e4a523df347871f4324f80d478dee1faaad22e6df5912842058b6a0"
+        }
+      }
+    },
+    "('baseline', 128, True)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "957845c126702d1f35168910757bbad1f96490b00e6c7945d2518772b76a98e8",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 148480,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 182,
+        "ttir_sha256": "eed216548c86494a7c8ad2ad4c801ca88702e7230be30822da6ef0a6012eb242",
+        "hashes": {
+          "ttir": "004e28565098529b62b22e04cf2cbeb9bd24076a22cc02f38f0df81b1646f50d",
+          "ttgir": "f0882852e5663d7dee19ddb2f1df82ae254f01e3b8361177a727b1dceff75cb2",
+          "llir": "dd976865c4637d68aa82cb7f72caf57724b7a349ef730e0d27f5fb03e7e9dea7",
+          "ptx": "2fbc1f7a5cc9b96b113c9d310639ce92796131f50c49fb440ad3418f2812dc34",
+          "cubin": "957594d2075ad815d264d5bcdaad6cbc452fb341807802a0e792fe9caf88a4d8"
+        }
+      }
+    },
+    "('r1_unsigned', 128, True)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "47fdb947ce14bffbd867c9c66f2cb292ca9e8370774bd669638762939e9b6c68",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 148480,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 196,
+        "ttir_sha256": "78ac762f93ce4e85c2590cff5ca7d516e27d70e0a3d57c4ad61e8c97294a8d71",
+        "hashes": {
+          "ttir": "0a8892b2f3d1c9062b55f5ed61c26b45cb88bd354da4c32b2655fda004710422",
+          "ttgir": "355f072464edcf347edf81a3d3e9d05ed9e40fb815ff232ff4f1be5a5cc5ca1e",
+          "llir": "da2fc8288672ebc9cc4da94862f08e01cce9f1ca8fbfbd143f95d4f5e4f0b494",
+          "ptx": "6cd47da5d4dc291b1379d9026d9d18d3866b99019a1e6cffea35eb5a7b598d85",
+          "cubin": "390d93b56a9fa523a9c0f6c4102f45616210b07e7f25241408f771752c8a6278"
+        }
+      }
+    },
+    "('r1_delta_early', 128, True)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "ee86f88e7e301d9f9e9447aae1b6d83b063fbf18064308845185c24091345487",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 148480,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 182,
+        "ttir_sha256": "980f06907557b88eeb8ebf7faf9ad94145fd0a6224d4f323b41fbc5ccf90d03c",
+        "hashes": {
+          "ttir": "93bc1a990c6f4e5f2c4eb2cc3705e9f61c7632cd397570a3ee7e44a483e73179",
+          "ttgir": "bd75cb7e2634299037f173818eb697056e9494e4429b58bdb441629d1dabacb7",
+          "llir": "13e54a8ba03bdc313728d967143ae746157b5623b10574ac4208f62e377ba705",
+          "ptx": "ed58ec07166c043dc662e61f4cb8c8fca4aa0c896952551900492e20488e76cd",
+          "cubin": "5cc50b33d99aa44a310c15495bec404a753af8ec995f91794e8ee1122f5433fa"
+        }
+      }
+    },
+    "('r1_dv_late', 128, True)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "964dfe3a93a9f678eedddac4433f82a0394bc34368bd952a0022d8593e463b96",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 148480,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 160,
+        "ttir_sha256": "ffbd838ef1336e705227eab05618c51ac0a8f01fdaf79e73a7a49a20976828c8",
+        "hashes": {
+          "ttir": "13a7084a84d00d5296cb78bf65cb35e12855e397857e0a87f063fbbd02ba89ce",
+          "ttgir": "e93459a5299c2df8ec1bb2c1fb1453e8a7076bd52945b166b9375fddc07cbe54",
+          "llir": "5a103e8dc4571ce019b598294b4dda043dfbf53d169846cd88fc01575027be82",
+          "ptx": "a9e5e6f41e3613aab5d19de56353fc5f1f5ffce8e1caa6b8eff0ede83354054c",
+          "cubin": "7d082cfbdb66f1a160c95e9fbe21dccbeabdf26e88d28783c7e82c5fca3cef3f"
+        }
+      }
+    },
+    "('r1_dp_early', 128, True)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "6e1bc50c3656037c01c565840238f2ffc73deaeb8ef883f0a0545ce593947cb6",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 148480,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 202,
+        "ttir_sha256": "bb1977635e8b9dc14ae541adc86cfe856fa8cf9c274ed22a7d4f5a20820f768e",
+        "hashes": {
+          "ttir": "20c8e821360a280fd6fe90ecd005ef7daf3876f3d4370cf871c3dabb1fa1cb80",
+          "ttgir": "8fa67d606d5520dfceb43f379b177ee2d11e5491f2ea82c3d48ae3a576ece9b7",
+          "llir": "8bcf649140919fe6626e46916c176e840ab475bbfcbaa58975a44a587aeaae65",
+          "ptx": "39b145e6ab9b48e32e6f5bfe906688afe5be25ea01bb5774ea5fb4cbf119f734",
+          "cubin": "901357ba57c04b6dfb03cc5c41a770e127d410eabb8adfe38838aa4fc9100c0a"
+        }
+      }
+    },
+    "('r1_load_cg', 128, True)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "c5ea0de6c16616b9339a0537846acbda5e9581cca1a0a12eb80caf653c0b2fe8",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 148480,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 182,
+        "ttir_sha256": "c449a2b40e1b0b2ab0dfe33fe8a4b14f13103681d6bf8320d4c77a8cebac9a7d",
+        "hashes": {
+          "ttir": "5519eac5257184d5e9d24476dc97a140729f9907e8546603a1b1748583449404",
+          "ttgir": "3b3f320852e74dbd7e5c9f5d4150e8bcfca04de486f206111e3e07c286ae4413",
+          "llir": "5eaa90072c8cab94bda8fc26cd557fdc2c443674230b9040d1797e9d4b97e715",
+          "ptx": "ee2490b02a2d2e142884d717305e97b08778bb3eb5a5dcebafb7f88f569ebc79",
+          "cubin": "8f887013aed4ec6e07cc1a378a70c8a0206f3fb4c10bbddb332cb4155215dd94"
+        }
+      }
+    },
+    "('r1_fold_heads', 128, True)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "183449dab7f30978fb818f4990fadcd4d5874626cfb08f15fedd5751639e3fc7",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 148480,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 186,
+        "ttir_sha256": "7544269532524e0031ea7dfa4154ede2c103ab569c37ac140e5ea04d42c907bb",
+        "hashes": {
+          "ttir": "987079e977ba619af0e4b631eaf33a51859b655c433db754aa2d0de29c9654df",
+          "ttgir": "47aea2db4cb15cfd92a2bf739159146492ab5771ca8974f2eb582b434e092d5a",
+          "llir": "0f76a5364924427b7be77bd91a710953602428b9eee285660cff10f2d7763cf0",
+          "ptx": "ad75e8cbeb2202e7f8ccdc5ea4b0b5dd016cd6db0948b17d26711d42eb9213c5",
+          "cubin": "b76eebadd44b27c0721b67b560cad90da05387e5bedf5bdd5611238a39d168ef"
+        }
+      }
+    },
+    "('r1_dv_late_unsigned', 128, True)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "bb6c365eb0f8ea642f8f2f3aa024be9911c85f3fac663ae98fbfa3007d33f4c6",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 148480,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 174,
+        "ttir_sha256": "2505d15c4e805a2c0c83741861c366a6f880b1d832f698028f9d576c2ab0e702",
+        "hashes": {
+          "ttir": "76300ddde20b69dc89d3e9ecb7868c574101fc56a3b03e80c821f46e1fec708b",
+          "ttgir": "1ff935ad356889e9425100d05186dc410c334fd3ed2a75bac017723237f3ac60",
+          "llir": "cddd5dc5c15a9ba36cd471ec40864077d75ebcf9774630f29c192d6b52683d14",
+          "ptx": "1e01abfd6a58ccf0a9a66ec7526ed1c8f19f900983c009e1b939869457f40b1e",
+          "cubin": "892c594290b4cef8af6e2b6467bfc93e497e7592f71c368cb8f0bcb763d0834a"
+        }
+      }
+    }
+  },
+  "checks": [
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.5008451903601727e-05,
+        "dv": 4.5769316742494404e-05
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.5008451903601727e-05,
+        "dv": 4.5769316742494404e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.5008451903601727e-05,
+        "dv": 4.5769316742494404e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.5008451903601727e-05,
+        "dv": 4.5769316742494404e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.5008451903601727e-05,
+        "dv": 4.5769316742494404e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.5008451903601727e-05,
+        "dv": 4.5769316742494404e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.5008451903601727e-05,
+        "dv": 4.5769316742494404e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.5008451903601727e-05,
+        "dv": 4.5769316742494404e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 8.769701640695682e-06,
+        "dv": 3.189128502166516e-05
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 8.769701640695682e-06,
+        "dv": 3.189128502166516e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 8.769701640695682e-06,
+        "dv": 3.189128502166516e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 8.769701640695682e-06,
+        "dv": 3.189128502166516e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 8.769701640695682e-06,
+        "dv": 3.189128502166516e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 8.769701640695682e-06,
+        "dv": 3.189128502166516e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 8.769701640695682e-06,
+        "dv": 3.189128502166516e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 8.769701640695682e-06,
+        "dv": 3.189128502166516e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.192764066347001e-06,
+        "dv": 2.3741744459439273e-05
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.192764066347001e-06,
+        "dv": 2.3741744459439273e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.192764066347001e-06,
+        "dv": 2.3741744459439273e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.192764066347001e-06,
+        "dv": 2.3741744459439273e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.192764066347001e-06,
+        "dv": 2.3741744459439273e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.192764066347001e-06,
+        "dv": 2.3741744459439273e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.192764066347001e-06,
+        "dv": 2.3741744459439273e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.192764066347001e-06,
+        "dv": 2.3741744459439273e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.575439388534446e-05,
+        "dv": 0.0009558475297239966
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.575439388534446e-05,
+        "dv": 0.0009558475297239966
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.575439388534446e-05,
+        "dv": 0.0009558475297239966
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.575439388534446e-05,
+        "dv": 0.0009558475297239966
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.575439388534446e-05,
+        "dv": 0.0009558475297239966
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.575439388534446e-05,
+        "dv": 0.0009558475297239966
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.575439388534446e-05,
+        "dv": 0.0009558475297239966
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.575439388534446e-05,
+        "dv": 0.0009558475297239966
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00010684001592242698,
+        "dv": 0.0006291852447981583
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00010684001592242698,
+        "dv": 0.0006291852447981583
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00010684001592242698,
+        "dv": 0.0006291852447981583
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00010684001592242698,
+        "dv": 0.0006291852447981583
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00010684001592242698,
+        "dv": 0.0006291852447981583
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00010684001592242698,
+        "dv": 0.0006291852447981583
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00010684001592242698,
+        "dv": 0.0006291852447981583
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00010684001592242698,
+        "dv": 0.0006291852447981583
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00015330815306435763,
+        "dv": 0.0006752173393331784
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00015330815306435763,
+        "dv": 0.0006752173393331784
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00015330815306435763,
+        "dv": 0.0006752173393331784
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00015330815306435763,
+        "dv": 0.0006752173393331784
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00015330815306435763,
+        "dv": 0.0006752173393331784
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00015330815306435763,
+        "dv": 0.0006752173393331784
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00015330815306435763,
+        "dv": 0.0006752173393331784
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00015330815306435763,
+        "dv": 0.0006752173393331784
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.517508772463233e-05,
+        "dv": 5.2913649000077556e-05
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.517508772463233e-05,
+        "dv": 5.2913649000077556e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.517508772463233e-05,
+        "dv": 5.2913649000077556e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.517508772463233e-05,
+        "dv": 5.2913649000077556e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.517508772463233e-05,
+        "dv": 5.2913649000077556e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.517508772463233e-05,
+        "dv": 5.2913649000077556e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.517508772463233e-05,
+        "dv": 5.2913649000077556e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.517508772463233e-05,
+        "dv": 5.2913649000077556e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 7.398018914719223e-06,
+        "dv": 3.369609459824563e-05
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 7.398018914719223e-06,
+        "dv": 3.369609459824563e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 7.398018914719223e-06,
+        "dv": 3.369609459824563e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 7.398018914719223e-06,
+        "dv": 3.369609459824563e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 7.398018914719223e-06,
+        "dv": 3.369609459824563e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 7.398018914719223e-06,
+        "dv": 3.369609459824563e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 7.398018914719223e-06,
+        "dv": 3.369609459824563e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 7.398018914719223e-06,
+        "dv": 3.369609459824563e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.705978589160305e-06,
+        "dv": 2.615574094248091e-05
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.705978589160305e-06,
+        "dv": 2.615574094248091e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.705978589160305e-06,
+        "dv": 2.615574094248091e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.705978589160305e-06,
+        "dv": 2.615574094248091e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.705978589160305e-06,
+        "dv": 2.615574094248091e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.705978589160305e-06,
+        "dv": 2.615574094248091e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.705978589160305e-06,
+        "dv": 2.615574094248091e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.705978589160305e-06,
+        "dv": 2.615574094248091e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00012810097727977698,
+        "dv": 0.0006066294354605262
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00012810097727977698,
+        "dv": 0.0006066294354605262
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00012810097727977698,
+        "dv": 0.0006066294354605262
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00012810097727977698,
+        "dv": 0.0006066294354605262
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00012810097727977698,
+        "dv": 0.0006066294354605262
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00012810097727977698,
+        "dv": 0.0006066294354605262
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00012810097727977698,
+        "dv": 0.0006066294354605262
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00012810097727977698,
+        "dv": 0.0006066294354605262
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00015094740083665403,
+        "dv": 0.0007625586609929513
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00015094740083665403,
+        "dv": 0.0007625586609929513
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00015094740083665403,
+        "dv": 0.0007625586609929513
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00015094740083665403,
+        "dv": 0.0007625586609929513
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00015094740083665403,
+        "dv": 0.0007625586609929513
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00015094740083665403,
+        "dv": 0.0007625586609929513
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00015094740083665403,
+        "dv": 0.0007625586609929513
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00015094740083665403,
+        "dv": 0.0007625586609929513
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00017302124361079363,
+        "dv": 0.0007616936644496697
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00017302124361079363,
+        "dv": 0.0007616936644496697
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00017302124361079363,
+        "dv": 0.0007616936644496697
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00017302124361079363,
+        "dv": 0.0007616936644496697
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00017302124361079363,
+        "dv": 0.0007616936644496697
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00017302124361079363,
+        "dv": 0.0007616936644496697
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00017302124361079363,
+        "dv": 0.0007616936644496697
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00017302124361079363,
+        "dv": 0.0007616936644496697
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.986423532432391e-05,
+        "dv": 8.012649491795365e-05
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.986423532432391e-05,
+        "dv": 8.012649491795365e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.986423532432391e-05,
+        "dv": 8.012649491795365e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.986423532432391e-05,
+        "dv": 8.012649491795365e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.986423532432391e-05,
+        "dv": 8.012649491795365e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.986423532432391e-05,
+        "dv": 8.012649491795365e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.986423532432391e-05,
+        "dv": 8.012649491795365e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.986423532432391e-05,
+        "dv": 8.012649491795365e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "zero_do",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "zero_do",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "zero_do",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "zero_do",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "zero_do",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "zero_do",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "zero_do",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "zero_do",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "constant",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.042067116077826e-06,
+        "dv": 3.018975257873535e-05
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "constant",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.042067116077826e-06,
+        "dv": 3.018975257873535e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "constant",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.042067116077826e-06,
+        "dv": 3.018975257873535e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "constant",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.042067116077826e-06,
+        "dv": 3.018975257873535e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "constant",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.042067116077826e-06,
+        "dv": 3.018975257873535e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "constant",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.042067116077826e-06,
+        "dv": 3.018975257873535e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "constant",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.042067116077826e-06,
+        "dv": 3.018975257873535e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "constant",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.042067116077826e-06,
+        "dv": 3.018975257873535e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "large",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009432939172867583,
+        "dv": 0.0013515935848430471
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "large",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009432939172867583,
+        "dv": 0.0013515935848430471
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "large",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009432939172867583,
+        "dv": 0.0013515935848430471
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "large",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009432939172867583,
+        "dv": 0.0013515935848430471
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "large",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009432939172867583,
+        "dv": 0.0013515935848430471
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "large",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009432939172867583,
+        "dv": 0.0013515935848430471
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "large",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009432939172867583,
+        "dv": 0.0013515935848430471
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "large",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009432939172867583,
+        "dv": 0.0013515935848430471
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00010263123011922115,
+        "dv": 0.0005357551597731103
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00010263123011922115,
+        "dv": 0.0005357551597731103
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00010263123011922115,
+        "dv": 0.0005357551597731103
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00010263123011922115,
+        "dv": 0.0005357551597731103
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00010263123011922115,
+        "dv": 0.0005357551597731103
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00010263123011922115,
+        "dv": 0.0005357551597731103
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00010263123011922115,
+        "dv": 0.0005357551597731103
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00010263123011922115,
+        "dv": 0.0005357551597731103
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "zero_do",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "zero_do",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "zero_do",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "zero_do",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "zero_do",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "zero_do",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "zero_do",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "zero_do",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "constant",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 3.668539089501932e-05,
+        "dv": 0.0005253359324335349
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "constant",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 3.668539089501932e-05,
+        "dv": 0.0005253359324335349
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "constant",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 3.668539089501932e-05,
+        "dv": 0.0005253359324335349
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "constant",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 3.668539089501932e-05,
+        "dv": 0.0005253359324335349
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "constant",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 3.668539089501932e-05,
+        "dv": 0.0005253359324335349
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "constant",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 3.668539089501932e-05,
+        "dv": 0.0005253359324335349
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "constant",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 3.668539089501932e-05,
+        "dv": 0.0005253359324335349
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "constant",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 3.668539089501932e-05,
+        "dv": 0.0005253359324335349
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "large",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009222834762318,
+        "dv": 0.0020565436159938333
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "large",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009222834762318,
+        "dv": 0.0020565436159938333
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "large",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009222834762318,
+        "dv": 0.0020565436159938333
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "large",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009222834762318,
+        "dv": 0.0020565436159938333
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "large",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009222834762318,
+        "dv": 0.0020565436159938333
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "large",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009222834762318,
+        "dv": 0.0020565436159938333
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "large",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009222834762318,
+        "dv": 0.0020565436159938333
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "large",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009222834762318,
+        "dv": 0.0020565436159938333
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 2.3319552437423008e-05,
+        "dv": 7.682473896872266e-05
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 2.3319552437423008e-05,
+        "dv": 7.682473896872266e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 2.3319552437423008e-05,
+        "dv": 7.682473896872266e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 2.3319552437423008e-05,
+        "dv": 7.682473896872266e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 2.3319552437423008e-05,
+        "dv": 7.682473896872266e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 2.3319552437423008e-05,
+        "dv": 7.682473896872266e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 2.3319552437423008e-05,
+        "dv": 7.682473896872266e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 2.3319552437423008e-05,
+        "dv": 7.682473896872266e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "zero_do",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "zero_do",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "zero_do",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "zero_do",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "zero_do",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "zero_do",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "zero_do",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "zero_do",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "constant",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.0436006988312e-06,
+        "dv": 3.036484122276306e-05
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "constant",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.0436006988312e-06,
+        "dv": 3.036484122276306e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "constant",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.0436006988312e-06,
+        "dv": 3.036484122276306e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "constant",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.0436006988312e-06,
+        "dv": 3.036484122276306e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "constant",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.0436006988312e-06,
+        "dv": 3.036484122276306e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "constant",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.0436006988312e-06,
+        "dv": 3.036484122276306e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "constant",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.0436006988312e-06,
+        "dv": 3.036484122276306e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "constant",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.0436006988312e-06,
+        "dv": 3.036484122276306e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "large",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009403346848916305,
+        "dv": 0.0011975389919397506
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "large",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009403346848916305,
+        "dv": 0.0011975389919397506
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "large",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009403346848916305,
+        "dv": 0.0011975389919397506
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "large",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009403346848916305,
+        "dv": 0.0011975389919397506
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "large",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009403346848916305,
+        "dv": 0.0011975389919397506
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "large",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009403346848916305,
+        "dv": 0.0011975389919397506
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "large",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009403346848916305,
+        "dv": 0.0011975389919397506
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "large",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009403346848916305,
+        "dv": 0.0011975389919397506
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00013124022541605163,
+        "dv": 0.0009887633989502653
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00013124022541605163,
+        "dv": 0.0009887633989502653
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00013124022541605163,
+        "dv": 0.0009887633989502653
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00013124022541605163,
+        "dv": 0.0009887633989502653
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00013124022541605163,
+        "dv": 0.0009887633989502653
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00013124022541605163,
+        "dv": 0.0009887633989502653
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00013124022541605163,
+        "dv": 0.0009887633989502653
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00013124022541605163,
+        "dv": 0.0009887633989502653
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "zero_do",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "zero_do",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "zero_do",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "zero_do",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "zero_do",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "zero_do",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "zero_do",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "zero_do",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "constant",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 4.256362227943872e-05,
+        "dv": 0.0012164070222073775
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "constant",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 4.256362227943872e-05,
+        "dv": 0.0012164070222073775
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "constant",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 4.256362227943872e-05,
+        "dv": 0.0012164070222073775
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "constant",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 4.256362227943872e-05,
+        "dv": 0.0012164070222073775
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "constant",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 4.256362227943872e-05,
+        "dv": 0.0012164070222073775
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "constant",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 4.256362227943872e-05,
+        "dv": 0.0012164070222073775
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "constant",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 4.256362227943872e-05,
+        "dv": 0.0012164070222073775
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "constant",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 4.256362227943872e-05,
+        "dv": 0.0012164070222073775
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "large",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009290307937718234,
+        "dv": 0.0021076784225237954
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "large",
+      "name": "r1_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009290307937718234,
+        "dv": 0.0021076784225237954
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "large",
+      "name": "r1_delta_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009290307937718234,
+        "dv": 0.0021076784225237954
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "large",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009290307937718234,
+        "dv": 0.0021076784225237954
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "large",
+      "name": "r1_dp_early",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009290307937718234,
+        "dv": 0.0021076784225237954
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "large",
+      "name": "r1_load_cg",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009290307937718234,
+        "dv": 0.0021076784225237954
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "large",
+      "name": "r1_fold_heads",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009290307937718234,
+        "dv": 0.0021076784225237954
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "large",
+      "name": "r1_dv_late_unsigned",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009290307937718234,
+        "dv": 0.0021076784225237954
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    }
+  ],
+  "passed": true
+}

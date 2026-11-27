@@ -1,0 +1,3 @@
+# Packed头部归并v2
+
+v1的标量解码与向量pack临时值重用了hN_high/low名称，MLIR解析失败。v2仅将向量pack区域临时SSA名加next前缀；不改变结构或候选数。v1文件及初筛失败记录保留，最终选择使用包含两种有效候选的完整screen_v2。

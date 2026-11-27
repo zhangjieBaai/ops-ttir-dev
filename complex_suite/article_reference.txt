@@ -1,0 +1,261 @@
+可以。这五类里，我会优先选“多个计算阶段已经融合、但它们之间存在明显取舍”的算子。 这样的任务既有较大的优化空间，也更容易让 TTIR 的数据流、类型和中间结构信息发挥作用。
+
+结合刚才查到的 Triton 和 FlagGems 源码，我建议：
+第一轮：INT4 反量化 GEMM、融合 MoE 路由、LayerNorm backward 或 Norm＋动态量化。
+第二轮：Attention backward、长序列 Top-K／复杂归约。
+
+这里的排序是实验投入优先级判断，不是已经测出的性能排名。我还没有运行这些 GPU 实验。
+一、先把候选落实到具体算子
+类别	推荐的具体任务	主要优化空间	为什么适合研究 TTIR
+GEMM	Groupwise INT4 解包、反量化与 GEMM 融合；有实际需求时加入 residual／activation	解包方法、scale 复用、类型转换、矩阵操作数组织、累加器和 epilogue	同时存在整数运算、广播、cast、reshape 和 dot，多个编译决策相互影响
+MoE	带 bias 或 group selection 的完整 routing：分数变换、Top-K、原始权重提取、归一化	选择算法、group mask、中间分数保存、输出归一化	比单独 Top-K 有更丰富的数据流和生命周期，适合检验 IR 是否帮助发现更好的实现
+Norm／Reduction	LayerNorm backward 的 dx kernel；推理场景可选 Residual RMSNorm＋动态量化	多个统计量、归约组织、保存与重算、cast 和广播位置	结构仍可控，但明显比 forward norm、mean、sum 更丰富
+Attention	Attention backward 的 dK／dV 部分；或真实使用的带 KV 反量化变体	多个 dot、softmax 中间量共享、重算、循环累加器、mask	操作空间大，但布局和流水线影响更强，实验成本也更高
+Reduction／Selection	大 N 的 partial Top-K，或带 mask／分段的多输出归约	算法分解、候选压缩、局部归约、分层合并	算法空间大；但若涉及多 kernel、临时缓冲，要与单个 TTIR 的优化分开归因
+
+
+普通大方阵 GEMM、单独 mean/sum 和已经测过的 forward layernorm，可以继续作为对照，但我不会再把扩展实验量主要放在它们上面。
+二、第一优先：INT4 反量化 GEMM
+这是我认为最适合把“较大优化空间”和“具体编译机制”结合起来的候选。
+1. 为什么它比普通 mm 更有空间？
+普通 GEMM 的 TTIR 主体通常比较紧凑。量化 GEMM 则在每次 K 迭代中包含：
+
+packed weight 读取、位运算解包、group 索引、scale／zero 读取、反量化、类型转换、数据重排和 dot。
+
+我查到的 FlagGems 实现确实包含这些步骤，而且有非常具体的结构敏感性：它在 low/high 两个 INT4 分支反量化后，先转换到矩阵乘输入类型，再经过 join → permute → reshape 接到 tl.dot。源码注释明确提醒，在 join 与 dot 之间插入逐元素操作，会妨碍某个使 MMA 看到完整操作数的折叠。 这是一个真实的“表达式位置会影响后端匹配”的入口。FlagGems INT4 GEMM 实现
+2. 可以尝试的实验
+实验 G1：解包与 dot 的组织方式
+比较两种计算结构：
+- 将 low/high nibble 解包后拼回完整权重 tile，再做 dot。
+- 保留偶数／奇数 K 位置的两个分支，分别做部分矩阵乘，再合并累加结果。
+这会同时改变：
+- 是否需要拼接、重排；
+- dot 的数量和形状；
+- activation 的读取方式；
+- 同时存活的权重 tile 和 accumulator 数量；
+- 后端需要的布局转换。
+这不是凭空构造的候选。 FlagGems 的另一个 weight_int4pack_mm 实现已经采用了偶数／奇数两个计算分支，并共享同一 packed byte 对应的 scale／zero。因此这些现有策略应进入基线或候选集合，不能把重新发现它们算成新的优化成果。另一种 INT4 GEMM 组织方式
+
+这个实验特别适合回答：
+Agent 看到 TTIR 后，能否理解“少一次重排”和“多一组累加器”之间的取舍，并找到适合当前 shape 的结构？
+
+实验 G2：group 边界特化与 scale 复用
+当 group size 是偶数时，一个 byte 中的两个 INT4 值通常落在同一量化 group。可以比较：
+- 通用地分别计算 low/high 的 group、scale 和 zero；
+- 在满足条件的子域内共享这些计算；
+- 进一步让 K tile 与 group 边界对齐，减少反复计算和读取。
+但这里要直接看编译结果：如果编译器已经合并了重复加载和地址计算，就没有剩余收益。
+
+TTIR 在这个实验中的价值，是让 Agent 看见特化后的重复数据流是否还存在。源码同样可以实现最终策略，完全符合你认可的“TTIR 帮助优化 Triton”方向。
+实验 G3：cast、reshape 与布局转换的相对位置
+这是与前面讨论的“保留结构”最直接相关的一项。
+
+可以比较：
+- 在较小的 low/high 分支上完成转换，再拼接。
+- 拼接后再转换。
+- 在不同 reshape／broadcast 位置保留或产生窄类型中间值。
+观察重点是：
+- dot 输入前是否多出布局转换；
+- 转换实际搬运的是低精度还是 FP32 数据；
+- 解包后的大张量存活多久；
+- 最终寄存器、shared-memory 通信和 spill 是否改变。
+只有某个有利结构在正常编译中被改掉，才进一步尝试在对应 pass 后注入 TTIR，或使用相关内部属性。 不需要一开始就盲目加 efficient_layout。
+实验 G4：真实 epilogue 与 accumulator 的关系
+如果模型确实需要 residual、bias 或 activation，可以进一步测试：
+- residual 作为 dot 的初始 accumulator；
+- 先得到零初值的 dot 结果，再做 residual add；
+- residual 的加载和转换放在不同位置。
+Triton 3.6/3.7 的 CombineDotAddPattern 会在满足条件时将 dot(A,B,0)+C 合并为 dot(A,B,C)，所以这里存在明确的编译规则可以追踪。CombineDotAddPattern
+
+不过，浮点版本还要检查已有源码参数能否保留分离形式，且不能改变数值合同。它应是一个结构与依赖关系实验，不能预设为 TTIR 独占能力。
+3. 我对这个方向的预期
+它最有希望产生“可以解释的大收益”。 收益可能来自少做解包和索引、减少转换、降低中间状态，或者更合适的计算分解，而不只是改一个 launch 参数。
+
+基线应固定量化格式和 packed weight 布局，并使用合理的融合实现。不要把“先完整反量化到显存，再调用 GEMM”作为唯一对照。
+三、第二优先：完整 MoE routing，尤其是 grouped／biased routing
+如果你更看重让 Agent 找到幅度较大的总体优化，这类算子的优先级可以与量化 GEMM 并列。
+
+我建议先从已经算好的 router logits 开始，覆盖：
+
+分数变换、group／expert 选择、未加 routing bias 的权重提取、归一化，以及 indices／weights 输出。
+
+先选定一种真实接口语义，不要把 softmax routing、softplus-sqrt routing 和 grouped routing 混成同一个问题。
+1. 已有实现里有哪些具体空间？
+我读取的 FlagGems 快照中：
+- topk_softmax 先做完整 softmax，再重复 K 次选最大值；开启重新归一化时，还有权重写出、读回、再写出的结构。
+- grouped_topk 有 group 选择、expert mask 构造、多轮 expert 选择，以及原始分数的索引加载。
+- topk_softplus_sqrt 又增加了非线性分数变换和用于选择的 bias。
+这些文件在当前快照中位于 deprecated/，适合作为结构参考，不能直接把它们认定为当前最强性能基线。topk_softmax · grouped_topk · topk_softplus_sqrt
+2. 可以尝试的实验
+M1：选择算法与融合状态一起搜索。
+
+不只比较“重复 max”和“排序”，还要比较各方法需要保留多少状态：
+- 全部原始分数；
+- 全部加 bias 后的选择分数；
+- K 个候选及其原始权重；
+- 分组后的局部候选。
+某种方法虽然比较次数少，却可能让更多 score／index 张量长时间占用寄存器；另一种方法多做一些计算，但状态更小。这个取舍比单独 Top-K 更适合研究 IR 信息是否有帮助。
+
+M2：group mask 的构造方式。
+
+我看到的实现会构造 expert 与 group 的二维对应关系，再归约得到每个 expert 是否被选中。
+
+如果真实接口规定分组连续且等大，可以探索更直接的成员关系传播，避免显式形成较大的 [experts, groups] 中间矩阵。
+
+这里的重点是让 Agent 从展开后的数据流识别：
+这段广播、比较和归约，是否只是在实现一个更简单的分组映射？
+
+这是很适合 TTIR 辅助发现的结构，且最终可以干净地回写到 Triton。
+
+M3：选中权重的保存、重算与重新加载。
+
+比较：
+- 保留原始分数，选中后直接取得权重；
+- 仅保留选择状态，之后重新加载原始分数；
+- 保留 K 个输出权重，归一化后一次写出；
+- 先写出再读回归一化。
+要看整个 kernel 的收益。消除一次读写，可能以增加寄存器压力为代价。
+
+还要区分“用于选择的带 bias 分数”和“最终输出的原始权重”。不能默认通过减回 bias 就能无损恢复原始浮点分数。
+
+M4：语义允许时，改变分数变换与选择的顺序。
+
+例如，理想数学语义下，softmax 后选择 Top-K，再对选中权重重新归一化，有：
+\[
+\frac{\operatorname{softmax}(x)_i}
+{\sum_{j\in S}\operatorname{softmax}(x)_j}
+=
+\frac{e^{x_i}}{\sum_{j\in S}e^{x_j}}.
+\]
+这提供了“先选择，再只处理选中项”的算法候选。
+
+但如果接口包含额外 epsilon、基于变换后分数的 bias、严格的浮点 tie 行为，这个简化可能不再等价。应按真实合同决定是否允许，不能把放宽精度和排序语义记成编译收益。
+3. 与 efficient_layout 的关系要纠正
+业务里的 gather，不一定是 tt.gather。
+
+这里读到的 grouped routing 取原始权重，用的是 tl.load(base + selected_index)。它是索引加载，不能直接套用前面讨论的 tt.gather efficient_layout。
+
+因此，我推荐 MoE routing 的理由是算法和数据流空间大，不是它天然命中某个隐藏属性。
+四、第三优先：Norm backward，或 Norm＋动态量化
+这类任务的好处是：比你已经做过的 forward norm 丰富很多，又比完整 attention 更容易控制实验范围。
+方案 A：LayerNorm backward 的 dx kernel
+先聚焦输入梯度：
+\[
+\hat{x}=(x-\mu)r,\qquad u=dy\cdot w
+\]
+\[
+dx=r\left(
+u-\operatorname{mean}(u)
+-\hat{x}\operatorname{mean}(u\hat{x})
+\right).
+\]
+它包含两个统计量，以及被归约和最终输出反复使用的中间值。Triton 官方实现也能直接看到 xhat、`wdy`、两个 reduction 和后续 dx 计算。官方 LayerNorm backward
+
+可以做三个主要实验：
+1. 两个统计量分开归约还是组合归约。
+   看通信、同步和临时值数量如何变化，不能只数 TTIR 中有几个 reduce。
+2. 保存中间值还是在输出阶段重算。
+   例如 xhat、`wdy`、乘积是否都需要贯穿整个归约阶段。
+3. 整行持有还是分块循环处理。
+   对较大 hidden size，比较更高的数据复用与更小的活动状态。
+这里有一个明确边界：手工在 TTIR 中复制廉价表达式，不保证重计算会保留。后面仍有 CSE、LICM 等 passes。若它们再次合并或外提，就要判断问题是否已需要进入 TTGIR 流程，而不是继续盲目改 TTIR。
+
+第一轮先做 dx。 dw/db 的跨行归约、锁和临时缓冲可以另开任务，否则会同时改变多个 kernel 的协作方式。
+方案 B：Residual RMSNorm＋动态 INT8／FP8 量化
+如果你主要面向推理，我更建议这个版本：
+
+residual add、RMSNorm、动态量化统计、缩放、窄类型输出。
+
+这里不仅有“融合”的收益，还可能有统计量之间的依赖重组。
+
+例如定义：
+\[
+z=x+\mathrm{residual},\quad
+\rho=\operatorname{rsqrt}(\operatorname{mean}(z^2)+\epsilon),\quad
+u=z\cdot w,\quad y=\rho u.
+\]
+在有限、正常数值且 \(\rho>0\) 的理想计算下：
+\[
+\max |y|=\rho\max |u|.
+\]
+于是可以研究：
+- 先完成 RMSNorm，再对 y 求 amax；
+- 同时组织 sum(z²) 与 max(abs(u))，最后合成量化 scale。
+这可能改变两个统计阶段的串行关系和中间张量存活时间。它是有明确数学动机的候选，但实际浮点舍入、零值处理和量化结果合同必须保持一致。 如果要求量化输出逐位相同，有些变换可能不可用。
+
+这类任务同时覆盖了 reduction、norm、cast 和广播，比再做一个独立 RMSNorm 更有区分度。
+五、Attention 也值得做，但建议选 backward 或真实变体
+我不会排除 attention。它的结构空间很大，只是更容易同时受到底层流水线与布局的影响，首轮归因成本更高。
+更推荐 Attention backward 的 dK／dV 部分
+它包含：
+- QK 分数重计算；
+- softmax 概率恢复；
+- dV 的矩阵乘；
+- dP、dS 的逐元素计算；
+- dK 的矩阵乘；
+- 多个循环累加器与混合精度转换。
+这些结构在 Triton 官方 fused-attention 实现中都有直接对应。官方 Attention 实现
+
+可以重点比较：
+实验方向	实际取舍
+dK／dV 共用概率 tile，还是局部重新计算	减少计算与减少长寿命中间值之间的取舍
+统计量更新提前还是推迟	更早完成计算与延长值存活时间之间的取舍
+cast 放在不同消费路径	重复转换与保留较大 FP32 状态之间的取舍
+循环内部计算分块	更多复用与更多 accumulator／临时 tile 之间的取舍
+
+
+官方 forward 内核甚至针对特定 shape 使用 accumulator 的 reshape／split／join，并把部分统计量更新放到循环末尾以降低寄存器压力。这说明这里确实存在计算结构与资源使用之间的细致取舍，而不只是 tile 大小选择。相关循环代码
+
+如果主要做推理，可以换成真实需要的 KV 反量化 attention。它把量化 GEMM 中的解包、scale 和 cast 问题，与 online softmax 的循环状态结合起来，空间也很大。
+
+但是，不能为了获得漂亮倍率，退回未充分融合的朴素 attention 作为唯一基线。
+六、Reduction 里，值得扩大的是复杂归约和长序列选择
+这一类我会选两种之一。
+1. 大 N 的 partial Top-K
+例如较长的采样分布或索引器分数，重点比较：
+- 全排序与真正的选择算法；
+- 分块候选保留；
+- 局部 Top-K 与合并；
+- 阈值过滤、压缩与后续精确选择；
+- 候选状态保存在什么位置。
+它的算法空间通常比单独 sum 大得多。你之前关注 DeepSelect，这条路线可以继续利用。
+
+但如果优化需要改变 kernel 数量、临时缓冲和全局阶段划分，就应该报告为整个选择算法的优化。可以让源码组和 IR 组拥有同样的外层权限，也可以先固定阶段划分，比较各阶段内部的优化；两者不要混着解释。
+2. 带 mask／分段的多输出归约
+例如一个 tile 同时需要输出多个统计量，并且有不规则长度、索引或后续归一化。
+
+它比独立 sum 多出：
+- 多个统计量是否共享遍历；
+- mask 和地址计算能否共享；
+- 保存输入还是重载；
+- 不规则尾部如何处理；
+- 不同输出的布局要求是否冲突。
+不过，第一轮的 Norm backward／Norm＋量化已经覆盖了其中不少结构，不必再额外铺开大量相似案例。
+七、我建议的第一轮：三个任务，六个代表点
+下面是建议起点，不是声称这些 shape 已经发现编译缺陷，也不需要做所有参数的笛卡尔积。
+任务	初始代表点	主要想观察什么
+INT4 groupwise GEMM	M=16, K=4096, N=4096，group=128	较小 M 下的解包、scale、转换成本
+INT4 groupwise GEMM	M=128, K=4096, N=11008，group=128	更高计算复用下的布局与活动状态
+Grouped／biased MoE routing	tokens=128, experts=256, K=8	小批次、选择依赖与每行组织
+Grouped／biased MoE routing	tokens=4096, experts=512, K=8	大批次、归约组织与中间数据流
+LN backward dx，或 Norm＋量化	rows=2048, hidden=4096	多统计量共享与重计算
+同一个 Norm 任务	rows=512, hidden=8192	较大活动状态与寄存器压力
+
+
+采用你已经认可的三组：
+- A：优化 Triton 源码。
+- B：看 TTIR，优化 Triton 源码。
+- C：直接优化 TTIR，看到与 B 相同的信息。
+基线先做合理配置调优，三组开放相同的配置空间。这样能减少“只是某一组更容易改 warp／tile”的影响。
+内部属性和 pass 实验放在哪里？
+把它们作为这些真实算子里的局部实验：
+- 量化 GEMM 出现不利 cast／reshape／dot 结构时，测试改写位置。
+- residual 被合入 accumulator 后形成不利依赖时，测试拆分与重新合并。
+- 实际生成了 tt.gather，且布局选择与上下游冲突时，再测试 efficient_layout。
+- Norm／attention 出现过长的中间值生命周期时，追踪是哪一个 pass 改变了位置。
+每个候选都看同一条证据链：
+改变了什么结构 → 最终代码或资源发生什么变化 → 整个 kernel 是否更快。
+
+如果加属性只让中间 IR 看起来不同，最终代码和性能没有变化，就结束这条候选，继续搜索其他结构。
+
+如果只能先选一个，我选 INT4 反量化 GEMM；如果希望同时覆盖算法搜索和编译结构，再加完整 MoE routing；如果还需要一个成本较低、便于解释结果的任务，就加 LN backward dx 或 Norm＋动态量化。 Attention backward 放到第二轮，可以检验前面发现的方法能否应对更复杂的循环和矩阵计算。

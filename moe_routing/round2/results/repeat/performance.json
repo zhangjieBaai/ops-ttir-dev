@@ -1,0 +1,5982 @@
+{
+  "environment": {
+    "python": "/root/venvs/ir-ops-dev/bin/python",
+    "prefix": "/root/venvs/ir-ops-dev",
+    "triton": "3.7.0",
+    "triton_path": "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/__init__.py",
+    "libtriton_path": "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/_C/libtriton.so",
+    "include_system_site_packages": false,
+    "sys_path": [
+      "/root/ops-ttir-dev",
+      "/root/ops-ttir-dev/moe_routing",
+      "/root/ops-ttir-dev/moe_routing/round2",
+      "/usr/lib/python312.zip",
+      "/usr/lib/python3.12",
+      "/usr/lib/python3.12/lib-dynload",
+      "/root/venvs/ir-ops-dev/lib/python3.12/site-packages"
+    ],
+    "flagtree_flagprism_distributions": [],
+    "flagtree_flagprism_source_markers": [],
+    "installer": "pip\n",
+    "direct_url": null,
+    "verified_record_entries": 362,
+    "torch": "2.12.0+cu130",
+    "device": "2",
+    "gpu": "index, uuid, name, driver_version, clocks.current.sm [MHz], power.draw [W], temperature.gpu\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 1830 MHz, 199.32 W, 36\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 72.91 W, 30\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 70.72 W, 28\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 74.17 W, 30\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 1830 MHz, 606.53 W, 54\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 71.73 W, 29\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 1830 MHz, 286.30 W, 43\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 1830 MHz, 255.01 W, 39\n",
+    "toolchain": {
+      "libtriton": "a9c01e1f31c128b18f7adb9b2d383de0fae051c851658886da22d4915f60b8f5",
+      "backend": "d012f2a7e705592e590630a0df58099ceeb9ef71517c561fc81644c0c9399658",
+      "ptxas": "c960a4f238b17d5c5d3c01ad2bbc1ebd2c5aecc459cb4d223bff10b45f9b8fca"
+    },
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "2",
+      "CUDA_ARCH_LIST": "7.5 8.0 8.6 9.0 10.0 12.0",
+      "CUDA_VERSION": "12.9.0.043",
+      "PYTHONIOENCODING": "utf-8",
+      "LD_LIBRARY_PATH": "/usr/local/lib/python3.12/dist-packages/torch/lib:/usr/local/lib/python3.12/dist-packages/torch_tensorrt/lib:/usr/local/cuda/compat/lib:/usr/local/nvidia/lib:/usr/local/nvidia/lib64",
+      "CUDA_DRIVER_VERSION": "575.51.03",
+      "CUDA_HOME": "/usr/local/cuda",
+      "CUDA_MODULE_LOADING": "LAZY"
+    },
+    "clocks_locked": false,
+    "cache_flushed": false
+  },
+  "manifest_sha256": "8a4505156c7c697cde0d2d88eb1c1268d6800cac7f85ad400f501f3bb9469fe6",
+  "seed": 123,
+  "rounds": 5,
+  "rep_ms": 20,
+  "names": [
+    "baseline",
+    "parent",
+    "r2_rank_ordered_gather"
+  ],
+  "kernels": {
+    "e256/baseline": [
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/round2/ir/e256_w4/baseline_s1.ttir",
+        "ir_sha256": "480213e9b84efb96c2b1d0fd3335c21a845329a0eb614882e0c5a59a744950ad",
+        "stage_sha256": {
+          "ttir": "480213e9b84efb96c2b1d0fd3335c21a845329a0eb614882e0c5a59a744950ad",
+          "ttgir": "0eb3783e528310bffaf7dc4f80f7cbf3c0a1c2785d4015c60a8d08eb7a235de7",
+          "llir": "a8d84973ebe91b9e97eff8324a632c1365a37af6aa45988068ba897e7ce9ba33",
+          "ptx": "f154a565566de4a2d688d0ed1a38cb3b8db767da4d41a72d1a94c0897457c999",
+          "cubin": "cec3824f9952b0c33f6eef744b33a4e7376e910bebb185c7e933327ab16bd241"
+        },
+        "n_regs": 18,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "57e6c7ac759e120a3a8a968c7fbc6618a410b216f5bae10b9799d7271237ec5c",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "topk_with_k2_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 0,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.topk_with_k2_triton": "cccbd97ed065f5bbfeaea90aee4fb0312c76595fd47b2476de5479bc17271d4f"
+        }
+      },
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/round2/ir/e256_w4/baseline_s2.ttir",
+        "ir_sha256": "87a63d0028a80309710a4c91eb5a094f0f22b3627eb4019f2f89b646251e685c",
+        "stage_sha256": {
+          "ttir": "614e8b7cfeaacfadcd6f39d27f6982c5305dcbef0d7c02ee8c8b9a65ed459a37",
+          "ttgir": "b70b6a6fa7d931e5906f3391ca5e0e85e5846627ed380846265138e5bede8676",
+          "llir": "51d87bd8e6b0de103dc6ee5767d161356cf41f1b81ea8dea4ea2eccb26043a58",
+          "ptx": "8c450a40034720b2d72c694c9e81f742a5cb99114b1a249bd7926d1aa41e3c36",
+          "cubin": "57422cf996c28c05a3f12972248e30a4903e5cc38c8a3b34b85279af49ffa6ae"
+        },
+        "n_regs": 32,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "fe0da4f4c92d4ebffe3a530420a3d2659bb00ea57b508cf4ef4a3c28dd151d62",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "group_idx_and_topk_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 1024,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.group_idx_and_topk_triton": "3114c3ded4031142ad606ab4b1c4861a0fc460e5bc2cd1a25979cad247343713"
+        }
+      }
+    ],
+    "e256/parent": [
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/round2/ir/e256_w4/baseline_s1.ttir",
+        "ir_sha256": "480213e9b84efb96c2b1d0fd3335c21a845329a0eb614882e0c5a59a744950ad",
+        "stage_sha256": {
+          "ttir": "480213e9b84efb96c2b1d0fd3335c21a845329a0eb614882e0c5a59a744950ad",
+          "ttgir": "0eb3783e528310bffaf7dc4f80f7cbf3c0a1c2785d4015c60a8d08eb7a235de7",
+          "llir": "a8d84973ebe91b9e97eff8324a632c1365a37af6aa45988068ba897e7ce9ba33",
+          "ptx": "f154a565566de4a2d688d0ed1a38cb3b8db767da4d41a72d1a94c0897457c999",
+          "cubin": "cec3824f9952b0c33f6eef744b33a4e7376e910bebb185c7e933327ab16bd241"
+        },
+        "n_regs": 18,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "57e6c7ac759e120a3a8a968c7fbc6618a410b216f5bae10b9799d7271237ec5c",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "topk_with_k2_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 0,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.topk_with_k2_triton": "cccbd97ed065f5bbfeaea90aee4fb0312c76595fd47b2476de5479bc17271d4f"
+        }
+      },
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/round2/ir/e256_w4/parent_s2.ttir",
+        "ir_sha256": "d7bf0fff5f7d60c35cc4672558dfb4424d5471c8c777eff68aec28aef269a23e",
+        "stage_sha256": {
+          "ttir": "fc73268e1ab5d6651f596bcce78385b4bbc8deacc598cc50422e1aa012c1f8b6",
+          "ttgir": "c9d79358076418eaae5098bd9ed7089c835395f6441b6b264d2a4572296fc546",
+          "llir": "aa49197a7d204bf430b88ba4f73f14fc8b56465d049be24b65d29e7fe70d6733",
+          "ptx": "9a4595c7627ab104c1d509c4ad2a78a3ae4ec6b6b3f7c4ca947f7fb23d900db4",
+          "cubin": "249576153698d43cc3e8b9ebe345089b152b82fdf91f18998a4ab38f1baa8e4b"
+        },
+        "n_regs": 25,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "e81bdb9f8d3838c2396ebcac2555f7561acfaf90665ce14e569cb265359976e0",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "group_idx_and_topk_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 16,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.group_idx_and_topk_triton": "8d298f40f5dc14325285e770975383faa96101ec0bcb9bbc3b15f5efc1cdec17"
+        }
+      }
+    ],
+    "e256/r2_rank_ordered_gather": [
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/round2/ir/e256_w4/baseline_s1.ttir",
+        "ir_sha256": "480213e9b84efb96c2b1d0fd3335c21a845329a0eb614882e0c5a59a744950ad",
+        "stage_sha256": {
+          "ttir": "480213e9b84efb96c2b1d0fd3335c21a845329a0eb614882e0c5a59a744950ad",
+          "ttgir": "0eb3783e528310bffaf7dc4f80f7cbf3c0a1c2785d4015c60a8d08eb7a235de7",
+          "llir": "a8d84973ebe91b9e97eff8324a632c1365a37af6aa45988068ba897e7ce9ba33",
+          "ptx": "f154a565566de4a2d688d0ed1a38cb3b8db767da4d41a72d1a94c0897457c999",
+          "cubin": "cec3824f9952b0c33f6eef744b33a4e7376e910bebb185c7e933327ab16bd241"
+        },
+        "n_regs": 18,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "57e6c7ac759e120a3a8a968c7fbc6618a410b216f5bae10b9799d7271237ec5c",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "topk_with_k2_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 0,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.topk_with_k2_triton": "cccbd97ed065f5bbfeaea90aee4fb0312c76595fd47b2476de5479bc17271d4f"
+        }
+      },
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/round2/ir/e256_w4/r2_rank_ordered_gather_s2.ttir",
+        "ir_sha256": "4adc0f60fc21178d08f8cb5b6afc46d6c4a4e01eb149e5d161f5e8dab8c262d0",
+        "stage_sha256": {
+          "ttir": "df1d2a9c25f2c1a041dbe5c7d9fc957be4b3f65fc4ae17777d6f069d9caddb05",
+          "ttgir": "b6c31695f8d98851a41789896c431fee05ef66f525b3508b07291eac6f2558d2",
+          "llir": "b6e5b32d3cdec19bd011ccbc89852713c431b84b97ee44e47633a414a46da646",
+          "ptx": "794228dc9402dd9d42bc7c7de21b844fa1b4448f2b28ec642cc1e9eebb2fb8e3",
+          "cubin": "f4357a21b98ad15720101d76d402087ef13ee2f6861514a9c9e3df12147ac3d4"
+        },
+        "n_regs": 31,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "1655ba7dde5d0447b119706a01957735ebe6bbdfbd500f0dcf37409aa533f160",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "group_idx_and_topk_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 1024,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.group_idx_and_topk_triton": "f26b50f8fe8f7f5554b5f8466016d102b3f54c96d5c0f03d1f079f65e433a799"
+        }
+      }
+    ],
+    "e512/baseline": [
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/round2/ir/e512_w4/baseline_s1.ttir",
+        "ir_sha256": "44437b2e9b16bdc93722071a1ee39e2511ffe90620ed009200bad00bb2b588ff",
+        "stage_sha256": {
+          "ttir": "44437b2e9b16bdc93722071a1ee39e2511ffe90620ed009200bad00bb2b588ff",
+          "ttgir": "36ff30ab322b47ffd41688a76f44b4ef1b521bd94fc993755d3e58871e605637",
+          "llir": "b5a5cbacb4b94039fa97dd434fd8633ec7691493cfa70cebd0a1d0417f01edd7",
+          "ptx": "4161d210c39948e0115736950a64d8d878696e63c58b7dc5f9735f8c5d3ef74f",
+          "cubin": "525a6388661767630dd2e998690448feed00313684ef1ca9355ded24ef46fc2c"
+        },
+        "n_regs": 20,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "e3689039ce9f3a5070cf2d23e19c3b2abe28cb2e8b7d9c1403b314cd32915869",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "topk_with_k2_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 8,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.topk_with_k2_triton": "7bd26f608ef03479a434a08496697150b22e4dd939fa0b185cc80113a4ef5c16"
+        }
+      },
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/round2/ir/e512_w4/baseline_s2.ttir",
+        "ir_sha256": "122b02ce8916c48ee764572494c73e6f192d2b4fd626f383f1589a4949864fa5",
+        "stage_sha256": {
+          "ttir": "fa37397877596e25defbd3001b7a1464cf1ddf327e8f55ffdac5c0089b8b3932",
+          "ttgir": "743d05cfdffc99f390eb6f6f8c24a46b4d02a280bc0cc0a7ec10e6a92a7ddb75",
+          "llir": "d1493d1779460529c0af8dc5f968ee44da60eaed2f89ca20e864fda7d5c9d461",
+          "ptx": "d7a7c49d2ba940d6ab68378c48eaa471e67753749fdb425d3ee1639b95bc9521",
+          "cubin": "8c9f10e5aa69dced8bf488ba076f8c1a2cdbdc4d49e052c84bb138f2e541791c"
+        },
+        "n_regs": 32,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "058fb4093a6df1a660c81a5da2119f7fc5ff14ffe5bfc3ccd2804828670486e7",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "group_idx_and_topk_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 2048,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.group_idx_and_topk_triton": "df1c8940a153af35806a3ae117c9e464c0ee599095a90825e48e984c5ef2a2c6"
+        }
+      }
+    ],
+    "e512/parent": [
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/round2/ir/e512_w4/baseline_s1.ttir",
+        "ir_sha256": "44437b2e9b16bdc93722071a1ee39e2511ffe90620ed009200bad00bb2b588ff",
+        "stage_sha256": {
+          "ttir": "44437b2e9b16bdc93722071a1ee39e2511ffe90620ed009200bad00bb2b588ff",
+          "ttgir": "36ff30ab322b47ffd41688a76f44b4ef1b521bd94fc993755d3e58871e605637",
+          "llir": "b5a5cbacb4b94039fa97dd434fd8633ec7691493cfa70cebd0a1d0417f01edd7",
+          "ptx": "4161d210c39948e0115736950a64d8d878696e63c58b7dc5f9735f8c5d3ef74f",
+          "cubin": "525a6388661767630dd2e998690448feed00313684ef1ca9355ded24ef46fc2c"
+        },
+        "n_regs": 20,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "e3689039ce9f3a5070cf2d23e19c3b2abe28cb2e8b7d9c1403b314cd32915869",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "topk_with_k2_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 8,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.topk_with_k2_triton": "7bd26f608ef03479a434a08496697150b22e4dd939fa0b185cc80113a4ef5c16"
+        }
+      },
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/round2/ir/e512_w4/parent_s2.ttir",
+        "ir_sha256": "2033a249d5300c545a0e6514842c6424d304c58d823e82c80a3e63e5997c38f5",
+        "stage_sha256": {
+          "ttir": "05970d5ed69633b5fec014458a6e790dab0c0321c0736f9e3615d3b6ce3ec73b",
+          "ttgir": "9617662cbdafb6bc08d4031655da8c11f39b552859785f47288f6594667b6de9",
+          "llir": "9383e732b8172e4d20874fe2e477046578902e23b9d24e5bea1ff7a4281217eb",
+          "ptx": "ea0c1026a77504fc1467adc143c5d8ac4b73e3aeba358331e0b87da085e09b51",
+          "cubin": "83748e0460103bd25a5d91d8b84162650fd0d636d24395ceb6837c41d81e941f"
+        },
+        "n_regs": 28,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "7e73ec6c30005f25587f0581813bf6c21b1320259122f1c254c2183570c6979b",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "group_idx_and_topk_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 16,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.group_idx_and_topk_triton": "41ef12e06c7dcc4046a13250817c208fbbfe9ee307bf5bb223bff22c777b486d"
+        }
+      }
+    ],
+    "e512/r2_rank_ordered_gather": [
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/round2/ir/e512_w4/baseline_s1.ttir",
+        "ir_sha256": "44437b2e9b16bdc93722071a1ee39e2511ffe90620ed009200bad00bb2b588ff",
+        "stage_sha256": {
+          "ttir": "44437b2e9b16bdc93722071a1ee39e2511ffe90620ed009200bad00bb2b588ff",
+          "ttgir": "36ff30ab322b47ffd41688a76f44b4ef1b521bd94fc993755d3e58871e605637",
+          "llir": "b5a5cbacb4b94039fa97dd434fd8633ec7691493cfa70cebd0a1d0417f01edd7",
+          "ptx": "4161d210c39948e0115736950a64d8d878696e63c58b7dc5f9735f8c5d3ef74f",
+          "cubin": "525a6388661767630dd2e998690448feed00313684ef1ca9355ded24ef46fc2c"
+        },
+        "n_regs": 20,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "e3689039ce9f3a5070cf2d23e19c3b2abe28cb2e8b7d9c1403b314cd32915869",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "topk_with_k2_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 8,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.topk_with_k2_triton": "7bd26f608ef03479a434a08496697150b22e4dd939fa0b185cc80113a4ef5c16"
+        }
+      },
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/round2/ir/e512_w4/r2_rank_ordered_gather_s2.ttir",
+        "ir_sha256": "97ff16f5ee480b5ae069b06e07650aea917aa5f8950f727bbd369de74de2c667",
+        "stage_sha256": {
+          "ttir": "8b05033ff3f03cce9306d996ac48cfc612ad5cae82555840eadf6cdf085d784c",
+          "ttgir": "c3a870075ef9763b4bde1e45bcc8824e8bd01da3a78b5cff7c7c97c796b5b7ed",
+          "llir": "50dc3707db9506d17cddf6525ea328299d8f789ab8bd83d77d11f2d7f226c083",
+          "ptx": "61cbb36f756e20962f0fa022dc639579f23c5942a31ad345e8543f9a6268a632",
+          "cubin": "9bd1a7a4dbfc6e5e7d5bdd47ce2fe26c79f5efe24b0073b8b969a2af836ab484"
+        },
+        "n_regs": 32,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "bfb3d3bf1dec01f5a7f8e0cd5bc2328e55265a60c2bd9a553cb39581f13172a9",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "group_idx_and_topk_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 2048,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.group_idx_and_topk_triton": "40552e66b09901b2a9a341ce54eefcbf1ad06c77f161bf616db86a2c8118ce68"
+        }
+      }
+    ]
+  },
+  "records": [
+    {
+      "shape": [
+        16,
+        256
+      ],
+      "input_seed": 16000427,
+      "input_sha256": {
+        "x": "e048c5e9c45dba7c4d3e6a09a4a90f544d245521dc98ff29a3d027ab02508a31",
+        "b": "315a7d5146cbdb55a7045403e439f9d88827f8e9d0911b8143db92ccdc161987"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 5.380337717301689,
+              "parent": 6.85215245845706,
+              "baseline": 7.158382499152846
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2735543414723614
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3304708505812661
+            },
+            "baseline_over_parent": 1.044691072265596
+          },
+          {
+            "round": 1,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 7.156989032571966,
+              "r2_rank_ordered_gather": 5.378386313722235,
+              "parent": 6.848424418712295
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2733232644965375
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3306944899647435
+            },
+            "baseline_over_parent": 1.0450562925125617
+          },
+          {
+            "round": 2,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 5.3754885373978185,
+              "parent": 6.826333767030297,
+              "baseline": 7.142162483910474
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2699001624761734
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.328653653378986
+            },
+            "baseline_over_parent": 1.0462662283531405
+          },
+          {
+            "round": 3,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 6.781052114167038,
+              "r2_rank_ordered_gather": 5.319963214041173,
+              "baseline": 7.126205797945516
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2746426697593622
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3395216303633568
+            },
+            "baseline_over_parent": 1.0508997244037366
+          },
+          {
+            "round": 4,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 5.344396411326894,
+              "parent": 6.820976163972339,
+              "baseline": 7.1748990398976895
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2762855969134301
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3425087676301921
+            },
+            "baseline_over_parent": 1.0518874230633928
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              6.8507260620876504,
+              6.851498847127232
+            ],
+            "ratio": 0.999887209345455
+          },
+          {
+            "round": 1,
+            "us": [
+              6.767731831726415,
+              6.800474861795588
+            ],
+            "ratio": 0.9951851847503885
+          },
+          {
+            "round": 2,
+            "us": [
+              6.857953570609869,
+              6.850894913988183
+            ],
+            "ratio": 1.0010303262143567
+          },
+          {
+            "round": 3,
+            "us": [
+              6.783752772469002,
+              6.770918874053268
+            ],
+            "ratio": 1.001895444127224
+          },
+          {
+            "round": 4,
+            "us": [
+              6.819758705012706,
+              6.768463880513385
+            ],
+            "ratio": 1.007578503099795
+          }
+        ],
+        "aa_median": 1.0010303262143567,
+        "median_us": {
+          "baseline": 7.156989032571966,
+          "parent": 6.826333767030297,
+          "r2_rank_ordered_gather": 5.3754885373978185
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.2735543414723614
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.3306944899647435
+        }
+      }
+    },
+    {
+      "shape": [
+        32,
+        256
+      ],
+      "input_seed": 32000475,
+      "input_sha256": {
+        "x": "3b20b76ce8ec3d28a865d74bda51073571dc81b547367588c544c07ba623a9f5",
+        "b": "fd9b52c4af036922ebb0874d6b84eeaf57d519a3099f50f18759be954a9859c6"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 7.215294076703868,
+              "r2_rank_ordered_gather": 5.399458315119397,
+              "parent": 6.916979321717438
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2810506013813876
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3362996166670689
+            },
+            "baseline_over_parent": 1.0431278945781728
+          },
+          {
+            "round": 1,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 7.226306023372646,
+              "r2_rank_ordered_gather": 5.449259294658933,
+              "parent": 6.9206593410078305
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2700183578694968
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3261079410288803
+            },
+            "baseline_over_parent": 1.0441643877128484
+          },
+          {
+            "round": 2,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 7.267122169220571,
+              "r2_rank_ordered_gather": 5.438211810548789,
+              "parent": 6.914862208896213
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.271532343680157
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3363073051189636
+            },
+            "baseline_over_parent": 1.0509424410324713
+          },
+          {
+            "round": 3,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 7.2662006913642765,
+              "r2_rank_ordered_gather": 5.387595221319188,
+              "parent": 6.881805946087016
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2773427964400712
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.348690908071802
+            },
+            "baseline_over_parent": 1.0558566673179484
+          },
+          {
+            "round": 4,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 7.2310941727435,
+              "parent": 6.879777705188289,
+              "r2_rank_ordered_gather": 5.433363507030742
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2662097237348275
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.330868837210414
+            },
+            "baseline_over_parent": 1.0510650899796181
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              6.892410174820774,
+              6.920231620946309
+            ],
+            "ratio": 0.9959796943730431
+          },
+          {
+            "round": 1,
+            "us": [
+              6.968544237738023,
+              6.890562116967012
+            ],
+            "ratio": 1.0113172364528855
+          },
+          {
+            "round": 2,
+            "us": [
+              6.926238580288893,
+              6.920474141378752
+            ],
+            "ratio": 1.0008329543312176
+          },
+          {
+            "round": 3,
+            "us": [
+              6.92185711647783,
+              6.883153978702241
+            ],
+            "ratio": 1.0056228783919907
+          },
+          {
+            "round": 4,
+            "us": [
+              6.9214731586137015,
+              6.917498791047318
+            ],
+            "ratio": 1.0005745382379434
+          }
+        ],
+        "aa_median": 1.0008329543312176,
+        "median_us": {
+          "baseline": 7.2310941727435,
+          "parent": 6.914862208896213,
+          "r2_rank_ordered_gather": 5.433363507030742
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.271532343680157
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.3362996166670689
+        }
+      }
+    },
+    {
+      "shape": [
+        64,
+        256
+      ],
+      "input_seed": 64000571,
+      "input_sha256": {
+        "x": "279a9d9a8a2e03c87b7f9e6e8933a6527c1b89fac1f48887c81afcc68f402c84",
+        "b": "00a35f15dfd8bf415231f105996d528503d0595e58f7122c856a55b6916556fc"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "r2_rank_ordered_gather",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 5.570258173075589,
+              "baseline": 7.402361480429703,
+              "parent": 7.049931303520034
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.265638159752917
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3289081493941828
+            },
+            "baseline_over_parent": 1.049990583132874
+          },
+          {
+            "round": 1,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 7.378239543828004,
+              "parent": 7.017904803866432,
+              "r2_rank_ordered_gather": 5.570011677364056
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.259944361048014
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3246362792761095
+            },
+            "baseline_over_parent": 1.0513450595344425
+          },
+          {
+            "round": 2,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 7.0485815077626235,
+              "r2_rank_ordered_gather": 5.535409411014114,
+              "baseline": 7.401200083264134
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2733622726690579
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3370646204664738
+            },
+            "baseline_over_parent": 1.0500268848580625
+          },
+          {
+            "round": 3,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 5.5677415967367665,
+              "parent": 7.050344303472718,
+              "baseline": 7.400717008982274
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.266284395742234
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3292134486485163
+            },
+            "baseline_over_parent": 1.0496958290869534
+          },
+          {
+            "round": 4,
+            "order": [
+              "parent",
+              "baseline",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "parent": 7.024527952261481,
+              "baseline": 7.384786378511912,
+              "r2_rank_ordered_gather": 5.542137842536379
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2674762252118004
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3324797376624322
+            },
+            "baseline_over_parent": 1.0512857844254786
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              7.050136440943442,
+              7.048907279968262
+            ],
+            "ratio": 1.0001743761020483
+          },
+          {
+            "round": 1,
+            "us": [
+              7.047649792262486,
+              7.021245569513555
+            ],
+            "ratio": 1.0037606180395653
+          },
+          {
+            "round": 2,
+            "us": [
+              7.049551567473969,
+              7.003695709558717
+            ],
+            "ratio": 1.0065473801000047
+          },
+          {
+            "round": 3,
+            "us": [
+              7.0452606809008245,
+              7.044676969782374
+            ],
+            "ratio": 1.0000828584647605
+          },
+          {
+            "round": 4,
+            "us": [
+              7.04535311108345,
+              7.052588490015289
+            ],
+            "ratio": 0.9989740817939283
+          }
+        ],
+        "aa_median": 1.0001743761020483,
+        "median_us": {
+          "baseline": 7.400717008982274,
+          "parent": 7.0485815077626235,
+          "r2_rank_ordered_gather": 5.5677415967367665
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.266284395742234
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.3292134486485163
+        }
+      }
+    },
+    {
+      "shape": [
+        128,
+        256
+      ],
+      "input_seed": 128000763,
+      "input_sha256": {
+        "x": "9d6de5a30037d59135b479f49c0c09dfd6609eff646b4176ff846e095c3c7e3d",
+        "b": "47f4faa6a1911caab71971056b98ff48d4b261bf2add30cb3da1ee262183f68e"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 5.738224079406339,
+              "parent": 7.2108030582078895,
+              "baseline": 7.566115540259287
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2566262589999622
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3185465460320707
+            },
+            "baseline_over_parent": 1.0492750223772862
+          },
+          {
+            "round": 1,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 7.174703738110214,
+              "r2_rank_ordered_gather": 5.7083223051873055,
+              "baseline": 7.566132130367415
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2568848348998038
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3254563645594903
+            },
+            "baseline_over_parent": 1.0545567324512695
+          },
+          {
+            "round": 2,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 7.209454952682579,
+              "r2_rank_ordered_gather": 5.690741801576992,
+              "baseline": 7.562971951668723
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2668743731590015
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3289957997343873
+            },
+            "baseline_over_parent": 1.049035190774665
+          },
+          {
+            "round": 3,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 5.701275464505126,
+              "parent": 7.203179301762426,
+              "baseline": 7.565033762422327
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2634329540131537
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3269019905318635
+            },
+            "baseline_over_parent": 1.0502353815587187
+          },
+          {
+            "round": 4,
+            "order": [
+              "parent",
+              "baseline",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "parent": 7.155287369890504,
+              "baseline": 7.566034942696233,
+              "r2_rank_ordered_gather": 5.71172895735771
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2527358043965369
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.324648805848858
+            },
+            "baseline_over_parent": 1.0574047626003336
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              7.208936403421574,
+              7.17176927387385
+            ],
+            "ratio": 1.005182421258743
+          },
+          {
+            "round": 1,
+            "us": [
+              7.155140536619224,
+              7.153836540553882
+            ],
+            "ratio": 1.0001822792648323
+          },
+          {
+            "round": 2,
+            "us": [
+              7.174807453260202,
+              7.1877228063449525
+            ],
+            "ratio": 0.9982031370111617
+          },
+          {
+            "round": 3,
+            "us": [
+              7.179657076741313,
+              7.207889821794298
+            ],
+            "ratio": 0.9960830776064835
+          },
+          {
+            "round": 4,
+            "us": [
+              7.208496097914517,
+              7.204777008935331
+            ],
+            "ratio": 1.0005161976525538
+          }
+        ],
+        "aa_median": 1.0001822792648323,
+        "median_us": {
+          "baseline": 7.566034942696233,
+          "parent": 7.203179301762426,
+          "r2_rank_ordered_gather": 5.7083223051873055
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.2568848348998038
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.3254563645594903
+        }
+      }
+    },
+    {
+      "shape": [
+        256,
+        256
+      ],
+      "input_seed": 256001147,
+      "input_sha256": {
+        "x": "dc115e063cd9ffbe476ddbdb2f9cbcc9aebf2a984ae25dfd0dbac2eb5a1a4a68",
+        "b": "9a0a19c1f54fa2902223ced6eb2f22affb42f4e3f81a640215fb11008b3819ee"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 7.927325312435823,
+              "r2_rank_ordered_gather": 6.391785894566183,
+              "baseline": 8.472111422712631
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.240236366361245
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3254685877252215
+            },
+            "baseline_over_parent": 1.0687225626305743
+          },
+          {
+            "round": 1,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 8.467174963129715,
+              "parent": 7.8742735348507065,
+              "r2_rank_ordered_gather": 6.422904809316
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2259676530515589
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3182781334153724
+            },
+            "baseline_over_parent": 1.075296016280726
+          },
+          {
+            "round": 2,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 7.925094330191214,
+              "r2_rank_ordered_gather": 6.422866645612215,
+              "baseline": 8.44772562948792
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2338874162373037
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3152578273221642
+            },
+            "baseline_over_parent": 1.0659463821529171
+          },
+          {
+            "round": 3,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 8.419949290661663,
+              "r2_rank_ordered_gather": 6.425613907538152,
+              "parent": 7.898245213470815
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2291814178572196
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.310372738203874
+            },
+            "baseline_over_parent": 1.066053162834329
+          },
+          {
+            "round": 4,
+            "order": [
+              "r2_rank_ordered_gather",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 6.426118474149908,
+              "baseline": 8.473732956650482,
+              "parent": 7.874132083690195
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2253325417769922
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3186393918408803
+            },
+            "baseline_over_parent": 1.0761481858047883
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              7.927620597600403,
+              7.876396442936586
+            ],
+            "ratio": 1.0065035013200427
+          },
+          {
+            "round": 1,
+            "us": [
+              7.90623800288996,
+              7.9262007330363
+            ],
+            "ratio": 0.997481425109115
+          },
+          {
+            "round": 2,
+            "us": [
+              7.898884980789738,
+              7.927944768920491
+            ],
+            "ratio": 0.9963345117835994
+          },
+          {
+            "round": 3,
+            "us": [
+              7.94689999572162,
+              7.935216639879429
+            ],
+            "ratio": 1.0014723423911926
+          },
+          {
+            "round": 4,
+            "us": [
+              7.931259439117879,
+              7.907829939045171
+            ],
+            "ratio": 1.0029628229556409
+          }
+        ],
+        "aa_median": 1.0014723423911926,
+        "median_us": {
+          "baseline": 8.467174963129715,
+          "parent": 7.898245213470815,
+          "r2_rank_ordered_gather": 6.422904809316
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.2291814178572196
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.3182781334153724
+        }
+      }
+    },
+    {
+      "shape": [
+        384,
+        256
+      ],
+      "input_seed": 384001531,
+      "input_sha256": {
+        "x": "277d64ab0623fcc3e03b337af3aee7169965561a2ad5cefddb6a62a154b04621",
+        "b": "72af6ff891218d59e804691d1ba1ebb763b42f8ce5783a5e40d87d3c0e1cbe4a"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 9.533547774237784,
+              "r2_rank_ordered_gather": 7.166389102849485,
+              "parent": 8.74567483712731
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2203739863427
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3303140029679763
+            },
+            "baseline_over_parent": 1.0900871518531399
+          },
+          {
+            "round": 1,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 8.713945318780034,
+              "r2_rank_ordered_gather": 7.161391453189744,
+              "baseline": 9.518853681428093
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2167950007674515
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3291905272387137
+            },
+            "baseline_over_parent": 1.092370141560717
+          },
+          {
+            "round": 2,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 8.751727963987346,
+              "r2_rank_ordered_gather": 7.114683043996187,
+              "baseline": 9.494998778957035
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2300938650208177
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3345638477837052
+            },
+            "baseline_over_parent": 1.0849284641876653
+          },
+          {
+            "round": 3,
+            "order": [
+              "r2_rank_ordered_gather",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 7.162727171724493,
+              "baseline": 9.529193737990076,
+              "parent": 8.74323224807534
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2206568864705658
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3303862494731646
+            },
+            "baseline_over_parent": 1.089893699219502
+          },
+          {
+            "round": 4,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 7.162874346978142,
+              "parent": 8.722546113644793,
+              "baseline": 9.539939919296575
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2177438401281802
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3318591751258717
+            },
+            "baseline_over_parent": 1.0937104596527294
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              8.721603712904345,
+              8.741132043195739
+            ],
+            "ratio": 0.9977659266334279
+          },
+          {
+            "round": 1,
+            "us": [
+              8.749578860362721,
+              8.746066182365507
+            ],
+            "ratio": 1.00040162947821
+          },
+          {
+            "round": 2,
+            "us": [
+              8.70705100226561,
+              8.76748406029994
+            ],
+            "ratio": 0.9931071379635604
+          },
+          {
+            "round": 3,
+            "us": [
+              8.742767611530729,
+              8.749905793182338
+            ],
+            "ratio": 0.9991841990279289
+          },
+          {
+            "round": 4,
+            "us": [
+              8.749175385424966,
+              8.742743012654847
+            ],
+            "ratio": 1.0007357385160252
+          }
+        ],
+        "aa_median": 0.9991841990279289,
+        "median_us": {
+          "baseline": 9.529193737990076,
+          "parent": 8.74323224807534,
+          "r2_rank_ordered_gather": 7.162727171724493
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.2203739863427
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.3303862494731646
+        }
+      }
+    },
+    {
+      "shape": [
+        512,
+        256
+      ],
+      "input_seed": 512001915,
+      "input_sha256": {
+        "x": "74e72a95ae4e4f53714b9c817a3661f8f3e72fd93c3998d0b53aff0d4bf4e3bb",
+        "b": "43a61888709af5f4e29e557afcfbe38daea0d805473b9abc53e578f0cd9648af"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 9.556640356846676,
+              "r2_rank_ordered_gather": 7.922736361603533,
+              "baseline": 10.63275041251347
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.206229757077572
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3420553110972684
+            },
+            "baseline_over_parent": 1.1126033852363018
+          },
+          {
+            "round": 1,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 9.510317267127192,
+              "r2_rank_ordered_gather": 7.919774885958592,
+              "baseline": 10.626191392456745
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2008317665680828
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3417289690009382
+            },
+            "baseline_over_parent": 1.1173330073000423
+          },
+          {
+            "round": 2,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 10.620604896114859,
+              "parent": 9.559559603349877,
+              "r2_rank_ordered_gather": 7.906144105636321
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2091304529264562
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3433356076248835
+            },
+            "baseline_over_parent": 1.1109931144101208
+          },
+          {
+            "round": 3,
+            "order": [
+              "r2_rank_ordered_gather",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 7.873920024126426,
+              "baseline": 10.635165204684304,
+              "parent": 9.557876631478283
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2138650890778744
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.350682401154338
+            },
+            "baseline_over_parent": 1.112712123700994
+          },
+          {
+            "round": 4,
+            "order": [
+              "r2_rank_ordered_gather",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 7.92545025751471,
+              "baseline": 10.627893919355413,
+              "parent": 9.510478000683161
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1999921381962582
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3409829819168084
+            },
+            "baseline_over_parent": 1.1174931395237953
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              9.564709366380425,
+              9.508522089980923
+            ],
+            "ratio": 1.0059091492734402
+          },
+          {
+            "round": 1,
+            "us": [
+              9.558818894638165,
+              9.511544295797012
+            ],
+            "ratio": 1.0049702337886437
+          },
+          {
+            "round": 2,
+            "us": [
+              9.562320987205334,
+              9.537587493758862
+            ],
+            "ratio": 1.0025932651692744
+          },
+          {
+            "round": 3,
+            "us": [
+              9.515037040365227,
+              9.561055653715787
+            ],
+            "ratio": 0.9951868690009481
+          },
+          {
+            "round": 4,
+            "us": [
+              9.55501340429879,
+              9.55860609193038
+            ],
+            "ratio": 0.9996241410518398
+          }
+        ],
+        "aa_median": 1.0025932651692744,
+        "median_us": {
+          "baseline": 10.627893919355413,
+          "parent": 9.556640356846676,
+          "r2_rank_ordered_gather": 7.919774885958592
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.206229757077572
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.3420553110972684
+        }
+      }
+    },
+    {
+      "shape": [
+        768,
+        256
+      ],
+      "input_seed": 768002683,
+      "input_sha256": {
+        "x": "c61a06ef628fef3a89444abb6d8c20948b46ef15e2bc60894c0a1b6162940a6d",
+        "b": "1cd7a6ac8e01769488f5ad64c1f9024e0c15508073a281999a785a40d76106dd"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 9.579723720443981,
+              "parent": 11.361352655271821,
+              "baseline": 13.003461551773777
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1859791562699962
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3573942142008997
+            },
+            "baseline_over_parent": 1.1445346294870968
+          },
+          {
+            "round": 1,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 13.00328008078047,
+              "r2_rank_ordered_gather": 9.576390830192777,
+              "parent": 11.302048295408815
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1801991476554325
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3578476809638218
+            },
+            "baseline_over_parent": 1.1505242006497831
+          },
+          {
+            "round": 2,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 13.004963450961643,
+              "parent": 11.35248771884985,
+              "r2_rank_ordered_gather": 9.58241777760642
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.184720597903797
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.357169323315617
+            },
+            "baseline_over_parent": 1.1455606711970272
+          },
+          {
+            "round": 3,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 11.352541586004255,
+              "r2_rank_ordered_gather": 9.585456826809535,
+              "baseline": 13.007822393155989
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1843506043710266
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3570372939111728
+            },
+            "baseline_over_parent": 1.1458070683654145
+          },
+          {
+            "round": 4,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 12.961150715860088,
+              "r2_rank_ordered_gather": 9.60204577836834,
+              "parent": 11.361120317873006
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.183197891377225
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3498322144078085
+            },
+            "baseline_over_parent": 1.1408338573327101
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              11.357026475199154,
+              11.36396645152636
+            ],
+            "ratio": 0.9993892998226623
+          },
+          {
+            "round": 1,
+            "us": [
+              11.32028971286799,
+              11.312178248552012
+            ],
+            "ratio": 1.0007170559142327
+          },
+          {
+            "round": 2,
+            "us": [
+              11.301196791239848,
+              11.36313521808573
+            ],
+            "ratio": 0.9945491780519077
+          },
+          {
+            "round": 3,
+            "us": [
+              11.315500466532297,
+              11.36321090287231
+            ],
+            "ratio": 0.9958013244013667
+          },
+          {
+            "round": 4,
+            "us": [
+              11.35593903973498,
+              11.329525695936114
+            ],
+            "ratio": 1.0023313724252676
+          }
+        ],
+        "aa_median": 0.9993892998226623,
+        "median_us": {
+          "baseline": 13.003461551773777,
+          "parent": 11.352541586004255,
+          "r2_rank_ordered_gather": 9.58241777760642
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.1843506043710266
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.357169323315617
+        }
+      }
+    },
+    {
+      "shape": [
+        1024,
+        256
+      ],
+      "input_seed": 1024003451,
+      "input_sha256": {
+        "x": "ca66b6965d2c354106551f19a2d162f06b672d6e41cd61405aca24c42ada863a",
+        "b": "e6dbc4d6dbea7c8b2a11c1319581674cc2bfc0f340e019435b968d0d4c357930"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 15.589515341564166,
+              "r2_rank_ordered_gather": 11.373589157518758,
+              "parent": 13.393268915959176
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1775762892846595
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3706768484123042
+            },
+            "baseline_over_parent": 1.163981358052774
+          },
+          {
+            "round": 1,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 15.586172968045584,
+              "parent": 13.347129464674627,
+              "r2_rank_ordered_gather": 11.386479511519903
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1721910579271757
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.368831599993376
+            },
+            "baseline_over_parent": 1.1677546853274297
+          },
+          {
+            "round": 2,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 15.57430578385177,
+              "parent": 13.36020358971187,
+              "r2_rank_ordered_gather": 11.390831636828045
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1728909719389222
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.367266787922491
+            },
+            "baseline_over_parent": 1.1657236867142418
+          },
+          {
+            "round": 3,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 15.590882014079266,
+              "parent": 13.392866334540356,
+              "r2_rank_ordered_gather": 11.374728212651519
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1774229752271503
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3706597399609373
+            },
+            "baseline_over_parent": 1.1641183914357602
+          },
+          {
+            "round": 4,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 15.574077181859847,
+              "parent": 13.40627659147031,
+              "r2_rank_ordered_gather": 11.374846595679703
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1785896608541664
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3691681070912254
+            },
+            "baseline_over_parent": 1.1617004226041996
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              13.398824621938187,
+              13.403010531275582
+            ],
+            "ratio": 0.9996876888720168
+          },
+          {
+            "round": 1,
+            "us": [
+              13.35843465755032,
+              13.397545699283086
+            ],
+            "ratio": 0.9970807308584245
+          },
+          {
+            "round": 2,
+            "us": [
+              13.40207522540524,
+              13.405729813215661
+            ],
+            "ratio": 0.99972738613553
+          },
+          {
+            "round": 3,
+            "us": [
+              13.372815109434583,
+              13.398853673755395
+            ],
+            "ratio": 0.998056657311527
+          },
+          {
+            "round": 4,
+            "us": [
+              13.403902175956611,
+              13.39353916971538
+            ],
+            "ratio": 1.000773731730644
+          }
+        ],
+        "aa_median": 0.9996876888720168,
+        "median_us": {
+          "baseline": 15.586172968045584,
+          "parent": 13.392866334540356,
+          "r2_rank_ordered_gather": 11.374846595679703
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.1774229752271503
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.3691681070912254
+        }
+      }
+    },
+    {
+      "shape": [
+        1536,
+        256
+      ],
+      "input_seed": 1536004987,
+      "input_sha256": {
+        "x": "92cdc5ef565667915f831921e9d7553104f1dd906a1203fa1e51020601a429ed",
+        "b": "ad9d99d153796a9b605b96cc9f9a9d3b2c5ae746664c60b49e40401e72a5658d"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 21.00725110540999,
+              "parent": 17.863079124149756,
+              "r2_rank_ordered_gather": 15.46711260622198
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.15490716198471
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3581882824696943
+            },
+            "baseline_over_parent": 1.1760151180772362
+          },
+          {
+            "round": 1,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 15.432653789009368,
+              "parent": 17.917805171579833,
+              "baseline": 21.012434779121172
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1610320179890452
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.361556804577936
+            },
+            "baseline_over_parent": 1.172712538054039
+          },
+          {
+            "round": 2,
+            "order": [
+              "r2_rank_ordered_gather",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 15.408780358054422,
+              "baseline": 21.052702467962607,
+              "parent": 17.88236131293669
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.160530612897554
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.366279613230908
+            },
+            "baseline_over_parent": 1.1772887315911902
+          },
+          {
+            "round": 3,
+            "order": [
+              "r2_rank_ordered_gather",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 15.46338299464752,
+              "baseline": 21.001496533499253,
+              "parent": 17.918007818224282
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.158737892246891
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3581437218989332
+            },
+            "baseline_over_parent": 1.1720888140331525
+          },
+          {
+            "round": 4,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 21.067368861326237,
+              "r2_rank_ordered_gather": 15.465672307424416,
+              "parent": 17.92554135383491
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1590534829339176
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3622019426347656
+            },
+            "baseline_over_parent": 1.1752709971472732
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              17.886839935551713,
+              17.92429542541504
+            ],
+            "ratio": 0.9979103507851016
+          },
+          {
+            "round": 1,
+            "us": [
+              17.890734375211437,
+              17.91223339049652
+            ],
+            "ratio": 0.9987997579745421
+          },
+          {
+            "round": 2,
+            "us": [
+              17.899186987625928,
+              17.924218300061348
+            ],
+            "ratio": 0.998603492101224
+          },
+          {
+            "round": 3,
+            "us": [
+              17.91748479355213,
+              17.868246998975003
+            ],
+            "ratio": 1.0027556029743685
+          },
+          {
+            "round": 4,
+            "us": [
+              17.916589838019163,
+              17.868628550826347
+            ],
+            "ratio": 1.002684105669128
+          }
+        ],
+        "aa_median": 0.9987997579745421,
+        "median_us": {
+          "baseline": 21.012434779121172,
+          "parent": 17.917805171579833,
+          "r2_rank_ordered_gather": 15.46338299464752
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.1590534829339176
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.361556804577936
+        }
+      }
+    },
+    {
+      "shape": [
+        2048,
+        256
+      ],
+      "input_seed": 2048006523,
+      "input_sha256": {
+        "x": "e87e6e9bdbadd4def871d3b636ee64a8745b3b9fad1f5c5981125698294060ac",
+        "b": "116132cd544fbdf96b838159b9c5ad36b8c2bffa75050661556d79a74a432e3f"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 26.58356487751007,
+              "r2_rank_ordered_gather": 19.636588014607348,
+              "parent": 22.64161076672074
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.153031817435799
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3537771866342043
+            },
+            "baseline_over_parent": 1.1741021940269074
+          },
+          {
+            "round": 1,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 19.61765194177033,
+              "parent": 22.647163242969697,
+              "baseline": 26.584363900698147
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1544278239919665
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3551246591389534
+            },
+            "baseline_over_parent": 1.1738496170795547
+          },
+          {
+            "round": 2,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 19.631979969774232,
+              "parent": 22.641709743676312,
+              "baseline": 26.603898620605467
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1533075002386879
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3551306929594127
+            },
+            "baseline_over_parent": 1.1749951272136492
+          },
+          {
+            "round": 3,
+            "order": [
+              "parent",
+              "baseline",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "parent": 22.601243446796385,
+              "baseline": 26.590588745797515,
+              "r2_rank_ordered_gather": 19.630860869757765
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1513118857469278
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.354529937439551
+            },
+            "baseline_over_parent": 1.176509991956509
+          },
+          {
+            "round": 4,
+            "order": [
+              "parent",
+              "baseline",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "parent": 22.616682290370445,
+              "baseline": 26.5646638749521,
+              "r2_rank_ordered_gather": 19.59074062356739
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1544577474096558
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.35598058212231
+            },
+            "baseline_over_parent": 1.174560597964565
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              22.58545808277684,
+              22.629777115144055
+            ],
+            "ratio": 0.9980415612517209
+          },
+          {
+            "round": 1,
+            "us": [
+              22.61943817138672,
+              22.63840026214343
+            ],
+            "ratio": 0.9991623926365317
+          },
+          {
+            "round": 2,
+            "us": [
+              22.63286999104252,
+              22.581737491634343
+            ],
+            "ratio": 1.0022643297233935
+          },
+          {
+            "round": 3,
+            "us": [
+              22.64531533255903,
+              22.614901349261093
+            ],
+            "ratio": 1.001344864734461
+          },
+          {
+            "round": 4,
+            "us": [
+              22.607442092363474,
+              22.61046965364289
+            ],
+            "ratio": 0.9998660991423091
+          }
+        ],
+        "aa_median": 0.9998660991423091,
+        "median_us": {
+          "baseline": 26.584363900698147,
+          "parent": 22.64161076672074,
+          "r2_rank_ordered_gather": 19.630860869757765
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.1533075002386879
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.3551246591389534
+        }
+      }
+    },
+    {
+      "shape": [
+        3072,
+        256
+      ],
+      "input_seed": 3072009595,
+      "input_sha256": {
+        "x": "4542b6164f87d727296db5a79165b571c257242e25cd558f973483595a279eb2",
+        "b": "56e0be08cb1af2257615314a81654c59f034f7e5000d80586eb3c948cca3a92d"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 27.511919723337627,
+              "parent": 32.16904363899588,
+              "baseline": 37.746552087071045
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1692765885656369
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3720072051188654
+            },
+            "baseline_over_parent": 1.1733812329227598
+          },
+          {
+            "round": 1,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 27.537487459416102,
+              "parent": 32.21673108022147,
+              "baseline": 37.74340960939052
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.169922678229141
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3706192209806936
+            },
+            "baseline_over_parent": 1.1715468436387078
+          },
+          {
+            "round": 2,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 37.74125898206556,
+              "r2_rank_ordered_gather": 27.508197367483017,
+              "parent": 32.16099739074707
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1691423091490558
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3720004432816406
+            },
+            "baseline_over_parent": 1.1735102156043198
+          },
+          {
+            "round": 3,
+            "order": [
+              "r2_rank_ordered_gather",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 27.5493299765665,
+              "baseline": 37.74307243078639,
+              "parent": 32.14589193407931
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1668484119730915
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3700177994488687
+            },
+            "baseline_over_parent": 1.174118064858336
+          },
+          {
+            "round": 4,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 37.742767333984375,
+              "parent": 32.200180096018116,
+              "r2_rank_ordered_gather": 27.552835763978564
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.168670273065515
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3698324069904886
+            },
+            "baseline_over_parent": 1.172129075720656
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              32.21696957414638,
+              32.18197633278167
+            ],
+            "ratio": 1.0010873552637929
+          },
+          {
+            "round": 1,
+            "us": [
+              32.204000388874725,
+              32.16582602196998
+            ],
+            "ratio": 1.0011867988988896
+          },
+          {
+            "round": 2,
+            "us": [
+              32.20252432814464,
+              32.200381366665326
+            ],
+            "ratio": 1.0000665508105295
+          },
+          {
+            "round": 3,
+            "us": [
+              32.17652930932886,
+              32.19925098204881
+            ],
+            "ratio": 0.9992943415754418
+          },
+          {
+            "round": 4,
+            "us": [
+              32.14787873834701,
+              32.20286746929583
+            ],
+            "ratio": 0.9982924274988477
+          }
+        ],
+        "aa_median": 1.0000665508105295,
+        "median_us": {
+          "baseline": 37.74307243078639,
+          "parent": 32.16904363899588,
+          "r2_rank_ordered_gather": 27.537487459416102
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.1691423091490558
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.3706192209806936
+        }
+      }
+    },
+    {
+      "shape": [
+        4096,
+        256
+      ],
+      "input_seed": 4096012667,
+      "input_sha256": {
+        "x": "6fb2560e239e1a2339f6f46c4b8e56816e44d9c80b5a0b9b0bd9c533b8315444",
+        "b": "503e1799f0665e687dcbe0a0bd45afaae2b92ffce81f26816c14558575e95ac1"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 35.558754397976784,
+              "parent": 41.24740819048776,
+              "baseline": 48.69648999603977
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1599789950132406
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3694655738225323
+            },
+            "baseline_over_parent": 1.180595148455167
+          },
+          {
+            "round": 1,
+            "order": [
+              "r2_rank_ordered_gather",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 35.548799549171584,
+              "baseline": 48.69363534726336,
+              "parent": 41.258114150592256
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1606049901494837
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3697687675756718
+            },
+            "baseline_over_parent": 1.1802196089121142
+          },
+          {
+            "round": 2,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 35.547412595441266,
+              "parent": 41.30134327071053,
+              "baseline": 48.69602065369756
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1618663710001547
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.369889313967749
+            },
+            "baseline_over_parent": 1.179042055230951
+          },
+          {
+            "round": 3,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 35.552037915875836,
+              "parent": 41.326057059424265,
+              "baseline": 48.67233167658198
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1624103562561185
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3690447729537116
+            },
+            "baseline_over_parent": 1.1777637437463302
+          },
+          {
+            "round": 4,
+            "order": [
+              "parent",
+              "baseline",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "parent": 41.27363532051477,
+              "baseline": 48.691465446986065,
+              "r2_rank_ordered_gather": 35.555599297076405
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1608195653141062
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3694457809628249
+            },
+            "baseline_over_parent": 1.1797232075359332
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              41.27881648928621,
+              41.31868131868132
+            ],
+            "ratio": 0.9990351863098523
+          },
+          {
+            "round": 1,
+            "us": [
+              41.30767281049995,
+              41.313512613485145
+            ],
+            "ratio": 0.9998586466602386
+          },
+          {
+            "round": 2,
+            "us": [
+              41.31722261201968,
+              41.30026443041613
+            ],
+            "ratio": 1.0004106070950738
+          },
+          {
+            "round": 3,
+            "us": [
+              41.255242845653434,
+              41.26273972342745
+            ],
+            "ratio": 0.9998183136208534
+          },
+          {
+            "round": 4,
+            "us": [
+              41.29018409147549,
+              41.32202313915236
+            ],
+            "ratio": 0.9992294896218017
+          }
+        ],
+        "aa_median": 0.9998183136208534,
+        "median_us": {
+          "baseline": 48.69363534726336,
+          "parent": 41.27363532051477,
+          "r2_rank_ordered_gather": 35.552037915875836
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.1608195653141062
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.3694655738225323
+        }
+      }
+    },
+    {
+      "shape": [
+        6144,
+        256
+      ],
+      "input_seed": 6144018811,
+      "input_sha256": {
+        "x": "1d09c519947860fdcc317171e733db1a182d5b4fba287b78d2cde45aee9b6826",
+        "b": "edcac5396d15efeccb036aacef72a678d1cd7aa8a6b5577964ce99d72ca481b4"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "parent",
+              "baseline",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "parent": 59.552390597830744,
+              "baseline": 70.11177705757784,
+              "r2_rank_ordered_gather": 51.209496037979335
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1629169432494304
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.369116716274257
+            },
+            "baseline_over_parent": 1.1773125537655869
+          },
+          {
+            "round": 1,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 59.550913397768205,
+              "r2_rank_ordered_gather": 51.21677811081345,
+              "baseline": 70.082512041078
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.162722755986776
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.368350658244186
+            },
+            "baseline_over_parent": 1.1768503292798276
+          },
+          {
+            "round": 2,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 70.116636874902,
+              "r2_rank_ordered_gather": 51.17838569085875,
+              "parent": 59.55227825129144
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1636216626881297
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3700439341412427
+            },
+            "baseline_over_parent": 1.1773963806897927
+          },
+          {
+            "round": 3,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 70.12090717916523,
+              "r2_rank_ordered_gather": 51.2205878570474,
+              "parent": 59.55138849240485
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.162645549063358
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.368998485040178
+            },
+            "baseline_over_parent": 1.1774856800880202
+          },
+          {
+            "round": 4,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 70.12123624920407,
+              "r2_rank_ordered_gather": 51.24001334999312,
+              "parent": 59.566616189890894
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1625019646857468
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3684859090539931
+            },
+            "baseline_over_parent": 1.1771901903184558
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              59.54949190624082,
+              59.55307960510254
+            ],
+            "ratio": 0.9999397562832096
+          },
+          {
+            "round": 1,
+            "us": [
+              59.55198115648882,
+              59.51595365815445
+            ],
+            "ratio": 1.0006053418641547
+          },
+          {
+            "round": 2,
+            "us": [
+              59.54750393781335,
+              59.57683254253828
+            ],
+            "ratio": 0.9995077179589233
+          },
+          {
+            "round": 3,
+            "us": [
+              59.53641132127529,
+              59.55652398375508
+            ],
+            "ratio": 0.9996622928751638
+          },
+          {
+            "round": 4,
+            "us": [
+              59.55434365435924,
+              59.586710929870605
+            ],
+            "ratio": 0.9994568037905389
+          }
+        ],
+        "aa_median": 0.9996622928751638,
+        "median_us": {
+          "baseline": 70.116636874902,
+          "parent": 59.55227825129144,
+          "r2_rank_ordered_gather": 51.21677811081345
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.162722755986776
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.368998485040178
+        }
+      }
+    },
+    {
+      "shape": [
+        8192,
+        256
+      ],
+      "input_seed": 8192024955,
+      "input_sha256": {
+        "x": "8c49e1b9ac7b588fa61404d4ba37dd4d65b8acee84dea404c7ae7bb0fe18b0aa",
+        "b": "5e492c80445ffbf3b9121184f7a8a5db5fac6a7098fbfbf9852fbb8c1e113afd"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 77.96420356040058,
+              "r2_rank_ordered_gather": 67.12463713528817,
+              "baseline": 91.95721126738049
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1614841716502022
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3699472383298377
+            },
+            "baseline_over_parent": 1.1794799031858156
+          },
+          {
+            "round": 1,
+            "order": [
+              "r2_rank_ordered_gather",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 67.12588260048315,
+              "baseline": 91.95673341434714,
+              "parent": 77.98780625866306
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1618142397147673
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3699147013328845
+            },
+            "baseline_over_parent": 1.1791168110223949
+          },
+          {
+            "round": 2,
+            "order": [
+              "parent",
+              "baseline",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "parent": 77.94957545495802,
+              "baseline": 91.95189272622926,
+              "r2_rank_ordered_gather": 67.11659864945844
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1614053307748633
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3700320721924906
+            },
+            "baseline_over_parent": 1.1796330151838
+          },
+          {
+            "round": 3,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 91.92767301441934,
+              "r2_rank_ordered_gather": 67.11069053703255,
+              "parent": 77.97476115979646
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1618828615206838
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.369791791423938
+            },
+            "baseline_over_parent": 1.1789413862522604
+          },
+          {
+            "round": 4,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 91.94495973132906,
+              "parent": 78.01023475554308,
+              "r2_rank_ordered_gather": 67.08025279798007
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1629388903837306
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3706710379913436
+            },
+            "baseline_over_parent": 1.1786268817092085
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              77.98294672151891,
+              78.01286566112688
+            ],
+            "ratio": 0.9996164871094734
+          },
+          {
+            "round": 1,
+            "us": [
+              77.95641818027265,
+              77.986280155568
+            ],
+            "ratio": 0.9996170868101956
+          },
+          {
+            "round": 2,
+            "us": [
+              77.98298020516673,
+              77.97731584118259
+            ],
+            "ratio": 1.0000726411767709
+          },
+          {
+            "round": 3,
+            "us": [
+              77.97914111179861,
+              78.01721249857256
+            ],
+            "ratio": 0.9995120129833573
+          },
+          {
+            "round": 4,
+            "us": [
+              77.98433651325674,
+              77.97986698536738
+            ],
+            "ratio": 1.0000573164338713
+          }
+        ],
+        "aa_median": 0.9996170868101956,
+        "median_us": {
+          "baseline": 91.95189272622926,
+          "parent": 77.97476115979646,
+          "r2_rank_ordered_gather": 67.11659864945844
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.1618142397147673
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.3699472383298377
+        }
+      }
+    },
+    {
+      "shape": [
+        16,
+        512
+      ],
+      "input_seed": 16000683,
+      "input_sha256": {
+        "x": "940561f736c63029c17ed96b17321a805e0f34cc82cce6f98125d838e5bf6ed5",
+        "b": "99421321178ae5e4c00b2cedc5b3b996d3fcc88693fc973669e1670ef3083f09"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 5.8181140983039565,
+              "parent": 7.2481191413647155,
+              "baseline": 8.083818928226009
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2457849775544314
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.389422550269774
+            },
+            "baseline_over_parent": 1.1152988479579466
+          },
+          {
+            "round": 1,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 5.844295476911386,
+              "parent": 7.234139745833636,
+              "baseline": 8.069119273691115
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2378121151493797
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3806829763432003
+            },
+            "baseline_over_parent": 1.1154220898674745
+          },
+          {
+            "round": 2,
+            "order": [
+              "r2_rank_ordered_gather",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 5.81016557161198,
+              "baseline": 8.073117407293267,
+              "parent": 7.242890949412988
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.246589423337812
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3894814713607981
+            },
+            "baseline_over_parent": 1.114626392096593
+          },
+          {
+            "round": 3,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 8.118827104294123,
+              "parent": 7.224257261478507,
+              "r2_rank_ordered_gather": 5.844088095053226
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2361650173606273
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3892376316445962
+            },
+            "baseline_over_parent": 1.1238286249280849
+          },
+          {
+            "round": 4,
+            "order": [
+              "r2_rank_ordered_gather",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 5.804694692293803,
+              "baseline": 8.121823609080101,
+              "parent": 7.246128630533092
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2483220935207682
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.39918187598436
+            },
+            "baseline_over_parent": 1.1208500460310742
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              7.247865294976174,
+              7.247580512095305
+            ],
+            "ratio": 1.0000392935104887
+          },
+          {
+            "round": 1,
+            "us": [
+              7.247647166646434,
+              7.205696440579598
+            ],
+            "ratio": 1.0058218836184365
+          },
+          {
+            "round": 2,
+            "us": [
+              7.225592365468525,
+              7.1941382873992215
+            ],
+            "ratio": 1.004372181463956
+          },
+          {
+            "round": 3,
+            "us": [
+              7.207698895059998,
+              7.246927402946105
+            ],
+            "ratio": 0.9945868772094834
+          },
+          {
+            "round": 4,
+            "us": [
+              7.215421695213813,
+              7.245793348052384
+            ],
+            "ratio": 0.9958083744070986
+          }
+        ],
+        "aa_median": 1.0000392935104887,
+        "median_us": {
+          "baseline": 8.083818928226009,
+          "parent": 7.242890949412988,
+          "r2_rank_ordered_gather": 5.8181140983039565
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.2457849775544314
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.389422550269774
+        }
+      }
+    },
+    {
+      "shape": [
+        32,
+        512
+      ],
+      "input_seed": 32000731,
+      "input_sha256": {
+        "x": "62453a68e56c76c8bbffb59b66ba4fcdd245df44eb9d32c896c84433b519572d",
+        "b": "45b7f4f37b118cecf45e8533ad2a83906382b8c71c94b3be3d048fce62471d3c"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 8.152155201039054,
+              "r2_rank_ordered_gather": 5.842321419290134,
+              "parent": 7.265005622591291
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2435135113593285
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3953623253459366
+            },
+            "baseline_over_parent": 1.1221127173926857
+          },
+          {
+            "round": 1,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 8.152942181187363,
+              "parent": 7.231477839039116,
+              "r2_rank_ordered_gather": 5.86956347377271
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2320299237501942
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.389020191640758
+            },
+            "baseline_over_parent": 1.1274240705231404
+          },
+          {
+            "round": 2,
+            "order": [
+              "r2_rank_ordered_gather",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 5.842059471087749,
+              "baseline": 8.158257788024148,
+              "parent": 7.219207009603811
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2357298047600407
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3964694862144462
+            },
+            "baseline_over_parent": 1.1300767213311802
+          },
+          {
+            "round": 3,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 5.8737742106119795,
+              "parent": 7.271961089784065,
+              "baseline": 8.15010643221379
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2380389216606285
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3875416623078949
+            },
+            "baseline_over_parent": 1.1207577064271395
+          },
+          {
+            "round": 4,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 8.15119282765822,
+              "r2_rank_ordered_gather": 5.871179128207359,
+              "parent": 7.23232359773062
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2318349414658138
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.388339999455444
+            },
+            "baseline_over_parent": 1.1270503479982457
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              7.270481636733247,
+              7.230079950911276
+            ],
+            "ratio": 1.005587999869473
+          },
+          {
+            "round": 1,
+            "us": [
+              7.229995395633848,
+              7.270537219252059
+            ],
+            "ratio": 0.9944238200843181
+          },
+          {
+            "round": 2,
+            "us": [
+              7.265287226876297,
+              7.270978242489292
+            ],
+            "ratio": 0.9992172971197
+          },
+          {
+            "round": 3,
+            "us": [
+              7.223250959172595,
+              7.264760865105523
+            ],
+            "ratio": 0.9942861290682931
+          },
+          {
+            "round": 4,
+            "us": [
+              7.271252053507259,
+              7.269608084041804
+            ],
+            "ratio": 1.0002261427915302
+          }
+        ],
+        "aa_median": 0.9992172971197,
+        "median_us": {
+          "baseline": 8.152155201039054,
+          "parent": 7.23232359773062,
+          "r2_rank_ordered_gather": 5.86956347377271
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.2357298047600407
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.389020191640758
+        }
+      }
+    },
+    {
+      "shape": [
+        64,
+        512
+      ],
+      "input_seed": 64000827,
+      "input_sha256": {
+        "x": "479992112ed29038989f5b055107afd8865790ae724bf1bc676d9535a3560d23",
+        "b": "fa28078f4dad4d54192e5e2a4af63cecbbafd8ad71dea52e5c287994845a7557"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 6.059946589999729,
+              "parent": 7.441652291522623,
+              "baseline": 8.342346002602335
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2280062507156446
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3766368859370934
+            },
+            "baseline_over_parent": 1.1210341031528392
+          },
+          {
+            "round": 1,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 7.485356986390514,
+              "r2_rank_ordered_gather": 6.089240182435148,
+              "baseline": 8.367821414555822
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2292760282280482
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.374197956371208
+            },
+            "baseline_over_parent": 1.1178920964985049
+          },
+          {
+            "round": 2,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 8.36882607881413,
+              "r2_rank_ordered_gather": 6.050001259232843,
+              "parent": 7.439449028200397
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2296607404580508
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3832767499085317
+            },
+            "baseline_over_parent": 1.124925521646937
+          },
+          {
+            "round": 3,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 7.4818182044034485,
+              "r2_rank_ordered_gather": 6.092209074461177,
+              "baseline": 8.32667322883829
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.228096099946336
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.366774043219247
+            },
+            "baseline_over_parent": 1.1129210843345003
+          },
+          {
+            "round": 4,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 6.090618973859914,
+              "parent": 7.481945401246327,
+              "baseline": 8.366111085221574
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2284376076319652
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3736060523778872
+            },
+            "baseline_over_parent": 1.1181732339062465
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              7.437343189953106,
+              7.482517278181285
+            ],
+            "ratio": 0.9939627151466921
+          },
+          {
+            "round": 1,
+            "us": [
+              7.483340369330512,
+              7.483712228873644
+            ],
+            "ratio": 0.9999503108174447
+          },
+          {
+            "round": 2,
+            "us": [
+              7.453719934894467,
+              7.478995286217032
+            ],
+            "ratio": 0.9966204884004748
+          },
+          {
+            "round": 3,
+            "us": [
+              7.4842802859143,
+              7.483391255639784
+            ],
+            "ratio": 1.0001188004534503
+          },
+          {
+            "round": 4,
+            "us": [
+              7.455529614386951,
+              7.480549578318288
+            ],
+            "ratio": 0.9966553307789237
+          }
+        ],
+        "aa_median": 0.9966553307789237,
+        "median_us": {
+          "baseline": 8.366111085221574,
+          "parent": 7.4818182044034485,
+          "r2_rank_ordered_gather": 6.089240182435148
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.2284376076319652
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.374197956371208
+        }
+      }
+    },
+    {
+      "shape": [
+        128,
+        512
+      ],
+      "input_seed": 128001019,
+      "input_sha256": {
+        "x": "aeb35730aea153fbf8b6fa32dec96a84c358a914fe15850f80b8dfa1ac5b7a55",
+        "b": "c27d7f156fb7db15ffaebfab6fbb20e5e284630d5d55c39df5f6212c4d65120b"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 6.347203570485904,
+              "parent": 7.73936862902791,
+              "baseline": 8.628560329780198
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2193351832948112
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3594270664174786
+            },
+            "baseline_over_parent": 1.1148920207027242
+          },
+          {
+            "round": 1,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 8.631021228385563,
+              "parent": 7.737478367167564,
+              "r2_rank_ordered_gather": 6.3482601555285525
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2188344802519118
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3595884568260812
+            },
+            "baseline_over_parent": 1.115482437406167
+          },
+          {
+            "round": 2,
+            "order": [
+              "parent",
+              "baseline",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "parent": 7.715299553341335,
+              "baseline": 8.585592752742876,
+              "r2_rank_ordered_gather": 6.346437286476359
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2156898752914314
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.352820860774586
+            },
+            "baseline_over_parent": 1.1128009604014188
+          },
+          {
+            "round": 3,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 8.584930646072833,
+              "r2_rank_ordered_gather": 6.349644590427715,
+              "parent": 7.736799003682915
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2184617412045986
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.352033255375408
+            },
+            "baseline_over_parent": 1.1096230678845587
+          },
+          {
+            "round": 4,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 7.7380571376083935,
+              "r2_rank_ordered_gather": 6.348188159229991,
+              "baseline": 8.626984072997507
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.2189394743061597
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.358967922280981
+            },
+            "baseline_over_parent": 1.1148772772778794
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              7.741249961981758,
+              7.697406770971207
+            ],
+            "ratio": 1.0056958391722124
+          },
+          {
+            "round": 1,
+            "us": [
+              7.74072462133228,
+              7.738072711814199
+            ],
+            "ratio": 1.0003427093046091
+          },
+          {
+            "round": 2,
+            "us": [
+              7.736487404811422,
+              7.737185646380697
+            ],
+            "ratio": 0.9999097550968548
+          },
+          {
+            "round": 3,
+            "us": [
+              7.686348499790315,
+              7.732654842522627
+            ],
+            "ratio": 0.9940115854547562
+          },
+          {
+            "round": 4,
+            "us": [
+              7.7404771834413655,
+              7.738669172960038
+            ],
+            "ratio": 1.0002336332566903
+          }
+        ],
+        "aa_median": 1.0002336332566903,
+        "median_us": {
+          "baseline": 8.626984072997507,
+          "parent": 7.737478367167564,
+          "r2_rank_ordered_gather": 6.348188159229991
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.2188344802519118
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.358967922280981
+        }
+      }
+    },
+    {
+      "shape": [
+        256,
+        512
+      ],
+      "input_seed": 256001403,
+      "input_sha256": {
+        "x": "a3b6318657797c1fc82ffb30aa5e4bfc5d7208f25c812f77525c6195f8d9058f",
+        "b": "0f49871ed450c6b90153185e375f87d2b342e9c2bc4abae343ccc847e8ea104e"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "r2_rank_ordered_gather",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 7.175820976175288,
+              "baseline": 9.896619291315943,
+              "parent": 8.556116568763741
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1923536828986152
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3791619557084938
+            },
+            "baseline_over_parent": 1.1566718629624617
+          },
+          {
+            "round": 1,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 9.843167615740485,
+              "r2_rank_ordered_gather": 7.1850427884734085,
+              "parent": 8.572868336452526
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.193154806288076
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3699525396746932
+            },
+            "baseline_over_parent": 1.1481766929612747
+          },
+          {
+            "round": 2,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 7.177669300145401,
+              "parent": 8.573338765739987,
+              "baseline": 9.849285662955072
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1944460530615855
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3722122392509155
+            },
+            "baseline_over_parent": 1.1488273042835904
+          },
+          {
+            "round": 3,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 8.582308472430405,
+              "r2_rank_ordered_gather": 7.186440188217588,
+              "baseline": 9.894663808577217
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1942364018420957
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.376851897383054
+            },
+            "baseline_over_parent": 1.1529140254469517
+          },
+          {
+            "round": 4,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 9.904166269038923,
+              "parent": 8.523125545661918,
+              "r2_rank_ordered_gather": 7.178188712049873
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1873643738780966
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3797584134857042
+            },
+            "baseline_over_parent": 1.1620345395569027
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              8.588007598553062,
+              8.580469843231167
+            ],
+            "ratio": 1.0008784781555804
+          },
+          {
+            "round": 1,
+            "us": [
+              8.579172949860062,
+              8.580613735059625
+            ],
+            "ratio": 0.9998320883279391
+          },
+          {
+            "round": 2,
+            "us": [
+              8.577844591669965,
+              8.580462000093636
+            ],
+            "ratio": 0.9996949571685485
+          },
+          {
+            "round": 3,
+            "us": [
+              8.57064173771785,
+              8.528843986878702
+            ],
+            "ratio": 1.0049007521890954
+          },
+          {
+            "round": 4,
+            "us": [
+              8.54961361782467,
+              8.52629881720167
+            ],
+            "ratio": 1.0027344573680625
+          }
+        ],
+        "aa_median": 1.0008784781555804,
+        "median_us": {
+          "baseline": 9.894663808577217,
+          "parent": 8.572868336452526,
+          "r2_rank_ordered_gather": 7.178188712049873
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.193154806288076
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.376851897383054
+        }
+      }
+    },
+    {
+      "shape": [
+        384,
+        512
+      ],
+      "input_seed": 384001787,
+      "input_sha256": {
+        "x": "9c0f67ff69e7acca517adad47d7b0a03af5a0e99e33bda97abb0960dfd784a03",
+        "b": "447370953c2cf3e28f6d3466ca77b247abac4343c47e7075d63429cf4edf4e58"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 11.380428182354134,
+              "parent": 9.594887895968997,
+              "r2_rank_ordered_gather": 8.165006137356382
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1751231700942204
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.3938052208297325
+            },
+            "baseline_over_parent": 1.1860928763050247
+          },
+          {
+            "round": 1,
+            "order": [
+              "parent",
+              "baseline",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "parent": 9.542864900727512,
+              "baseline": 11.43041068202037,
+              "r2_rank_ordered_gather": 8.132850797387881
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1733726756419165
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.4054617460450156
+            },
+            "baseline_over_parent": 1.197796552809729
+          },
+          {
+            "round": 2,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 11.443035821380434,
+              "parent": 9.594534648938126,
+              "r2_rank_ordered_gather": 8.166764419538461
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1748269150489776
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.4011712881056912
+            },
+            "baseline_over_parent": 1.1926618893024572
+          },
+          {
+            "round": 3,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 8.152574039283298,
+              "parent": 9.606779083725094,
+              "baseline": 11.442347202963152
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1783737304849595
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.4035257021681782
+            },
+            "baseline_over_parent": 1.1910700874081415
+          },
+          {
+            "round": 4,
+            "order": [
+              "r2_rank_ordered_gather",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 8.118417986323324,
+              "baseline": 11.385681571030036,
+              "parent": 9.587752444861716
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.180987781241826
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.40245077183891
+            },
+            "baseline_over_parent": 1.1875235240488369
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              9.55465926605017,
+              9.598761745121168
+            ],
+            "ratio": 0.995405399129381
+          },
+          {
+            "round": 1,
+            "us": [
+              9.556758390338471,
+              9.552504257116905
+            ],
+            "ratio": 1.0004453421958328
+          },
+          {
+            "round": 2,
+            "us": [
+              9.609342060880177,
+              9.542054322886308
+            ],
+            "ratio": 1.0070517035134123
+          },
+          {
+            "round": 3,
+            "us": [
+              9.59499117188853,
+              9.534625307937397
+            ],
+            "ratio": 1.006331225612073
+          },
+          {
+            "round": 4,
+            "us": [
+              9.585821202823093,
+              9.59624883863661
+            ],
+            "ratio": 0.9989133633371893
+          }
+        ],
+        "aa_median": 1.0004453421958328,
+        "median_us": {
+          "baseline": 11.43041068202037,
+          "parent": 9.594534648938126,
+          "r2_rank_ordered_gather": 8.152574039283298
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.1751231700942204
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.40245077183891
+        }
+      }
+    },
+    {
+      "shape": [
+        512,
+        512
+      ],
+      "input_seed": 512002171,
+      "input_sha256": {
+        "x": "a18983d7a68cc3d661280bfa5530737abbfaf0b797e50b3552b26cfc46d5db47",
+        "b": "30ac5b7596337043b912d76ac91d9bf32394111c84b1a3fbfacea8fe59b0c48f"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "parent",
+              "baseline",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "parent": 10.606885113558926,
+              "baseline": 13.013114864834249,
+              "r2_rank_ordered_gather": 9.101367655987014
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1654166180817407
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.4297977355385736
+            },
+            "baseline_over_parent": 1.2268554552551347
+          },
+          {
+            "round": 1,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 9.091061101458918,
+              "parent": 10.610564322947932,
+              "baseline": 13.001025172400633
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1671425595462301
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.4300888562188028
+            },
+            "baseline_over_parent": 1.2252906421087093
+          },
+          {
+            "round": 2,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 13.006154265851606,
+              "r2_rank_ordered_gather": 9.091281996950823,
+              "parent": 10.54618028494028
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1600322472097362
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.4306182857614378
+            },
+            "baseline_over_parent": 1.233257341942477
+          },
+          {
+            "round": 3,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 13.014098334471033,
+              "r2_rank_ordered_gather": 9.097941508739863,
+              "parent": 10.615306757513716
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.166781161135869
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.43044427379195
+            },
+            "baseline_over_parent": 1.225974776966234
+          },
+          {
+            "round": 4,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 10.610314031510756,
+              "r2_rank_ordered_gather": 9.105772807680326,
+              "baseline": 13.007433672584115
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1652293831185216
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.4284821230783298
+            },
+            "baseline_over_parent": 1.2259235338326782
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              10.611540930611747,
+              10.612963464525011
+            ],
+            "ratio": 0.9998659626109128
+          },
+          {
+            "round": 1,
+            "us": [
+              10.577522529350533,
+              10.601447641322043
+            ],
+            "ratio": 0.9977432221729554
+          },
+          {
+            "round": 2,
+            "us": [
+              10.592917392128392,
+              10.557235186715689
+            ],
+            "ratio": 1.0033798816434063
+          },
+          {
+            "round": 3,
+            "us": [
+              10.576083719866151,
+              10.606476967794853
+            ],
+            "ratio": 0.9971344634018452
+          },
+          {
+            "round": 4,
+            "us": [
+              10.601981661536476,
+              10.563667662843258
+            ],
+            "ratio": 1.0036269598700065
+          }
+        ],
+        "aa_median": 0.9998659626109128,
+        "median_us": {
+          "baseline": 13.007433672584115,
+          "parent": 10.610314031510756,
+          "r2_rank_ordered_gather": 9.097941508739863
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.1654166180817407
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.4300888562188028
+        }
+      }
+    },
+    {
+      "shape": [
+        768,
+        512
+      ],
+      "input_seed": 768002939,
+      "input_sha256": {
+        "x": "3af28fcfc82a4fbe2c611f2febf0599a33589657e4f41743469e9101ba379ac6",
+        "b": "3c62bfa28338b87198ffab7b9050a69eb9f2d20d964a7eba982d1c1632700dee"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 11.125921852051334,
+              "parent": 12.778504941258497,
+              "baseline": 16.439214758916734
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.148534486506614
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.4775597903274653
+            },
+            "baseline_over_parent": 1.2864740307638611
+          },
+          {
+            "round": 1,
+            "order": [
+              "r2_rank_ordered_gather",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 11.152489326860263,
+              "baseline": 16.407290870468675,
+              "parent": 12.755396585822513
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1437264104886182
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.4711774555078445
+            },
+            "baseline_over_parent": 1.286301900538726
+          },
+          {
+            "round": 2,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 12.77355696483512,
+              "r2_rank_ordered_gather": 11.110984062661931,
+              "baseline": 16.411293440531484
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1496332721563525
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.477033298578931
+            },
+            "baseline_over_parent": 1.284786491790098
+          },
+          {
+            "round": 3,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 16.447862761991995,
+              "parent": 12.767901945601256,
+              "r2_rank_ordered_gather": 11.150003941553944
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1451029087099884
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.4751441208638447
+            },
+            "baseline_over_parent": 1.2882196959272971
+          },
+          {
+            "round": 4,
+            "order": [
+              "parent",
+              "baseline",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "parent": 12.791868433062751,
+              "baseline": 16.408448538634076,
+              "r2_rank_ordered_gather": 11.164073282706925
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1458065626349183
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.4697546426939578
+            },
+            "baseline_over_parent": 1.282724929864324
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              12.773187596554427,
+              12.770246845343612
+            ],
+            "ratio": 1.000230281469609
+          },
+          {
+            "round": 1,
+            "us": [
+              12.80116776288566,
+              12.733038020707488
+            ],
+            "ratio": 1.0053506274046597
+          },
+          {
+            "round": 2,
+            "us": [
+              12.78663607425026,
+              12.799909295744156
+            ],
+            "ratio": 0.9989630222224849
+          },
+          {
+            "round": 3,
+            "us": [
+              12.743576652800556,
+              12.730464998951742
+            ],
+            "ratio": 1.001029943042135
+          },
+          {
+            "round": 4,
+            "us": [
+              12.798741725688808,
+              12.781208251223205
+            ],
+            "ratio": 1.0013718166640408
+          }
+        ],
+        "aa_median": 1.001029943042135,
+        "median_us": {
+          "baseline": 16.411293440531484,
+          "parent": 12.77355696483512,
+          "r2_rank_ordered_gather": 11.150003941553944
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.1458065626349183
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.4751441208638447
+        }
+      }
+    },
+    {
+      "shape": [
+        1024,
+        512
+      ],
+      "input_seed": 1024003707,
+      "input_sha256": {
+        "x": "ca63baa75b4d4e18ec7e1b91f98a441bcec6558fa4587aab8986e36edf70fecb",
+        "b": "a389bc14e5f25443af7dfb0df88ec8b63105467dc47d0b6c16051f4848906892"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 19.92455121766718,
+              "r2_rank_ordered_gather": 13.362218423632465,
+              "parent": 15.073815268785966
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.128092266634885
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.4911110255785485
+            },
+            "baseline_over_parent": 1.3217988188382441
+          },
+          {
+            "round": 1,
+            "order": [
+              "parent",
+              "baseline",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "parent": 15.1205137235309,
+              "baseline": 19.907716197352254,
+              "r2_rank_ordered_gather": 13.362583173375551
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1315561914449266
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.489810460975662
+            },
+            "baseline_over_parent": 1.3166031631829676
+          },
+          {
+            "round": 2,
+            "order": [
+              "r2_rank_ordered_gather",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 13.376416271108752,
+              "baseline": 19.96389284865599,
+              "parent": 15.098828385739838
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1287648410248163
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.4924694659641609
+            },
+            "baseline_over_parent": 1.322214700281711
+          },
+          {
+            "round": 3,
+            "order": [
+              "parent",
+              "baseline",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "parent": 15.101031736070357,
+              "baseline": 19.9247238262981,
+              "r2_rank_ordered_gather": 13.310211330208446
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1345448514252754
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.4969502235533676
+            },
+            "baseline_over_parent": 1.3194279817786132
+          },
+          {
+            "round": 4,
+            "order": [
+              "r2_rank_ordered_gather",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 13.361090855164962,
+              "baseline": 20.003858349484656,
+              "parent": 15.044469074769454
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.125991076466167
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.4971725412488919
+            },
+            "baseline_over_parent": 1.3296486735469062
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              15.13357300689255,
+              15.096658143130215
+            ],
+            "ratio": 1.0024452341314447
+          },
+          {
+            "round": 1,
+            "us": [
+              15.058576798245639,
+              15.074431508210907
+            ],
+            "ratio": 0.9989482382830402
+          },
+          {
+            "round": 2,
+            "us": [
+              15.057489399536415,
+              15.122199058532715
+            ],
+            "ratio": 0.9957208830047911
+          },
+          {
+            "round": 3,
+            "us": [
+              15.09414909935211,
+              15.13089323506772
+            ],
+            "ratio": 0.997571581852785
+          },
+          {
+            "round": 4,
+            "us": [
+              15.091929716222426,
+              15.059869371611496
+            ],
+            "ratio": 1.0021288594090574
+          }
+        ],
+        "aa_median": 0.9989482382830402,
+        "median_us": {
+          "baseline": 19.9247238262981,
+          "parent": 15.098828385739838,
+          "r2_rank_ordered_gather": 13.362218423632465
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.1287648410248163
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.4924694659641609
+        }
+      }
+    },
+    {
+      "shape": [
+        1536,
+        512
+      ],
+      "input_seed": 1536005243,
+      "input_sha256": {
+        "x": "4abfb139c102d0f7a8c7ad1fdbdd86e034d0262bee59a56c2c1c010e74c254f9",
+        "b": "31e202e6413d7d97225012d2c07530dc3b4f2430cfcbad3f3ed234e65194f7eb"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 27.389177559650772,
+              "r2_rank_ordered_gather": 17.961047560425513,
+              "parent": 20.332038072254555
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1320073622572642
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.5249209416937761
+            },
+            "baseline_over_parent": 1.347094544202458
+          },
+          {
+            "round": 1,
+            "order": [
+              "parent",
+              "baseline",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "parent": 20.37227768758655,
+              "baseline": 27.39998499552409,
+              "r2_rank_ordered_gather": 17.95738317913726
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1344791991326941
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.5258339548803062
+            },
+            "baseline_over_parent": 1.3449642409017297
+          },
+          {
+            "round": 2,
+            "order": [
+              "parent",
+              "baseline",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "parent": 20.387725126348986,
+              "baseline": 27.409645554366385,
+              "r2_rank_ordered_gather": 17.993888810828878
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.133036073562902
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.5232752543113983
+            },
+            "baseline_over_parent": 1.3444190258844675
+          },
+          {
+            "round": 3,
+            "order": [
+              "parent",
+              "baseline",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "parent": 20.38602662502679,
+              "baseline": 27.426276746929357,
+              "r2_rank_ordered_gather": 17.9884302166273
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1332854718019425
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.5246620420262322
+            },
+            "baseline_over_parent": 1.3453468521060226
+          },
+          {
+            "round": 4,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 27.383000445100574,
+              "parent": 20.310702329926652,
+              "r2_rank_ordered_gather": 17.97663008424286
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1298392543399827
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.5232554887527403
+            },
+            "baseline_over_parent": 1.3482054928624156
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              20.406532287597656,
+              20.36197572223376
+            ],
+            "ratio": 1.0021882240688091
+          },
+          {
+            "round": 1,
+            "us": [
+              20.367262397013917,
+              20.393293388045155
+            ],
+            "ratio": 0.9987235513883943
+          },
+          {
+            "round": 2,
+            "us": [
+              20.317057723519188,
+              20.361921684129243
+            ],
+            "ratio": 0.9977966735504624
+          },
+          {
+            "round": 3,
+            "us": [
+              20.394804039779974,
+              20.407703227566596
+            ],
+            "ratio": 0.9993679255503285
+          },
+          {
+            "round": 4,
+            "us": [
+              20.35339972130338,
+              20.349633078905022
+            ],
+            "ratio": 1.0001850963299315
+          }
+        ],
+        "aa_median": 0.9993679255503285,
+        "median_us": {
+          "baseline": 27.39998499552409,
+          "parent": 20.37227768758655,
+          "r2_rank_ordered_gather": 17.97663008424286
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.133036073562902
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.5246620420262322
+        }
+      }
+    },
+    {
+      "shape": [
+        2048,
+        512
+      ],
+      "input_seed": 2048006779,
+      "input_sha256": {
+        "x": "04d5a2fb4834cfa92413e5fafbeaa818578f94ffb43b82e7608c1f980272e423",
+        "b": "1f8db64cafed44ccdd4d2254d87a1ffc72e175d24564610a24af4f55beb516cd"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 34.604194893939216,
+              "parent": 25.592397619610182,
+              "r2_rank_ordered_gather": 22.541415907515308
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.13535004742438
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.535138477366108
+            },
+            "baseline_over_parent": 1.3521279017415602
+          },
+          {
+            "round": 1,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 34.515287347340866,
+              "parent": 25.590746259026034,
+              "r2_rank_ordered_gather": 22.4806299551131
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1383464925192435
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.535334526490462
+            },
+            "baseline_over_parent": 1.3487409471369787
+          },
+          {
+            "round": 2,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 25.553981143254614,
+              "r2_rank_ordered_gather": 22.518144034813915,
+              "baseline": 34.630124796668454
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1348173767672496
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.5378765116311963
+            },
+            "baseline_over_parent": 1.3551753287494945
+          },
+          {
+            "round": 3,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 25.59150162563529,
+              "r2_rank_ordered_gather": 22.46636680241747,
+              "baseline": 34.56780538393583
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1391028131385064
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.5386468888336764
+            },
+            "baseline_over_parent": 1.3507533043433793
+          },
+          {
+            "round": 4,
+            "order": [
+              "parent",
+              "baseline",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "parent": 25.59009703194223,
+              "baseline": 34.59899507719895,
+              "r2_rank_ordered_gather": 22.513157308918156
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1366729544329708
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.5368344209762714
+            },
+            "baseline_over_parent": 1.3520462636000004
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              25.56571930832004,
+              25.6094339967684
+            ],
+            "ratio": 0.9982930240295872
+          },
+          {
+            "round": 1,
+            "us": [
+              25.60073911681656,
+              25.558325771911903
+            ],
+            "ratio": 1.0016594727402397
+          },
+          {
+            "round": 2,
+            "us": [
+              25.6213656976066,
+              25.55946155830666
+            ],
+            "ratio": 1.0024219657037268
+          },
+          {
+            "round": 3,
+            "us": [
+              25.590287363128198,
+              25.57490808754379
+            ],
+            "ratio": 1.000601342359932
+          },
+          {
+            "round": 4,
+            "us": [
+              25.595238425514914,
+              25.593289041012664
+            ],
+            "ratio": 1.0000761677992667
+          }
+        ],
+        "aa_median": 1.000601342359932,
+        "median_us": {
+          "baseline": 34.59899507719895,
+          "parent": 25.590746259026034,
+          "r2_rank_ordered_gather": 22.513157308918156
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.1366729544329708
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.5368344209762714
+        }
+      }
+    },
+    {
+      "shape": [
+        3072,
+        512
+      ],
+      "input_seed": 3072009851,
+      "input_sha256": {
+        "x": "0f92e8af6eb1e59ff22c02beb1bcd5040e4254e19220d40513605da7426b90d1",
+        "b": "e35e1dc53bb0a04db26a55bc6fffffea03e8d0e9a1036d651a54b6b1483358d2"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 49.25487922451601,
+              "parent": 35.854270104134436,
+              "r2_rank_ordered_gather": 31.60640558750509
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1343988485140697
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.5583828122482823
+            },
+            "baseline_over_parent": 1.373752110458841
+          },
+          {
+            "round": 1,
+            "order": [
+              "r2_rank_ordered_gather",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 31.6213705960442,
+              "baseline": 49.25594230492909,
+              "parent": 35.90938452518348
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1356049357859175
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.5576789170261631
+            },
+            "baseline_over_parent": 1.3716732535581497
+          },
+          {
+            "round": 2,
+            "order": [
+              "r2_rank_ordered_gather",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 31.61703192669412,
+              "parent": 35.928968470947744,
+              "baseline": 49.36193639581854
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1363801812343135
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.5612451070760527
+            },
+            "baseline_over_parent": 1.3738756913027639
+          },
+          {
+            "round": 3,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 49.29409621597884,
+              "r2_rank_ordered_gather": 31.615776971939507,
+              "parent": 35.90897691990426
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.135792960324055
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.5591613092327188
+            },
+            "baseline_over_parent": 1.3727513408675043
+          },
+          {
+            "round": 4,
+            "order": [
+              "parent",
+              "baseline",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "parent": 35.88463077700235,
+              "baseline": 49.2599793666385,
+              "r2_rank_ordered_gather": 31.617223510194297
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1349709681317248
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.558010916131066
+            },
+            "baseline_over_parent": 1.3727319551580313
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              35.96891554083834,
+              35.91647941268278
+            ],
+            "ratio": 1.0014599462144678
+          },
+          {
+            "round": 1,
+            "us": [
+              36.01154074611434,
+              35.91551974536927
+            ],
+            "ratio": 1.0026735239090465
+          },
+          {
+            "round": 2,
+            "us": [
+              35.908018875122075,
+              35.91014726359853
+            ],
+            "ratio": 0.999940730165743
+          },
+          {
+            "round": 3,
+            "us": [
+              35.88061954664147,
+              35.90562179655363
+            ],
+            "ratio": 0.9993036675411492
+          },
+          {
+            "round": 4,
+            "us": [
+              35.9068953724952,
+              35.91173944019136
+            ],
+            "ratio": 0.9998651118611442
+          }
+        ],
+        "aa_median": 0.999940730165743,
+        "median_us": {
+          "baseline": 49.2599793666385,
+          "parent": 35.90897691990426,
+          "r2_rank_ordered_gather": 31.61703192669412
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.1356049357859175
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.5583828122482823
+        }
+      }
+    },
+    {
+      "shape": [
+        4096,
+        512
+      ],
+      "input_seed": 4096012923,
+      "input_sha256": {
+        "x": "543d9dd1d132be0ae2d67a0f7f127e88493081c5bd1d054fbe5abea2e599d7aa",
+        "b": "b02ba46cbb59617ffb216dc890a8e445bb1fb985a3df4682adf37b618eb61850"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "parent",
+              "baseline",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "parent": 46.23384940914992,
+              "baseline": 63.78003745679034,
+              "r2_rank_ordered_gather": 40.570680761850014
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1395877155856151
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.5720721530698314
+            },
+            "baseline_over_parent": 1.3795095643532538
+          },
+          {
+            "round": 1,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 46.20730393090283,
+              "r2_rank_ordered_gather": 40.66201286233527,
+              "baseline": 63.77585029602051
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1363752229222301
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.5684381024603755
+            },
+            "baseline_over_parent": 1.3802114572923192
+          },
+          {
+            "round": 2,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 63.781865437825516,
+              "parent": 46.208846802804985,
+              "r2_rank_ordered_gather": 40.60948164566704
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1378831969832688
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.5706151089133868
+            },
+            "baseline_over_parent": 1.3802955462189506
+          },
+          {
+            "round": 3,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 46.235647856020464,
+              "r2_rank_ordered_gather": 40.59684266259659,
+              "baseline": 63.74986521402995
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1388976290665853
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.570315843127503
+            },
+            "baseline_over_parent": 1.3788033296851256
+          },
+          {
+            "round": 4,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 46.234351906624866,
+              "r2_rank_ordered_gather": 40.60972476827687,
+              "baseline": 63.77493051382212
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1385044387875731
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.570434935910751
+            },
+            "baseline_over_parent": 1.3793841134103555
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              46.40025032891168,
+              46.228989835493174
+            ],
+            "ratio": 1.003704612495924
+          },
+          {
+            "round": 1,
+            "us": [
+              46.23599087234831,
+              46.19214002368519
+            ],
+            "ratio": 1.0009493140746593
+          },
+          {
+            "round": 2,
+            "us": [
+              46.216452033865366,
+              46.233718702108554
+            ],
+            "ratio": 0.9996265351624766
+          },
+          {
+            "round": 3,
+            "us": [
+              46.29805408654994,
+              46.22019599465762
+            ],
+            "ratio": 1.001684503715677
+          },
+          {
+            "round": 4,
+            "us": [
+              46.23557679793414,
+              46.249130192924945
+            ],
+            "ratio": 0.9997069481104991
+          }
+        ],
+        "aa_median": 1.0009493140746593,
+        "median_us": {
+          "baseline": 63.77585029602051,
+          "parent": 46.23384940914992,
+          "r2_rank_ordered_gather": 40.60948164566704
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.1385044387875731
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.570434935910751
+        }
+      }
+    },
+    {
+      "shape": [
+        6144,
+        512
+      ],
+      "input_seed": 6144019067,
+      "input_sha256": {
+        "x": "3a5bf2d0cfaf3a81ac182c2a1000521e679a84e4fa51254206db5182067f12bf",
+        "b": "a7d77baaaa986a602a2a79e2685b4e5f7b9e24f59201f0b103f46e615099e816"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "r2_rank_ordered_gather",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 58.41301509312221,
+              "baseline": 92.02043605300615,
+              "parent": 66.37105512784014
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1362374467750243
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.575341315737715
+            },
+            "baseline_over_parent": 1.3864543192173402
+          },
+          {
+            "round": 1,
+            "order": [
+              "r2_rank_ordered_gather",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "r2_rank_ordered_gather": 58.42026962093049,
+              "baseline": 92.03322338608076,
+              "parent": 66.41502972306876
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1368490791640227
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.575364577795574
+            },
+            "baseline_over_parent": 1.385728859413786
+          },
+          {
+            "round": 2,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 91.92969276791527,
+              "r2_rank_ordered_gather": 58.41739397107458,
+              "parent": 66.41504565874736
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1369053143937373
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.5736698698581852
+            },
+            "baseline_over_parent": 1.3841696840843387
+          },
+          {
+            "round": 3,
+            "order": [
+              "parent",
+              "baseline",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "parent": 66.41549931632149,
+              "baseline": 91.93120838906528,
+              "r2_rank_ordered_gather": 58.39175475886994
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1374122868988228
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.5743868080124883
+            },
+            "baseline_over_parent": 1.3841830496706564
+          },
+          {
+            "round": 4,
+            "order": [
+              "baseline",
+              "r2_rank_ordered_gather",
+              "parent"
+            ],
+            "us": {
+              "baseline": 91.93260229029362,
+              "r2_rank_ordered_gather": 58.48213909593828,
+              "parent": 66.41907824410333
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1357156094298249
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.5719774227047476
+            },
+            "baseline_over_parent": 1.3841294507644777
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              66.4127105660092,
+              66.42310635796908
+            ],
+            "ratio": 0.9998434913311062
+          },
+          {
+            "round": 1,
+            "us": [
+              66.41894636483029,
+              66.42192511722959
+            ],
+            "ratio": 0.9999551540791081
+          },
+          {
+            "round": 2,
+            "us": [
+              66.4134065036116,
+              66.49543537813074
+            ],
+            "ratio": 0.9987663984143772
+          },
+          {
+            "round": 3,
+            "us": [
+              66.36210906876825,
+              66.41746626959907
+            ],
+            "ratio": 0.9991665264584753
+          },
+          {
+            "round": 4,
+            "us": [
+              66.4167563120524,
+              66.43601915828084
+            ],
+            "ratio": 0.9997100541773499
+          }
+        ],
+        "aa_median": 0.9997100541773499,
+        "median_us": {
+          "baseline": 91.93260229029362,
+          "parent": 66.41504565874736,
+          "r2_rank_ordered_gather": 58.41739397107458
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.1368490791640227
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.5743868080124883
+        }
+      }
+    },
+    {
+      "shape": [
+        8192,
+        512
+      ],
+      "input_seed": 8192025211,
+      "input_sha256": {
+        "x": "ea96af6b5482ea5e6ac6e10e53d2796cd188d61ef07a0d3e50788323cf0fb606",
+        "b": "d03b7546dcc47e1438f1df1b40716ffc53f65bf851c405fb4405b1fd4311a9e3"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 86.9761595854888,
+              "r2_rank_ordered_gather": 76.55291082374603,
+              "baseline": 121.08288399967145
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1361574452177405
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.5816888305978383
+            },
+            "baseline_over_parent": 1.3921387720121072
+          },
+          {
+            "round": 1,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 86.97875497587059,
+              "r2_rank_ordered_gather": 76.54603573644584,
+              "baseline": 121.08772230444488
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1362933970264042
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.581894099929089
+            },
+            "baseline_over_parent": 1.392152857764367
+          },
+          {
+            "round": 2,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 86.97967443765546,
+              "r2_rank_ordered_gather": 76.54073587048195,
+              "baseline": 121.17921923413688
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1363840894453603
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.5831990358596726
+            },
+            "baseline_over_parent": 1.3931900759296894
+          },
+          {
+            "round": 3,
+            "order": [
+              "baseline",
+              "parent",
+              "r2_rank_ordered_gather"
+            ],
+            "us": {
+              "baseline": 121.07971380956425,
+              "parent": 86.96271186452276,
+              "r2_rank_ordered_gather": 76.53905404991363
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1361874397848126
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.5819337632603114
+            },
+            "baseline_over_parent": 1.3923175946742736
+          },
+          {
+            "round": 4,
+            "order": [
+              "parent",
+              "r2_rank_ordered_gather",
+              "baseline"
+            ],
+            "us": {
+              "parent": 86.96615631515915,
+              "r2_rank_ordered_gather": 76.49422221713596,
+              "baseline": 121.07301439557756
+            },
+            "parent_over_candidate": {
+              "r2_rank_ordered_gather": 1.1368983668896933
+            },
+            "baseline_over_candidate": {
+              "r2_rank_ordered_gather": 1.582773324394365
+            },
+            "baseline_over_parent": 1.3921854147125645
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              86.98085578712256,
+              86.96769765905432
+            ],
+            "ratio": 1.000151299027368
+          },
+          {
+            "round": 1,
+            "us": [
+              87.03992869287329,
+              86.96850917799057
+            ],
+            "ratio": 1.0008212112126305
+          },
+          {
+            "round": 2,
+            "us": [
+              87.05865492200637,
+              86.96751872520275
+            ],
+            "ratio": 1.0010479337359455
+          },
+          {
+            "round": 3,
+            "us": [
+              86.95922198596301,
+              86.97515006537911
+            ],
+            "ratio": 0.9998168663186654
+          },
+          {
+            "round": 4,
+            "us": [
+              87.0423671910581,
+              86.96433831979563
+            ],
+            "ratio": 1.0008972513649852
+          }
+        ],
+        "aa_median": 1.0008212112126305,
+        "median_us": {
+          "baseline": 121.08288399967145,
+          "parent": 86.9761595854888,
+          "r2_rank_ordered_gather": 76.54073587048195
+        },
+        "parent_over_candidate": {
+          "r2_rank_ordered_gather": 1.1362933970264042
+        },
+        "baseline_over_candidate": {
+          "r2_rank_ordered_gather": 1.5819337632603114
+        }
+      }
+    }
+  ],
+  "summary": {
+    "r2_rank_ordered_gather": {
+      "parent_over_candidate": {
+        "geomean": 1.18601378680779,
+        "worst": 1.1287648410248163,
+        "best": 1.2735543414723614
+      },
+      "baseline_over_candidate": {
+        "geomean": 1.4065712225512323,
+        "worst": 1.3182781334153724,
+        "best": 1.5819337632603114
+      }
+    }
+  },
+  "aa_passed": true
+}

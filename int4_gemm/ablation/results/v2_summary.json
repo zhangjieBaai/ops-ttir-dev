@@ -1,0 +1,127 @@
+{
+  "operator": "int4_gemm",
+  "shape_count": 30,
+  "final": "r3/group128 (r6 retained)",
+  "cumulative": {
+    "baseline": [
+      1.0,
+      1.0
+    ],
+    "parent": [
+      1.0837680882802254,
+      1.083853975812466
+    ],
+    "narrow": [
+      2.1228192752489607,
+      2.128313285250948
+    ],
+    "full_k": [
+      1.0860371146013406,
+      1.0857124782729721
+    ],
+    "narrow_full_k": [
+      2.206938441024388,
+      2.211089360745917
+    ],
+    "group_pair": [
+      2.45121073398589,
+      2.457776925144334
+    ],
+    "final": [
+      2.5278854759161415,
+      2.5315427691509385
+    ],
+    "no_full_k": [
+      2.479277856279546,
+      2.4877362143412487
+    ],
+    "no_pair": [
+      2.2942381514811294,
+      2.299349406443125
+    ],
+    "no_narrow_pair": [
+      1.0860381769796474,
+      1.0863881761470942
+    ]
+  },
+  "additions": {
+    "\u539f\u59cb\u57fa\u7ebf \u2192 \u9996\u8f6e\u7ec4\u5408": [
+      1.0837680882802254,
+      1.083853975812466
+    ],
+    "\u9996\u8f6e\u7ec4\u5408 \u2192 \u7a84\u52a0\u8f7d": [
+      1.958764979316418,
+      1.9635285141666678
+    ],
+    "\u9996\u8f6e\u7ec4\u5408 \u2192 \u53bb K mask": [
+      1.0018516566096203,
+      1.0016028391388487
+    ],
+    "\u7a84\u52a0\u8f7d \u2192 \u518d\u53bb K mask": [
+      1.0395528721092586,
+      1.0390239262236933
+    ],
+    "\u53bb K mask \u2192 \u518d\u7a84\u52a0\u8f7d": [
+      2.0315999792593074,
+      2.036629508883891
+    ],
+    "\u4e24\u9879\u5747\u542f\u7528 \u2192 \u7ec4\u5185\u590d\u7528": [
+      1.1113850858270247,
+      1.1112643783034972
+    ],
+    "\u7ec4\u5185\u590d\u7528 \u2192 group128 \u53f3\u79fb": [
+      1.0309174702920816,
+      1.0302947451421525
+    ]
+  },
+  "removals": {
+    "group128 \u53f3\u79fb": [
+      1.0309174702920816,
+      1.0302947451421525
+    ],
+    "K mask \u7b80\u5316": [
+      1.0193537774331405,
+      1.0180395692155861
+    ],
+    "BK64 \u7ec4\u5185\u590d\u7528": [
+      1.1015257198748942,
+      1.1007233420685405
+    ],
+    "\u7a84\u52a0\u8f7d\u548c\u7ec4\u5185\u590d\u7528\uff08\u8054\u5408\u79fb\u9664\uff09": [
+      2.3278116335712356,
+      2.3291099621020392
+    ]
+  },
+  "evidence": "A: 30-shape main/repeat; C: compiled resources and identity",
+  "source_port_measured": false,
+  "sanitizer_new_ablations_measured": false,
+  "sessions": {
+    "main": {
+      "seed": 42,
+      "rounds": 7,
+      "rep_ms": 20,
+      "cuda_visible_devices": "0"
+    },
+    "repeat": {
+      "seed": 123,
+      "rounds": 5,
+      "rep_ms": 20,
+      "cuda_visible_devices": "1"
+    }
+  },
+  "script_sha256": {
+    "ablation/generate.py": "b65040521583b9760c3a5e48fd7bc7bc7444570c25361df240f461724515317a",
+    "ablation/run.py": "af190b1c7d7d518c6228441f3acb42113bf4720d76897ad661a84c9283286e41",
+    "ablation/verify_pipeline.py": "6534d533a96cdd5835200585a324a7af6fad81073663f93ee1cd336fd1a0d4d7",
+    "ablation/render.py": "e075adf7a507a44ca8be5c9c6bbab470bf96264845d9424fdc5a7c54b9ba6d70",
+    "round2/run.py": "cdbc3693b8f77a26626f268861319371ca7746d92d42f88f8fde6f93702a8601",
+    "round2/make_candidates.py": "586afe9df8dda952480154462dde495c5e879f129ed78462d45462cf88b91e14",
+    "multiround/generate.py": "32f5c76beeda6827680f6fdca213968249b8d745205bb67591cc9913510e0e6e"
+  },
+  "sources": {
+    "ablation/results/v2_main/results.json": "ebff37f07645cf23bad7ee41bad79e1c0fdd4a1cfd9b7f8ffa955d4521c486cb",
+    "ablation/results/v2_repeat/results.json": "1055f2e64f25c469408659b48fc11fd3c6077fb3427bbf5820c5e94b2bfff48e",
+    "ablation/results/v2_main_pipeline.json": "30578b703d06e0017dd84aa3150f8dba422b6718f1773cab68b673519704ba17",
+    "ablation/results/v2_repeat_pipeline.json": "a325d19292be37a024bb96fb33c22ad594e55740d427427958afa3e82a4955c3"
+  }
+}

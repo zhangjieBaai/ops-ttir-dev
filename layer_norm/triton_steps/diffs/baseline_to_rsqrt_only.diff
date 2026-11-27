@@ -1,0 +1,17 @@
+--- baseline.py
++++ rsqrt_only.py
+@@ -1,4 +1,4 @@
+-"""Original algorithm: 8192-wide dynamic loops, divisions, sqrt."""
++"""Only replace 1/sqrt by rsqrt."""
+ 
+ import triton
+ import triton.language as tl
+@@ -25,7 +25,7 @@
+         x = tl.where(cols < N, x - mean, 0.0)
+         _var += x * x
+     var = tl.sum(_var, axis=0) / N
+-    rstd = 1 / tl.sqrt(var + eps)
++    rstd = tl.rsqrt(var + eps)
+     tl.store(Mean + row, mean)
+     tl.store(Rstd + row, rstd)
+     for off in range(0, N, BLOCK_SIZE):

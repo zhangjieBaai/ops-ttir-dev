@@ -86,6 +86,15 @@ def provenance():
 
 
 def compile_ir(name):
+    if name == "optimized":
+        selection = json.loads((ROOT / "selection.json").read_text())
+        assert (
+            digest(ROOT / "ir/optimized.ttir")
+            == digest(ROOT / f"ir/{selection['candidate']}.ttir")
+            == selection["ttir_sha256"]
+        ), "optimized.ttir differs from the current selected candidate"
+        assert digest(ROOT / "contract.json") == selection["contract_sha256"]
+        assert digest(ROOT / "ir/baseline.ttir") == selection["baseline_sha256"]
     environment.check_environment()
     assert not triton.knobs.compilation.override
     assert triton.knobs.runtime.add_stages_inspection_hook is None

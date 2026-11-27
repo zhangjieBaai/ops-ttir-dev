@@ -44,7 +44,8 @@ def main():
     args = parser.parse_args()
     candidate = read(RUN / "provisional_selection.json")["candidate"]
     expected = digest(ROOT / f"ir/{candidate}.ttir")
-    assert expected == digest(ROOT / "ir/optimized.ttir")
+    # This report replays r2 evidence, independently of later promotions.
+    assert expected == read(RUN / "selection.json")["ttir_sha256"]
     main_data, repeat = read(FINAL / "full.json"), read(FINAL / "repeat.json")
     main_summary, repeat_summary = verify_timing(main_data), verify_timing(repeat)
     assert main_data["gpu_uuid"] == repeat["gpu_uuid"]

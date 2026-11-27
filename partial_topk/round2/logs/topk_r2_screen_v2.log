@@ -1,0 +1,39 @@
+loc("/root/ops-ttir-dev/partial_topk/round2/ir/m1_n65536_k8/local/unroll.ttir":68:9): error: expected '=' after SSA name
+REJECT unroll (1, 65536, 8) Traceback (most recent call last):
+  File "/root/ops-ttir-dev/complex_suite/round2_runner.py", line 98, in run
+    ck = compile_file(path, options)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/ops-ttir-dev/complex_suite/support.py", line 93, in compile_file
+    ck = triton.compile(str(path), options=options)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/compiler/compiler.py", line 240, in compile
+    src = IRSource(src, context, backend)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/compiler/compiler.py", line 107, in __init__
+    self.module = ir.parse_mlir_module(self.path, context)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Parse MLIR file failed.
+
+loc("/root/ops-ttir-dev/partial_topk/round2/ir/m1_n65536_k8/local/packed_unroll.ttir":73:9): error: expected '=' after SSA name
+REJECT packed_unroll (1, 65536, 8) Traceback (most recent call last):
+  File "/root/ops-ttir-dev/complex_suite/round2_runner.py", line 98, in run
+    ck = compile_file(path, options)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/ops-ttir-dev/complex_suite/support.py", line 93, in compile_file
+    ck = triton.compile(str(path), options=options)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/compiler/compiler.py", line 240, in compile
+    src = IRSource(src, context, backend)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/compiler/compiler.py", line 107, in __init__
+    self.module = ir.parse_mlir_module(self.path, context)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Parse MLIR file failed.
+
+(1, 65536, 8) {'baseline': 0.8753, 'parent': 1.0, 'packed64': 0.9663, 'static_ids': 1.0142} AA 1.000250016961369
+(16, 65536, 8) {'baseline': 0.9195, 'parent': 1.0, 'packed64': 0.7833, 'static_ids': 1.0622} AA 1.0001118521162629
+(128, 65536, 8) {'baseline': 0.9765, 'parent': 1.0, 'packed64': 0.6696, 'static_ids': 1.1883} AA 0.9999699975228296
+(16, 262144, 8) {'baseline': 0.959, 'parent': 1.0, 'packed64': 0.6945, 'static_ids': 1.1654} AA 1.0000498651103689
+(16, 262144, 16) {'baseline': 0.9302, 'parent': 1.0, 'packed64': 0.6806, 'static_ids': 1.0867} AA 1.0000881262775307
+(4, 65537, 8) {'baseline': 0.8863, 'parent': 1.0, 'packed64': 0.966, 'static_ids': 1.0018} AA 1.0029227326793624
+{'baseline': {'parent_over': {'geomean': 0.9237543036475601, 'worst': 0.8752976236431916, 'best': 0.9765112879569211}, 'baseline_over': {'geomean': 1.0, 'worst': 1.0, 'best': 1.0}}, 'parent': {'parent_over': {'geomean': 1.0, 'worst': 1.0, 'best': 1.0}, 'baseline_over': {'geomean': 1.0825389349217365, 'worst': 1.0240537025355052, 'best': 1.1424685421145875}}, 'packed64': {'parent_over': {'geomean': 0.7835435988784226, 'worst': 0.6695833675453391, 'best': 0.966310686691661}, 'baseline_over': {'geomean': 0.8484705801265979, 'worst': 0.6857123012500879, 'best': 1.1061297940551378}}, 'static_ids': {'parent_over': {'geomean': 1.0841918136398891, 'worst': 1.0018058724486372, 'best': 1.1883294326785288}, 'baseline_over': {'geomean': 1.174496354556987, 'worst': 1.1311900878065482, 'best': 1.2170952076197687}}}

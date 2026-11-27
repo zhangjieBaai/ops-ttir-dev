@@ -1,0 +1,23 @@
+#loc = loc(unknown)
+#loc1 = loc("output_ptr")
+#loc2 = loc("input_ptr")
+#loc3 = loc("M")
+module {
+  tt.func public @mean_dim_kernel_inner(%output_ptr: !tt.ptr<f16> {tt.divisibility = 16 : i32} loc("output_ptr"), %input_ptr: !tt.ptr<f16> {tt.divisibility = 16 : i32} loc("input_ptr"), %M: i32 loc("M")) attributes {noinline = false} {
+    %0 = tt.get_program_id x : i32 loc(#loc)
+    %1 = arith.extsi %0 : i32 to i64 loc(#loc)
+    %2 = tt.addptr %input_ptr, %1 : !tt.ptr<f16>, i64 loc(#loc)
+    %3 = tt.splat %2 : !tt.ptr<f16> -> tensor<1x!tt.ptr<f16>> loc(#loc)
+    %4 = tt.load %3 : tensor<1x!tt.ptr<f16>> loc(#loc)
+    %5 = arith.extf %4 : tensor<1xf16> to tensor<1xf32> loc(#loc)
+    %6 = "tt.reduce"(%5) <{axis = 0 : i32}> ({
+    ^bb0(%arg3: f32 loc(unknown), %arg4: f32 loc(unknown)):
+      %9 = arith.addf %arg3, %arg4 : f32 loc(#loc)
+      tt.reduce.return %9 : f32 loc(#loc)
+    }) : (tensor<1xf32>) -> f32 loc(#loc)
+    %7 = tt.addptr %output_ptr, %1 : !tt.ptr<f16>, i64 loc(#loc)
+    %8 = arith.truncf %6 : f32 to f16 loc(#loc)
+    tt.store %7, %8 : !tt.ptr<f16> loc(#loc)
+    tt.return loc(#loc)
+  } loc(#loc)
+} loc(#loc)

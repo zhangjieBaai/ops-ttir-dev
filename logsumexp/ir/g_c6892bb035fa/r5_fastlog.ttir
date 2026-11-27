@@ -1,0 +1,68 @@
+module {
+  tt.func public @logsumexp_kernel_inner(%output_ptr: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %input_ptr: !tt.ptr<f16> {tt.divisibility = 16 : i32}, %N: i32 {tt.divisibility = 16 : i32}) attributes {noinline = false} {
+    %r4_inf = arith.constant 0xFF800000 : f32
+    %r4_zero = arith.constant 0.000000e+00 : f32
+    %r4_other = arith.constant dense<0xFC00> : tensor<32xf16>
+    %r4_range = tt.make_range {end = 32 : i32, start = 0 : i32} : tensor<32xi32>
+    %r4_nv = tt.splat %N : i32 -> tensor<32xi32>
+    %r4_ptr = tt.splat %input_ptr : !tt.ptr<f16> -> tensor<32x!tt.ptr<f16>>
+    %c0 = arith.constant dense<0> : tensor<32xi32>
+    %idx0 = arith.addi %r4_range, %c0 : tensor<32xi32>
+    %mask0 = arith.cmpi slt, %idx0, %r4_nv : tensor<32xi32>
+    %ptr0 = tt.addptr %r4_ptr, %idx0 : tensor<32x!tt.ptr<f16>>, tensor<32xi32>
+    %x0 = tt.load %ptr0, %mask0, %r4_other : tensor<32x!tt.ptr<f16>>
+    %c1 = arith.constant dense<32> : tensor<32xi32>
+    %idx1 = arith.addi %r4_range, %c1 : tensor<32xi32>
+    %mask1 = arith.cmpi slt, %idx1, %r4_nv : tensor<32xi32>
+    %ptr1 = tt.addptr %r4_ptr, %idx1 : tensor<32x!tt.ptr<f16>>, tensor<32xi32>
+    %x1 = tt.load %ptr1, %mask1, %r4_other : tensor<32x!tt.ptr<f16>>
+    %max1 = arith.maxnumf %x1, %x0 : tensor<32xf16>
+    %c2 = arith.constant dense<64> : tensor<32xi32>
+    %idx2 = arith.addi %r4_range, %c2 : tensor<32xi32>
+    %mask2 = arith.cmpi slt, %idx2, %r4_nv : tensor<32xi32>
+    %ptr2 = tt.addptr %r4_ptr, %idx2 : tensor<32x!tt.ptr<f16>>, tensor<32xi32>
+    %x2 = tt.load %ptr2, %mask2, %r4_other : tensor<32x!tt.ptr<f16>>
+    %max2 = arith.maxnumf %x2, %max1 : tensor<32xf16>
+    %c3 = arith.constant dense<96> : tensor<32xi32>
+    %idx3 = arith.addi %r4_range, %c3 : tensor<32xi32>
+    %mask3 = arith.cmpi slt, %idx3, %r4_nv : tensor<32xi32>
+    %ptr3 = tt.addptr %r4_ptr, %idx3 : tensor<32x!tt.ptr<f16>>, tensor<32xi32>
+    %x3 = tt.load %ptr3, %mask3, %r4_other : tensor<32x!tt.ptr<f16>>
+    %max3 = arith.maxnumf %x3, %max2 : tensor<32xf16>
+    %r4_max16 = "tt.reduce"(%max3) <{axis = 0 : i32}> ({
+    ^bb0(%a: f16, %b: f16):
+      %m = arith.maxnumf %a, %b : f16
+      tt.reduce.return %m : f16
+    }) : (tensor<32xf16>) -> f16
+    %r4_max = arith.extf %r4_max16 : f16 to f32
+    %r4_allinf = arith.cmpf oeq, %r4_max, %r4_inf : f32
+    %r4_safe = arith.select %r4_allinf, %r4_zero, %r4_max : f32
+    %r4_bmax = tt.splat %r4_safe : f32 -> tensor<32xf32>
+    %xf0 = arith.extf %x0 : tensor<32xf16> to tensor<32xf32>
+    %delta0 = arith.subf %xf0, %r4_bmax : tensor<32xf32>
+    %exp0 = math.exp %delta0 : tensor<32xf32>
+    %xf1 = arith.extf %x1 : tensor<32xf16> to tensor<32xf32>
+    %delta1 = arith.subf %xf1, %r4_bmax : tensor<32xf32>
+    %exp1 = math.exp %delta1 : tensor<32xf32>
+    %sum1 = arith.addf %exp1, %exp0 : tensor<32xf32>
+    %xf2 = arith.extf %x2 : tensor<32xf16> to tensor<32xf32>
+    %delta2 = arith.subf %xf2, %r4_bmax : tensor<32xf32>
+    %exp2 = math.exp %delta2 : tensor<32xf32>
+    %sum2 = arith.addf %exp2, %sum1 : tensor<32xf32>
+    %xf3 = arith.extf %x3 : tensor<32xf16> to tensor<32xf32>
+    %delta3 = arith.subf %xf3, %r4_bmax : tensor<32xf32>
+    %exp3 = math.exp %delta3 : tensor<32xf32>
+    %sum3 = arith.addf %exp3, %sum2 : tensor<32xf32>
+    %r4_sum = "tt.reduce"(%sum3) <{axis = 0 : i32}> ({
+    ^bb0(%a: f32, %b: f32):
+      %s = arith.addf %a, %b : f32
+      tt.reduce.return %s : f32
+    }) : (tensor<32xf32>) -> f32
+    %r4_log = "tt.extern_elementwise"(%r4_sum) {libname = "libdevice", libpath = "", symbol = "__nv_fast_logf", pure = true} : (f32) -> f32
+    %r4_val = arith.addf %r4_safe, %r4_log : f32
+    %r4_out = arith.select %r4_allinf, %r4_max, %r4_val : f32
+    %r4_y16 = arith.truncf %r4_out : f32 to f16
+    tt.store %output_ptr, %r4_y16 : !tt.ptr<f16>
+    tt.return
+  }
+}

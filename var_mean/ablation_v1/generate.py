@@ -64,16 +64,16 @@ scf.if %is_short {{
             C=bool(c),
             sha256=digest(ROOT / f"ir/{name}.ttir"),
         )
-    assert (ROOT / "ir/ab4_111.ttir").read_bytes() == (
-        ROOT / "ir/optimized.ttir"
-    ).read_bytes()
+    # Reproduce the frozen ablation against its historical selected candidate.
+    historical = ROOT / "ir/r2_short_hybrid_aligned_v1.ttir"
+    assert (ROOT / "ir/ab4_111.ttir").read_bytes() == historical.read_bytes()
     record_generation(
         ROOT / "ablation_v1/manifest.json",
         dict(
             contract_sha256=digest(ROOT / "contract.json"),
             plan_sha256=digest(ROOT / "ablation_v1/plan.md"),
             baseline_sha256=digest(ROOT / "ir/baseline.ttir"),
-            optimized_sha256=digest(ROOT / "ir/optimized.ttir"),
+            optimized_sha256=digest(historical),
             variants=records,
         ),
     )

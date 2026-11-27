@@ -1,0 +1,118 @@
+[
+  {
+    "phase": "screen",
+    "argv": [
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/r6_run.py",
+      "--stage",
+      "r6",
+      "--run",
+      "screen",
+      "--names",
+      "baseline,anchor,parent,interleave_u8_v1,magic_fp32_v1,interleave_magic_v1",
+      "--rounds",
+      "3",
+      "--rep",
+      "10",
+      "--seed",
+      "42"
+    ],
+    "exit_code": 0
+  },
+  {
+    "phase": "main",
+    "argv": [
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/r6_run.py",
+      "--stage",
+      "r6",
+      "--run",
+      "main",
+      "--names",
+      "baseline,anchor,parent,magic_fp32_v1",
+      "--rounds",
+      "7",
+      "--rep",
+      "20",
+      "--seed",
+      "42"
+    ],
+    "exit_code": 0
+  },
+  {
+    "phase": "repeat",
+    "argv": [
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/r6_run.py",
+      "--stage",
+      "r6",
+      "--run",
+      "repeat",
+      "--names",
+      "baseline,anchor,parent,magic_fp32_v1",
+      "--rounds",
+      "5",
+      "--rep",
+      "20",
+      "--seed",
+      "123"
+    ],
+    "exit_code": 0
+  },
+  {
+    "phase": "memcheck",
+    "argv": [
+      "compute-sanitizer",
+      "--tool",
+      "memcheck",
+      "--error-exitcode",
+      "99",
+      "--kernel-name",
+      "regex=_weight_int4pack_mm_kernel",
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/r6_run.py",
+      "--stage",
+      "r6",
+      "--run",
+      "memcheck",
+      "--names",
+      "baseline,anchor,parent,magic_fp32_v1",
+      "--rounds",
+      "3",
+      "--rep",
+      "10",
+      "--seed",
+      "42",
+      "--check-only"
+    ],
+    "exit_code": 0
+  },
+  {
+    "phase": "racecheck",
+    "argv": [
+      "compute-sanitizer",
+      "--tool",
+      "racecheck",
+      "--error-exitcode",
+      "99",
+      "--kernel-name",
+      "regex=_weight_int4pack_mm_kernel",
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/r6_run.py",
+      "--stage",
+      "r6",
+      "--run",
+      "racecheck",
+      "--names",
+      "baseline,anchor,parent,magic_fp32_v1",
+      "--rounds",
+      "3",
+      "--rep",
+      "10",
+      "--seed",
+      "42",
+      "--check-only"
+    ],
+    "exit_code": 0
+  }
+]

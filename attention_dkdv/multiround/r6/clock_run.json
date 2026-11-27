@@ -1,0 +1,224 @@
+{
+  "gpu": 4,
+  "requested_sm_mhz": 1200,
+  "commands": [
+    {
+      "round": "r6",
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6_generate.py"
+      ],
+      "log": "generation.log",
+      "exit_code": 0
+    },
+    {
+      "round": "r6",
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/verify_pipeline.py",
+        "--output",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6/results/pipeline"
+      ],
+      "log": "pipeline.log",
+      "exit_code": 0
+    },
+    {
+      "round": "r6",
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/validate.py",
+        "--output",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6/results/accuracy_screen"
+      ],
+      "log": "accuracy_screen.log",
+      "exit_code": 0
+    },
+    {
+      "round": "r6",
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/benchmark.py",
+        "--output",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6/results/screen",
+        "--accuracy",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6/results/accuracy_screen/accuracy.json",
+        "--pipeline",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6/results/pipeline/pipeline.json"
+      ],
+      "log": "screen.log",
+      "exit_code": 0
+    },
+    {
+      "round": "r6",
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/select.py"
+      ],
+      "log": "select.log",
+      "exit_code": 0
+    },
+    {
+      "round": "r6",
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/verify_pipeline.py",
+        "--output",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6/results/pipeline_main"
+      ],
+      "log": "pipeline_main.log",
+      "exit_code": 0
+    },
+    {
+      "round": "r6",
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/validate.py",
+        "--output",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6/results/accuracy_main",
+        "--selection",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6/selection_pre_main.json",
+        "--seed",
+        "20"
+      ],
+      "log": "accuracy_main.log",
+      "exit_code": 0
+    },
+    {
+      "round": "r6",
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/benchmark.py",
+        "--output",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6/results/main",
+        "--accuracy",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6/results/accuracy_main/accuracy.json",
+        "--pipeline",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6/results/pipeline_main/pipeline.json",
+        "--selection",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6/selection_pre_main.json",
+        "--seed",
+        "20",
+        "--rounds",
+        "7",
+        "--rep",
+        "20"
+      ],
+      "log": "main.log",
+      "exit_code": 0
+    },
+    {
+      "round": "r6",
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/verify_pipeline.py",
+        "--output",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6/results/pipeline_repeat"
+      ],
+      "log": "pipeline_repeat.log",
+      "exit_code": 0
+    },
+    {
+      "round": "r6",
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/validate.py",
+        "--output",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6/results/accuracy_repeat",
+        "--selection",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6/selection_pre_main.json",
+        "--seed",
+        "123"
+      ],
+      "log": "accuracy_repeat.log",
+      "exit_code": 0
+    },
+    {
+      "round": "r6",
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/benchmark.py",
+        "--output",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6/results/repeat",
+        "--accuracy",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6/results/accuracy_repeat/accuracy.json",
+        "--pipeline",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6/results/pipeline_repeat/pipeline.json",
+        "--selection",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6/selection_pre_main.json",
+        "--seed",
+        "123",
+        "--rounds",
+        "5",
+        "--rep",
+        "20"
+      ],
+      "log": "repeat.log",
+      "exit_code": 0
+    },
+    {
+      "round": "r6",
+      "argv": [
+        "compute-sanitizer",
+        "--tool",
+        "memcheck",
+        "--error-exitcode",
+        "99",
+        "--kernel-name",
+        "regex=_attn_bwd_dkdv_only",
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/validate.py",
+        "--output",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6/results/memcheck",
+        "--selection",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6/selection_pre_main.json"
+      ],
+      "log": "memcheck.log",
+      "exit_code": 0
+    },
+    {
+      "round": "r6",
+      "argv": [
+        "compute-sanitizer",
+        "--tool",
+        "racecheck",
+        "--error-exitcode",
+        "99",
+        "--kernel-name",
+        "regex=_attn_bwd_dkdv_only",
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/validate.py",
+        "--output",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6/results/racecheck",
+        "--selection",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6/selection_pre_main.json"
+      ],
+      "log": "racecheck.log",
+      "exit_code": 0
+    },
+    {
+      "round": "r6",
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/attention_dkdv/multiround/r6_finalize.py"
+      ],
+      "log": "finalize.log",
+      "exit_code": 0
+    }
+  ],
+  "before": "\n==============NVSMI LOG==============\n\nTimestamp                                              : Tue Nov 24 01:18:02 2026\nDriver Version                                         : 580.126.20\nCUDA Version                                           : 13.0\n\nAttached GPUs                                          : 8\nGPU 00000000:9B:00.0\n    Clocks\n        Graphics                                       : 345 MHz\n        SM                                             : 345 MHz\n        Memory                                         : 2619 MHz\n        Video                                          : 765 MHz\n    Applications Clocks\n        Graphics                                       : 1980 MHz\n        Memory                                         : 2619 MHz\n    Default Applications Clocks\n        Graphics                                       : 1980 MHz\n        Memory                                         : 2619 MHz\n    Deferred Clocks\n        Memory                                         : N/A\n    Max Clocks\n        Graphics                                       : 1980 MHz\n        SM                                             : 1980 MHz\n        Memory                                         : 2619 MHz\n        Video                                          : 1545 MHz\n    Max Customer Boost Clocks\n        Graphics                                       : 1980 MHz\n    SM Clock Samples\n        Duration                                       : Not Found\n        Number of Samples                              : Not Found\n        Max                                            : Not Found\n        Min                                            : Not Found\n        Avg                                            : Not Found\n    Memory Clock Samples\n        Duration                                       : Not Found\n        Number of Samples                              : Not Found\n        Max                                            : Not Found\n        Min                                            : Not Found\n        Avg                                            : Not Found\n    Clock Policy\n        Auto Boost                                     : N/A\n        Auto Boost Default                             : N/A\n\n",
+  "lock": {
+    "exit_code": 0,
+    "stdout": "GPU clocks set to \"(gpuClkMin 1200, gpuClkMax 1200)\" for GPU 00000000:9B:00.0\nAll done.\n",
+    "stderr": ""
+  },
+  "after_lock": "uuid, clocks.current.sm [MHz], clocks.current.memory [MHz], power.draw [W]\nGPU-7f7377cd-12e4-c549-c539-32bdeb268511, 1200 MHz, 2619 MHz, 73.37 W\n",
+  "active_pid": null,
+  "passed": true,
+  "restore": {
+    "exit_code": 0,
+    "stdout": "All done.\n",
+    "stderr": ""
+  },
+  "restored": true,
+  "after_restore": "\n==============NVSMI LOG==============\n\nTimestamp                                              : Tue Nov 24 01:36:56 2026\nDriver Version                                         : 580.126.20\nCUDA Version                                           : 13.0\n\nAttached GPUs                                          : 8\nGPU 00000000:9B:00.0\n    Clocks\n        Graphics                                       : 345 MHz\n        SM                                             : 345 MHz\n        Memory                                         : 2619 MHz\n        Video                                          : 765 MHz\n    Applications Clocks\n        Graphics                                       : 1980 MHz\n        Memory                                         : 2619 MHz\n    Default Applications Clocks\n        Graphics                                       : 1980 MHz\n        Memory                                         : 2619 MHz\n    Deferred Clocks\n        Memory                                         : N/A\n    Max Clocks\n        Graphics                                       : 1980 MHz\n        SM                                             : 1980 MHz\n        Memory                                         : 2619 MHz\n        Video                                          : 1545 MHz\n    Max Customer Boost Clocks\n        Graphics                                       : 1980 MHz\n    SM Clock Samples\n        Duration                                       : Not Found\n        Number of Samples                              : Not Found\n        Max                                            : Not Found\n        Min                                            : Not Found\n        Avg                                            : Not Found\n    Memory Clock Samples\n        Duration                                       : Not Found\n        Number of Samples                              : Not Found\n        Max                                            : Not Found\n        Min                                            : Not Found\n        Avg                                            : Not Found\n    Clock Policy\n        Auto Boost                                     : N/A\n        Auto Boost Default                             : N/A\n\n"
+}

@@ -240,7 +240,42 @@ CTA/SM 由 `cuOccupancyMaxActiveBlocksPerMultiprocessor` 实测，非手算。
 
 ---
 
+## 外部 Softmax LLVM IR 经验
+
+固定来源：[`0x45f/ir-ops@fe26315a12ed9739f611a7f2c57926a0ecc1fc57`](https://github.com/0x45f/ir-ops/tree/fe26315a12ed9739f611a7f2c57926a0ecc1fc57)，原分支 `opt-softmax-alll-shape`。下表外部路径均相对此commit；入口和方法见 [softmax-llir.md](softmax-llir.md)。2026-11-19仅阅读源码、核对哈希并复算已有数据，**没有本地GPU重测**。
+
+| 结论 | 数字 / 范围 | 等级 | 固定来源 |
+|---|---|---|---|
+| 外部最终组合，API / kernel几何加速 | 1.359663× / 1.464707×；H20、FP32、4096行、98列宽、每点5轮 | B，外部完整矩阵，未本地独立复测 | [results.json](https://github.com/0x45f/ir-ops/blob/fe26315a12ed9739f611a7f2c57926a0ecc1fc57/perf_llir_round2/results.json)、[summary.json](https://github.com/0x45f/ir-ops/blob/fe26315a12ed9739f611a7f2c57926a0ecc1fc57/perf_llir_round2/summary.json) |
+| 最低逐点加速，API / kernel | 1.050483× / 1.073465×；无显著退化；1.6×目标未达 | 同上 | 同上；`accepted=false` |
+| 外部随机矩阵正确性 | 记录最大绝对误差2.9802322387695312e-08；rtol=1e-5、atol=1e-6 | 外部PASS；本地NOT_RUN | 同上及 [test_softmax_llir.py](https://github.com/0x45f/ir-ops/blob/fe26315a12ed9739f611a7f2c57926a0ecc1fc57/test_softmax_llir.py)；不代表所有输入误差上界 |
+| 线程分工与分档 | 128线程；N≤1024每warp一行，否则每CTA一行；37份IR | C，源码核对 | [softmax_llir.py](https://github.com/0x45f/ir-ops/blob/fe26315a12ed9739f611a7f2c57926a0ecc1fc57/softmax_llir.py)、[edit_softmax_ir.py](https://github.com/0x45f/ir-ops/blob/fe26315a12ed9739f611a7f2c57926a0ecc1fc57/edit_softmax_ir.py) |
+| N=8320资源与耗时 | shared 196640→16 B；kernel 156.007→77.834 µs（约2.004×） | 资源C；计时B，仅组合 | 同上外部results；不能作为非二次幂单项收益 |
+| 文件身份与派生复算 | 全部运行时source_sha256匹配；98点各5轮；逐点中位数与几何均值复算一致 | C，已有数据核对 | 外部results的metadata、rounds及当前commit文件；不是新计时 |
+| 同路径纯拷贝诊断 | baseline/softmax约1.352939×；baseline/copy约1.356291× | B，外部98点3轮诊断；无独立复测 | [诊断结果](https://github.com/0x45f/ir-ops/blob/fe26315a12ed9739f611a7f2c57926a0ecc1fc57/perf_memory_floor/results.json)、[摘要](https://github.com/0x45f/ir-ops/blob/fe26315a12ed9739f611a7f2c57926a0ecc1fc57/perf_memory_floor/summary.json)；非softmax成绩、非严格带宽上界 |
+| TTIR迁移效果 | 尚无Softmax TTIR候选、编译或计时 | D | [T15](techniques.md#t15-根据有效范围减少归约的-padding-和边界判断)；不继承外部LLIR收益 |
+
+可追溯哈希：外部 `perf_llir_round2/results.json` SHA256为 `bc619e91d9ddd3c3c9eb9fddc0cbe5cf82e9f89d36b7556d3277e19b4af79f18`；`summary.json` 为 `3fff62fd34b36d6e36e92faeec9dd5c358ad08de3fe2c6523d29e658732b94af`。完整调用与CUDA graph计时条件不同；源码/launcher优化和LLVM重写的总收益不能全部归因于IR算术变换。外部完整矩阵不满足本库A级的本地独立复测要求，也不加入README的本地A级算子状态表。
+
+---
+
+## 复杂融合算子扩展实验
+
+第六轮在 H100 上以冻结原始实现为基线，计时边界为预分配 CUDA graph 中的设备执行。下列报告给出各自矩阵上的 A 级主测 / 独立复测证据，并链接新增消融的协议、逐轮配对样本与正确性记录。
+
+| 实验 | 最终计时范围 | 固定矩阵 |
+|---|---|---:|
+| [INT4 反量化 GEMM](../int4_gemm/report.md) | 单 fused kernel | 30 |
+| [Grouped / biased MoE](../moe_routing/report.md) | group score 和 expert 选择两阶段 | 30 |
+| [Residual RMSNorm + INT8](../norm_quant/report.md) | 残差、归一化与动态量化 | 30 |
+| [Attention dK/dV](../attention_dkdv/report.md) | dK/dV kernel，SM 1200 MHz | 32 |
+| [Partial Top-K](../partial_topk/report.md) | local 和 merge 两阶段 | 30 |
+
+[最终路线选择及主测 / 复测几何均值](../complex_suite/round6_summary.json) · [152 点独立复测及来源哈希](../complex_suite/round6_per_shape.json)
+
 ## 引用纪律
+
+TTIR 与公开 Triton 语法的差异另见 [能力对照](ttir-vs-triton.md#证据与使用方式)：本轮 4 个源码、5 个手写 TTIR 均完成官方 3.7.0 / SM90 编译，证据为 C 级。逐条 fastmath/overflow 属性保留到 TTGIR，但本例 LLVM 未保留；非对称 `scf.while` 可编译。没有运行设备 kernel 或验证优化收益，不能将这些表示能力当作已测性能技术。
 
 1. 引用 A 级性能须同时说明矩阵和计时边界；B 级写明“初筛”或“完整矩阵、未独立复测”，不能统称为初筛。
 2. 引用 C 级静态/能力事实可描述已验证现象，不能推导性能收益；因果解释另看消融证据。

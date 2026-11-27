@@ -1,0 +1,167 @@
+{
+  "rounds": [
+    {
+      "round": "r3",
+      "candidate": "unroll_experts",
+      "accepted": false,
+      "repeat": {
+        "incremental": {
+          "geomean": 1.0008575649652944,
+          "worst": 0.9831119503005619,
+          "best": 1.0081909447636483,
+          "bootstrap95": [
+            0.9999537503604254,
+            1.0013657248264844
+          ]
+        },
+        "anchor_relative": {
+          "geomean": 1.0006657006357043,
+          "worst": 0.9833482039461344,
+          "best": 1.0083127181994351,
+          "bootstrap95": [
+            1.0000967962454925,
+            1.0013844357023551
+          ]
+        },
+        "cumulative": {
+          "geomean": 1.4075466494533244,
+          "worst": 1.3175399772321943,
+          "best": 1.5767073531025355,
+          "bootstrap95": [
+            1.4069075258507142,
+            1.408436452288622
+          ]
+        }
+      },
+      "selected_repeat": {
+        "incremental": {
+          "geomean": 1.0,
+          "worst": 1.0,
+          "best": 1.0,
+          "bootstrap95": [
+            1.0,
+            1.0
+          ]
+        },
+        "anchor_relative": {
+          "geomean": 0.9998281716359884,
+          "worst": 0.9949337745843945,
+          "best": 1.0025739749841776,
+          "bootstrap95": [
+            0.9993316072525981,
+            1.000642776760066
+          ]
+        },
+        "cumulative": {
+          "geomean": 1.4066377809710235,
+          "worst": 1.3182643646117271,
+          "best": 1.58163203179177,
+          "bootstrap95": [
+            1.405823941383753,
+            1.407751261126362
+          ]
+        }
+      }
+    }
+  ],
+  "commands": [
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/finalize.py",
+        "select",
+        "--round",
+        "r3",
+        "--screen",
+        "screen_v2"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r3/select.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/run.py",
+        "--round",
+        "r3",
+        "--run",
+        "main",
+        "--variants",
+        "unroll_experts",
+        "--rounds",
+        "7",
+        "--rep",
+        "20",
+        "--seed",
+        "42"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r3/main.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/run.py",
+        "--round",
+        "r3",
+        "--run",
+        "repeat",
+        "--variants",
+        "unroll_experts",
+        "--rounds",
+        "5",
+        "--rep",
+        "20",
+        "--seed",
+        "123"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r3/repeat.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/finalize.py",
+        "finish",
+        "--round",
+        "r3"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r3/finalize.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/generate.py",
+        "r4"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r4/generate.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/run.py",
+        "--round",
+        "r4",
+        "--run",
+        "screen"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r4/screen.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/finalize.py",
+        "select",
+        "--round",
+        "r4",
+        "--screen",
+        "screen"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r4/select.log",
+      "exit_code": 0
+    }
+  ]
+}

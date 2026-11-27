@@ -1,5 +1,7 @@
 # Vector add: direct TTIR optimization
 
+当前统一展示见[完整结果](report.md)：每个shape只列基线时间、优化时间、加速比，保留算术/几何平均和方法收益。
+
 当前 `optimized.ttir` 已按用户接受局部收益的指示，采用 `r1_store_cs`。
 原始 GPU 7 实验在 N=2^22 有约 1.206x 局部收益；原 1.02x 整体晋升门槛
 仍记为未达到，此次选择明确记录了用户授权的政策变更。

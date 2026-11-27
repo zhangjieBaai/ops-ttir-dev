@@ -1,5 +1,7 @@
 # mean_dim TTIR 实验
 
+当前统一展示见[完整结果](report.md)：每个shape只列基线时间、优化时间、加速比，保留算术/几何平均和方法收益。
+
 最新第二轮结果见 [第二轮报告](report_round2.md)，最终候选为各组 `r2_final.ttir`。第一轮 `optimized.ttir` 与证据继续保留。
 
 实验只优化 `K>=1024` 的向量循环路径；连续 FP16 输入 `[M,N,K]` 沿 N 取均值，FP32 累积、FP16 输出。性能集固定30点，另有12个边界正确性点。第一轮结果与限制见 [首轮报告](report_round1.md)，其原始证据见 `results/runs/final_gpu6/`。第二轮原始证据见 `results/runs/round2/final/`。

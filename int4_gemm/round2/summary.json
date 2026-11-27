@@ -1,0 +1,1520 @@
+{
+  "operator": "int4_gemm",
+  "matrix_size": 30,
+  "parent": "scalar_unsigned_v1",
+  "candidate": "r2_group_pair",
+  "accepted": true,
+  "selected": "r2_group_pair",
+  "evidence_level": "A, frozen30 matrix only",
+  "main": {
+    "incremental": {
+      "geomean": 2.256590860689636,
+      "minimum": 1.436172345396451,
+      "maximum": 3.4354187595507857
+    },
+    "cumulative": {
+      "geomean": 2.4457912533081085,
+      "minimum": 1.6188989415125228,
+      "maximum": 3.4397355483387773
+    }
+  },
+  "repeat": {
+    "incremental": {
+      "geomean": 2.2571456967656767,
+      "minimum": 1.4362961205372753,
+      "maximum": 3.432722795281678
+    },
+    "cumulative": {
+      "geomean": 2.4458028356598525,
+      "minimum": 1.618906178277529,
+      "maximum": 3.439482813227511
+    }
+  },
+  "parent_main": {
+    "incremental": {
+      "geomean": 1.0,
+      "minimum": 1.0,
+      "maximum": 1.0
+    },
+    "cumulative": {
+      "geomean": 1.083880204853365,
+      "minimum": 0.9324754553592667,
+      "maximum": 1.1480909548552765
+    }
+  },
+  "parent_repeat": {
+    "incremental": {
+      "geomean": 1.0,
+      "minimum": 1.0,
+      "maximum": 1.0
+    },
+    "cumulative": {
+      "geomean": 1.0836879515751856,
+      "minimum": 0.9330523943166713,
+      "maximum": 1.1474148282755057
+    }
+  },
+  "bootstrap95_incremental": {
+    "main": [
+      2.256084698377929,
+      2.2569794059739996
+    ],
+    "repeat": [
+      2.254996619206966,
+      2.2582139253134828
+    ]
+  },
+  "bootstrap95_cumulative": {
+    "main": [
+      2.445376705912716,
+      2.4462529212018396
+    ],
+    "repeat": [
+      2.443644441589869,
+      2.44690569214885
+    ]
+  },
+  "aa_ranges": {
+    "main": [
+      0.9998757446204545,
+      1.0007481302564005
+    ],
+    "repeat": [
+      0.9993194756953491,
+      1.0003548740282473
+    ]
+  },
+  "accuracy_counts": {
+    "screen": 1200,
+    "main": 450,
+    "repeat": 450,
+    "memcheck": 450,
+    "racecheck": 450
+  },
+  "sanitizer": {
+    "memcheck": "0 errors",
+    "racecheck": "0 hazards, 0 errors, 0 warnings"
+  },
+  "source_expressibility": "Public Triton can express narrow load/broadcast and a128-step loop with two ordered64-K dot updates; no source-port benchmark in this round",
+  "baseline_policy": "Original7 configurations retained; new23 fixed BM16 ifM<=16 elseBM32, BN64/BK64/4warps/3stages, no new autotuning",
+  "sources": {
+    "expanded/manifest.json": "be4b79887fb3f8c1174e515c2ce1113bdd729ee748eda5954702957c84c0d441",
+    "selection_pre_main.json": "06b5aaeb352d5767bb10e3730bb96695baa32961af6a463e976d2721d7f97ec6",
+    "results/main/results.json": "f810cc161b1651e2b43867a3e063ea314ccd898f80c1b2ad36cd7cfbbda2dde8",
+    "results/repeat/results.json": "691a93f88f611f16096f7bff6b92f9000919024d32567644f2f6add0c7256ca7",
+    "results/memcheck.log": "563741b0f363d9dd64e07d6df13221249d3dd0b33e5884252eb3ef9f79f4f5d5",
+    "results/racecheck.log": "86044eb4f8f7884fd89f23d613e1771640421272312ddd83a474037987ee5c78"
+  },
+  "records": [
+    {
+      "case": "m16_n4096_k4096",
+      "shape": [
+        16,
+        4096,
+        4096
+      ],
+      "config": [
+        32,
+        64,
+        128,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 74.25300311665289,
+        "parent": 64.67253053692025,
+        "r2_group_pair": 26.08665979209066
+      },
+      "repeat_us": {
+        "baseline": 74.187758142464,
+        "parent": 64.65244359671031,
+        "r2_group_pair": 26.14929107102481
+      },
+      "main_incremental": 2.4792770766482626,
+      "repeat_incremental": 2.4726182966166514,
+      "main_cumulative": 2.846252890306467,
+      "repeat_cumulative": 2.8371419312927864,
+      "resources": {
+        "baseline": {
+          "registers": 250,
+          "spills": 0,
+          "shared": 40960
+        },
+        "parent": {
+          "registers": 210,
+          "spills": 0,
+          "shared": 40960
+        },
+        "r2_group_pair": {
+          "registers": 117,
+          "spills": 0,
+          "shared": 24576
+        }
+      },
+      "selected_sha256": "fd9c8dfa7989f8c6cfbdaf501ae1754d8eca1fe7c1fb3717ac2f7b3a03fd55c3"
+    },
+    {
+      "case": "m128_n11008_k4096",
+      "shape": [
+        128,
+        11008,
+        4096
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 326.72661781311035,
+        "parent": 298.3844814878521,
+        "r2_group_pair": 99.24987638839568
+      },
+      "repeat_us": {
+        "baseline": 326.7153072357178,
+        "parent": 298.4159989790483,
+        "r2_group_pair": 99.2579065188013
+      },
+      "main_incremental": 3.0062416363670357,
+      "repeat_incremental": 3.0065421811009627,
+      "main_cumulative": 3.2917720138468263,
+      "repeat_cumulative": 3.2923366237999536,
+      "resources": {
+        "baseline": {
+          "registers": 168,
+          "spills": 0,
+          "shared": 20480
+        },
+        "parent": {
+          "registers": 138,
+          "spills": 0,
+          "shared": 20480
+        },
+        "r2_group_pair": {
+          "registers": 96,
+          "spills": 4,
+          "shared": 24576
+        }
+      },
+      "selected_sha256": "4a8f3964f74ccd79ebbb7661031e308ec9534820f36a1f908403a0be8a83891d"
+    },
+    {
+      "case": "m1_n256_k128",
+      "shape": [
+        1,
+        256,
+        128
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 3.7690990904103154,
+        "parent": 3.531014565830282,
+        "r2_group_pair": 2.207877996030791
+      },
+      "repeat_us": {
+        "baseline": 3.782099128788353,
+        "parent": 3.545711475147319,
+        "r2_group_pair": 2.207637011115231
+      },
+      "main_incremental": 1.5997897143690873,
+      "repeat_incremental": 1.6052447017007359,
+      "main_cumulative": 1.7052165635707437,
+      "repeat_cumulative": 1.707912230343669,
+      "resources": {
+        "baseline": {
+          "registers": 140,
+          "spills": 0,
+          "shared": 16384
+        },
+        "parent": {
+          "registers": 106,
+          "spills": 0,
+          "shared": 16384
+        },
+        "r2_group_pair": {
+          "registers": 72,
+          "spills": 0,
+          "shared": 16384
+        }
+      },
+      "selected_sha256": "3a6c5b24ab8a8d1343f75f937f6c1049ab27e083410047b50f23144520559a6e"
+    },
+    {
+      "case": "m32_n1024_k1024",
+      "shape": [
+        32,
+        1024,
+        1024
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 19.972975661114948,
+        "parent": 18.332134284864463,
+        "r2_group_pair": 7.640420562190952
+      },
+      "repeat_us": {
+        "baseline": 19.96747447598365,
+        "parent": 18.342479157121215,
+        "r2_group_pair": 7.639654863931488
+      },
+      "main_incremental": 2.3999107872647722,
+      "repeat_incremental": 2.400035207145892,
+      "main_cumulative": 2.6140918268397697,
+      "repeat_cumulative": 2.6135901416436065,
+      "resources": {
+        "baseline": {
+          "registers": 140,
+          "spills": 0,
+          "shared": 16384
+        },
+        "parent": {
+          "registers": 106,
+          "spills": 0,
+          "shared": 16384
+        },
+        "r2_group_pair": {
+          "registers": 72,
+          "spills": 0,
+          "shared": 16384
+        }
+      },
+      "selected_sha256": "85dbbabf7aa1e22a9f1491f981ea8cad439f56bb8a9681441e987527a05a9914"
+    },
+    {
+      "case": "m64_n2048_k4096",
+      "shape": [
+        64,
+        2048,
+        4096
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 74.39042473581515,
+        "parent": 67.04313029413638,
+        "r2_group_pair": 25.741243215707634
+      },
+      "repeat_us": {
+        "baseline": 74.43510151277638,
+        "parent": 67.12342801891612,
+        "r2_group_pair": 25.746390081587293
+      },
+      "main_incremental": 2.604373902030022,
+      "repeat_incremental": 2.606897315658242,
+      "main_cumulative": 2.889757058502265,
+      "repeat_cumulative": 2.8911095799455544,
+      "resources": {
+        "baseline": {
+          "registers": 140,
+          "spills": 0,
+          "shared": 16384
+        },
+        "parent": {
+          "registers": 106,
+          "spills": 0,
+          "shared": 16384
+        },
+        "r2_group_pair": {
+          "registers": 72,
+          "spills": 0,
+          "shared": 16384
+        }
+      },
+      "selected_sha256": "149f4c723b064d394c189e8b8c1b1665ffc178c0048b20459538f1ca96e8f70d"
+    },
+    {
+      "case": "m128_n4096_k4096",
+      "shape": [
+        128,
+        4096,
+        4096
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 117.21476032620384,
+        "parent": 109.36471197340224,
+        "r2_group_pair": 41.62990915263357
+      },
+      "repeat_us": {
+        "baseline": 117.20822879246303,
+        "parent": 109.39614401923285,
+        "r2_group_pair": 41.47286603515996
+      },
+      "main_incremental": 2.627073774722836,
+      "repeat_incremental": 2.6374929449053797,
+      "main_cumulative": 2.815638148438973,
+      "repeat_cumulative": 2.826212732466206,
+      "resources": {
+        "baseline": {
+          "registers": 168,
+          "spills": 0,
+          "shared": 20480
+        },
+        "parent": {
+          "registers": 138,
+          "spills": 0,
+          "shared": 20480
+        },
+        "r2_group_pair": {
+          "registers": 96,
+          "spills": 4,
+          "shared": 24576
+        }
+      },
+      "selected_sha256": "4a8f3964f74ccd79ebbb7661031e308ec9534820f36a1f908403a0be8a83891d"
+    },
+    {
+      "case": "m17_n80_k256",
+      "shape": [
+        17,
+        80,
+        256
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 6.051283728244693,
+        "parent": 5.537764629776685,
+        "r2_group_pair": 3.015071727096513
+      },
+      "repeat_us": {
+        "baseline": 6.048826957016848,
+        "parent": 5.535067723491999,
+        "r2_group_pair": 3.015698522761248
+      },
+      "main_incremental": 1.8372214809887275,
+      "repeat_incremental": 1.8357822682819809,
+      "main_cumulative": 2.007256493631358,
+      "repeat_cumulative": 2.005585441211232,
+      "resources": {
+        "baseline": {
+          "registers": 140,
+          "spills": 0,
+          "shared": 16384
+        },
+        "parent": {
+          "registers": 106,
+          "spills": 0,
+          "shared": 16384
+        },
+        "r2_group_pair": {
+          "registers": 72,
+          "spills": 0,
+          "shared": 16384
+        }
+      },
+      "selected_sha256": "aa9abe9ede97ac68bbeaf169c9e2b81adffa55576f5f0ba449d6fe30f55430e9"
+    },
+    {
+      "case": "m1_n64_k128",
+      "shape": [
+        1,
+        64,
+        128
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 3.742918168956583,
+        "parent": 3.49393314644892,
+        "r2_group_pair": 2.17981219291687
+      },
+      "repeat_us": {
+        "baseline": 3.7375380650409675,
+        "parent": 3.492233405510585,
+        "r2_group_pair": 2.1765609068432075
+      },
+      "main_incremental": 1.6030374782291212,
+      "repeat_incremental": 1.605077495744519,
+      "main_cumulative": 1.7168532632460014,
+      "repeat_cumulative": 1.7171759601534586,
+      "resources": {
+        "baseline": {
+          "registers": 140,
+          "spills": 0,
+          "shared": 16384
+        },
+        "parent": {
+          "registers": 106,
+          "spills": 0,
+          "shared": 16384
+        },
+        "r2_group_pair": {
+          "registers": 72,
+          "spills": 0,
+          "shared": 16384
+        }
+      },
+      "selected_sha256": "3a6c5b24ab8a8d1343f75f937f6c1049ab27e083410047b50f23144520559a6e"
+    },
+    {
+      "case": "m1_n1024_k1024",
+      "shape": [
+        1,
+        1024,
+        1024
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 19.781677604071206,
+        "parent": 18.880486488342285,
+        "r2_group_pair": 7.508772019057246
+      },
+      "repeat_us": {
+        "baseline": 19.799463554451474,
+        "parent": 18.908915519714355,
+        "r2_group_pair": 7.511887129615335
+      },
+      "main_incremental": 2.5144572828185026,
+      "repeat_incremental": 2.516980513343029,
+      "main_cumulative": 2.634217638651719,
+      "repeat_cumulative": 2.6356519582350475,
+      "resources": {
+        "baseline": {
+          "registers": 140,
+          "spills": 0,
+          "shared": 16384
+        },
+        "parent": {
+          "registers": 106,
+          "spills": 0,
+          "shared": 16384
+        },
+        "r2_group_pair": {
+          "registers": 72,
+          "spills": 0,
+          "shared": 16384
+        }
+      },
+      "selected_sha256": "21edbdaeb5ce7671370e1b372b0c19d70b6d296ebc0a0905468c94c7d155573b"
+    },
+    {
+      "case": "m1_n4096_k4096",
+      "shape": [
+        1,
+        4096,
+        4096
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 73.89490881631541,
+        "parent": 68.94695228064438,
+        "r2_group_pair": 25.310361094591094
+      },
+      "repeat_us": {
+        "baseline": 73.99233961657669,
+        "parent": 69.39154383974991,
+        "r2_group_pair": 25.326337671991606
+      },
+      "main_incremental": 2.724035462833266,
+      "repeat_incremental": 2.7397432706459384,
+      "main_cumulative": 2.9200951495651535,
+      "repeat_cumulative": 2.9215570200031253,
+      "resources": {
+        "baseline": {
+          "registers": 140,
+          "spills": 0,
+          "shared": 16384
+        },
+        "parent": {
+          "registers": 106,
+          "spills": 0,
+          "shared": 16384
+        },
+        "r2_group_pair": {
+          "registers": 72,
+          "spills": 0,
+          "shared": 16384
+        }
+      },
+      "selected_sha256": "b3487110e6e12c4ba20893e8e895a7154a394750282718e297ecca8082df2241"
+    },
+    {
+      "case": "m2_n256_k256",
+      "shape": [
+        2,
+        256,
+        256
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 6.061939704112517,
+        "parent": 5.551003161525227,
+        "r2_group_pair": 3.046150255754504
+      },
+      "repeat_us": {
+        "baseline": 6.062031528922948,
+        "parent": 5.551746715656371,
+        "r2_group_pair": 3.049095722187556
+      },
+      "main_incremental": 1.822121571890988,
+      "repeat_incremental": 1.8209678252304762,
+      "main_cumulative": 1.9903287777902972,
+      "repeat_cumulative": 1.9882690498867552,
+      "resources": {
+        "baseline": {
+          "registers": 140,
+          "spills": 0,
+          "shared": 16384
+        },
+        "parent": {
+          "registers": 106,
+          "spills": 0,
+          "shared": 16384
+        },
+        "r2_group_pair": {
+          "registers": 72,
+          "spills": 0,
+          "shared": 16384
+        }
+      },
+      "selected_sha256": "aa9abe9ede97ac68bbeaf169c9e2b81adffa55576f5f0ba449d6fe30f55430e9"
+    },
+    {
+      "case": "m4_n1024_k1024",
+      "shape": [
+        4,
+        1024,
+        1024
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 19.83413038078261,
+        "parent": 18.20340928706256,
+        "r2_group_pair": 7.535444333881675
+      },
+      "repeat_us": {
+        "baseline": 19.833779405351937,
+        "parent": 18.201105782155242,
+        "r2_group_pair": 7.535401213238811
+      },
+      "main_incremental": 2.415626836889951,
+      "repeat_incremental": 2.4160144547439275,
+      "main_cumulative": 2.6320266098859,
+      "repeat_cumulative": 2.6327737537009925,
+      "resources": {
+        "baseline": {
+          "registers": 140,
+          "spills": 0,
+          "shared": 16384
+        },
+        "parent": {
+          "registers": 106,
+          "spills": 0,
+          "shared": 16384
+        },
+        "r2_group_pair": {
+          "registers": 72,
+          "spills": 0,
+          "shared": 16384
+        }
+      },
+      "selected_sha256": "aa9abe9ede97ac68bbeaf169c9e2b81adffa55576f5f0ba449d6fe30f55430e9"
+    },
+    {
+      "case": "m8_n4096_k4096",
+      "shape": [
+        8,
+        4096,
+        4096
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 74.54338513887845,
+        "parent": 68.13486784802637,
+        "r2_group_pair": 25.479261793957406
+      },
+      "repeat_us": {
+        "baseline": 74.62208648445984,
+        "parent": 68.07666354709202,
+        "r2_group_pair": 25.468233182981564
+      },
+      "main_incremental": 2.67419423329446,
+      "repeat_incremental": 2.6731077857495316,
+      "main_cumulative": 2.9255480831723784,
+      "repeat_cumulative": 2.9302231752976193,
+      "resources": {
+        "baseline": {
+          "registers": 140,
+          "spills": 0,
+          "shared": 16384
+        },
+        "parent": {
+          "registers": 106,
+          "spills": 0,
+          "shared": 16384
+        },
+        "r2_group_pair": {
+          "registers": 72,
+          "spills": 0,
+          "shared": 16384
+        }
+      },
+      "selected_sha256": "07cff281da54ee21238a3d0a93ea0ca4b551a41e63eb5dddc615e37aa87eb83f"
+    },
+    {
+      "case": "m16_n256_k128",
+      "shape": [
+        16,
+        256,
+        128
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 3.7835150534978332,
+        "parent": 3.4342803041453123,
+        "r2_group_pair": 2.251717913357509
+      },
+      "repeat_us": {
+        "baseline": 3.786180174722212,
+        "parent": 3.4347667770794823,
+        "r2_group_pair": 2.253702317559442
+      },
+      "main_incremental": 1.5258528975099013,
+      "repeat_incremental": 1.5239577893817433,
+      "main_cumulative": 1.6800030646588662,
+      "repeat_cumulative": 1.6805463418792528,
+      "resources": {
+        "baseline": {
+          "registers": 140,
+          "spills": 0,
+          "shared": 16384
+        },
+        "parent": {
+          "registers": 106,
+          "spills": 0,
+          "shared": 16384
+        },
+        "r2_group_pair": {
+          "registers": 72,
+          "spills": 0,
+          "shared": 16384
+        }
+      },
+      "selected_sha256": "d9b937afd51810e6d186e0642ead01c3b7acba3412744a113fb2e5e891b313ad"
+    },
+    {
+      "case": "m16_n1024_k1024",
+      "shape": [
+        16,
+        1024,
+        1024
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 19.856987028064843,
+        "parent": 18.209262351467185,
+        "r2_group_pair": 7.577638511543159
+      },
+      "repeat_us": {
+        "baseline": 19.852082380253208,
+        "parent": 18.201325012376106,
+        "r2_group_pair": 7.577896189333788
+      },
+      "main_incremental": 2.4032190145307752,
+      "repeat_incremental": 2.4018968533766993,
+      "main_cumulative": 2.619880646257459,
+      "repeat_cumulative": 2.619365561682142,
+      "resources": {
+        "baseline": {
+          "registers": 140,
+          "spills": 0,
+          "shared": 16384
+        },
+        "parent": {
+          "registers": 106,
+          "spills": 0,
+          "shared": 16384
+        },
+        "r2_group_pair": {
+          "registers": 72,
+          "spills": 0,
+          "shared": 16384
+        }
+      },
+      "selected_sha256": "85dbbabf7aa1e22a9f1491f981ea8cad439f56bb8a9681441e987527a05a9914"
+    },
+    {
+      "case": "m16_n11008_k4096",
+      "shape": [
+        16,
+        11008,
+        4096
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 99.68843024394234,
+        "parent": 106.89402304060472,
+        "r2_group_pair": 31.111825596202504
+      },
+      "repeat_us": {
+        "baseline": 99.69976598566228,
+        "parent": 106.83302879333496,
+        "r2_group_pair": 31.124254114487595
+      },
+      "main_incremental": 3.4354187595507857,
+      "repeat_incremental": 3.432722795281678,
+      "main_cumulative": 3.204177902950874,
+      "repeat_cumulative": 3.203226868368259,
+      "resources": {
+        "baseline": {
+          "registers": 140,
+          "spills": 0,
+          "shared": 16384
+        },
+        "parent": {
+          "registers": 106,
+          "spills": 0,
+          "shared": 16384
+        },
+        "r2_group_pair": {
+          "registers": 72,
+          "spills": 0,
+          "shared": 16384
+        }
+      },
+      "selected_sha256": "149f4c723b064d394c189e8b8c1b1665ffc178c0048b20459538f1ca96e8f70d"
+    },
+    {
+      "case": "m17_n64_k128",
+      "shape": [
+        17,
+        64,
+        128
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 4.093917658631231,
+        "parent": 3.6411689353112733,
+        "r2_group_pair": 2.438000000493471
+      },
+      "repeat_us": {
+        "baseline": 4.094859019627478,
+        "parent": 3.640371130913803,
+        "r2_group_pair": 2.4387586048279686
+      },
+      "main_incremental": 1.4934106151169257,
+      "repeat_incremental": 1.4925619534335868,
+      "main_cumulative": 1.6790774981345227,
+      "repeat_cumulative": 1.6793591516041992,
+      "resources": {
+        "baseline": {
+          "registers": 168,
+          "spills": 0,
+          "shared": 20480
+        },
+        "parent": {
+          "registers": 138,
+          "spills": 0,
+          "shared": 20480
+        },
+        "r2_group_pair": {
+          "registers": 108,
+          "spills": 0,
+          "shared": 24576
+        }
+      },
+      "selected_sha256": "9a3af5b9a4c6a6e30ffa6f4b5ba9c1ae92d960b8fc2bfac6c629f78bb9c48b28"
+    },
+    {
+      "case": "m17_n272_k256",
+      "shape": [
+        17,
+        272,
+        256
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 6.510358447643797,
+        "parent": 5.944123840332031,
+        "r2_group_pair": 3.2804857052507854
+      },
+      "repeat_us": {
+        "baseline": 6.51280666265835,
+        "parent": 5.944849014282227,
+        "r2_group_pair": 3.2814451326722622
+      },
+      "main_incremental": 1.8124299922613232,
+      "repeat_incremental": 1.8107232621071374,
+      "main_cumulative": 1.984778681850679,
+      "repeat_cumulative": 1.9849325247995502,
+      "resources": {
+        "baseline": {
+          "registers": 168,
+          "spills": 0,
+          "shared": 20480
+        },
+        "parent": {
+          "registers": 138,
+          "spills": 0,
+          "shared": 20480
+        },
+        "r2_group_pair": {
+          "registers": 96,
+          "spills": 4,
+          "shared": 24576
+        }
+      },
+      "selected_sha256": "0fe36f677e46d36bd0b5263a846b6eb1e6d2c140f6389e37f862a263452f6dac"
+    },
+    {
+      "case": "m31_n1008_k1024",
+      "shape": [
+        31,
+        1008,
+        1024
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 21.031501012689926,
+        "parent": 19.48699977086938,
+        "r2_group_pair": 8.313199954155165
+      },
+      "repeat_us": {
+        "baseline": 20.977391716996596,
+        "parent": 19.48069053920892,
+        "r2_group_pair": 8.315803035430456
+      },
+      "main_incremental": 2.3442287857055932,
+      "repeat_incremental": 2.3426918102900647,
+      "main_cumulative": 2.529991166418269,
+      "repeat_cumulative": 2.522664997820079,
+      "resources": {
+        "baseline": {
+          "registers": 168,
+          "spills": 0,
+          "shared": 20480
+        },
+        "parent": {
+          "registers": 138,
+          "spills": 0,
+          "shared": 20480
+        },
+        "r2_group_pair": {
+          "registers": 96,
+          "spills": 4,
+          "shared": 24576
+        }
+      },
+      "selected_sha256": "0fe36f677e46d36bd0b5263a846b6eb1e6d2c140f6389e37f862a263452f6dac"
+    },
+    {
+      "case": "m32_n64_k128",
+      "shape": [
+        32,
+        64,
+        128
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 4.110223308163392,
+        "parent": 3.6564340616794344,
+        "r2_group_pair": 2.4931514194245974
+      },
+      "repeat_us": {
+        "baseline": 4.110870017843732,
+        "parent": 3.655271193119868,
+        "r2_group_pair": 2.4926150293019464
+      },
+      "main_incremental": 1.4661497708918068,
+      "repeat_incremental": 1.4664905235446886,
+      "main_cumulative": 1.6479094189097823,
+      "repeat_cumulative": 1.648740553606344,
+      "resources": {
+        "baseline": {
+          "registers": 168,
+          "spills": 0,
+          "shared": 20480
+        },
+        "parent": {
+          "registers": 138,
+          "spills": 0,
+          "shared": 20480
+        },
+        "r2_group_pair": {
+          "registers": 108,
+          "spills": 0,
+          "shared": 24576
+        }
+      },
+      "selected_sha256": "464c373ba2b9597dd43d196b75bb4cd29d1a7544cf462daab797b4b33d8e02da"
+    },
+    {
+      "case": "m32_n4096_k4096",
+      "shape": [
+        32,
+        4096,
+        4096
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 78.79572032410421,
+        "parent": 73.52154391935501,
+        "r2_group_pair": 28.430450787334323
+      },
+      "repeat_us": {
+        "baseline": 78.76578419797333,
+        "parent": 73.540443564361,
+        "r2_group_pair": 28.407786398222953
+      },
+      "main_incremental": 2.585980735049192,
+      "repeat_incremental": 2.589264694618984,
+      "main_cumulative": 2.7716579289574943,
+      "repeat_cumulative": 2.7726993513873937,
+      "resources": {
+        "baseline": {
+          "registers": 168,
+          "spills": 0,
+          "shared": 20480
+        },
+        "parent": {
+          "registers": 138,
+          "spills": 0,
+          "shared": 20480
+        },
+        "r2_group_pair": {
+          "registers": 96,
+          "spills": 4,
+          "shared": 24576
+        }
+      },
+      "selected_sha256": "4a8f3964f74ccd79ebbb7661031e308ec9534820f36a1f908403a0be8a83891d"
+    },
+    {
+      "case": "m33_n1040_k1152",
+      "shape": [
+        33,
+        1040,
+        1152
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 23.389846086502075,
+        "parent": 21.64747966983454,
+        "r2_group_pair": 9.206895246392206
+      },
+      "repeat_us": {
+        "baseline": 23.384138614456088,
+        "parent": 21.648819505031494,
+        "r2_group_pair": 9.203553476998971
+      },
+      "main_incremental": 2.3514143364279567,
+      "repeat_incremental": 2.352334140539704,
+      "main_cumulative": 2.5400904029826306,
+      "repeat_cumulative": 2.540826264337291,
+      "resources": {
+        "baseline": {
+          "registers": 168,
+          "spills": 0,
+          "shared": 20480
+        },
+        "parent": {
+          "registers": 138,
+          "spills": 0,
+          "shared": 20480
+        },
+        "r2_group_pair": {
+          "registers": 96,
+          "spills": 4,
+          "shared": 24576
+        }
+      },
+      "selected_sha256": "0fe36f677e46d36bd0b5263a846b6eb1e6d2c140f6389e37f862a263452f6dac"
+    },
+    {
+      "case": "m64_n256_k512",
+      "shape": [
+        64,
+        256,
+        512
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 11.333382232141357,
+        "parent": 10.452680409639731,
+        "r2_group_pair": 4.974015035491059
+      },
+      "repeat_us": {
+        "baseline": 11.332159953958849,
+        "parent": 10.449366569519043,
+        "r2_group_pair": 4.974951813186425
+      },
+      "main_incremental": 2.1008227830308095,
+      "repeat_incremental": 2.100428631851622,
+      "main_cumulative": 2.27820196675564,
+      "repeat_cumulative": 2.278050981885411,
+      "resources": {
+        "baseline": {
+          "registers": 168,
+          "spills": 0,
+          "shared": 20480
+        },
+        "parent": {
+          "registers": 138,
+          "spills": 0,
+          "shared": 20480
+        },
+        "r2_group_pair": {
+          "registers": 96,
+          "spills": 4,
+          "shared": 24576
+        }
+      },
+      "selected_sha256": "4a4fe98bd211285f87509c83b0d51d9f745e268bfba7ca7df11c8b91fe74b6a3"
+    },
+    {
+      "case": "m64_n1024_k2048",
+      "shape": [
+        64,
+        1024,
+        2048
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 40.26409126258827,
+        "parent": 37.71338129478385,
+        "r2_group_pair": 15.032921270890668
+      },
+      "repeat_us": {
+        "baseline": 40.265418095375175,
+        "parent": 37.729859218917085,
+        "r2_group_pair": 15.032875285768077
+      },
+      "main_incremental": 2.5086718654847346,
+      "repeat_incremental": 2.509849412555699,
+      "main_cumulative": 2.6785606535905213,
+      "repeat_cumulative": 2.6785721692350752,
+      "resources": {
+        "baseline": {
+          "registers": 168,
+          "spills": 0,
+          "shared": 20480
+        },
+        "parent": {
+          "registers": 138,
+          "spills": 0,
+          "shared": 20480
+        },
+        "r2_group_pair": {
+          "registers": 96,
+          "spills": 4,
+          "shared": 24576
+        }
+      },
+      "selected_sha256": "4a8f3964f74ccd79ebbb7661031e308ec9534820f36a1f908403a0be8a83891d"
+    },
+    {
+      "case": "m64_n11008_k4096",
+      "shape": [
+        64,
+        11008,
+        4096
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 165.30694240281562,
+        "parent": 149.5474656422933,
+        "r2_group_pair": 52.185135609720035
+      },
+      "repeat_us": {
+        "baseline": 165.33026014055525,
+        "parent": 149.57709312438965,
+        "r2_group_pair": 52.37092441982693
+      },
+      "main_incremental": 2.8650437773972097,
+      "repeat_incremental": 2.8562010429894684,
+      "main_cumulative": 3.1672807266531025,
+      "repeat_cumulative": 3.156909334179395,
+      "resources": {
+        "baseline": {
+          "registers": 168,
+          "spills": 0,
+          "shared": 20480
+        },
+        "parent": {
+          "registers": 138,
+          "spills": 0,
+          "shared": 20480
+        },
+        "r2_group_pair": {
+          "registers": 96,
+          "spills": 4,
+          "shared": 24576
+        }
+      },
+      "selected_sha256": "4a8f3964f74ccd79ebbb7661031e308ec9534820f36a1f908403a0be8a83891d"
+    },
+    {
+      "case": "m127_n4080_k4096",
+      "shape": [
+        127,
+        4080,
+        4096
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 117.29024818965367,
+        "parent": 109.52320098876953,
+        "r2_group_pair": 41.70091464405968
+      },
+      "repeat_us": {
+        "baseline": 117.29900794114894,
+        "parent": 109.56076410081651,
+        "r2_group_pair": 41.64181115492335
+      },
+      "main_incremental": 2.6263545239589936,
+      "repeat_incremental": 2.6307349704567935,
+      "main_cumulative": 2.8126540914219906,
+      "repeat_cumulative": 2.8168676085947606,
+      "resources": {
+        "baseline": {
+          "registers": 168,
+          "spills": 0,
+          "shared": 20480
+        },
+        "parent": {
+          "registers": 138,
+          "spills": 0,
+          "shared": 20480
+        },
+        "r2_group_pair": {
+          "registers": 96,
+          "spills": 4,
+          "shared": 24576
+        }
+      },
+      "selected_sha256": "7000ed6e2cf13fa86643c90a053b1fc99ec9fbe1015a8e2dac32546d729b7fde"
+    },
+    {
+      "case": "m128_n256_k128",
+      "shape": [
+        128,
+        256,
+        128
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 4.192542201942867,
+        "parent": 3.7192271832697696,
+        "r2_group_pair": 2.5896802672684025
+      },
+      "repeat_us": {
+        "baseline": 4.193407280438421,
+        "parent": 3.719102843479285,
+        "r2_group_pair": 2.5898636070568446
+      },
+      "main_incremental": 1.436172345396451,
+      "repeat_incremental": 1.4362961205372753,
+      "main_cumulative": 1.6188989415125228,
+      "repeat_cumulative": 1.618906178277529,
+      "resources": {
+        "baseline": {
+          "registers": 168,
+          "spills": 0,
+          "shared": 20480
+        },
+        "parent": {
+          "registers": 138,
+          "spills": 0,
+          "shared": 20480
+        },
+        "r2_group_pair": {
+          "registers": 108,
+          "spills": 0,
+          "shared": 24576
+        }
+      },
+      "selected_sha256": "464c373ba2b9597dd43d196b75bb4cd29d1a7544cf462daab797b4b33d8e02da"
+    },
+    {
+      "case": "m128_n1024_k4096",
+      "shape": [
+        128,
+        1024,
+        4096
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 78.82680231211137,
+        "parent": 73.65053644720113,
+        "r2_group_pair": 28.360563200953592
+      },
+      "repeat_us": {
+        "baseline": 78.82540687437981,
+        "parent": 73.61226462592643,
+        "r2_group_pair": 28.3599947997291
+      },
+      "main_incremental": 2.5969450039441293,
+      "repeat_incremental": 2.5961822928909126,
+      "main_cumulative": 2.7794314766412493,
+      "repeat_cumulative": 2.7793052590420992,
+      "resources": {
+        "baseline": {
+          "registers": 168,
+          "spills": 0,
+          "shared": 20480
+        },
+        "parent": {
+          "registers": 138,
+          "spills": 0,
+          "shared": 20480
+        },
+        "r2_group_pair": {
+          "registers": 96,
+          "spills": 4,
+          "shared": 24576
+        }
+      },
+      "selected_sha256": "4a8f3964f74ccd79ebbb7661031e308ec9534820f36a1f908403a0be8a83891d"
+    },
+    {
+      "case": "m256_n4096_k4096",
+      "shape": [
+        256,
+        4096,
+        4096
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 229.9225319263547,
+        "parent": 213.36653924757434,
+        "r2_group_pair": 66.8432786431111
+      },
+      "repeat_us": {
+        "baseline": 229.92078204487646,
+        "parent": 213.17429491268692,
+        "r2_group_pair": 66.84720632913229
+      },
+      "main_incremental": 3.1921407742794474,
+      "repeat_incremental": 3.188283759237066,
+      "main_cumulative": 3.4397355483387773,
+      "repeat_cumulative": 3.439482813227511,
+      "resources": {
+        "baseline": {
+          "registers": 168,
+          "spills": 0,
+          "shared": 20480
+        },
+        "parent": {
+          "registers": 138,
+          "spills": 0,
+          "shared": 20480
+        },
+        "r2_group_pair": {
+          "registers": 96,
+          "spills": 4,
+          "shared": 24576
+        }
+      },
+      "selected_sha256": "4a8f3964f74ccd79ebbb7661031e308ec9534820f36a1f908403a0be8a83891d"
+    },
+    {
+      "case": "m64_n2048_k8192",
+      "shape": [
+        64,
+        2048,
+        8192
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "main_us": {
+        "baseline": 154.24749851226807,
+        "parent": 141.17048524266522,
+        "r2_group_pair": 55.00806825758828
+      },
+      "repeat_us": {
+        "baseline": 154.23385053873062,
+        "parent": 141.24788420540946,
+        "r2_group_pair": 55.004926828237686
+      },
+      "main_incremental": 2.566324970763695,
+      "repeat_incremental": 2.5679478590944154,
+      "main_cumulative": 2.804163052423729,
+      "repeat_cumulative": 2.804000649257334,
+      "resources": {
+        "baseline": {
+          "registers": 168,
+          "spills": 0,
+          "shared": 20480
+        },
+        "parent": {
+          "registers": 138,
+          "spills": 0,
+          "shared": 20480
+        },
+        "r2_group_pair": {
+          "registers": 96,
+          "spills": 4,
+          "shared": 24576
+        }
+      },
+      "selected_sha256": "4a8f3964f74ccd79ebbb7661031e308ec9534820f36a1f908403a0be8a83891d"
+    }
+  ]
+}

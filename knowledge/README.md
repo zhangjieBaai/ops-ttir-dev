@@ -17,8 +17,11 @@
 
 | 文件 | 内容 | 什么时候读 |
 |---|---|---|
+| [新算子的 TTIR 优化决策模型](ttir-optimization-workflow.md) | 流程图、基线迹象与候选对照表、实验任务卡 | 拿到新算子，决定先改哪里、何时采用或回退 |
 | [ttir-model.md](ttir-model.md) | TTIR 在哪、能控制什么、**不能控制什么** | 动手前。决定收益是否是 TTIR 可表达的 |
+| [ttir-vs-triton.md](ttir-vs-triton.md) | TTIR 相对公开 Triton 语法的额外属性、区域结构与编译入口控制 | 判断优化是否必须直接改 IR 时 |
 | [layernorm-round2.md](layernorm-round2.md) | 已完成第二轮的有效方法、负结果及迁移边界 | 想从实战过程选择候选时 |
+| [softmax-llir.md](softmax-llir.md) | 外部 Softmax LLVM IR 重写：线程分工、寄存器驻留、有效范围与尾部特化 | 借鉴归约优化时；先分清 LLVM 实现与 TTIR 待验证假设 |
 | [techniques.md](techniques.md) | 技术目录，每项带证据等级与代价 | 选下一个候选时 |
 | [failure-patterns.md](failure-patterns.md) | 已证实的陷阱与确切报错 | 候选编译/正确性失败时 |
 | [diagnosis.md](diagnosis.md) | NCU 指标与反汇编怎么读 | 需要解释"为什么快/慢"时 |

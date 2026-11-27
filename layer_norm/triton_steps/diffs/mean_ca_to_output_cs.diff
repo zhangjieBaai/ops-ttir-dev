@@ -1,0 +1,26 @@
+--- mean_ca.py
++++ output_cs.py
+@@ -1,4 +1,4 @@
+-"""Step 4: keep step 3 and mark only mean-stage input loads .ca."""
++"""Step 5: keep step 4 and mark only output Y stores .cs."""
+ 
+ import triton
+ import triton.language as tl
+@@ -39,7 +39,7 @@
+         x = tl.load(X + cols, mask=mask, other=0.0).to(tl.float32)
+         x_hat = (x - mean) * rstd
+         y = x_hat * w + b
+-        tl.store(Y + cols, y, mask=mask)
++        tl.store(Y + cols, y, mask=mask, cache_modifier=".cs")
+ 
+ 
+ @triton.jit
+@@ -77,7 +77,7 @@
+         x = tl.load(X + cols, mask=mask, other=0.0).to(tl.float32)
+         x_hat = (x - mean) * rstd
+         y = x_hat * w + b
+-        tl.store(Y + cols, y, mask=mask)
++        tl.store(Y + cols, y, mask=mask, cache_modifier=".cs")
+ 
+ 
+ @triton.jit

@@ -1,0 +1,217 @@
+{
+  "evidence": "C static; only Triton3.7 SM90 fixed configuration, no compiler causality beyond stage outputs",
+  "records": [
+    {
+      "round": "r4",
+      "group": "d64_c0",
+      "candidate": "r4_qdo_cg",
+      "ttir_sha256": "bbdc246df827cf539c560088c470841e009dcccc191fa359c1d5774c32d96428",
+      "text_equal_parent": true,
+      "ttir_modified_loads": [
+        "%qT = tt.load %qT_ptrs_53 cacheModifier = cg : tensor<64x32x!tt.ptr<f16>> loc(#loc182)",
+        "%do = tt.load %do_ptrs_54 cacheModifier = cg : tensor<32x64x!tt.ptr<f16>> loc(#loc190)"
+      ],
+      "ttgir_async_modifiers": [
+        "%qT_61 = ttg.async_copy_global_to_local %qT_ptrs_45, %qT_59 mask %curr_m_60 cacheModifier = cg {contiguity = 8 : i32} : tensor<64x32x!tt.ptr<f16>, #blocked2> -> <64x32xf16, #shared1, #smem, mutable> loc(#loc180)",
+        "%do_70 = ttg.async_copy_global_to_local %do_ptrs_53, %do_68 mask %curr_m_69 cacheModifier = cg {contiguity = 8 : i32} : tensor<32x64x!tt.ptr<f16>, #blocked1> -> <32x64xf16, #shared, #smem, mutable> loc(#loc182)",
+        "%qT_81 = ttg.async_copy_global_to_local %qT_ptrs_77, %qT_79 mask %curr_m_80 cacheModifier = cg {contiguity = 8 : i32} : tensor<64x32x!tt.ptr<f16>, #blocked2> -> <64x32xf16, #shared1, #smem, mutable> loc(#loc180)",
+        "%do_91 = ttg.async_copy_global_to_local %do_ptrs_78, %do_89 mask %curr_m_90 cacheModifier = cg {contiguity = 8 : i32} : tensor<32x64x!tt.ptr<f16>, #blocked1> -> <32x64xf16, #shared, #smem, mutable> loc(#loc182)"
+      ],
+      "ptx_async_prefixes": [
+        "@%p1",
+        "cp.async.cg.shared.global",
+        "cp.async.commit_group;",
+        "cp.async.wait_group"
+      ],
+      "ptx_sha256": "d5176d670717cd4e2223424c8c4642d35942d0b5406f0484ac6ef980f2e9a086"
+    },
+    {
+      "round": "r4",
+      "group": "d64_c1",
+      "candidate": "r4_qdo_cg",
+      "ttir_sha256": "2650b3b75d2526d55551530064c7c709de03896bc550dd28a32f1498d8113fe2",
+      "text_equal_parent": true,
+      "ttir_modified_loads": [
+        "%qT = tt.load %qT_ptrs_78 cacheModifier = cg : tensor<64x16x!tt.ptr<f16>> loc(#loc202)",
+        "%do = tt.load %do_ptrs_79 cacheModifier = cg : tensor<16x64x!tt.ptr<f16>> loc(#loc213)",
+        "%qT = tt.load %qT_ptrs_78 cacheModifier = cg : tensor<64x32x!tt.ptr<f16>> loc(#loc240)",
+        "%do = tt.load %do_ptrs_79 cacheModifier = cg : tensor<32x64x!tt.ptr<f16>> loc(#loc248)"
+      ],
+      "ttgir_async_modifiers": [
+        "%qT_70 = ttg.async_copy_global_to_local %qT_ptrs_56, %qT_69 mask %cst_2 cacheModifier = cg {contiguity = 8 : i32} : tensor<64x16x!tt.ptr<f16>, #blocked> -> <64x16xf16, #shared1, #smem, mutable> loc(#loc197)",
+        "%do_81 = ttg.async_copy_global_to_local %do_ptrs_63, %do_80 mask %cst_3 cacheModifier = cg {contiguity = 8 : i32} : tensor<16x64x!tt.ptr<f16>, #blocked1> -> <16x64xf16, #shared, #smem, mutable> loc(#loc199)",
+        "%qT_90 = ttg.async_copy_global_to_local %qT_ptrs_87, %qT_89 mask %cst_2 cacheModifier = cg {contiguity = 8 : i32} : tensor<64x16x!tt.ptr<f16>, #blocked> -> <64x16xf16, #shared1, #smem, mutable> loc(#loc197)",
+        "%do_101 = ttg.async_copy_global_to_local %do_ptrs_88, %do_100 mask %cst_3 cacheModifier = cg {contiguity = 8 : i32} : tensor<16x64x!tt.ptr<f16>, #blocked1> -> <16x64xf16, #shared, #smem, mutable> loc(#loc199)"
+      ],
+      "ptx_async_prefixes": [
+        "@%p1",
+        "@%p24",
+        "cp.async.cg.shared.global",
+        "cp.async.commit_group;",
+        "cp.async.wait_group"
+      ],
+      "ptx_sha256": "225b9d91a98ed3f0eb800d77df6cd84e7845ce2c8ccd38cf403dfe03255a1ba9"
+    },
+    {
+      "round": "r4",
+      "group": "d128_c0",
+      "candidate": "r4_qdo_cg",
+      "ttir_sha256": "de0318718da1026840c26fb0066d5813eb9b07f8071e5faf1b62dcd52982f702",
+      "text_equal_parent": true,
+      "ttir_modified_loads": [
+        "%qT = tt.load %qT_ptrs_52 cacheModifier = cg : tensor<128x32x!tt.ptr<f16>> loc(#loc180)",
+        "%do = tt.load %do_ptrs_53 cacheModifier = cg : tensor<32x128x!tt.ptr<f16>> loc(#loc188)"
+      ],
+      "ttgir_async_modifiers": [
+        "%qT_57 = ttg.async_copy_global_to_local %qT_ptrs_31, %qT_55 mask %curr_m_56 cacheModifier = cg {contiguity = 8 : i32} : tensor<128x32x!tt.ptr<f16>, #blocked2> -> <128x32xf16, #shared1, #smem, mutable> loc(#loc177)",
+        "%do_66 = ttg.async_copy_global_to_local %do_ptrs_39, %do_64 mask %curr_m_65 cacheModifier = cg {contiguity = 8 : i32} : tensor<32x128x!tt.ptr<f16>, #blocked1> -> <32x128xf16, #shared, #smem, mutable> loc(#loc179)",
+        "%qT_75 = ttg.async_copy_global_to_local %4, %qT_73 mask %curr_m_74 cacheModifier = cg {contiguity = 8 : i32} : tensor<128x32x!tt.ptr<f16>, #blocked2> -> <128x32xf16, #shared1, #smem, mutable> loc(#loc177)",
+        "%do_85 = ttg.async_copy_global_to_local %6, %do_83 mask %curr_m_84 cacheModifier = cg {contiguity = 8 : i32} : tensor<32x128x!tt.ptr<f16>, #blocked1> -> <32x128xf16, #shared, #smem, mutable> loc(#loc179)"
+      ],
+      "ptx_async_prefixes": [
+        "@%p6",
+        "cp.async.cg.shared.global",
+        "cp.async.commit_group;",
+        "cp.async.wait_group"
+      ],
+      "ptx_sha256": "34333372954d833976508492c05f3c0320413b3a254bb152c224d9fa7453a04f"
+    },
+    {
+      "round": "r4",
+      "group": "d128_c1",
+      "candidate": "r4_qdo_cg",
+      "ttir_sha256": "746561160de9d5c53a777f2a06147c5b942579ce98a9180b993ec8219989781e",
+      "text_equal_parent": true,
+      "ttir_modified_loads": [
+        "%qT_sub0 = tt.load %qT_ptrs_77_sub0 cacheModifier = cg : tensor<128x16x!tt.ptr<f16>> loc(#loc200)",
+        "%do_sub0 = tt.load %do_ptrs_78_sub0 cacheModifier = cg : tensor<16x128x!tt.ptr<f16>> loc(#loc211)",
+        "%qT_sub0 = tt.load %qT_ptrs_77_sub0 cacheModifier = cg : tensor<128x32x!tt.ptr<f16>> loc(#loc238)",
+        "%do_sub0 = tt.load %do_ptrs_78_sub0 cacheModifier = cg : tensor<32x128x!tt.ptr<f16>> loc(#loc246)",
+        "%qT_sub1 = tt.load %qT_ptrs_77_sub1 cacheModifier = cg : tensor<128x16x!tt.ptr<f16>> loc(#loc200)",
+        "%do_sub1 = tt.load %do_ptrs_78_sub1 cacheModifier = cg : tensor<16x128x!tt.ptr<f16>> loc(#loc211)",
+        "%qT_sub1 = tt.load %qT_ptrs_77_sub1 cacheModifier = cg : tensor<128x32x!tt.ptr<f16>> loc(#loc238)",
+        "%do_sub1 = tt.load %do_ptrs_78_sub1 cacheModifier = cg : tensor<32x128x!tt.ptr<f16>> loc(#loc246)"
+      ],
+      "ttgir_async_modifiers": [
+        "%qT_68 = ttg.async_copy_global_to_local %qT_ptrs_54, %qT_67 mask %cst_2 cacheModifier = cg {contiguity = 8 : i32} : tensor<128x16x!tt.ptr<f16>, #blocked> -> <128x16xf16, #shared1, #smem, mutable> loc(#loc197)",
+        "%do_79 = ttg.async_copy_global_to_local %do_ptrs_61, %do_78 mask %cst_3 cacheModifier = cg {contiguity = 8 : i32} : tensor<16x128x!tt.ptr<f16>, #blocked1> -> <16x128xf16, #shared, #smem, mutable> loc(#loc199)",
+        "%qT_88 = ttg.async_copy_global_to_local %qT_ptrs_85, %qT_87 mask %cst_2 cacheModifier = cg {contiguity = 8 : i32} : tensor<128x16x!tt.ptr<f16>, #blocked> -> <128x16xf16, #shared1, #smem, mutable> loc(#loc197)",
+        "%do_99 = ttg.async_copy_global_to_local %do_ptrs_86, %do_98 mask %cst_3 cacheModifier = cg {contiguity = 8 : i32} : tensor<16x128x!tt.ptr<f16>, #blocked1> -> <16x128xf16, #shared, #smem, mutable> loc(#loc199)"
+      ],
+      "ptx_async_prefixes": [
+        "@%p1",
+        "@%p44",
+        "cp.async.cg.shared.global",
+        "cp.async.commit_group;",
+        "cp.async.wait_group"
+      ],
+      "ptx_sha256": "04ba79eac5a971db98a84e5b5579819fcf525823fae2085578fe57fe3af724a1"
+    },
+    {
+      "round": "r5",
+      "group": "d64_c0",
+      "candidate": "r5_qdo_keep",
+      "ttir_sha256": "e0594e108dfbcfc4475529124bdc055215786f255ccc7cbf1fce7fdf3beb6c38",
+      "text_equal_parent": true,
+      "ttir_modified_loads": [
+        "%qT = tt.load %qT_ptrs_53 cacheModifier = ca evictionPolicy = evict_last : tensor<64x32x!tt.ptr<f16>> loc(#loc182)",
+        "%do = tt.load %do_ptrs_54 cacheModifier = ca evictionPolicy = evict_last : tensor<32x64x!tt.ptr<f16>> loc(#loc190)"
+      ],
+      "ttgir_async_modifiers": [
+        "%qT_61 = ttg.async_copy_global_to_local %qT_ptrs_45, %qT_59 mask %curr_m_60 cacheModifier = ca evictionPolicy = evict_last {contiguity = 8 : i32} : tensor<64x32x!tt.ptr<f16>, #blocked2> -> <64x32xf16, #shared1, #smem, mutable> loc(#loc180)",
+        "%do_70 = ttg.async_copy_global_to_local %do_ptrs_53, %do_68 mask %curr_m_69 cacheModifier = ca evictionPolicy = evict_last {contiguity = 8 : i32} : tensor<32x64x!tt.ptr<f16>, #blocked1> -> <32x64xf16, #shared, #smem, mutable> loc(#loc182)",
+        "%qT_81 = ttg.async_copy_global_to_local %qT_ptrs_77, %qT_79 mask %curr_m_80 cacheModifier = ca evictionPolicy = evict_last {contiguity = 8 : i32} : tensor<64x32x!tt.ptr<f16>, #blocked2> -> <64x32xf16, #shared1, #smem, mutable> loc(#loc180)",
+        "%do_91 = ttg.async_copy_global_to_local %do_ptrs_78, %do_89 mask %curr_m_90 cacheModifier = ca evictionPolicy = evict_last {contiguity = 8 : i32} : tensor<32x64x!tt.ptr<f16>, #blocked1> -> <32x64xf16, #shared, #smem, mutable> loc(#loc182)"
+      ],
+      "ptx_async_prefixes": [
+        "@%p1",
+        "cp.async.cg.shared.global",
+        "cp.async.commit_group;",
+        "cp.async.wait_group"
+      ],
+      "ptx_sha256": "d5176d670717cd4e2223424c8c4642d35942d0b5406f0484ac6ef980f2e9a086"
+    },
+    {
+      "round": "r5",
+      "group": "d64_c1",
+      "candidate": "r5_qdo_keep",
+      "ttir_sha256": "e4df6b7f8ef92895d052f3bd21529cc255eaa6aa31c59072a90ab7bac9c62b98",
+      "text_equal_parent": true,
+      "ttir_modified_loads": [
+        "%qT = tt.load %qT_ptrs_78 cacheModifier = ca evictionPolicy = evict_last : tensor<64x16x!tt.ptr<f16>> loc(#loc202)",
+        "%do = tt.load %do_ptrs_79 cacheModifier = ca evictionPolicy = evict_last : tensor<16x64x!tt.ptr<f16>> loc(#loc213)",
+        "%qT = tt.load %qT_ptrs_78 cacheModifier = ca evictionPolicy = evict_last : tensor<64x32x!tt.ptr<f16>> loc(#loc240)",
+        "%do = tt.load %do_ptrs_79 cacheModifier = ca evictionPolicy = evict_last : tensor<32x64x!tt.ptr<f16>> loc(#loc248)"
+      ],
+      "ttgir_async_modifiers": [
+        "%qT_70 = ttg.async_copy_global_to_local %qT_ptrs_56, %qT_69 mask %cst_2 cacheModifier = ca evictionPolicy = evict_last {contiguity = 8 : i32} : tensor<64x16x!tt.ptr<f16>, #blocked> -> <64x16xf16, #shared1, #smem, mutable> loc(#loc197)",
+        "%do_81 = ttg.async_copy_global_to_local %do_ptrs_63, %do_80 mask %cst_3 cacheModifier = ca evictionPolicy = evict_last {contiguity = 8 : i32} : tensor<16x64x!tt.ptr<f16>, #blocked1> -> <16x64xf16, #shared, #smem, mutable> loc(#loc199)",
+        "%qT_90 = ttg.async_copy_global_to_local %qT_ptrs_87, %qT_89 mask %cst_2 cacheModifier = ca evictionPolicy = evict_last {contiguity = 8 : i32} : tensor<64x16x!tt.ptr<f16>, #blocked> -> <64x16xf16, #shared1, #smem, mutable> loc(#loc197)",
+        "%do_101 = ttg.async_copy_global_to_local %do_ptrs_88, %do_100 mask %cst_3 cacheModifier = ca evictionPolicy = evict_last {contiguity = 8 : i32} : tensor<16x64x!tt.ptr<f16>, #blocked1> -> <16x64xf16, #shared, #smem, mutable> loc(#loc199)"
+      ],
+      "ptx_async_prefixes": [
+        "@%p1",
+        "@%p24",
+        "cp.async.cg.shared.global",
+        "cp.async.commit_group;",
+        "cp.async.wait_group"
+      ],
+      "ptx_sha256": "225b9d91a98ed3f0eb800d77df6cd84e7845ce2c8ccd38cf403dfe03255a1ba9"
+    },
+    {
+      "round": "r5",
+      "group": "d128_c0",
+      "candidate": "r5_qdo_keep",
+      "ttir_sha256": "2b8b85801815ad126c59453cbc9e3e2724c14bad85c758cd16cb8c8bca8b337a",
+      "text_equal_parent": true,
+      "ttir_modified_loads": [
+        "%qT = tt.load %qT_ptrs_52 cacheModifier = ca evictionPolicy = evict_last : tensor<128x32x!tt.ptr<f16>> loc(#loc180)",
+        "%do = tt.load %do_ptrs_53 cacheModifier = ca evictionPolicy = evict_last : tensor<32x128x!tt.ptr<f16>> loc(#loc188)"
+      ],
+      "ttgir_async_modifiers": [
+        "%qT_57 = ttg.async_copy_global_to_local %qT_ptrs_31, %qT_55 mask %curr_m_56 cacheModifier = ca evictionPolicy = evict_last {contiguity = 8 : i32} : tensor<128x32x!tt.ptr<f16>, #blocked2> -> <128x32xf16, #shared1, #smem, mutable> loc(#loc177)",
+        "%do_66 = ttg.async_copy_global_to_local %do_ptrs_39, %do_64 mask %curr_m_65 cacheModifier = ca evictionPolicy = evict_last {contiguity = 8 : i32} : tensor<32x128x!tt.ptr<f16>, #blocked1> -> <32x128xf16, #shared, #smem, mutable> loc(#loc179)",
+        "%qT_75 = ttg.async_copy_global_to_local %4, %qT_73 mask %curr_m_74 cacheModifier = ca evictionPolicy = evict_last {contiguity = 8 : i32} : tensor<128x32x!tt.ptr<f16>, #blocked2> -> <128x32xf16, #shared1, #smem, mutable> loc(#loc177)",
+        "%do_85 = ttg.async_copy_global_to_local %6, %do_83 mask %curr_m_84 cacheModifier = ca evictionPolicy = evict_last {contiguity = 8 : i32} : tensor<32x128x!tt.ptr<f16>, #blocked1> -> <32x128xf16, #shared, #smem, mutable> loc(#loc179)"
+      ],
+      "ptx_async_prefixes": [
+        "@%p6",
+        "cp.async.cg.shared.global",
+        "cp.async.commit_group;",
+        "cp.async.wait_group"
+      ],
+      "ptx_sha256": "34333372954d833976508492c05f3c0320413b3a254bb152c224d9fa7453a04f"
+    },
+    {
+      "round": "r5",
+      "group": "d128_c1",
+      "candidate": "r5_qdo_keep",
+      "ttir_sha256": "728713dfeee9673b5438bfcb17519914049b6e302735873aba9cfca339b82cbb",
+      "text_equal_parent": true,
+      "ttir_modified_loads": [
+        "%qT_sub0 = tt.load %qT_ptrs_77_sub0 cacheModifier = ca evictionPolicy = evict_last : tensor<128x16x!tt.ptr<f16>> loc(#loc200)",
+        "%do_sub0 = tt.load %do_ptrs_78_sub0 cacheModifier = ca evictionPolicy = evict_last : tensor<16x128x!tt.ptr<f16>> loc(#loc211)",
+        "%qT_sub0 = tt.load %qT_ptrs_77_sub0 cacheModifier = ca evictionPolicy = evict_last : tensor<128x32x!tt.ptr<f16>> loc(#loc238)",
+        "%do_sub0 = tt.load %do_ptrs_78_sub0 cacheModifier = ca evictionPolicy = evict_last : tensor<32x128x!tt.ptr<f16>> loc(#loc246)",
+        "%qT_sub1 = tt.load %qT_ptrs_77_sub1 cacheModifier = ca evictionPolicy = evict_last : tensor<128x16x!tt.ptr<f16>> loc(#loc200)",
+        "%do_sub1 = tt.load %do_ptrs_78_sub1 cacheModifier = ca evictionPolicy = evict_last : tensor<16x128x!tt.ptr<f16>> loc(#loc211)",
+        "%qT_sub1 = tt.load %qT_ptrs_77_sub1 cacheModifier = ca evictionPolicy = evict_last : tensor<128x32x!tt.ptr<f16>> loc(#loc238)",
+        "%do_sub1 = tt.load %do_ptrs_78_sub1 cacheModifier = ca evictionPolicy = evict_last : tensor<32x128x!tt.ptr<f16>> loc(#loc246)"
+      ],
+      "ttgir_async_modifiers": [
+        "%qT_68 = ttg.async_copy_global_to_local %qT_ptrs_54, %qT_67 mask %cst_2 cacheModifier = ca evictionPolicy = evict_last {contiguity = 8 : i32} : tensor<128x16x!tt.ptr<f16>, #blocked> -> <128x16xf16, #shared1, #smem, mutable> loc(#loc197)",
+        "%do_79 = ttg.async_copy_global_to_local %do_ptrs_61, %do_78 mask %cst_3 cacheModifier = ca evictionPolicy = evict_last {contiguity = 8 : i32} : tensor<16x128x!tt.ptr<f16>, #blocked1> -> <16x128xf16, #shared, #smem, mutable> loc(#loc199)",
+        "%qT_88 = ttg.async_copy_global_to_local %qT_ptrs_85, %qT_87 mask %cst_2 cacheModifier = ca evictionPolicy = evict_last {contiguity = 8 : i32} : tensor<128x16x!tt.ptr<f16>, #blocked> -> <128x16xf16, #shared1, #smem, mutable> loc(#loc197)",
+        "%do_99 = ttg.async_copy_global_to_local %do_ptrs_86, %do_98 mask %cst_3 cacheModifier = ca evictionPolicy = evict_last {contiguity = 8 : i32} : tensor<16x128x!tt.ptr<f16>, #blocked1> -> <16x128xf16, #shared, #smem, mutable> loc(#loc199)"
+      ],
+      "ptx_async_prefixes": [
+        "@%p1",
+        "@%p44",
+        "cp.async.cg.shared.global",
+        "cp.async.commit_group;",
+        "cp.async.wait_group"
+      ],
+      "ptx_sha256": "04ba79eac5a971db98a84e5b5579819fcf525823fae2085578fe57fe3af724a1"
+    }
+  ]
+}

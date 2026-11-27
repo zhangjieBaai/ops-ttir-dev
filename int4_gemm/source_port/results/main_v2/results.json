@@ -1,0 +1,4371 @@
+{
+  "environment": {
+    "python": "/root/venvs/ir-ops-dev/bin/python",
+    "prefix": "/root/venvs/ir-ops-dev",
+    "triton": "3.7.0",
+    "triton_path": "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/__init__.py",
+    "libtriton_path": "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/_C/libtriton.so",
+    "include_system_site_packages": false,
+    "sys_path": [
+      "/root/ops-ttir-dev/int4_gemm",
+      "/root/ops-ttir-dev/int4_gemm/source_port",
+      "/usr/lib/python312.zip",
+      "/usr/lib/python3.12",
+      "/usr/lib/python3.12/lib-dynload",
+      "/root/venvs/ir-ops-dev/lib/python3.12/site-packages",
+      "/root/ops-ttir-dev/layer_norm"
+    ],
+    "flagtree_flagprism_distributions": [],
+    "flagtree_flagprism_source_markers": [],
+    "installer": "pip\n",
+    "direct_url": null,
+    "torch": "2.12.0+cu130",
+    "cuda_visible_devices": "0",
+    "gpu": "index, uuid, name, driver_version, clocks.current.sm [MHz], power.draw [W], temperature.gpu\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 73.66 W, 30\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 72.89 W, 30\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 70.87 W, 28\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 74.07 W, 30\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 1830 MHz, 91.97 W, 31\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 71.61 W, 29\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 70.78 W, 30\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 73.56 W, 28\n",
+    "command": [
+      "int4_gemm/source_port/run.py",
+      "--run",
+      "main_v2"
+    ],
+    "clocks_locked": false,
+    "git_commit": "7f3bd164461beaba9690087eed5bd62b64b2b452"
+  },
+  "seed": 42,
+  "rounds": 7,
+  "rep_ms": 20,
+  "source_sha256": "c369f7c401e6d5be4772a550b6bfa2139052385a113c58b29261b9a6ea81320c",
+  "old_manifest_sha256": "86c42bce31189378d4908a40a8a56ea0e7e4f5dfbbf40934cfd9af4934bd1015",
+  "records": [
+    {
+      "case": "m16_n4096_k4096",
+      "shape": [
+        16,
+        4096,
+        4096
+      ],
+      "config": [
+        32,
+        64,
+        128,
+        4,
+        3
+      ],
+      "pipeline": {
+        "baseline_source_file_identical": true,
+        "source_export_file_identical": true,
+        "full_options_identical": true,
+        "outputs_bitwise": true,
+        "options": {
+          "num_warps": 4,
+          "num_ctas": 1,
+          "num_stages": 3,
+          "warp_size": 32,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 1073741824,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "cuda",
+          "sanitize_overflow": true,
+          "arch": "sm90",
+          "instrumentation_mode": ""
+        }
+      },
+      "kernels": {
+        "baseline": {
+          "stages": {
+            "ttir": "1a523d6b7fa335195bcfb547e21ce284ac5219bed875fc9ae4b34298b8042793",
+            "ttgir": "b6fac2ec85c67e7555a26368750b377a8d640404e3e24805e4eb3091a02e5bc7",
+            "llir": "b4a92393116d63b11d162d3f58d79097b2d34b09f452ba42a7a38a66aa2c9dae",
+            "ptx": "bef95d3d65547ec6d95999cfcc08d3d6492ebeb09aa14a2510133cf940036edf",
+            "cubin": "8cf5201509e9d1ef8e3cee16766781a5a76b05743ae8d67986c80d7c8e2ceeb9"
+          },
+          "elf_text": {
+            ".text._weight_int4pack_mm_kernel": {
+              "sha256": "3922aca64d2fb6ea15551ebe51419d9d4dd23b05ff0583a678e454f468c9f53c",
+              "bytes": 34944
+            }
+          },
+          "n_regs": 250,
+          "n_spills": 0,
+          "metadata": {
+            "allowed_dot_input_precisions": [
+              "tf32",
+              "tf32x3",
+              "ieee",
+              "bf16x3",
+              "bf16x6"
+            ],
+            "arch": "sm90",
+            "backend_name": "cuda",
+            "debug": false,
+            "default_dot_input_precision": "tf32",
+            "deprecated_fp8_dot_operand_dtypes": [
+              "fp8e4b15"
+            ],
+            "enable_fp_fusion": true,
+            "enable_reflect_ftz": true,
+            "extern_libs": [
+              [
+                "libdevice",
+                "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+              ]
+            ],
+            "global_scratch_align": 1,
+            "global_scratch_size": 0,
+            "hash": "951c699b39412f9839ce3f5ee8ebd554fb80a0bc83a386575d2b4358127ed279",
+            "instrumentation_mode": "",
+            "ir_override": null,
+            "launch_cooperative_grid": false,
+            "launch_pdl": false,
+            "max_num_imprecise_acc_default": 1073741824,
+            "maxnreg": null,
+            "name": "_weight_int4pack_mm_kernel",
+            "num_ctas": 1,
+            "num_stages": 3,
+            "num_warps": 4,
+            "profile_scratch_align": 1,
+            "profile_scratch_size": 0,
+            "ptx_options": null,
+            "ptx_version": null,
+            "sanitize_overflow": true,
+            "shared": 40960,
+            "supported_fp8_dtypes": [
+              "fp8e4b15",
+              "fp8e4nv",
+              "fp8e5"
+            ],
+            "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+            "tensordesc_meta": [],
+            "tmem_size": 0,
+            "triton_version": "3.7.0",
+            "warp_size": 32
+          },
+          "compiler_input_class": "IRSource",
+          "input_path": "/root/ops-ttir-dev/int4_gemm/ir/m16_n4096_k4096/baseline.ttir",
+          "input_sha256": "fe31f2a896e815ceea1742f40150f4df3ae68148149827475c624ae50ca2cf84"
+        },
+        "ir": {
+          "stages": {
+            "ttir": "84fd65fc42fa2ce51b5c3327f1501a82f633cae81cebc90c115d29b116b49c0b",
+            "ttgir": "82fa1c4e028fbe106e97c6dc563140fcb26d2c87b426de7bbaf994d01f092d2b",
+            "llir": "71a2bfdd679b2f89157714f42c5645a05e9e2c269c6accd925282b0de1158f87",
+            "ptx": "fc797181e33be4ac5eb83d150590e75e575043fac47cc4a0b81dbb5674c56a1f",
+            "cubin": "fd6773a0d0c00e240f64c3b6011a9f1b5ded34aaa6ea1422d8a185806cc62688"
+          },
+          "elf_text": {
+            ".text._weight_int4pack_mm_kernel": {
+              "sha256": "d95ada84afbab15b9b6b183f5af956c460fceb40a89796ea0b3da941b70a8ec1",
+              "bytes": 21760
+            }
+          },
+          "n_regs": 210,
+          "n_spills": 0,
+          "metadata": {
+            "allowed_dot_input_precisions": [
+              "tf32",
+              "tf32x3",
+              "ieee",
+              "bf16x3",
+              "bf16x6"
+            ],
+            "arch": "sm90",
+            "backend_name": "cuda",
+            "debug": false,
+            "default_dot_input_precision": "tf32",
+            "deprecated_fp8_dot_operand_dtypes": [
+              "fp8e4b15"
+            ],
+            "enable_fp_fusion": true,
+            "enable_reflect_ftz": true,
+            "extern_libs": [
+              [
+                "libdevice",
+                "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+              ]
+            ],
+            "global_scratch_align": 1,
+            "global_scratch_size": 0,
+            "hash": "6247d3d2cdc869c106656e850fffafe3af4170e48926b2731e0ecf581e9952aa",
+            "instrumentation_mode": "",
+            "ir_override": null,
+            "launch_cooperative_grid": false,
+            "launch_pdl": false,
+            "max_num_imprecise_acc_default": 1073741824,
+            "maxnreg": null,
+            "name": "_weight_int4pack_mm_kernel",
+            "num_ctas": 1,
+            "num_stages": 3,
+            "num_warps": 4,
+            "profile_scratch_align": 1,
+            "profile_scratch_size": 0,
+            "ptx_options": null,
+            "ptx_version": null,
+            "sanitize_overflow": true,
+            "shared": 40960,
+            "supported_fp8_dtypes": [
+              "fp8e4b15",
+              "fp8e4nv",
+              "fp8e5"
+            ],
+            "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+            "tensordesc_meta": [],
+            "tmem_size": 0,
+            "triton_version": "3.7.0",
+            "warp_size": 32
+          },
+          "compiler_input_class": "IRSource",
+          "input_path": "/root/ops-ttir-dev/int4_gemm/ir/m16_n4096_k4096/scalar_unsigned_v1.ttir",
+          "input_sha256": "4b1b037d796e71b320d07c55f4965bed9bf95081988a9a42ea64aac18d120394"
+        },
+        "source": {
+          "stages": {
+            "source": "3ac91ac0af8ccba6590a1e5e98a093d3280510f3fa72034c443c714aa824e428",
+            "ttir": "1ce927ac67b5d56b0ce7a5aad0cd600ebfba6f5d113a49213d1076be2bd0236b",
+            "ttgir": "28c044cd3a97c0fa75bfdfeaa9d2e2991d11db3cde314e921a893e7f29375ed4",
+            "llir": "38463fc83ecaa172c55e0b08edf8fd59fd0bf209b1af0ea93d67513cde645776",
+            "ptx": "1e626b9e9a3e9593ef49e620e8c38615cf6cab15ea14db5b2c551cfc72a2fb8d",
+            "cubin": "b405847f0426c6bbdc8f8ae638273395debe5390bd96d1f4323386c1cf379241"
+          },
+          "elf_text": {
+            ".text._weight_int4pack_mm_kernel": {
+              "sha256": "d95ada84afbab15b9b6b183f5af956c460fceb40a89796ea0b3da941b70a8ec1",
+              "bytes": 21760
+            }
+          },
+          "n_regs": 210,
+          "n_spills": 0,
+          "metadata": {
+            "allowed_dot_input_precisions": [
+              "tf32",
+              "tf32x3",
+              "ieee",
+              "bf16x3",
+              "bf16x6"
+            ],
+            "arch": "sm90",
+            "backend_name": "cuda",
+            "debug": false,
+            "default_dot_input_precision": "tf32",
+            "deprecated_fp8_dot_operand_dtypes": [
+              "fp8e4b15"
+            ],
+            "enable_fp_fusion": true,
+            "enable_reflect_ftz": true,
+            "extern_libs": [
+              [
+                "libdevice",
+                "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+              ]
+            ],
+            "global_scratch_align": 1,
+            "global_scratch_size": 0,
+            "hash": "28f6ecd8f79cc530c00361b750a25e84c1151d25942e59ef11324fdddb669677",
+            "instrumentation_mode": "",
+            "ir_override": null,
+            "launch_cooperative_grid": false,
+            "launch_pdl": false,
+            "max_num_imprecise_acc_default": 1073741824,
+            "maxnreg": null,
+            "name": "_weight_int4pack_mm_kernel",
+            "num_ctas": 1,
+            "num_stages": 3,
+            "num_warps": 4,
+            "profile_scratch_align": 1,
+            "profile_scratch_size": 0,
+            "ptx_options": null,
+            "ptx_version": null,
+            "sanitize_overflow": true,
+            "shared": 40960,
+            "supported_fp8_dtypes": [
+              "fp8e4b15",
+              "fp8e4nv",
+              "fp8e5"
+            ],
+            "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+            "tensordesc_meta": [],
+            "tmem_size": 0,
+            "triton_version": "3.7.0",
+            "warp_size": 32
+          },
+          "compiler_input_class": "ASTSource",
+          "input_path": "/root/ops-ttir-dev/int4_gemm/source_port/source_v1.py",
+          "input_sha256": "c369f7c401e6d5be4772a550b6bfa2139052385a113c58b29261b9a6ea81320c",
+          "exported_ttir_sha256": "1ce927ac67b5d56b0ce7a5aad0cd600ebfba6f5d113a49213d1076be2bd0236b"
+        }
+      },
+      "accuracy": [
+        {
+          "mode": "random",
+          "path": "baseline",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "random",
+          "path": "ir",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "random",
+          "path": "source",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "extreme_nibble",
+          "path": "baseline",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "extreme_nibble",
+          "path": "ir",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "extreme_nibble",
+          "path": "source",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero_scale",
+          "path": "baseline",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero_scale",
+          "path": "ir",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero_scale",
+          "path": "source",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero",
+          "path": "baseline",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero",
+          "path": "ir",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero",
+          "path": "source",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "constant",
+          "path": "baseline",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "constant",
+          "path": "ir",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "constant",
+          "path": "source",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        }
+      ],
+      "timing": {
+        "input_seed": 8250,
+        "input_sha256": [
+          "f75af9acad432c13db45c2361636fa27961677a5d2b2728a907edcc3758cba39",
+          "f908d5713062f80eb3f6b25afb1647820c996dc2dde7a4520f63d9b5afa471ca",
+          "fdefcdf68f3e8253f996d18d24ad3b9b14c0f1baf3710374f0b4af8e8e7fdb89",
+          "125806ee504c38d72405086404d23d0fdeb274eed02a46fb472b9f23d08cba8b"
+        ],
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "ir",
+              "source",
+              "baseline"
+            ],
+            "us": {
+              "ir": 64.66385185295809,
+              "source": 64.67111979099299,
+              "baseline": 74.16014856146288
+            },
+            "baseline_over_ir": 1.146856341470329,
+            "baseline_over_source": 1.1467274542506292,
+            "ir_over_source": 0.9998876169446518
+          },
+          {
+            "round": 1,
+            "order": [
+              "baseline",
+              "source",
+              "ir"
+            ],
+            "us": {
+              "baseline": 74.16579751407399,
+              "source": 64.67019959001352,
+              "ir": 64.66723907365106
+            },
+            "baseline_over_ir": 1.146883624173359,
+            "baseline_over_source": 1.1468311213551101,
+            "ir_over_source": 0.9999542213201562
+          },
+          {
+            "round": 2,
+            "order": [
+              "baseline",
+              "source",
+              "ir"
+            ],
+            "us": {
+              "baseline": 74.16625242966872,
+              "source": 64.67315825909078,
+              "ir": 64.66615916965725
+            },
+            "baseline_over_ir": 1.1469098115922913,
+            "baseline_over_source": 1.146785690170675,
+            "ir_over_source": 0.9998917775222064
+          },
+          {
+            "round": 3,
+            "order": [
+              "baseline",
+              "source",
+              "ir"
+            ],
+            "us": {
+              "baseline": 74.18148404075986,
+              "source": 64.67199990915698,
+              "ir": 64.67532375402618
+            },
+            "baseline_over_ir": 1.1469828017079218,
+            "baseline_over_source": 1.1470417513755657,
+            "ir_over_source": 1.0000513954242
+          },
+          {
+            "round": 4,
+            "order": [
+              "baseline",
+              "ir",
+              "source"
+            ],
+            "us": {
+              "baseline": 74.16763232304498,
+              "ir": 64.68335902158337,
+              "source": 64.6922330127602
+            },
+            "baseline_over_ir": 1.146626171629351,
+            "baseline_over_source": 1.1464688861244876,
+            "ir_over_source": 0.9998628275642444
+          },
+          {
+            "round": 5,
+            "order": [
+              "ir",
+              "baseline",
+              "source"
+            ],
+            "us": {
+              "ir": 64.68552663816628,
+              "baseline": 74.18451717391552,
+              "source": 64.68893265882075
+            },
+            "baseline_over_ir": 1.1468487779172625,
+            "baseline_over_source": 1.1467883936990573,
+            "ir_over_source": 0.9999473477067178
+          },
+          {
+            "round": 6,
+            "order": [
+              "baseline",
+              "ir",
+              "source"
+            ],
+            "us": {
+              "baseline": 74.18959309735635,
+              "ir": 64.68909603732449,
+              "source": 64.68796840933865
+            },
+            "baseline_over_ir": 1.1468639638208924,
+            "baseline_over_source": 1.1468839557287132,
+            "ir_over_source": 1.0000174318039903
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              74.16306284151189,
+              74.15868434981395
+            ],
+            "ratio": 1.0000590421976376
+          },
+          {
+            "round": 1,
+            "us": [
+              74.17185196509728,
+              74.16703561864473
+            ],
+            "ratio": 1.0000649391796823
+          },
+          {
+            "round": 2,
+            "us": [
+              74.16875643992988,
+              74.17238646862553
+            ],
+            "ratio": 0.9999510595671991
+          },
+          {
+            "round": 3,
+            "us": [
+              74.16322537433312,
+              74.17118101741161
+            ],
+            "ratio": 0.9998927394310113
+          },
+          {
+            "round": 4,
+            "us": [
+              74.19021443803182,
+              74.18772005567364
+            ],
+            "ratio": 1.0000336225773794
+          },
+          {
+            "round": 5,
+            "us": [
+              74.1890729859818,
+              74.19155091047287
+            ],
+            "ratio": 0.999966600988109
+          },
+          {
+            "round": 6,
+            "us": [
+              74.18577356855998,
+              74.18672348081374
+            ],
+            "ratio": 0.9999871956569965
+          }
+        ],
+        "aa_median": 0.9999871956569965,
+        "aa_passed": true,
+        "median_us": {
+          "baseline": 74.16763232304498,
+          "ir": 64.67532375402618,
+          "source": 64.67315825909078
+        },
+        "ratios": {
+          "baseline_over_ir": 1.1468639638208924,
+          "baseline_over_source": 1.1467883936990573,
+          "ir_over_source": 0.9999473477067178
+        }
+      }
+    },
+    {
+      "case": "m128_n11008_k4096",
+      "shape": [
+        128,
+        11008,
+        4096
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "pipeline": {
+        "baseline_source_file_identical": true,
+        "source_export_file_identical": true,
+        "full_options_identical": true,
+        "outputs_bitwise": true,
+        "options": {
+          "num_warps": 4,
+          "num_ctas": 1,
+          "num_stages": 3,
+          "warp_size": 32,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 1073741824,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "cuda",
+          "sanitize_overflow": true,
+          "arch": "sm90",
+          "instrumentation_mode": ""
+        }
+      },
+      "kernels": {
+        "baseline": {
+          "stages": {
+            "ttir": "6fb406557a619fb3eab1f998c4e1a7c8465b335c660e4ce5d1d94afc18284ab5",
+            "ttgir": "0e4299bdbc718f7d8bbe6ab621bb4736465a191b224774c058a5c7e9b7e91f6f",
+            "llir": "e43ca88aea86a48a1758edc3c11ee9354dc70b8f6fd8185352ba394f5676c528",
+            "ptx": "947630c8e8bab7e925bb97d99af5e7c70b0a135fe96e96b4cf1dc446449768b4",
+            "cubin": "aecddf16c4d24edcfb937a593affc8bc3471442c05ad09a411c98bef3ccd1316"
+          },
+          "elf_text": {
+            ".text._weight_int4pack_mm_kernel": {
+              "sha256": "7ffb44e4639351fbd13411066f03c3f2e047c38358ee25f670691b65e8527bac",
+              "bytes": 19200
+            }
+          },
+          "n_regs": 168,
+          "n_spills": 0,
+          "metadata": {
+            "allowed_dot_input_precisions": [
+              "tf32",
+              "tf32x3",
+              "ieee",
+              "bf16x3",
+              "bf16x6"
+            ],
+            "arch": "sm90",
+            "backend_name": "cuda",
+            "debug": false,
+            "default_dot_input_precision": "tf32",
+            "deprecated_fp8_dot_operand_dtypes": [
+              "fp8e4b15"
+            ],
+            "enable_fp_fusion": true,
+            "enable_reflect_ftz": true,
+            "extern_libs": [
+              [
+                "libdevice",
+                "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+              ]
+            ],
+            "global_scratch_align": 1,
+            "global_scratch_size": 0,
+            "hash": "2d5ae58793e06adac496a7cfa16054033f32b81330af7710582c5e1890e76c43",
+            "instrumentation_mode": "",
+            "ir_override": null,
+            "launch_cooperative_grid": false,
+            "launch_pdl": false,
+            "max_num_imprecise_acc_default": 1073741824,
+            "maxnreg": null,
+            "name": "_weight_int4pack_mm_kernel",
+            "num_ctas": 1,
+            "num_stages": 3,
+            "num_warps": 4,
+            "profile_scratch_align": 1,
+            "profile_scratch_size": 0,
+            "ptx_options": null,
+            "ptx_version": null,
+            "sanitize_overflow": true,
+            "shared": 20480,
+            "supported_fp8_dtypes": [
+              "fp8e4b15",
+              "fp8e4nv",
+              "fp8e5"
+            ],
+            "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+            "tensordesc_meta": [],
+            "tmem_size": 0,
+            "triton_version": "3.7.0",
+            "warp_size": 32
+          },
+          "compiler_input_class": "IRSource",
+          "input_path": "/root/ops-ttir-dev/int4_gemm/ir/m128_n11008_k4096/baseline.ttir",
+          "input_sha256": "398ab0fc4b89941be715ae6f5823e7c3b75f735de4daceb1fd2348c13070c8b2"
+        },
+        "ir": {
+          "stages": {
+            "ttir": "6789a3e56ade7e135cd14e4e6b6f1028e3d0e8f6d000316d2a0ba16cfae9c0a8",
+            "ttgir": "d5d952d87fb5a2c9ba2d66895769c4760fd24133f1aeea825f24727f89d46fb3",
+            "llir": "b2299c51430b9f43027c485b7d03dee17f636bac3e708843ed5239743dd16108",
+            "ptx": "7285ef877c58f1748ca0115ca70e07b3824ddb792b28ae609d378ed7be178a74",
+            "cubin": "3b5ef2689f56762fb452458eb039e887f4a347ea23c20ae9c33a066471780597"
+          },
+          "elf_text": {
+            ".text._weight_int4pack_mm_kernel": {
+              "sha256": "93854cc4eb4d7ecc35b30a6dab4e4c453978ed411fe0f4711673a63c7101f876",
+              "bytes": 12800
+            }
+          },
+          "n_regs": 138,
+          "n_spills": 0,
+          "metadata": {
+            "allowed_dot_input_precisions": [
+              "tf32",
+              "tf32x3",
+              "ieee",
+              "bf16x3",
+              "bf16x6"
+            ],
+            "arch": "sm90",
+            "backend_name": "cuda",
+            "debug": false,
+            "default_dot_input_precision": "tf32",
+            "deprecated_fp8_dot_operand_dtypes": [
+              "fp8e4b15"
+            ],
+            "enable_fp_fusion": true,
+            "enable_reflect_ftz": true,
+            "extern_libs": [
+              [
+                "libdevice",
+                "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+              ]
+            ],
+            "global_scratch_align": 1,
+            "global_scratch_size": 0,
+            "hash": "09bc7c1bbf29821c86b03c18b5d8c54b0555d57dd4a662ff2449eb4061634349",
+            "instrumentation_mode": "",
+            "ir_override": null,
+            "launch_cooperative_grid": false,
+            "launch_pdl": false,
+            "max_num_imprecise_acc_default": 1073741824,
+            "maxnreg": null,
+            "name": "_weight_int4pack_mm_kernel",
+            "num_ctas": 1,
+            "num_stages": 3,
+            "num_warps": 4,
+            "profile_scratch_align": 1,
+            "profile_scratch_size": 0,
+            "ptx_options": null,
+            "ptx_version": null,
+            "sanitize_overflow": true,
+            "shared": 20480,
+            "supported_fp8_dtypes": [
+              "fp8e4b15",
+              "fp8e4nv",
+              "fp8e5"
+            ],
+            "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+            "tensordesc_meta": [],
+            "tmem_size": 0,
+            "triton_version": "3.7.0",
+            "warp_size": 32
+          },
+          "compiler_input_class": "IRSource",
+          "input_path": "/root/ops-ttir-dev/int4_gemm/ir/m128_n11008_k4096/scalar_unsigned_v1.ttir",
+          "input_sha256": "11821b00d894ac825d532b4dd9e1f892474983f0856c7ee110a20a6adc2fefdf"
+        },
+        "source": {
+          "stages": {
+            "source": "85322ff16a5e19f735875967d4f3eb3d19366aa2625217fdb996d35b48c6e0f2",
+            "ttir": "bfbb8b295111394851da45d3f483ca1378b1e444537267d8ec2e63b21ed2ee9d",
+            "ttgir": "a9e53b83298f1b210e43d9ad6571d5bd0d8bacf2a6b1f6be15302216ffa5a699",
+            "llir": "de01392d5cbca0f7147d9dcfd2a275ebebb5184e00f3aea5d01730355174116f",
+            "ptx": "151b0fa169fc844bf4855776460bda37c9b3b8cdbfb08b386a3639cd4a034208",
+            "cubin": "969eb6080b8d0a6d646d922671ad7712c72620524005512a92583b3f731f7458"
+          },
+          "elf_text": {
+            ".text._weight_int4pack_mm_kernel": {
+              "sha256": "93854cc4eb4d7ecc35b30a6dab4e4c453978ed411fe0f4711673a63c7101f876",
+              "bytes": 12800
+            }
+          },
+          "n_regs": 138,
+          "n_spills": 0,
+          "metadata": {
+            "allowed_dot_input_precisions": [
+              "tf32",
+              "tf32x3",
+              "ieee",
+              "bf16x3",
+              "bf16x6"
+            ],
+            "arch": "sm90",
+            "backend_name": "cuda",
+            "debug": false,
+            "default_dot_input_precision": "tf32",
+            "deprecated_fp8_dot_operand_dtypes": [
+              "fp8e4b15"
+            ],
+            "enable_fp_fusion": true,
+            "enable_reflect_ftz": true,
+            "extern_libs": [
+              [
+                "libdevice",
+                "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+              ]
+            ],
+            "global_scratch_align": 1,
+            "global_scratch_size": 0,
+            "hash": "50e106374e12a2cef8f014c0b0f5da078cad5441434772b9feef5a0fbf181add",
+            "instrumentation_mode": "",
+            "ir_override": null,
+            "launch_cooperative_grid": false,
+            "launch_pdl": false,
+            "max_num_imprecise_acc_default": 1073741824,
+            "maxnreg": null,
+            "name": "_weight_int4pack_mm_kernel",
+            "num_ctas": 1,
+            "num_stages": 3,
+            "num_warps": 4,
+            "profile_scratch_align": 1,
+            "profile_scratch_size": 0,
+            "ptx_options": null,
+            "ptx_version": null,
+            "sanitize_overflow": true,
+            "shared": 20480,
+            "supported_fp8_dtypes": [
+              "fp8e4b15",
+              "fp8e4nv",
+              "fp8e5"
+            ],
+            "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+            "tensordesc_meta": [],
+            "tmem_size": 0,
+            "triton_version": "3.7.0",
+            "warp_size": 32
+          },
+          "compiler_input_class": "ASTSource",
+          "input_path": "/root/ops-ttir-dev/int4_gemm/source_port/source_v1.py",
+          "input_sha256": "c369f7c401e6d5be4772a550b6bfa2139052385a113c58b29261b9a6ea81320c",
+          "exported_ttir_sha256": "bfbb8b295111394851da45d3f483ca1378b1e444537267d8ec2e63b21ed2ee9d"
+        }
+      },
+      "accuracy": [
+        {
+          "mode": "random",
+          "path": "baseline",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "random",
+          "path": "ir",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "random",
+          "path": "source",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "extreme_nibble",
+          "path": "baseline",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "extreme_nibble",
+          "path": "ir",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "extreme_nibble",
+          "path": "source",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero_scale",
+          "path": "baseline",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero_scale",
+          "path": "ir",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero_scale",
+          "path": "source",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero",
+          "path": "baseline",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero",
+          "path": "ir",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero",
+          "path": "source",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "constant",
+          "path": "baseline",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "constant",
+          "path": "ir",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "constant",
+          "path": "source",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        }
+      ],
+      "timing": {
+        "input_seed": 15274,
+        "input_sha256": [
+          "e28bba96c423d1f08c6a598abb62be0c42adfbeea00b8c1345884105a7675a57",
+          "ae0fcb2aed74d1408dae12d362c25e8a954174a3f9b1a0618a309d776f7871d1",
+          "a99d3f43093ec093066fbd5570c0994aae08af2f5db7e3a1953b960a61b7b89d",
+          "403d6865731267f46edf0ac5ada515f9e201ec3c927967dad64b138e2a4af914"
+        ],
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "baseline",
+              "source",
+              "ir"
+            ],
+            "us": {
+              "baseline": 326.7758909861247,
+              "source": 298.47233801177055,
+              "ir": 298.45314314871126
+            },
+            "baseline_over_ir": 1.0948984739735208,
+            "baseline_over_source": 1.0948280606601406,
+            "ir_over_source": 0.9999356896415019
+          },
+          {
+            "round": 1,
+            "order": [
+              "baseline",
+              "source",
+              "ir"
+            ],
+            "us": {
+              "baseline": 326.82629585266113,
+              "source": 298.573384140477,
+              "ir": 298.5658645629883
+            },
+            "baseline_over_ir": 1.0946539261313002,
+            "baseline_over_source": 1.0946263572472064,
+            "ir_over_source": 0.9999748149771944
+          },
+          {
+            "round": 2,
+            "order": [
+              "baseline",
+              "source",
+              "ir"
+            ],
+            "us": {
+              "baseline": 326.7773925280962,
+              "source": 298.5154007420395,
+              "ir": 298.4556140321674
+            },
+            "baseline_over_ir": 1.094894440460672,
+            "baseline_over_source": 1.0946751548355762,
+            "ir_over_source": 0.9997997198478755
+          },
+          {
+            "round": 3,
+            "order": [
+              "source",
+              "baseline",
+              "ir"
+            ],
+            "us": {
+              "source": 298.4454241665927,
+              "baseline": 326.78415934244794,
+              "ir": 298.47045089259296
+            },
+            "baseline_over_ir": 1.0948626852848622,
+            "baseline_over_source": 1.0949544971412812,
+            "ir_over_source": 1.0000838569600126
+          },
+          {
+            "round": 4,
+            "order": [
+              "baseline",
+              "ir",
+              "source"
+            ],
+            "us": {
+              "baseline": 326.766881942749,
+              "ir": 298.5029827464711,
+              "source": 298.50622812906903
+            },
+            "baseline_over_ir": 1.0946854833282635,
+            "baseline_over_source": 1.094673581823762,
+            "ir_over_source": 0.9999891279233326
+          },
+          {
+            "round": 5,
+            "order": [
+              "ir",
+              "baseline",
+              "source"
+            ],
+            "us": {
+              "ir": 298.4834439826734,
+              "baseline": 326.83018684387207,
+              "source": 298.54089274550927
+            },
+            "baseline_over_ir": 1.0949692300616987,
+            "baseline_over_source": 1.0947585231564172,
+            "ir_over_source": 0.9998075681950719
+          },
+          {
+            "round": 6,
+            "order": [
+              "source",
+              "baseline",
+              "ir"
+            ],
+            "us": {
+              "source": 298.52863080573803,
+              "baseline": 326.75488154093426,
+              "ir": 298.53890736897785
+            },
+            "baseline_over_ir": 1.0945135574475826,
+            "baseline_over_source": 1.0945512350323408,
+            "ir_over_source": 1.0000344240457342
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              326.79327964782715,
+              326.77499135335285
+            ],
+            "ratio": 1.0000559660162442
+          },
+          {
+            "round": 1,
+            "us": [
+              326.8643144701348,
+              326.7465997914799
+            ],
+            "ratio": 1.00036026290321
+          },
+          {
+            "round": 2,
+            "us": [
+              326.78410212198895,
+              326.84426625569665
+            ],
+            "ratio": 0.999815924157407
+          },
+          {
+            "round": 3,
+            "us": [
+              326.8075720469157,
+              326.76037470499676
+            ],
+            "ratio": 1.000144440224619
+          },
+          {
+            "round": 4,
+            "us": [
+              326.77520116170246,
+              326.76090876261395
+            ],
+            "ratio": 1.000043739623392
+          },
+          {
+            "round": 5,
+            "us": [
+              326.80682197946015,
+              326.79307656209977
+            ],
+            "ratio": 1.0000420615317342
+          },
+          {
+            "round": 6,
+            "us": [
+              326.65172894795734,
+              326.6925811767578
+            ],
+            "ratio": 0.9998749520768017
+          }
+        ],
+        "aa_median": 1.000043739623392,
+        "aa_passed": true,
+        "median_us": {
+          "baseline": 326.7773925280962,
+          "ir": 298.4834439826734,
+          "source": 298.5154007420395
+        },
+        "ratios": {
+          "baseline_over_ir": 1.0948626852848622,
+          "baseline_over_source": 1.0946751548355762,
+          "ir_over_source": 0.9999748149771944
+        }
+      }
+    },
+    {
+      "case": "m1_n256_k128",
+      "shape": [
+        1,
+        256,
+        128
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "pipeline": {
+        "baseline_source_file_identical": true,
+        "source_export_file_identical": true,
+        "full_options_identical": true,
+        "outputs_bitwise": true,
+        "options": {
+          "num_warps": 4,
+          "num_ctas": 1,
+          "num_stages": 3,
+          "warp_size": 32,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 1073741824,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "cuda",
+          "sanitize_overflow": true,
+          "arch": "sm90",
+          "instrumentation_mode": ""
+        }
+      },
+      "kernels": {
+        "baseline": {
+          "stages": {
+            "ttir": "b44a70402449ab5462494bd14ecaf0e1b65e554b98ca61b6272c76557b0b9c21",
+            "ttgir": "2d40bc6d39357f30e34c9bc95cc2483c33a2fc4c10c1e0899ee7c049d0f55d5e",
+            "llir": "0914262476256ff1e733459dbe172da3141e4ead5a475a5b22c0bb0a572e09b5",
+            "ptx": "6345642fbfc6f9685c59d2496df73df7232861a0e91ae8eb7193271a6c2cdc1f",
+            "cubin": "71d7a3c98d67d13923711f90ae0569cf57fe6ae53a6d278166be037d77a39522"
+          },
+          "elf_text": {
+            ".text._weight_int4pack_mm_kernel": {
+              "sha256": "02417cc00002a705d73812c21f4472aaf0fb56085adb74776e91637a86289a3f",
+              "bytes": 17536
+            }
+          },
+          "n_regs": 140,
+          "n_spills": 0,
+          "metadata": {
+            "allowed_dot_input_precisions": [
+              "tf32",
+              "tf32x3",
+              "ieee",
+              "bf16x3",
+              "bf16x6"
+            ],
+            "arch": "sm90",
+            "backend_name": "cuda",
+            "debug": false,
+            "default_dot_input_precision": "tf32",
+            "deprecated_fp8_dot_operand_dtypes": [
+              "fp8e4b15"
+            ],
+            "enable_fp_fusion": true,
+            "enable_reflect_ftz": true,
+            "extern_libs": [
+              [
+                "libdevice",
+                "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+              ]
+            ],
+            "global_scratch_align": 1,
+            "global_scratch_size": 0,
+            "hash": "563e0fa0ffb07d6fda29081b8036f3801fb666e6e92ad006fcbd3ea99e536beb",
+            "instrumentation_mode": "",
+            "ir_override": null,
+            "launch_cooperative_grid": false,
+            "launch_pdl": false,
+            "max_num_imprecise_acc_default": 1073741824,
+            "maxnreg": null,
+            "name": "_weight_int4pack_mm_kernel",
+            "num_ctas": 1,
+            "num_stages": 3,
+            "num_warps": 4,
+            "profile_scratch_align": 1,
+            "profile_scratch_size": 0,
+            "ptx_options": null,
+            "ptx_version": null,
+            "sanitize_overflow": true,
+            "shared": 16384,
+            "supported_fp8_dtypes": [
+              "fp8e4b15",
+              "fp8e4nv",
+              "fp8e5"
+            ],
+            "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+            "tensordesc_meta": [],
+            "tmem_size": 0,
+            "triton_version": "3.7.0",
+            "warp_size": 32
+          },
+          "compiler_input_class": "IRSource",
+          "input_path": "/root/ops-ttir-dev/int4_gemm/ir/m1_n256_k128/baseline.ttir",
+          "input_sha256": "e3f1409abdea699b0664eecd95430b0f2770a7548a50e886577b9e267f719c31"
+        },
+        "ir": {
+          "stages": {
+            "ttir": "771b6df437ec86ecef00ee6335f39ba0aea3abf59604e72d4ac374a803707258",
+            "ttgir": "b6cd7ea7ab9a6bba1b20ad0fc0e7a0e5e3c85b8318d5c9079ab19dd2e4e0b014",
+            "llir": "944e984b9df248126d368110f8eee6776ac88292898b1f5a7a05194b191ff2fb",
+            "ptx": "93678c99de10b808b9112d281744e6bfbbabb566f0352e894815ce57dd7d70d8",
+            "cubin": "5975884d3b6746605add35e85a62f54764e5d06e391d71041a4569701c4f17fc"
+          },
+          "elf_text": {
+            ".text._weight_int4pack_mm_kernel": {
+              "sha256": "92004d0ca56a23c9463478c5604f642bdcf491c4d5a3f23257eb4823afccd1d1",
+              "bytes": 11008
+            }
+          },
+          "n_regs": 106,
+          "n_spills": 0,
+          "metadata": {
+            "allowed_dot_input_precisions": [
+              "tf32",
+              "tf32x3",
+              "ieee",
+              "bf16x3",
+              "bf16x6"
+            ],
+            "arch": "sm90",
+            "backend_name": "cuda",
+            "debug": false,
+            "default_dot_input_precision": "tf32",
+            "deprecated_fp8_dot_operand_dtypes": [
+              "fp8e4b15"
+            ],
+            "enable_fp_fusion": true,
+            "enable_reflect_ftz": true,
+            "extern_libs": [
+              [
+                "libdevice",
+                "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+              ]
+            ],
+            "global_scratch_align": 1,
+            "global_scratch_size": 0,
+            "hash": "b4da909c7253d1ce7c4a29ef30cd3fb72a587775e11da09b86dd589e4e25556a",
+            "instrumentation_mode": "",
+            "ir_override": null,
+            "launch_cooperative_grid": false,
+            "launch_pdl": false,
+            "max_num_imprecise_acc_default": 1073741824,
+            "maxnreg": null,
+            "name": "_weight_int4pack_mm_kernel",
+            "num_ctas": 1,
+            "num_stages": 3,
+            "num_warps": 4,
+            "profile_scratch_align": 1,
+            "profile_scratch_size": 0,
+            "ptx_options": null,
+            "ptx_version": null,
+            "sanitize_overflow": true,
+            "shared": 16384,
+            "supported_fp8_dtypes": [
+              "fp8e4b15",
+              "fp8e4nv",
+              "fp8e5"
+            ],
+            "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+            "tensordesc_meta": [],
+            "tmem_size": 0,
+            "triton_version": "3.7.0",
+            "warp_size": 32
+          },
+          "compiler_input_class": "IRSource",
+          "input_path": "/root/ops-ttir-dev/int4_gemm/ir/m1_n256_k128/scalar_unsigned_v1.ttir",
+          "input_sha256": "c3993398454978e3c291ad80c2fc107f67f30e0a863dd87aaaef909ff264fb62"
+        },
+        "source": {
+          "stages": {
+            "source": "a414ca20b5ed333c9cdeda6227ab1d7ae9cd38a53437aea67f11c21c8971e4cd",
+            "ttir": "50f993b843915ead4dddf7a8a2e946df9731fe232cdf8168751e9e21e0960660",
+            "ttgir": "db49369f1b2de157ca0e79e56896306c510c741c45004024a5bebf60ed50711a",
+            "llir": "c5a51bfeadceaca778cadfd22dc4cf54c5998dce91275cc3100117c6a67e961d",
+            "ptx": "68f6c4f1a6ada9270208a1e996fc1db63ed1d84eb5175ea75846390bf8088c60",
+            "cubin": "45a0881959dcfa5667d3149ab1a1223f8f93f9fdd0f0f413f14492948882238d"
+          },
+          "elf_text": {
+            ".text._weight_int4pack_mm_kernel": {
+              "sha256": "92004d0ca56a23c9463478c5604f642bdcf491c4d5a3f23257eb4823afccd1d1",
+              "bytes": 11008
+            }
+          },
+          "n_regs": 106,
+          "n_spills": 0,
+          "metadata": {
+            "allowed_dot_input_precisions": [
+              "tf32",
+              "tf32x3",
+              "ieee",
+              "bf16x3",
+              "bf16x6"
+            ],
+            "arch": "sm90",
+            "backend_name": "cuda",
+            "debug": false,
+            "default_dot_input_precision": "tf32",
+            "deprecated_fp8_dot_operand_dtypes": [
+              "fp8e4b15"
+            ],
+            "enable_fp_fusion": true,
+            "enable_reflect_ftz": true,
+            "extern_libs": [
+              [
+                "libdevice",
+                "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+              ]
+            ],
+            "global_scratch_align": 1,
+            "global_scratch_size": 0,
+            "hash": "ed6f91ca653fb477d8feab4d70eef62a1035e2d651422994adeea871f9ac868f",
+            "instrumentation_mode": "",
+            "ir_override": null,
+            "launch_cooperative_grid": false,
+            "launch_pdl": false,
+            "max_num_imprecise_acc_default": 1073741824,
+            "maxnreg": null,
+            "name": "_weight_int4pack_mm_kernel",
+            "num_ctas": 1,
+            "num_stages": 3,
+            "num_warps": 4,
+            "profile_scratch_align": 1,
+            "profile_scratch_size": 0,
+            "ptx_options": null,
+            "ptx_version": null,
+            "sanitize_overflow": true,
+            "shared": 16384,
+            "supported_fp8_dtypes": [
+              "fp8e4b15",
+              "fp8e4nv",
+              "fp8e5"
+            ],
+            "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+            "tensordesc_meta": [],
+            "tmem_size": 0,
+            "triton_version": "3.7.0",
+            "warp_size": 32
+          },
+          "compiler_input_class": "ASTSource",
+          "input_path": "/root/ops-ttir-dev/int4_gemm/source_port/source_v1.py",
+          "input_sha256": "c369f7c401e6d5be4772a550b6bfa2139052385a113c58b29261b9a6ea81320c",
+          "exported_ttir_sha256": "50f993b843915ead4dddf7a8a2e946df9731fe232cdf8168751e9e21e0960660"
+        }
+      },
+      "accuracy": [
+        {
+          "mode": "random",
+          "path": "baseline",
+          "max_abs_error": 3.814697265625e-06,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "random",
+          "path": "ir",
+          "max_abs_error": 3.814697265625e-06,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "random",
+          "path": "source",
+          "max_abs_error": 3.814697265625e-06,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "extreme_nibble",
+          "path": "baseline",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "extreme_nibble",
+          "path": "ir",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "extreme_nibble",
+          "path": "source",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero_scale",
+          "path": "baseline",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero_scale",
+          "path": "ir",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero_scale",
+          "path": "source",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero",
+          "path": "baseline",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero",
+          "path": "ir",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero",
+          "path": "source",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "constant",
+          "path": "baseline",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "constant",
+          "path": "ir",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "constant",
+          "path": "source",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        }
+      ],
+      "timing": {
+        "input_seed": 427,
+        "input_sha256": [
+          "2cd73f8794d6f7cc27d8cbf856d3ad7ef3d4e5c3d913d1f3eca5882eff1abb5a",
+          "6b06507b32e34e6b389596bf2f71cb2b3242e4552806f388359967980f3acfc5",
+          "c6382dbcb5606769629098105da0e28a18e27bc6e5fe6727aa5fa63afbfc18ac",
+          "db31d7eb4e5adc430dabc3a6d0e9711292359f9b2d9eb4c7717d1392e6901a50"
+        ],
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "source",
+              "ir",
+              "baseline"
+            ],
+            "us": {
+              "source": 3.5462174663114037,
+              "ir": 3.5555368627023975,
+              "baseline": 3.797492518353818
+            },
+            "baseline_over_ir": 1.0680503859176758,
+            "baseline_over_source": 1.0708572033242445,
+            "ir_over_source": 1.0026279822034398
+          },
+          {
+            "round": 1,
+            "order": [
+              "source",
+              "baseline",
+              "ir"
+            ],
+            "us": {
+              "source": 3.5391847254773983,
+              "baseline": 3.799256618206318,
+              "ir": 3.539307867543081
+            },
+            "baseline_over_ir": 1.0734462104998197,
+            "baseline_over_source": 1.0734835598878887,
+            "ir_over_source": 1.0000347939074206
+          },
+          {
+            "round": 2,
+            "order": [
+              "source",
+              "ir",
+              "baseline"
+            ],
+            "us": {
+              "source": 3.5426447314012575,
+              "ir": 3.5541694379795743,
+              "baseline": 3.782893091530238
+            },
+            "baseline_over_ir": 1.0643536155329403,
+            "baseline_over_source": 1.0678161030372224,
+            "ir_over_source": 1.003253136414206
+          },
+          {
+            "round": 3,
+            "order": [
+              "ir",
+              "source",
+              "baseline"
+            ],
+            "us": {
+              "ir": 3.540029034309068,
+              "source": 3.5148781221788807,
+              "baseline": 3.7961982076685725
+            },
+            "baseline_over_ir": 1.0723635797550748,
+            "baseline_over_source": 1.0800369388954234,
+            "ir_over_source": 1.007155557392299
+          },
+          {
+            "round": 4,
+            "order": [
+              "baseline",
+              "ir",
+              "source"
+            ],
+            "us": {
+              "baseline": 3.782584197593458,
+              "ir": 3.5397793589196165,
+              "source": 3.5279630006852636
+            },
+            "baseline_over_ir": 1.0685932127554834,
+            "baseline_over_source": 1.0721722979687534,
+            "ir_over_source": 1.0033493430152352
+          },
+          {
+            "round": 5,
+            "order": [
+              "baseline",
+              "source",
+              "ir"
+            ],
+            "us": {
+              "baseline": 3.8012118029171194,
+              "source": 3.5030831490677556,
+              "ir": 3.543319578828483
+            },
+            "baseline_over_ir": 1.0727826599750008,
+            "baseline_over_source": 1.0851046467249006,
+            "ir_over_source": 1.0114860047702365
+          },
+          {
+            "round": 6,
+            "order": [
+              "baseline",
+              "ir",
+              "source"
+            ],
+            "us": {
+              "baseline": 3.783862314875119,
+              "ir": 3.5424752445781933,
+              "source": 3.52930910776088
+            },
+            "baseline_over_ir": 1.0681407924208848,
+            "baseline_over_source": 1.0721255065345456,
+            "ir_over_source": 1.003730513937802
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              3.799437309988413,
+              3.7831645447947633
+            ],
+            "ratio": 1.004301363316602
+          },
+          {
+            "round": 1,
+            "us": [
+              3.797291997653335,
+              3.7952285492101834
+            ],
+            "ratio": 1.0005436954366242
+          },
+          {
+            "round": 2,
+            "us": [
+              3.783537357686514,
+              3.7839279876456966
+            ],
+            "ratio": 0.9998967660165685
+          },
+          {
+            "round": 3,
+            "us": [
+              3.797000078927903,
+              3.7982366464517496
+            ],
+            "ratio": 0.9996744364190678
+          },
+          {
+            "round": 4,
+            "us": [
+              3.766322388793483,
+              3.7823529103223015
+            ],
+            "ratio": 0.9957617594368124
+          },
+          {
+            "round": 5,
+            "us": [
+              3.7824867360563164,
+              3.7835271678753757
+            ],
+            "ratio": 0.9997250100837406
+          },
+          {
+            "round": 6,
+            "us": [
+              3.7831950407086703,
+              3.7808837523827186
+            ],
+            "ratio": 1.0006113090159132
+          }
+        ],
+        "aa_median": 0.9998967660165685,
+        "aa_passed": true,
+        "median_us": {
+          "baseline": 3.7961982076685725,
+          "ir": 3.5424752445781933,
+          "source": 3.52930910776088
+        },
+        "ratios": {
+          "baseline_over_ir": 1.0685932127554834,
+          "baseline_over_source": 1.0721722979687534,
+          "ir_over_source": 1.0033493430152352
+        }
+      }
+    },
+    {
+      "case": "m32_n1024_k1024",
+      "shape": [
+        32,
+        1024,
+        1024
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "pipeline": {
+        "baseline_source_file_identical": true,
+        "source_export_file_identical": true,
+        "full_options_identical": true,
+        "outputs_bitwise": true,
+        "options": {
+          "num_warps": 4,
+          "num_ctas": 1,
+          "num_stages": 3,
+          "warp_size": 32,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 1073741824,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "cuda",
+          "sanitize_overflow": true,
+          "arch": "sm90",
+          "instrumentation_mode": ""
+        }
+      },
+      "kernels": {
+        "baseline": {
+          "stages": {
+            "ttir": "a923b7d6b659ae396df2189b2260836dda15079d474262b2a7900356fe763586",
+            "ttgir": "9210742bdb06863962f2f0f5b98da1342e9fad69a1d1484a7aae672842a33e6f",
+            "llir": "714b2728525269f07c731c3ec1a197b562e80847f6caf649ee4a9ec892f08735",
+            "ptx": "dac53667ed2e81b54bc1941a820c0a68409d0abf82e5ace3761fc7b47dbc1f29",
+            "cubin": "9fc8bcb3a7dbd5d348592a117f0306843f10a6641b1262e8a1896ebfa3692dcf"
+          },
+          "elf_text": {
+            ".text._weight_int4pack_mm_kernel": {
+              "sha256": "48be37ff4d53afcea5033c1fbf1e6ccbe1d3a98085b222f01de3c9cc24af5e0e",
+              "bytes": 17664
+            }
+          },
+          "n_regs": 140,
+          "n_spills": 0,
+          "metadata": {
+            "allowed_dot_input_precisions": [
+              "tf32",
+              "tf32x3",
+              "ieee",
+              "bf16x3",
+              "bf16x6"
+            ],
+            "arch": "sm90",
+            "backend_name": "cuda",
+            "debug": false,
+            "default_dot_input_precision": "tf32",
+            "deprecated_fp8_dot_operand_dtypes": [
+              "fp8e4b15"
+            ],
+            "enable_fp_fusion": true,
+            "enable_reflect_ftz": true,
+            "extern_libs": [
+              [
+                "libdevice",
+                "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+              ]
+            ],
+            "global_scratch_align": 1,
+            "global_scratch_size": 0,
+            "hash": "92b548f5eb13dbb3ad268833843e7720dfff5427522c7438a4fb1119ae830ded",
+            "instrumentation_mode": "",
+            "ir_override": null,
+            "launch_cooperative_grid": false,
+            "launch_pdl": false,
+            "max_num_imprecise_acc_default": 1073741824,
+            "maxnreg": null,
+            "name": "_weight_int4pack_mm_kernel",
+            "num_ctas": 1,
+            "num_stages": 3,
+            "num_warps": 4,
+            "profile_scratch_align": 1,
+            "profile_scratch_size": 0,
+            "ptx_options": null,
+            "ptx_version": null,
+            "sanitize_overflow": true,
+            "shared": 16384,
+            "supported_fp8_dtypes": [
+              "fp8e4b15",
+              "fp8e4nv",
+              "fp8e5"
+            ],
+            "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+            "tensordesc_meta": [],
+            "tmem_size": 0,
+            "triton_version": "3.7.0",
+            "warp_size": 32
+          },
+          "compiler_input_class": "IRSource",
+          "input_path": "/root/ops-ttir-dev/int4_gemm/ir/m32_n1024_k1024/baseline.ttir",
+          "input_sha256": "637d3ec448fc42f04f3e8811905f9141434f8bb740e2a00c9a75f1c26ad68640"
+        },
+        "ir": {
+          "stages": {
+            "ttir": "a38cec037c58f6675cb28baa1434905a1b6a8171ed2b1caef761fdd1f0b2723f",
+            "ttgir": "d10a3342c83dc257218d0ed832a2cee36aefbcae38c3904ed8cbd7206ee24ce6",
+            "llir": "eef9c964db9ae2a5a83518125401994050aa02015ae0c96a1c5ffc759489176c",
+            "ptx": "6f1a58ac0b54801273b27bd504c04f956c3e7eebc0b0cc2331a95b14d1711542",
+            "cubin": "9e934c8c726d1003d05cd02273338e9ed9f04d891fedf71dc01901475f53f7c7"
+          },
+          "elf_text": {
+            ".text._weight_int4pack_mm_kernel": {
+              "sha256": "c877168977a3ba5cb396cd034cefec6c299e59154fa48a030dbaad8ede76a98b",
+              "bytes": 11008
+            }
+          },
+          "n_regs": 106,
+          "n_spills": 0,
+          "metadata": {
+            "allowed_dot_input_precisions": [
+              "tf32",
+              "tf32x3",
+              "ieee",
+              "bf16x3",
+              "bf16x6"
+            ],
+            "arch": "sm90",
+            "backend_name": "cuda",
+            "debug": false,
+            "default_dot_input_precision": "tf32",
+            "deprecated_fp8_dot_operand_dtypes": [
+              "fp8e4b15"
+            ],
+            "enable_fp_fusion": true,
+            "enable_reflect_ftz": true,
+            "extern_libs": [
+              [
+                "libdevice",
+                "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+              ]
+            ],
+            "global_scratch_align": 1,
+            "global_scratch_size": 0,
+            "hash": "194f7b5bce0b4387159bc5e2f1af2bd4e48a50f9d2362eb3c24d75b4b76357a0",
+            "instrumentation_mode": "",
+            "ir_override": null,
+            "launch_cooperative_grid": false,
+            "launch_pdl": false,
+            "max_num_imprecise_acc_default": 1073741824,
+            "maxnreg": null,
+            "name": "_weight_int4pack_mm_kernel",
+            "num_ctas": 1,
+            "num_stages": 3,
+            "num_warps": 4,
+            "profile_scratch_align": 1,
+            "profile_scratch_size": 0,
+            "ptx_options": null,
+            "ptx_version": null,
+            "sanitize_overflow": true,
+            "shared": 16384,
+            "supported_fp8_dtypes": [
+              "fp8e4b15",
+              "fp8e4nv",
+              "fp8e5"
+            ],
+            "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+            "tensordesc_meta": [],
+            "tmem_size": 0,
+            "triton_version": "3.7.0",
+            "warp_size": 32
+          },
+          "compiler_input_class": "IRSource",
+          "input_path": "/root/ops-ttir-dev/int4_gemm/ir/m32_n1024_k1024/scalar_unsigned_v1.ttir",
+          "input_sha256": "7a18a7733980eca90a57c76eb9b896dd87ccb35631302136ee45533d04fecd28"
+        },
+        "source": {
+          "stages": {
+            "source": "2e734b9771285bf517f84316c147a08362b2f86feb63b7cd88b48a541b64d3ac",
+            "ttir": "e3a960e5b19dedef3ee323d246162c3ca0d29e0fb0b2ef54a0b99954d936b809",
+            "ttgir": "d51c5ad80b4668e91e4e28d0a119ac5c35128f7d545ff430e5df1487aeafcd79",
+            "llir": "76153baf60bff15afbbd4d60c0a62c9eb5a1ea03ed27c88b1a9c66b1d1db1589",
+            "ptx": "a5ae40d8ae300be66d48753892c912070135315702764f841d7410d101708983",
+            "cubin": "90c7b772de69b487db5133d8d16daad90e14bf1c070556013cb1b149f5bf71bc"
+          },
+          "elf_text": {
+            ".text._weight_int4pack_mm_kernel": {
+              "sha256": "c877168977a3ba5cb396cd034cefec6c299e59154fa48a030dbaad8ede76a98b",
+              "bytes": 11008
+            }
+          },
+          "n_regs": 106,
+          "n_spills": 0,
+          "metadata": {
+            "allowed_dot_input_precisions": [
+              "tf32",
+              "tf32x3",
+              "ieee",
+              "bf16x3",
+              "bf16x6"
+            ],
+            "arch": "sm90",
+            "backend_name": "cuda",
+            "debug": false,
+            "default_dot_input_precision": "tf32",
+            "deprecated_fp8_dot_operand_dtypes": [
+              "fp8e4b15"
+            ],
+            "enable_fp_fusion": true,
+            "enable_reflect_ftz": true,
+            "extern_libs": [
+              [
+                "libdevice",
+                "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+              ]
+            ],
+            "global_scratch_align": 1,
+            "global_scratch_size": 0,
+            "hash": "c6beba362fc9a89475e22139a2535ea28fc646738a99d85d8f7a0447f462dcf7",
+            "instrumentation_mode": "",
+            "ir_override": null,
+            "launch_cooperative_grid": false,
+            "launch_pdl": false,
+            "max_num_imprecise_acc_default": 1073741824,
+            "maxnreg": null,
+            "name": "_weight_int4pack_mm_kernel",
+            "num_ctas": 1,
+            "num_stages": 3,
+            "num_warps": 4,
+            "profile_scratch_align": 1,
+            "profile_scratch_size": 0,
+            "ptx_options": null,
+            "ptx_version": null,
+            "sanitize_overflow": true,
+            "shared": 16384,
+            "supported_fp8_dtypes": [
+              "fp8e4b15",
+              "fp8e4nv",
+              "fp8e5"
+            ],
+            "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+            "tensordesc_meta": [],
+            "tmem_size": 0,
+            "triton_version": "3.7.0",
+            "warp_size": 32
+          },
+          "compiler_input_class": "ASTSource",
+          "input_path": "/root/ops-ttir-dev/int4_gemm/source_port/source_v1.py",
+          "input_sha256": "c369f7c401e6d5be4772a550b6bfa2139052385a113c58b29261b9a6ea81320c",
+          "exported_ttir_sha256": "e3a960e5b19dedef3ee323d246162c3ca0d29e0fb0b2ef54a0b99954d936b809"
+        }
+      },
+      "accuracy": [
+        {
+          "mode": "random",
+          "path": "baseline",
+          "max_abs_error": 0.00390625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "random",
+          "path": "ir",
+          "max_abs_error": 0.00390625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "random",
+          "path": "source",
+          "max_abs_error": 0.00390625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "extreme_nibble",
+          "path": "baseline",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "extreme_nibble",
+          "path": "ir",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "extreme_nibble",
+          "path": "source",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero_scale",
+          "path": "baseline",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero_scale",
+          "path": "ir",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero_scale",
+          "path": "source",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero",
+          "path": "baseline",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero",
+          "path": "ir",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero",
+          "path": "source",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "constant",
+          "path": "baseline",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "constant",
+          "path": "ir",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "constant",
+          "path": "source",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        }
+      ],
+      "timing": {
+        "input_seed": 2122,
+        "input_sha256": [
+          "45caca4928d78dc8dc87df1bcb4281f313b53ade2ed6c86fad5460c7a2b45cf9",
+          "0d7cf90a357463853f9f72c14bc08dbad5c13f200d5c76abe8f68f839a13b300",
+          "e242cd2f489fdca7cc91dc89f2403e1eeda561d9f8560dec9c0d61044992acf3",
+          "5741269d8ecbca1ee60ad4112fdf5d591e791bb94e3517e8a33efd63a53ecc08"
+        ],
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "baseline",
+              "source",
+              "ir"
+            ],
+            "us": {
+              "baseline": 19.95842113993526,
+              "source": 18.33507814823948,
+              "ir": 18.345438156809127
+            },
+            "baseline_over_ir": 1.0879228377833787,
+            "baseline_over_source": 1.088537555093631,
+            "ir_over_source": 1.0005650376009247
+          },
+          {
+            "round": 1,
+            "order": [
+              "ir",
+              "source",
+              "baseline"
+            ],
+            "us": {
+              "ir": 18.34904031257409,
+              "source": 18.333934201261023,
+              "baseline": 19.962761976537927
+            },
+            "baseline_over_ir": 1.0879458345763182,
+            "baseline_over_source": 1.088842239608609,
+            "ir_over_source": 1.0008239427035812
+          },
+          {
+            "round": 2,
+            "order": [
+              "baseline",
+              "source",
+              "ir"
+            ],
+            "us": {
+              "baseline": 19.955328743524227,
+              "source": 18.333103008640624,
+              "ir": 18.344600995381672
+            },
+            "baseline_over_ir": 1.087803912908657,
+            "baseline_over_source": 1.0884861517506899,
+            "ir_over_source": 1.0006271707923984
+          },
+          {
+            "round": 3,
+            "order": [
+              "ir",
+              "baseline",
+              "source"
+            ],
+            "us": {
+              "ir": 18.34241883796558,
+              "baseline": 19.954303741455078,
+              "source": 18.311418232164883
+            },
+            "baseline_over_ir": 1.0878774450484785,
+            "baseline_over_source": 1.0897191844160048,
+            "ir_over_source": 1.001692965853745
+          },
+          {
+            "round": 4,
+            "order": [
+              "baseline",
+              "source",
+              "ir"
+            ],
+            "us": {
+              "baseline": 19.95592721096881,
+              "source": 18.331182422059953,
+              "ir": 18.345268179730674
+            },
+            "baseline_over_ir": 1.08779697388222,
+            "baseline_over_source": 1.0886328416520268,
+            "ir_over_source": 1.0007684042058176
+          },
+          {
+            "round": 5,
+            "order": [
+              "source",
+              "ir",
+              "baseline"
+            ],
+            "us": {
+              "source": 18.330099259247152,
+              "ir": 18.34128817762853,
+              "baseline": 19.9537563023131
+            },
+            "baseline_over_ir": 1.087914660577186,
+            "baseline_over_source": 1.0885787370871354,
+            "ir_over_source": 1.000610412318184
+          },
+          {
+            "round": 6,
+            "order": [
+              "source",
+              "ir",
+              "baseline"
+            ],
+            "us": {
+              "source": 18.332249583722856,
+              "ir": 18.343747890356816,
+              "baseline": 19.95053367737012
+            },
+            "baseline_over_ir": 1.0875931023811105,
+            "baseline_over_source": 1.0882752597413976,
+            "ir_over_source": 1.0006272174389426
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              19.956503691718122,
+              19.95856173430817
+            ],
+            "ratio": 0.9998968842235506
+          },
+          {
+            "round": 1,
+            "us": [
+              19.95847936002364,
+              19.95699791681199
+            ],
+            "ratio": 1.0000742317666127
+          },
+          {
+            "round": 2,
+            "us": [
+              19.95482878251509,
+              19.95530250744942
+            ],
+            "ratio": 0.9999762606989218
+          },
+          {
+            "round": 3,
+            "us": [
+              19.957799355960585,
+              19.953767685663134
+            ],
+            "ratio": 1.0002020505781646
+          },
+          {
+            "round": 4,
+            "us": [
+              19.95513858124852,
+              19.933999064537026
+            ],
+            "ratio": 1.0010604754541752
+          },
+          {
+            "round": 5,
+            "us": [
+              19.956730611576056,
+              19.954709275461994
+            ],
+            "ratio": 1.0001012961946054
+          },
+          {
+            "round": 6,
+            "us": [
+              19.956755564762997,
+              19.95663516149172
+            ],
+            "ratio": 1.0000060332450986
+          }
+        ],
+        "aa_median": 1.0000742317666127,
+        "aa_passed": true,
+        "median_us": {
+          "baseline": 19.955328743524227,
+          "ir": 18.344600995381672,
+          "source": 18.332249583722856
+        },
+        "ratios": {
+          "baseline_over_ir": 1.0878774450484785,
+          "baseline_over_source": 1.0885787370871354,
+          "ir_over_source": 1.0006272174389426
+        }
+      }
+    },
+    {
+      "case": "m64_n2048_k4096",
+      "shape": [
+        64,
+        2048,
+        4096
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "pipeline": {
+        "baseline_source_file_identical": true,
+        "source_export_file_identical": true,
+        "full_options_identical": true,
+        "outputs_bitwise": true,
+        "options": {
+          "num_warps": 4,
+          "num_ctas": 1,
+          "num_stages": 3,
+          "warp_size": 32,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 1073741824,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "cuda",
+          "sanitize_overflow": true,
+          "arch": "sm90",
+          "instrumentation_mode": ""
+        }
+      },
+      "kernels": {
+        "baseline": {
+          "stages": {
+            "ttir": "f7d6b72bfd45c66858d22e065b15968b73a7f21adedb00e2c4cb087c17b74e55",
+            "ttgir": "72ecf25f03581cb0de521adf8f5e0f6f3bd50771f9d95fa56feb959a070532ca",
+            "llir": "714b2728525269f07c731c3ec1a197b562e80847f6caf649ee4a9ec892f08735",
+            "ptx": "dac53667ed2e81b54bc1941a820c0a68409d0abf82e5ace3761fc7b47dbc1f29",
+            "cubin": "9fc8bcb3a7dbd5d348592a117f0306843f10a6641b1262e8a1896ebfa3692dcf"
+          },
+          "elf_text": {
+            ".text._weight_int4pack_mm_kernel": {
+              "sha256": "48be37ff4d53afcea5033c1fbf1e6ccbe1d3a98085b222f01de3c9cc24af5e0e",
+              "bytes": 17664
+            }
+          },
+          "n_regs": 140,
+          "n_spills": 0,
+          "metadata": {
+            "allowed_dot_input_precisions": [
+              "tf32",
+              "tf32x3",
+              "ieee",
+              "bf16x3",
+              "bf16x6"
+            ],
+            "arch": "sm90",
+            "backend_name": "cuda",
+            "debug": false,
+            "default_dot_input_precision": "tf32",
+            "deprecated_fp8_dot_operand_dtypes": [
+              "fp8e4b15"
+            ],
+            "enable_fp_fusion": true,
+            "enable_reflect_ftz": true,
+            "extern_libs": [
+              [
+                "libdevice",
+                "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+              ]
+            ],
+            "global_scratch_align": 1,
+            "global_scratch_size": 0,
+            "hash": "68371eba1c5336d5abb84709c8eb2f22e180972b09da9f5b2ff4c0da665fd9f0",
+            "instrumentation_mode": "",
+            "ir_override": null,
+            "launch_cooperative_grid": false,
+            "launch_pdl": false,
+            "max_num_imprecise_acc_default": 1073741824,
+            "maxnreg": null,
+            "name": "_weight_int4pack_mm_kernel",
+            "num_ctas": 1,
+            "num_stages": 3,
+            "num_warps": 4,
+            "profile_scratch_align": 1,
+            "profile_scratch_size": 0,
+            "ptx_options": null,
+            "ptx_version": null,
+            "sanitize_overflow": true,
+            "shared": 16384,
+            "supported_fp8_dtypes": [
+              "fp8e4b15",
+              "fp8e4nv",
+              "fp8e5"
+            ],
+            "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+            "tensordesc_meta": [],
+            "tmem_size": 0,
+            "triton_version": "3.7.0",
+            "warp_size": 32
+          },
+          "compiler_input_class": "IRSource",
+          "input_path": "/root/ops-ttir-dev/int4_gemm/ir/m64_n2048_k4096/baseline.ttir",
+          "input_sha256": "59a77be906ed0df757042e4ec4426dc69db2edd6cb41080c60e62abe47517edb"
+        },
+        "ir": {
+          "stages": {
+            "ttir": "5afb6fb0a4d64d5c90410943d7e93aac30894710650cc32da258904bbe538e23",
+            "ttgir": "1c10c7517052bce57070db0cc4c3613cd7454d56d63a874d1efc8c4c6f2afab4",
+            "llir": "eef9c964db9ae2a5a83518125401994050aa02015ae0c96a1c5ffc759489176c",
+            "ptx": "6f1a58ac0b54801273b27bd504c04f956c3e7eebc0b0cc2331a95b14d1711542",
+            "cubin": "9e934c8c726d1003d05cd02273338e9ed9f04d891fedf71dc01901475f53f7c7"
+          },
+          "elf_text": {
+            ".text._weight_int4pack_mm_kernel": {
+              "sha256": "c877168977a3ba5cb396cd034cefec6c299e59154fa48a030dbaad8ede76a98b",
+              "bytes": 11008
+            }
+          },
+          "n_regs": 106,
+          "n_spills": 0,
+          "metadata": {
+            "allowed_dot_input_precisions": [
+              "tf32",
+              "tf32x3",
+              "ieee",
+              "bf16x3",
+              "bf16x6"
+            ],
+            "arch": "sm90",
+            "backend_name": "cuda",
+            "debug": false,
+            "default_dot_input_precision": "tf32",
+            "deprecated_fp8_dot_operand_dtypes": [
+              "fp8e4b15"
+            ],
+            "enable_fp_fusion": true,
+            "enable_reflect_ftz": true,
+            "extern_libs": [
+              [
+                "libdevice",
+                "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+              ]
+            ],
+            "global_scratch_align": 1,
+            "global_scratch_size": 0,
+            "hash": "ee6d792922cd0591bb6cb3e213e7f92efa2b1821b1a04e5aa3b8ff11b7154acf",
+            "instrumentation_mode": "",
+            "ir_override": null,
+            "launch_cooperative_grid": false,
+            "launch_pdl": false,
+            "max_num_imprecise_acc_default": 1073741824,
+            "maxnreg": null,
+            "name": "_weight_int4pack_mm_kernel",
+            "num_ctas": 1,
+            "num_stages": 3,
+            "num_warps": 4,
+            "profile_scratch_align": 1,
+            "profile_scratch_size": 0,
+            "ptx_options": null,
+            "ptx_version": null,
+            "sanitize_overflow": true,
+            "shared": 16384,
+            "supported_fp8_dtypes": [
+              "fp8e4b15",
+              "fp8e4nv",
+              "fp8e5"
+            ],
+            "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+            "tensordesc_meta": [],
+            "tmem_size": 0,
+            "triton_version": "3.7.0",
+            "warp_size": 32
+          },
+          "compiler_input_class": "IRSource",
+          "input_path": "/root/ops-ttir-dev/int4_gemm/ir/m64_n2048_k4096/scalar_unsigned_v1.ttir",
+          "input_sha256": "4e9fc7e7d9be1c3a516cd5eaf99e47bd7fef2556c56cf1e5613a521f8dbe89d3"
+        },
+        "source": {
+          "stages": {
+            "source": "617544845db4652a5525660ba9da63d7ab21e7c609914bab8c76e817b9cb246d",
+            "ttir": "8c2e28188fe2c2022d605e5071cf7fd3f70a6d23164bf0417dba18e32e7c9d0f",
+            "ttgir": "ed81e6f2d9305617d39aece69eeb3361d6f16ed1163ab4ceabba9c3450b7900e",
+            "llir": "76153baf60bff15afbbd4d60c0a62c9eb5a1ea03ed27c88b1a9c66b1d1db1589",
+            "ptx": "a5ae40d8ae300be66d48753892c912070135315702764f841d7410d101708983",
+            "cubin": "90c7b772de69b487db5133d8d16daad90e14bf1c070556013cb1b149f5bf71bc"
+          },
+          "elf_text": {
+            ".text._weight_int4pack_mm_kernel": {
+              "sha256": "c877168977a3ba5cb396cd034cefec6c299e59154fa48a030dbaad8ede76a98b",
+              "bytes": 11008
+            }
+          },
+          "n_regs": 106,
+          "n_spills": 0,
+          "metadata": {
+            "allowed_dot_input_precisions": [
+              "tf32",
+              "tf32x3",
+              "ieee",
+              "bf16x3",
+              "bf16x6"
+            ],
+            "arch": "sm90",
+            "backend_name": "cuda",
+            "debug": false,
+            "default_dot_input_precision": "tf32",
+            "deprecated_fp8_dot_operand_dtypes": [
+              "fp8e4b15"
+            ],
+            "enable_fp_fusion": true,
+            "enable_reflect_ftz": true,
+            "extern_libs": [
+              [
+                "libdevice",
+                "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+              ]
+            ],
+            "global_scratch_align": 1,
+            "global_scratch_size": 0,
+            "hash": "5a40435f31eb5600fde55c9a4687de2aa5ea0d5fdfc1ff0fd3e2fa244eb44c02",
+            "instrumentation_mode": "",
+            "ir_override": null,
+            "launch_cooperative_grid": false,
+            "launch_pdl": false,
+            "max_num_imprecise_acc_default": 1073741824,
+            "maxnreg": null,
+            "name": "_weight_int4pack_mm_kernel",
+            "num_ctas": 1,
+            "num_stages": 3,
+            "num_warps": 4,
+            "profile_scratch_align": 1,
+            "profile_scratch_size": 0,
+            "ptx_options": null,
+            "ptx_version": null,
+            "sanitize_overflow": true,
+            "shared": 16384,
+            "supported_fp8_dtypes": [
+              "fp8e4b15",
+              "fp8e4nv",
+              "fp8e5"
+            ],
+            "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+            "tensordesc_meta": [],
+            "tmem_size": 0,
+            "triton_version": "3.7.0",
+            "warp_size": 32
+          },
+          "compiler_input_class": "ASTSource",
+          "input_path": "/root/ops-ttir-dev/int4_gemm/source_port/source_v1.py",
+          "input_sha256": "c369f7c401e6d5be4772a550b6bfa2139052385a113c58b29261b9a6ea81320c",
+          "exported_ttir_sha256": "8c2e28188fe2c2022d605e5071cf7fd3f70a6d23164bf0417dba18e32e7c9d0f"
+        }
+      },
+      "accuracy": [
+        {
+          "mode": "random",
+          "path": "baseline",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "random",
+          "path": "ir",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "random",
+          "path": "source",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "extreme_nibble",
+          "path": "baseline",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "extreme_nibble",
+          "path": "ir",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "extreme_nibble",
+          "path": "source",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero_scale",
+          "path": "baseline",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero_scale",
+          "path": "ir",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero_scale",
+          "path": "source",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero",
+          "path": "baseline",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero",
+          "path": "ir",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero",
+          "path": "source",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "constant",
+          "path": "baseline",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "constant",
+          "path": "ir",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "constant",
+          "path": "source",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        }
+      ],
+      "timing": {
+        "input_seed": 6250,
+        "input_sha256": [
+          "0da67eb85b7ed5ff9e5601b7ec012e86378ca28ab2705e9bd0615004b6a0c79c",
+          "6ec480c8c97f0025470ce85704dd5d67476bc828900041936a4bb07c0d66e1ac",
+          "017bf440a54dd7a7de44d84f7c1fab6a6abbb94279a009ad87833bb812c8fa47",
+          "7984deacbad54bdb1cfa783e444feff021aab9112bd49fce7c54b01a3d6a506c"
+        ],
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "baseline",
+              "source",
+              "ir"
+            ],
+            "us": {
+              "baseline": 74.4084119796753,
+              "source": 67.2928454568577,
+              "ir": 67.20983187357585
+            },
+            "baseline_over_ir": 1.107106057334591,
+            "baseline_over_source": 1.1057403127258079,
+            "ir_over_source": 0.9987663832207084
+          },
+          {
+            "round": 1,
+            "order": [
+              "source",
+              "baseline",
+              "ir"
+            ],
+            "us": {
+              "source": 67.22533305486043,
+              "baseline": 74.33701232075691,
+              "ir": 67.2118896267168
+            },
+            "baseline_over_ir": 1.1060098553040514,
+            "baseline_over_source": 1.1057886802895103,
+            "ir_over_source": 0.9998000243727664
+          },
+          {
+            "round": 2,
+            "order": [
+              "baseline",
+              "ir",
+              "source"
+            ],
+            "us": {
+              "baseline": 74.3599625520928,
+              "ir": 67.18839529994544,
+              "source": 67.18468798531427
+            },
+            "baseline_over_ir": 1.1067381832849517,
+            "baseline_over_source": 1.1067992541447382,
+            "ir_over_source": 1.0000551809458724
+          },
+          {
+            "round": 3,
+            "order": [
+              "ir",
+              "baseline",
+              "source"
+            ],
+            "us": {
+              "ir": 67.23266973392198,
+              "baseline": 74.39773351765793,
+              "source": 67.30291114913092
+            },
+            "baseline_over_ir": 1.1065711626816574,
+            "baseline_over_source": 1.105416277652629,
+            "ir_over_source": 0.998956339123975
+          },
+          {
+            "round": 4,
+            "order": [
+              "ir",
+              "source",
+              "baseline"
+            ],
+            "us": {
+              "ir": 67.25104844957482,
+              "source": 67.23172201050652,
+              "baseline": 74.38230551925359
+            },
+            "baseline_over_ir": 1.106039344130461,
+            "baseline_over_source": 1.1063572863361975,
+            "ir_over_source": 1.0002874601228462
+          },
+          {
+            "round": 5,
+            "order": [
+              "source",
+              "baseline",
+              "ir"
+            ],
+            "us": {
+              "source": 67.12708870569865,
+              "baseline": 74.2767311719605,
+              "ir": 67.30027266911098
+            },
+            "baseline_over_ir": 1.103661667719387,
+            "baseline_over_source": 1.1065090502823325,
+            "ir_over_source": 1.0025799415221417
+          },
+          {
+            "round": 6,
+            "order": [
+              "ir",
+              "baseline",
+              "source"
+            ],
+            "us": {
+              "ir": 67.21882207053048,
+              "baseline": 74.35304611686647,
+              "source": 67.2018208997003
+            },
+            "baseline_over_ir": 1.106134321110987,
+            "baseline_over_source": 1.106414158447276,
+            "ir_over_source": 1.0002529867584327
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              74.38598480224609,
+              74.33621076294419
+            ],
+            "ratio": 1.0006695799905732
+          },
+          {
+            "round": 1,
+            "us": [
+              74.42858538289708,
+              74.31524982602578
+            ],
+            "ratio": 1.0015250646016347
+          },
+          {
+            "round": 2,
+            "us": [
+              74.26800896139706,
+              74.29225001881716
+            ],
+            "ratio": 0.999673706780802
+          },
+          {
+            "round": 3,
+            "us": [
+              74.33964060986135,
+              74.42375818888347
+            ],
+            "ratio": 0.9988697483025698
+          },
+          {
+            "round": 4,
+            "us": [
+              74.34861028618492,
+              74.41003488939863
+            ],
+            "ratio": 0.9991745118342572
+          },
+          {
+            "round": 5,
+            "us": [
+              74.43534984662838,
+              74.30335421894873
+            ],
+            "ratio": 1.0017764423836197
+          },
+          {
+            "round": 6,
+            "us": [
+              74.37518923890357,
+              74.34953674674034
+            ],
+            "ratio": 1.000345025581674
+          }
+        ],
+        "aa_median": 1.000345025581674,
+        "aa_passed": true,
+        "median_us": {
+          "baseline": 74.3599625520928,
+          "ir": 67.21882207053048,
+          "source": 67.22533305486043
+        },
+        "ratios": {
+          "baseline_over_ir": 1.106134321110987,
+          "baseline_over_source": 1.1063572863361975,
+          "ir_over_source": 1.0000551809458724
+        }
+      }
+    },
+    {
+      "case": "m128_n4096_k4096",
+      "shape": [
+        128,
+        4096,
+        4096
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "pipeline": {
+        "baseline_source_file_identical": true,
+        "source_export_file_identical": true,
+        "full_options_identical": true,
+        "outputs_bitwise": true,
+        "options": {
+          "num_warps": 4,
+          "num_ctas": 1,
+          "num_stages": 3,
+          "warp_size": 32,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 1073741824,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "cuda",
+          "sanitize_overflow": true,
+          "arch": "sm90",
+          "instrumentation_mode": ""
+        }
+      },
+      "kernels": {
+        "baseline": {
+          "stages": {
+            "ttir": "6fb406557a619fb3eab1f998c4e1a7c8465b335c660e4ce5d1d94afc18284ab5",
+            "ttgir": "0e4299bdbc718f7d8bbe6ab621bb4736465a191b224774c058a5c7e9b7e91f6f",
+            "llir": "e43ca88aea86a48a1758edc3c11ee9354dc70b8f6fd8185352ba394f5676c528",
+            "ptx": "947630c8e8bab7e925bb97d99af5e7c70b0a135fe96e96b4cf1dc446449768b4",
+            "cubin": "aecddf16c4d24edcfb937a593affc8bc3471442c05ad09a411c98bef3ccd1316"
+          },
+          "elf_text": {
+            ".text._weight_int4pack_mm_kernel": {
+              "sha256": "7ffb44e4639351fbd13411066f03c3f2e047c38358ee25f670691b65e8527bac",
+              "bytes": 19200
+            }
+          },
+          "n_regs": 168,
+          "n_spills": 0,
+          "metadata": {
+            "allowed_dot_input_precisions": [
+              "tf32",
+              "tf32x3",
+              "ieee",
+              "bf16x3",
+              "bf16x6"
+            ],
+            "arch": "sm90",
+            "backend_name": "cuda",
+            "debug": false,
+            "default_dot_input_precision": "tf32",
+            "deprecated_fp8_dot_operand_dtypes": [
+              "fp8e4b15"
+            ],
+            "enable_fp_fusion": true,
+            "enable_reflect_ftz": true,
+            "extern_libs": [
+              [
+                "libdevice",
+                "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+              ]
+            ],
+            "global_scratch_align": 1,
+            "global_scratch_size": 0,
+            "hash": "2d5ae58793e06adac496a7cfa16054033f32b81330af7710582c5e1890e76c43",
+            "instrumentation_mode": "",
+            "ir_override": null,
+            "launch_cooperative_grid": false,
+            "launch_pdl": false,
+            "max_num_imprecise_acc_default": 1073741824,
+            "maxnreg": null,
+            "name": "_weight_int4pack_mm_kernel",
+            "num_ctas": 1,
+            "num_stages": 3,
+            "num_warps": 4,
+            "profile_scratch_align": 1,
+            "profile_scratch_size": 0,
+            "ptx_options": null,
+            "ptx_version": null,
+            "sanitize_overflow": true,
+            "shared": 20480,
+            "supported_fp8_dtypes": [
+              "fp8e4b15",
+              "fp8e4nv",
+              "fp8e5"
+            ],
+            "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+            "tensordesc_meta": [],
+            "tmem_size": 0,
+            "triton_version": "3.7.0",
+            "warp_size": 32
+          },
+          "compiler_input_class": "IRSource",
+          "input_path": "/root/ops-ttir-dev/int4_gemm/ir/m128_n4096_k4096/baseline.ttir",
+          "input_sha256": "398ab0fc4b89941be715ae6f5823e7c3b75f735de4daceb1fd2348c13070c8b2"
+        },
+        "ir": {
+          "stages": {
+            "ttir": "6789a3e56ade7e135cd14e4e6b6f1028e3d0e8f6d000316d2a0ba16cfae9c0a8",
+            "ttgir": "d5d952d87fb5a2c9ba2d66895769c4760fd24133f1aeea825f24727f89d46fb3",
+            "llir": "b2299c51430b9f43027c485b7d03dee17f636bac3e708843ed5239743dd16108",
+            "ptx": "7285ef877c58f1748ca0115ca70e07b3824ddb792b28ae609d378ed7be178a74",
+            "cubin": "3b5ef2689f56762fb452458eb039e887f4a347ea23c20ae9c33a066471780597"
+          },
+          "elf_text": {
+            ".text._weight_int4pack_mm_kernel": {
+              "sha256": "93854cc4eb4d7ecc35b30a6dab4e4c453978ed411fe0f4711673a63c7101f876",
+              "bytes": 12800
+            }
+          },
+          "n_regs": 138,
+          "n_spills": 0,
+          "metadata": {
+            "allowed_dot_input_precisions": [
+              "tf32",
+              "tf32x3",
+              "ieee",
+              "bf16x3",
+              "bf16x6"
+            ],
+            "arch": "sm90",
+            "backend_name": "cuda",
+            "debug": false,
+            "default_dot_input_precision": "tf32",
+            "deprecated_fp8_dot_operand_dtypes": [
+              "fp8e4b15"
+            ],
+            "enable_fp_fusion": true,
+            "enable_reflect_ftz": true,
+            "extern_libs": [
+              [
+                "libdevice",
+                "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+              ]
+            ],
+            "global_scratch_align": 1,
+            "global_scratch_size": 0,
+            "hash": "09bc7c1bbf29821c86b03c18b5d8c54b0555d57dd4a662ff2449eb4061634349",
+            "instrumentation_mode": "",
+            "ir_override": null,
+            "launch_cooperative_grid": false,
+            "launch_pdl": false,
+            "max_num_imprecise_acc_default": 1073741824,
+            "maxnreg": null,
+            "name": "_weight_int4pack_mm_kernel",
+            "num_ctas": 1,
+            "num_stages": 3,
+            "num_warps": 4,
+            "profile_scratch_align": 1,
+            "profile_scratch_size": 0,
+            "ptx_options": null,
+            "ptx_version": null,
+            "sanitize_overflow": true,
+            "shared": 20480,
+            "supported_fp8_dtypes": [
+              "fp8e4b15",
+              "fp8e4nv",
+              "fp8e5"
+            ],
+            "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+            "tensordesc_meta": [],
+            "tmem_size": 0,
+            "triton_version": "3.7.0",
+            "warp_size": 32
+          },
+          "compiler_input_class": "IRSource",
+          "input_path": "/root/ops-ttir-dev/int4_gemm/ir/m128_n4096_k4096/scalar_unsigned_v1.ttir",
+          "input_sha256": "11821b00d894ac825d532b4dd9e1f892474983f0856c7ee110a20a6adc2fefdf"
+        },
+        "source": {
+          "stages": {
+            "source": "85322ff16a5e19f735875967d4f3eb3d19366aa2625217fdb996d35b48c6e0f2",
+            "ttir": "bfbb8b295111394851da45d3f483ca1378b1e444537267d8ec2e63b21ed2ee9d",
+            "ttgir": "a9e53b83298f1b210e43d9ad6571d5bd0d8bacf2a6b1f6be15302216ffa5a699",
+            "llir": "de01392d5cbca0f7147d9dcfd2a275ebebb5184e00f3aea5d01730355174116f",
+            "ptx": "151b0fa169fc844bf4855776460bda37c9b3b8cdbfb08b386a3639cd4a034208",
+            "cubin": "969eb6080b8d0a6d646d922671ad7712c72620524005512a92583b3f731f7458"
+          },
+          "elf_text": {
+            ".text._weight_int4pack_mm_kernel": {
+              "sha256": "93854cc4eb4d7ecc35b30a6dab4e4c453978ed411fe0f4711673a63c7101f876",
+              "bytes": 12800
+            }
+          },
+          "n_regs": 138,
+          "n_spills": 0,
+          "metadata": {
+            "allowed_dot_input_precisions": [
+              "tf32",
+              "tf32x3",
+              "ieee",
+              "bf16x3",
+              "bf16x6"
+            ],
+            "arch": "sm90",
+            "backend_name": "cuda",
+            "debug": false,
+            "default_dot_input_precision": "tf32",
+            "deprecated_fp8_dot_operand_dtypes": [
+              "fp8e4b15"
+            ],
+            "enable_fp_fusion": true,
+            "enable_reflect_ftz": true,
+            "extern_libs": [
+              [
+                "libdevice",
+                "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+              ]
+            ],
+            "global_scratch_align": 1,
+            "global_scratch_size": 0,
+            "hash": "50e106374e12a2cef8f014c0b0f5da078cad5441434772b9feef5a0fbf181add",
+            "instrumentation_mode": "",
+            "ir_override": null,
+            "launch_cooperative_grid": false,
+            "launch_pdl": false,
+            "max_num_imprecise_acc_default": 1073741824,
+            "maxnreg": null,
+            "name": "_weight_int4pack_mm_kernel",
+            "num_ctas": 1,
+            "num_stages": 3,
+            "num_warps": 4,
+            "profile_scratch_align": 1,
+            "profile_scratch_size": 0,
+            "ptx_options": null,
+            "ptx_version": null,
+            "sanitize_overflow": true,
+            "shared": 20480,
+            "supported_fp8_dtypes": [
+              "fp8e4b15",
+              "fp8e4nv",
+              "fp8e5"
+            ],
+            "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+            "tensordesc_meta": [],
+            "tmem_size": 0,
+            "triton_version": "3.7.0",
+            "warp_size": 32
+          },
+          "compiler_input_class": "ASTSource",
+          "input_path": "/root/ops-ttir-dev/int4_gemm/source_port/source_v1.py",
+          "input_sha256": "c369f7c401e6d5be4772a550b6bfa2139052385a113c58b29261b9a6ea81320c",
+          "exported_ttir_sha256": "bfbb8b295111394851da45d3f483ca1378b1e444537267d8ec2e63b21ed2ee9d"
+        }
+      },
+      "accuracy": [
+        {
+          "mode": "random",
+          "path": "baseline",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "random",
+          "path": "ir",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "random",
+          "path": "source",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "extreme_nibble",
+          "path": "baseline",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "extreme_nibble",
+          "path": "ir",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "extreme_nibble",
+          "path": "source",
+          "max_abs_error": 0.015625,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero_scale",
+          "path": "baseline",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero_scale",
+          "path": "ir",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero_scale",
+          "path": "source",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero",
+          "path": "baseline",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero",
+          "path": "ir",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero",
+          "path": "source",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "constant",
+          "path": "baseline",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "constant",
+          "path": "ir",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "constant",
+          "path": "source",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": false,
+          "canary": true,
+          "inputs_unchanged": true
+        }
+      ],
+      "timing": {
+        "input_seed": 8362,
+        "input_sha256": [
+          "76b686ae7ae30bb997784556d34f538a9a782ee38a38f7659affe9a993c1bb2d",
+          "e676665d46b1851f17d9b19b954e38a6161c3e77d15ae6aa39a67865e9412290",
+          "13ff74f86c6077bf82da6c9e297fdc6f4f78cb0eb10db64f6aa50382d5c1152a",
+          "da29472891904bebd01b6ad87939008218e4935ed8e41b86215d6969ee9cddb9"
+        ],
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "ir",
+              "baseline",
+              "source"
+            ],
+            "us": {
+              "ir": 110.1055827220725,
+              "baseline": 117.22666536058698,
+              "source": 110.08156551403945
+            },
+            "baseline_over_ir": 1.0646750370186902,
+            "baseline_over_source": 1.0649073240663194,
+            "ir_over_source": 1.0002181764759694
+          },
+          {
+            "round": 1,
+            "order": [
+              "baseline",
+              "ir",
+              "source"
+            ],
+            "us": {
+              "baseline": 117.22198100317092,
+              "ir": 110.16151945469743,
+              "source": 110.15732328770525
+            },
+            "baseline_over_ir": 1.064091904173281,
+            "baseline_over_source": 1.0641324380859767,
+            "ir_over_source": 1.0000380924923276
+          },
+          {
+            "round": 2,
+            "order": [
+              "source",
+              "baseline",
+              "ir"
+            ],
+            "us": {
+              "source": 110.14748578631011,
+              "baseline": 117.23632244836716,
+              "ir": 110.18594070519815
+            },
+            "baseline_over_ir": 1.063986219095159,
+            "baseline_over_source": 1.0643576801726518,
+            "ir_over_source": 1.000349122075856
+          },
+          {
+            "round": 3,
+            "order": [
+              "ir",
+              "source",
+              "baseline"
+            ],
+            "us": {
+              "ir": 110.14312744140625,
+              "source": 110.13214601484756,
+              "baseline": 117.22733406793503
+            },
+            "baseline_over_ir": 1.0643181902592826,
+            "baseline_over_source": 1.0644243148783366,
+            "ir_over_source": 1.0000997113645385
+          },
+          {
+            "round": 4,
+            "order": [
+              "baseline",
+              "ir",
+              "source"
+            ],
+            "us": {
+              "baseline": 117.22350461142405,
+              "ir": 110.11152592572299,
+              "source": 110.16535705394959
+            },
+            "baseline_over_ir": 1.064588866841229,
+            "baseline_over_source": 1.0640686668316064,
+            "ir_over_source": 0.9995113606521491
+          },
+          {
+            "round": 5,
+            "order": [
+              "ir",
+              "source",
+              "baseline"
+            ],
+            "us": {
+              "ir": 110.11507471180495,
+              "source": 110.15206129191307,
+              "baseline": 117.21798011234829
+            },
+            "baseline_over_ir": 1.0645043870617459,
+            "baseline_over_source": 1.0641469504752152,
+            "ir_over_source": 0.9996642225331571
+          },
+          {
+            "round": 6,
+            "order": [
+              "baseline",
+              "ir",
+              "source"
+            ],
+            "us": {
+              "baseline": 117.2290105305746,
+              "ir": 110.10738777714735,
+              "source": 110.10373221503365
+            },
+            "baseline_over_ir": 1.0646788821095374,
+            "baseline_over_source": 1.0647142305914319,
+            "ir_over_source": 1.0000332010735709
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              117.22847620646158,
+              117.24693434579032
+            ],
+            "ratio": 0.9998425703884564
+          },
+          {
+            "round": 1,
+            "us": [
+              117.22274280729748,
+              117.23396323976063
+            ],
+            "ratio": 0.9999042902572508
+          },
+          {
+            "round": 2,
+            "us": [
+              117.2336362657093,
+              117.23378953479585
+            ],
+            "ratio": 0.999998692620215
+          },
+          {
+            "round": 3,
+            "us": [
+              117.22609542665028,
+              117.24211374918619
+            ],
+            "ratio": 0.999863373987182
+          },
+          {
+            "round": 4,
+            "us": [
+              117.21481822785877,
+              117.22266674041748
+            ],
+            "ratio": 0.9999330461183238
+          },
+          {
+            "round": 5,
+            "us": [
+              117.23266442616782,
+              117.22839900425502
+            ],
+            "ratio": 1.00003638556825
+          },
+          {
+            "round": 6,
+            "us": [
+              117.22657112848191,
+              117.22847507113501
+            ],
+            "ratio": 0.9999837587015276
+          }
+        ],
+        "aa_median": 0.9999330461183238,
+        "aa_passed": true,
+        "median_us": {
+          "baseline": 117.22666536058698,
+          "ir": 110.11507471180495,
+          "source": 110.14748578631011
+        },
+        "ratios": {
+          "baseline_over_ir": 1.0645043870617459,
+          "baseline_over_source": 1.0643576801726518,
+          "ir_over_source": 1.0000380924923276
+        }
+      }
+    },
+    {
+      "case": "m17_n80_k256",
+      "shape": [
+        17,
+        80,
+        256
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "pipeline": {
+        "baseline_source_file_identical": true,
+        "source_export_file_identical": true,
+        "full_options_identical": true,
+        "outputs_bitwise": true,
+        "options": {
+          "num_warps": 4,
+          "num_ctas": 1,
+          "num_stages": 3,
+          "warp_size": 32,
+          "maxnreg": null,
+          "ptx_version": null,
+          "ptx_options": null,
+          "ir_override": null,
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "default_dot_input_precision": "tf32",
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "max_num_imprecise_acc_default": 1073741824,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "debug": false,
+          "backend_name": "cuda",
+          "sanitize_overflow": true,
+          "arch": "sm90",
+          "instrumentation_mode": ""
+        }
+      },
+      "kernels": {
+        "baseline": {
+          "stages": {
+            "ttir": "6fff79067ec66e0bb28d5cf72fcad21ad3f02d507da239523563f0b8fc9367f3",
+            "ttgir": "2fff6af78b97a9859c841e10d5ec9786f59c3fb21df0d5276c184c2eabb09fcc",
+            "llir": "714b2728525269f07c731c3ec1a197b562e80847f6caf649ee4a9ec892f08735",
+            "ptx": "dac53667ed2e81b54bc1941a820c0a68409d0abf82e5ace3761fc7b47dbc1f29",
+            "cubin": "9fc8bcb3a7dbd5d348592a117f0306843f10a6641b1262e8a1896ebfa3692dcf"
+          },
+          "elf_text": {
+            ".text._weight_int4pack_mm_kernel": {
+              "sha256": "48be37ff4d53afcea5033c1fbf1e6ccbe1d3a98085b222f01de3c9cc24af5e0e",
+              "bytes": 17664
+            }
+          },
+          "n_regs": 140,
+          "n_spills": 0,
+          "metadata": {
+            "allowed_dot_input_precisions": [
+              "tf32",
+              "tf32x3",
+              "ieee",
+              "bf16x3",
+              "bf16x6"
+            ],
+            "arch": "sm90",
+            "backend_name": "cuda",
+            "debug": false,
+            "default_dot_input_precision": "tf32",
+            "deprecated_fp8_dot_operand_dtypes": [
+              "fp8e4b15"
+            ],
+            "enable_fp_fusion": true,
+            "enable_reflect_ftz": true,
+            "extern_libs": [
+              [
+                "libdevice",
+                "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+              ]
+            ],
+            "global_scratch_align": 1,
+            "global_scratch_size": 0,
+            "hash": "0872a321467740dde2af462150e7a8c364e07615c0a8a844dc4320896ea38371",
+            "instrumentation_mode": "",
+            "ir_override": null,
+            "launch_cooperative_grid": false,
+            "launch_pdl": false,
+            "max_num_imprecise_acc_default": 1073741824,
+            "maxnreg": null,
+            "name": "_weight_int4pack_mm_kernel",
+            "num_ctas": 1,
+            "num_stages": 3,
+            "num_warps": 4,
+            "profile_scratch_align": 1,
+            "profile_scratch_size": 0,
+            "ptx_options": null,
+            "ptx_version": null,
+            "sanitize_overflow": true,
+            "shared": 16384,
+            "supported_fp8_dtypes": [
+              "fp8e4b15",
+              "fp8e4nv",
+              "fp8e5"
+            ],
+            "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+            "tensordesc_meta": [],
+            "tmem_size": 0,
+            "triton_version": "3.7.0",
+            "warp_size": 32
+          },
+          "compiler_input_class": "IRSource",
+          "input_path": "/root/ops-ttir-dev/int4_gemm/ir/m17_n80_k256/baseline.ttir",
+          "input_sha256": "0d3771c8a064ccd75466f2ad01ec0f809b0553b04f92378417f786982fb603dc"
+        },
+        "ir": {
+          "stages": {
+            "ttir": "aa4f4fafcd69353838812baa9911240a6c946eee72588a1e7ea8ce9ddee7a226",
+            "ttgir": "cc55b6a0d6b70c681f983feb46c3ea697baad1adab69a54eacb615b3e4f0f717",
+            "llir": "eef9c964db9ae2a5a83518125401994050aa02015ae0c96a1c5ffc759489176c",
+            "ptx": "6f1a58ac0b54801273b27bd504c04f956c3e7eebc0b0cc2331a95b14d1711542",
+            "cubin": "9e934c8c726d1003d05cd02273338e9ed9f04d891fedf71dc01901475f53f7c7"
+          },
+          "elf_text": {
+            ".text._weight_int4pack_mm_kernel": {
+              "sha256": "c877168977a3ba5cb396cd034cefec6c299e59154fa48a030dbaad8ede76a98b",
+              "bytes": 11008
+            }
+          },
+          "n_regs": 106,
+          "n_spills": 0,
+          "metadata": {
+            "allowed_dot_input_precisions": [
+              "tf32",
+              "tf32x3",
+              "ieee",
+              "bf16x3",
+              "bf16x6"
+            ],
+            "arch": "sm90",
+            "backend_name": "cuda",
+            "debug": false,
+            "default_dot_input_precision": "tf32",
+            "deprecated_fp8_dot_operand_dtypes": [
+              "fp8e4b15"
+            ],
+            "enable_fp_fusion": true,
+            "enable_reflect_ftz": true,
+            "extern_libs": [
+              [
+                "libdevice",
+                "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+              ]
+            ],
+            "global_scratch_align": 1,
+            "global_scratch_size": 0,
+            "hash": "ad4b312e2fe5d8961b87a354a8612ba24e201e8b31c512a81d7329fae300ea28",
+            "instrumentation_mode": "",
+            "ir_override": null,
+            "launch_cooperative_grid": false,
+            "launch_pdl": false,
+            "max_num_imprecise_acc_default": 1073741824,
+            "maxnreg": null,
+            "name": "_weight_int4pack_mm_kernel",
+            "num_ctas": 1,
+            "num_stages": 3,
+            "num_warps": 4,
+            "profile_scratch_align": 1,
+            "profile_scratch_size": 0,
+            "ptx_options": null,
+            "ptx_version": null,
+            "sanitize_overflow": true,
+            "shared": 16384,
+            "supported_fp8_dtypes": [
+              "fp8e4b15",
+              "fp8e4nv",
+              "fp8e5"
+            ],
+            "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+            "tensordesc_meta": [],
+            "tmem_size": 0,
+            "triton_version": "3.7.0",
+            "warp_size": 32
+          },
+          "compiler_input_class": "IRSource",
+          "input_path": "/root/ops-ttir-dev/int4_gemm/ir/m17_n80_k256/scalar_unsigned_v1.ttir",
+          "input_sha256": "2a7d07f7a69762e527db0307b10141e850797fc590c986734c42e56369237488"
+        },
+        "source": {
+          "stages": {
+            "source": "fdf7bf03432b90baf4cc5bf319dc35630d4df167783f0eceb5f797a561a6c5e7",
+            "ttir": "37a4273e307bb0bb878896f70a023ffb88e7ef3afd63840ddb4c99841ce2a3fc",
+            "ttgir": "ff0e0b9fa6c3e2e0dbfd7120e0266c52df6c6a9308ba1244ca8025d7971ad6e2",
+            "llir": "76153baf60bff15afbbd4d60c0a62c9eb5a1ea03ed27c88b1a9c66b1d1db1589",
+            "ptx": "a5ae40d8ae300be66d48753892c912070135315702764f841d7410d101708983",
+            "cubin": "90c7b772de69b487db5133d8d16daad90e14bf1c070556013cb1b149f5bf71bc"
+          },
+          "elf_text": {
+            ".text._weight_int4pack_mm_kernel": {
+              "sha256": "c877168977a3ba5cb396cd034cefec6c299e59154fa48a030dbaad8ede76a98b",
+              "bytes": 11008
+            }
+          },
+          "n_regs": 106,
+          "n_spills": 0,
+          "metadata": {
+            "allowed_dot_input_precisions": [
+              "tf32",
+              "tf32x3",
+              "ieee",
+              "bf16x3",
+              "bf16x6"
+            ],
+            "arch": "sm90",
+            "backend_name": "cuda",
+            "debug": false,
+            "default_dot_input_precision": "tf32",
+            "deprecated_fp8_dot_operand_dtypes": [
+              "fp8e4b15"
+            ],
+            "enable_fp_fusion": true,
+            "enable_reflect_ftz": true,
+            "extern_libs": [
+              [
+                "libdevice",
+                "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+              ]
+            ],
+            "global_scratch_align": 1,
+            "global_scratch_size": 0,
+            "hash": "ac63ecbf2b4859333358ba8d853aafdc018d40f0441d60492c2ff1755de51e7b",
+            "instrumentation_mode": "",
+            "ir_override": null,
+            "launch_cooperative_grid": false,
+            "launch_pdl": false,
+            "max_num_imprecise_acc_default": 1073741824,
+            "maxnreg": null,
+            "name": "_weight_int4pack_mm_kernel",
+            "num_ctas": 1,
+            "num_stages": 3,
+            "num_warps": 4,
+            "profile_scratch_align": 1,
+            "profile_scratch_size": 0,
+            "ptx_options": null,
+            "ptx_version": null,
+            "sanitize_overflow": true,
+            "shared": 16384,
+            "supported_fp8_dtypes": [
+              "fp8e4b15",
+              "fp8e4nv",
+              "fp8e5"
+            ],
+            "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+            "tensordesc_meta": [],
+            "tmem_size": 0,
+            "triton_version": "3.7.0",
+            "warp_size": 32
+          },
+          "compiler_input_class": "ASTSource",
+          "input_path": "/root/ops-ttir-dev/int4_gemm/source_port/source_v1.py",
+          "input_sha256": "c369f7c401e6d5be4772a550b6bfa2139052385a113c58b29261b9a6ea81320c",
+          "exported_ttir_sha256": "37a4273e307bb0bb878896f70a023ffb88e7ef3afd63840ddb4c99841ce2a3fc"
+        }
+      },
+      "accuracy": [
+        {
+          "mode": "random",
+          "path": "baseline",
+          "max_abs_error": 0.000244140625,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "random",
+          "path": "ir",
+          "max_abs_error": 0.000244140625,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "random",
+          "path": "source",
+          "max_abs_error": 0.000244140625,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "extreme_nibble",
+          "path": "baseline",
+          "max_abs_error": 7.62939453125e-06,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "extreme_nibble",
+          "path": "ir",
+          "max_abs_error": 7.62939453125e-06,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "extreme_nibble",
+          "path": "source",
+          "max_abs_error": 7.62939453125e-06,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero_scale",
+          "path": "baseline",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero_scale",
+          "path": "ir",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero_scale",
+          "path": "source",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero",
+          "path": "baseline",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero",
+          "path": "ir",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "zero",
+          "path": "source",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "constant",
+          "path": "baseline",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "constant",
+          "path": "ir",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        },
+        {
+          "mode": "constant",
+          "path": "source",
+          "max_abs_error": 0.0,
+          "baseline_bitwise": true,
+          "cpu_fp64": true,
+          "canary": true,
+          "inputs_unchanged": true
+        }
+      ],
+      "timing": {
+        "input_seed": 395,
+        "input_sha256": [
+          "12bd58e15fa1fe54d25fdf64c700d1193249a856c577f3b9c155537e8f04c5a0",
+          "1372cad622d80fd71a1c1c9398042b48515f38a375cac35a8de60f339140a7f8",
+          "ab78d8aabe2c7287b8c9fc61972ca7222b867c551e8bb7bfc848fef47a7276c6",
+          "41581cea0abca22059207caebe77a8d3778554effb491140aa4787b8d2810415"
+        ],
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "baseline",
+              "source",
+              "ir"
+            ],
+            "us": {
+              "baseline": 6.057353900029109,
+              "source": 5.54313552110715,
+              "ir": 5.554758646022314
+            },
+            "baseline_over_ir": 1.0904801245265077,
+            "baseline_over_source": 1.0927666980112463,
+            "ir_over_source": 1.0020968502160748
+          },
+          {
+            "round": 1,
+            "order": [
+              "ir",
+              "source",
+              "baseline"
+            ],
+            "us": {
+              "ir": 5.5522121777192,
+              "source": 5.542960822394612,
+              "baseline": 6.057628634430113
+            },
+            "baseline_over_ir": 1.091029744637485,
+            "baseline_over_source": 1.0928507035366632,
+            "ir_over_source": 1.0016690277310298
+          },
+          {
+            "round": 2,
+            "order": [
+              "ir",
+              "baseline",
+              "source"
+            ],
+            "us": {
+              "ir": 5.555163628675721,
+              "baseline": 6.05500358307433,
+              "source": 5.538360186463572
+            },
+            "baseline_over_ir": 1.0899775394226803,
+            "baseline_over_source": 1.0932845425751647,
+            "ir_over_source": 1.0030340103652375
+          },
+          {
+            "round": 3,
+            "order": [
+              "source",
+              "baseline",
+              "ir"
+            ],
+            "us": {
+              "source": 5.533427775287425,
+              "baseline": 6.0561661904219,
+              "ir": 5.531769485796912
+            },
+            "baseline_over_ir": 1.0947972806841286,
+            "baseline_over_source": 1.0944691855325286,
+            "ir_over_source": 0.9997003142432039
+          },
+          {
+            "round": 4,
+            "order": [
+              "source",
+              "baseline",
+              "ir"
+            ],
+            "us": {
+              "source": 5.529242081578329,
+              "baseline": 6.0568335527431465,
+              "ir": 5.551139480259572
+            },
+            "baseline_over_ir": 1.0910973457398927,
+            "baseline_over_source": 1.0954184069680335,
+            "ir_over_source": 1.0039602893774895
+          },
+          {
+            "round": 5,
+            "order": [
+              "source",
+              "baseline",
+              "ir"
+            ],
+            "us": {
+              "source": 5.520416758641475,
+              "baseline": 6.0562146146123,
+              "ir": 5.550089188984462
+            },
+            "baseline_over_ir": 1.0911923049150942,
+            "baseline_over_source": 1.097057501162771,
+            "ir_over_source": 1.0053750344657473
+          },
+          {
+            "round": 6,
+            "order": [
+              "baseline",
+              "source",
+              "ir"
+            ],
+            "us": {
+              "baseline": 6.052272950901704,
+              "source": 5.537875431879807,
+              "ir": 5.551890271050589
+            },
+            "baseline_over_ir": 1.0901283446577246,
+            "baseline_over_source": 1.0928871595884357,
+            "ir_over_source": 1.0025307248859558
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              6.056446053765037,
+              6.057093534896623
+            ],
+            "ratio": 0.9998931036597246
+          },
+          {
+            "round": 1,
+            "us": [
+              6.045364137840851,
+              6.055754942220969
+            ],
+            "ratio": 0.9982841438467609
+          },
+          {
+            "round": 2,
+            "us": [
+              6.055374287847263,
+              6.055948616116805
+            ],
+            "ratio": 0.9999051629553108
+          },
+          {
+            "round": 3,
+            "us": [
+              6.053795856712139,
+              6.057160505607947
+            ],
+            "ratio": 0.9994445171309736
+          },
+          {
+            "round": 4,
+            "us": [
+              6.0567480572582,
+              6.040335415366167
+            ],
+            "ratio": 1.0027171739255207
+          },
+          {
+            "round": 5,
+            "us": [
+              6.05885345787252,
+              6.052901866329703
+            ],
+            "ratio": 1.000983262520069
+          },
+          {
+            "round": 6,
+            "us": [
+              6.053190500963302,
+              6.051990208102436
+            ],
+            "ratio": 1.0001983302714632
+          }
+        ],
+        "aa_median": 0.9999051629553108,
+        "aa_passed": true,
+        "median_us": {
+          "baseline": 6.0562146146123,
+          "ir": 5.551890271050589,
+          "source": 5.537875431879807
+        },
+        "ratios": {
+          "baseline_over_ir": 1.091029744637485,
+          "baseline_over_source": 1.0932845425751647,
+          "ir_over_source": 1.0025307248859558
+        }
+      }
+    }
+  ],
+  "passed": true,
+  "summary": {
+    "baseline_over_ir": {
+      "geomean": 1.0939764673730585,
+      "minimum": 1.0645043870617459,
+      "maximum": 1.1468639638208924
+    },
+    "baseline_over_source": {
+      "geomean": 1.0948956765164046,
+      "minimum": 1.0643576801726518,
+      "maximum": 1.1467883936990573
+    },
+    "ir_over_source": {
+      "geomean": 1.0009309655717318,
+      "minimum": 0.9999473477067178,
+      "maximum": 1.0033493430152352
+    }
+  },
+  "aa_passed": true
+}

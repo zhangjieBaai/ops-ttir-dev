@@ -1,0 +1,695 @@
+{
+  "environment": {
+    "python": "/root/venvs/ir-ops-dev/bin/python",
+    "prefix": "/root/venvs/ir-ops-dev",
+    "triton": "3.7.0",
+    "triton_path": "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/__init__.py",
+    "libtriton_path": "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/_C/libtriton.so",
+    "include_system_site_packages": false,
+    "sys_path": [
+      "/root/ops-ttir-dev/int4_gemm",
+      "/root/ops-ttir-dev/int4_gemm/round2",
+      "/usr/lib/python312.zip",
+      "/usr/lib/python3.12",
+      "/usr/lib/python3.12/lib-dynload",
+      "/root/venvs/ir-ops-dev/lib/python3.12/site-packages",
+      "/root/ops-ttir-dev/layer_norm"
+    ],
+    "flagtree_flagprism_distributions": [],
+    "flagtree_flagprism_source_markers": [],
+    "installer": "pip\n",
+    "direct_url": null,
+    "torch": "2.12.0+cu130",
+    "cuda_visible_devices": "0",
+    "gpu": "index, uuid, name, driver_version, clocks.current.sm [MHz], power.draw [W], temperature.gpu\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 73.54 W, 29\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 72.86 W, 30\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 70.74 W, 28\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 74.03 W, 30\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 72.86 W, 29\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 71.77 W, 29\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 70.65 W, 30\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 73.47 W, 28\n",
+    "command": [
+      "int4_gemm/round2/export_expanded.py"
+    ],
+    "clocks_locked": false,
+    "git_commit": "7f3bd164461beaba9690087eed5bd62b64b2b452"
+  },
+  "source_sha256": "10cea0f87d58344a2f2359ed2b33fb60794c600ff016fcec5ebcff470e6db360",
+  "matrix_plan_sha256": "738c4c90ddb0e96a4f6a09bafd4cbeb34fe4c855aa0484a3dd018063ba40cd03",
+  "cases": [
+    {
+      "id": "m16_n4096_k4096",
+      "shape": [
+        16,
+        4096,
+        4096
+      ],
+      "config": [
+        32,
+        64,
+        128,
+        4,
+        3
+      ],
+      "config_origin": "original seven frozen autotune",
+      "baseline_sha256": "fe31f2a896e815ceea1742f40150f4df3ae68148149827475c624ae50ca2cf84",
+      "parent_sha256": "4b1b037d796e71b320d07c55f4965bed9bf95081988a9a42ea64aac18d120394",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m128_n11008_k4096",
+      "shape": [
+        128,
+        11008,
+        4096
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "original seven frozen autotune",
+      "baseline_sha256": "398ab0fc4b89941be715ae6f5823e7c3b75f735de4daceb1fd2348c13070c8b2",
+      "parent_sha256": "11821b00d894ac825d532b4dd9e1f892474983f0856c7ee110a20a6adc2fefdf",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m1_n256_k128",
+      "shape": [
+        1,
+        256,
+        128
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "original seven frozen autotune",
+      "baseline_sha256": "e3f1409abdea699b0664eecd95430b0f2770a7548a50e886577b9e267f719c31",
+      "parent_sha256": "c3993398454978e3c291ad80c2fc107f67f30e0a863dd87aaaef909ff264fb62",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m32_n1024_k1024",
+      "shape": [
+        32,
+        1024,
+        1024
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "original seven frozen autotune",
+      "baseline_sha256": "637d3ec448fc42f04f3e8811905f9141434f8bb740e2a00c9a75f1c26ad68640",
+      "parent_sha256": "7a18a7733980eca90a57c76eb9b896dd87ccb35631302136ee45533d04fecd28",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m64_n2048_k4096",
+      "shape": [
+        64,
+        2048,
+        4096
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "original seven frozen autotune",
+      "baseline_sha256": "59a77be906ed0df757042e4ec4426dc69db2edd6cb41080c60e62abe47517edb",
+      "parent_sha256": "4e9fc7e7d9be1c3a516cd5eaf99e47bd7fef2556c56cf1e5613a521f8dbe89d3",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m128_n4096_k4096",
+      "shape": [
+        128,
+        4096,
+        4096
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "original seven frozen autotune",
+      "baseline_sha256": "398ab0fc4b89941be715ae6f5823e7c3b75f735de4daceb1fd2348c13070c8b2",
+      "parent_sha256": "11821b00d894ac825d532b4dd9e1f892474983f0856c7ee110a20a6adc2fefdf",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m17_n80_k256",
+      "shape": [
+        17,
+        80,
+        256
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "original seven frozen autotune",
+      "baseline_sha256": "0d3771c8a064ccd75466f2ad01ec0f809b0553b04f92378417f786982fb603dc",
+      "parent_sha256": "2a7d07f7a69762e527db0307b10141e850797fc590c986734c42e56369237488",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m1_n64_k128",
+      "shape": [
+        1,
+        64,
+        128
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "new predeclared fixed family",
+      "baseline_sha256": "e3f1409abdea699b0664eecd95430b0f2770a7548a50e886577b9e267f719c31",
+      "parent_sha256": "c3993398454978e3c291ad80c2fc107f67f30e0a863dd87aaaef909ff264fb62",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m1_n1024_k1024",
+      "shape": [
+        1,
+        1024,
+        1024
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "new predeclared fixed family",
+      "baseline_sha256": "992bfb4cd79a44cb528fe2c815062a69a953979b4771feba947b3e6cf8906f48",
+      "parent_sha256": "99caf3026dcf59a5c85bb241e99d8e079d763bcfa296bf6fb19607d5fbd4e21a",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m1_n4096_k4096",
+      "shape": [
+        1,
+        4096,
+        4096
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "new predeclared fixed family",
+      "baseline_sha256": "29d12d6658c030d67453dacc3e221edf92434be51c10699f0f3220ae6aeab313",
+      "parent_sha256": "7a53df2ab762e01bef3971061e1097928c40a7fb37cc24ab8006ae8fb73b31bf",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m2_n256_k256",
+      "shape": [
+        2,
+        256,
+        256
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "new predeclared fixed family",
+      "baseline_sha256": "0d3771c8a064ccd75466f2ad01ec0f809b0553b04f92378417f786982fb603dc",
+      "parent_sha256": "2a7d07f7a69762e527db0307b10141e850797fc590c986734c42e56369237488",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m4_n1024_k1024",
+      "shape": [
+        4,
+        1024,
+        1024
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "new predeclared fixed family",
+      "baseline_sha256": "0d3771c8a064ccd75466f2ad01ec0f809b0553b04f92378417f786982fb603dc",
+      "parent_sha256": "2a7d07f7a69762e527db0307b10141e850797fc590c986734c42e56369237488",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m8_n4096_k4096",
+      "shape": [
+        8,
+        4096,
+        4096
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "new predeclared fixed family",
+      "baseline_sha256": "329611348ab79b09d596b51e9eeda5a0b3de57fca928ebe10f40415c2ef402ba",
+      "parent_sha256": "2b0f79bfe65c61343d053f758d5d52f56aa5b3424cbd1cb302af5d1ec35a9f7b",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m16_n256_k128",
+      "shape": [
+        16,
+        256,
+        128
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "new predeclared fixed family",
+      "baseline_sha256": "d7e55cc141037415eecfba60b7a6d93b8bf5fdc8d7dbc8331e1346224ce8d55b",
+      "parent_sha256": "b1ac3fb7425c87a990be528d52154e2cd2a3bab35fd8b0f6cc263c58b40b9db6",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m16_n1024_k1024",
+      "shape": [
+        16,
+        1024,
+        1024
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "new predeclared fixed family",
+      "baseline_sha256": "637d3ec448fc42f04f3e8811905f9141434f8bb740e2a00c9a75f1c26ad68640",
+      "parent_sha256": "7a18a7733980eca90a57c76eb9b896dd87ccb35631302136ee45533d04fecd28",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m16_n11008_k4096",
+      "shape": [
+        16,
+        11008,
+        4096
+      ],
+      "config": [
+        16,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "new predeclared fixed family",
+      "baseline_sha256": "59a77be906ed0df757042e4ec4426dc69db2edd6cb41080c60e62abe47517edb",
+      "parent_sha256": "4e9fc7e7d9be1c3a516cd5eaf99e47bd7fef2556c56cf1e5613a521f8dbe89d3",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m17_n64_k128",
+      "shape": [
+        17,
+        64,
+        128
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "new predeclared fixed family",
+      "baseline_sha256": "4da108161a13c0625982997047fecb7d06859af563f7fc29f0a264638d94a441",
+      "parent_sha256": "88b05f17710af08085600f3dae65ef23f4963b4ff786f0ee749e6a24012a3ffa",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m17_n272_k256",
+      "shape": [
+        17,
+        272,
+        256
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "new predeclared fixed family",
+      "baseline_sha256": "bd8ab9e9836d8ff66c2c46099a5c55e747d5d6e9924440a776bae687fd4c8250",
+      "parent_sha256": "9bb0df7e2170a18b073ce3003318169a8636963a65555f1a8ade6653ba22ae4f",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m31_n1008_k1024",
+      "shape": [
+        31,
+        1008,
+        1024
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "new predeclared fixed family",
+      "baseline_sha256": "bd8ab9e9836d8ff66c2c46099a5c55e747d5d6e9924440a776bae687fd4c8250",
+      "parent_sha256": "9bb0df7e2170a18b073ce3003318169a8636963a65555f1a8ade6653ba22ae4f",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m32_n64_k128",
+      "shape": [
+        32,
+        64,
+        128
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "new predeclared fixed family",
+      "baseline_sha256": "3aa41253b7d386a8ae3da9c67b0679a578a61668082e568d25455579db9fc297",
+      "parent_sha256": "bfb162df27608a3a3fea52f73c01c23847212381395bc49bded1d133574b9c23",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m32_n4096_k4096",
+      "shape": [
+        32,
+        4096,
+        4096
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "new predeclared fixed family",
+      "baseline_sha256": "398ab0fc4b89941be715ae6f5823e7c3b75f735de4daceb1fd2348c13070c8b2",
+      "parent_sha256": "11821b00d894ac825d532b4dd9e1f892474983f0856c7ee110a20a6adc2fefdf",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m33_n1040_k1152",
+      "shape": [
+        33,
+        1040,
+        1152
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "new predeclared fixed family",
+      "baseline_sha256": "bd8ab9e9836d8ff66c2c46099a5c55e747d5d6e9924440a776bae687fd4c8250",
+      "parent_sha256": "9bb0df7e2170a18b073ce3003318169a8636963a65555f1a8ade6653ba22ae4f",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m64_n256_k512",
+      "shape": [
+        64,
+        256,
+        512
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "new predeclared fixed family",
+      "baseline_sha256": "92767a1816fa75db549e77b7455eef0aaa04c4e61d478d6862797477047b9299",
+      "parent_sha256": "e525c0cc258d6aabf5e11de7eef4484b156094b8c86a74dc4ae846df59d8ebc3",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m64_n1024_k2048",
+      "shape": [
+        64,
+        1024,
+        2048
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "new predeclared fixed family",
+      "baseline_sha256": "398ab0fc4b89941be715ae6f5823e7c3b75f735de4daceb1fd2348c13070c8b2",
+      "parent_sha256": "11821b00d894ac825d532b4dd9e1f892474983f0856c7ee110a20a6adc2fefdf",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m64_n11008_k4096",
+      "shape": [
+        64,
+        11008,
+        4096
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "new predeclared fixed family",
+      "baseline_sha256": "398ab0fc4b89941be715ae6f5823e7c3b75f735de4daceb1fd2348c13070c8b2",
+      "parent_sha256": "11821b00d894ac825d532b4dd9e1f892474983f0856c7ee110a20a6adc2fefdf",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m127_n4080_k4096",
+      "shape": [
+        127,
+        4080,
+        4096
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "new predeclared fixed family",
+      "baseline_sha256": "a033d4ca42009e3155947a9baa26a61f07e86d544dcf65e95cbadbf94c81867e",
+      "parent_sha256": "5165f963f731bfe0b4b9824153fc22522470fe36237d029e08cbbe4d236a2e5a",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m128_n256_k128",
+      "shape": [
+        128,
+        256,
+        128
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "new predeclared fixed family",
+      "baseline_sha256": "3aa41253b7d386a8ae3da9c67b0679a578a61668082e568d25455579db9fc297",
+      "parent_sha256": "bfb162df27608a3a3fea52f73c01c23847212381395bc49bded1d133574b9c23",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m128_n1024_k4096",
+      "shape": [
+        128,
+        1024,
+        4096
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "new predeclared fixed family",
+      "baseline_sha256": "398ab0fc4b89941be715ae6f5823e7c3b75f735de4daceb1fd2348c13070c8b2",
+      "parent_sha256": "11821b00d894ac825d532b4dd9e1f892474983f0856c7ee110a20a6adc2fefdf",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m256_n4096_k4096",
+      "shape": [
+        256,
+        4096,
+        4096
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "new predeclared fixed family",
+      "baseline_sha256": "398ab0fc4b89941be715ae6f5823e7c3b75f735de4daceb1fd2348c13070c8b2",
+      "parent_sha256": "11821b00d894ac825d532b4dd9e1f892474983f0856c7ee110a20a6adc2fefdf",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    },
+    {
+      "id": "m64_n2048_k8192",
+      "shape": [
+        64,
+        2048,
+        8192
+      ],
+      "config": [
+        32,
+        64,
+        64,
+        4,
+        3
+      ],
+      "config_origin": "new predeclared fixed family",
+      "baseline_sha256": "398ab0fc4b89941be715ae6f5823e7c3b75f735de4daceb1fd2348c13070c8b2",
+      "parent_sha256": "11821b00d894ac825d532b4dd9e1f892474983f0856c7ee110a20a6adc2fefdf",
+      "pipeline": {
+        "source_file_llir_ptx_cubin_identical": true,
+        "full_options_identical": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,351 @@
+[
+  {
+    "stage": "r3",
+    "phase": "repeat",
+    "argv": [
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/run.py",
+      "--stage",
+      "r3",
+      "--names",
+      "baseline,anchor,parent,group128",
+      "--run",
+      "repeat",
+      "--rounds",
+      "5",
+      "--rep",
+      "20",
+      "--seed",
+      "123"
+    ],
+    "exit_code": 0
+  },
+  {
+    "stage": "r3",
+    "phase": "memcheck",
+    "argv": [
+      "compute-sanitizer",
+      "--tool",
+      "memcheck",
+      "--error-exitcode",
+      "99",
+      "--kernel-name",
+      "regex=_weight_int4pack_mm_kernel",
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/run.py",
+      "--stage",
+      "r3",
+      "--names",
+      "baseline,anchor,parent,group128",
+      "--run",
+      "memcheck",
+      "--check-only"
+    ],
+    "exit_code": 0
+  },
+  {
+    "stage": "r3",
+    "phase": "racecheck",
+    "argv": [
+      "compute-sanitizer",
+      "--tool",
+      "racecheck",
+      "--error-exitcode",
+      "99",
+      "--kernel-name",
+      "regex=_weight_int4pack_mm_kernel",
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/run.py",
+      "--stage",
+      "r3",
+      "--names",
+      "baseline,anchor,parent,group128",
+      "--run",
+      "racecheck",
+      "--check-only"
+    ],
+    "exit_code": 0
+  },
+  {
+    "stage": "r3",
+    "phase": "finalize",
+    "argv": [
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/finalize.py",
+      "r3"
+    ],
+    "exit_code": 0
+  },
+  {
+    "stage": "r4",
+    "phase": "generate",
+    "argv": [
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/generate.py",
+      "r4"
+    ],
+    "exit_code": 0
+  },
+  {
+    "stage": "r4",
+    "phase": "screen",
+    "argv": [
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/run.py",
+      "--stage",
+      "r4",
+      "--run",
+      "screen",
+      "--names",
+      "baseline,anchor,parent,pid_g2,pid_g4,pid_g8"
+    ],
+    "exit_code": 0
+  },
+  {
+    "stage": "r4",
+    "phase": "select",
+    "argv": [
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/select.py",
+      "r4"
+    ],
+    "exit_code": 0
+  },
+  {
+    "stage": "r4",
+    "phase": "main",
+    "argv": [
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/run.py",
+      "--stage",
+      "r4",
+      "--names",
+      "baseline,anchor,parent,pid_g4",
+      "--run",
+      "main",
+      "--rounds",
+      "7",
+      "--rep",
+      "20"
+    ],
+    "exit_code": 0
+  },
+  {
+    "stage": "r4",
+    "phase": "repeat",
+    "argv": [
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/run.py",
+      "--stage",
+      "r4",
+      "--names",
+      "baseline,anchor,parent,pid_g4",
+      "--run",
+      "repeat",
+      "--rounds",
+      "5",
+      "--rep",
+      "20",
+      "--seed",
+      "123"
+    ],
+    "exit_code": 0
+  },
+  {
+    "stage": "r4",
+    "phase": "memcheck",
+    "argv": [
+      "compute-sanitizer",
+      "--tool",
+      "memcheck",
+      "--error-exitcode",
+      "99",
+      "--kernel-name",
+      "regex=_weight_int4pack_mm_kernel",
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/run.py",
+      "--stage",
+      "r4",
+      "--names",
+      "baseline,anchor,parent,pid_g4",
+      "--run",
+      "memcheck",
+      "--check-only"
+    ],
+    "exit_code": 0
+  },
+  {
+    "stage": "r4",
+    "phase": "racecheck",
+    "argv": [
+      "compute-sanitizer",
+      "--tool",
+      "racecheck",
+      "--error-exitcode",
+      "99",
+      "--kernel-name",
+      "regex=_weight_int4pack_mm_kernel",
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/run.py",
+      "--stage",
+      "r4",
+      "--names",
+      "baseline,anchor,parent,pid_g4",
+      "--run",
+      "racecheck",
+      "--check-only"
+    ],
+    "exit_code": 0
+  },
+  {
+    "stage": "r4",
+    "phase": "finalize",
+    "argv": [
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/finalize.py",
+      "r4"
+    ],
+    "exit_code": 0
+  },
+  {
+    "stage": "r5",
+    "phase": "generate",
+    "argv": [
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/generate.py",
+      "r5"
+    ],
+    "exit_code": 0
+  },
+  {
+    "stage": "r5",
+    "phase": "screen",
+    "argv": [
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/run.py",
+      "--stage",
+      "r5",
+      "--run",
+      "screen",
+      "--names",
+      "baseline,anchor,parent,preload_pair,early_scale,two_groups"
+    ],
+    "exit_code": 0
+  },
+  {
+    "stage": "r5",
+    "phase": "select",
+    "argv": [
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/select.py",
+      "r5"
+    ],
+    "exit_code": 0
+  },
+  {
+    "stage": "r5",
+    "phase": "main",
+    "argv": [
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/run.py",
+      "--stage",
+      "r5",
+      "--names",
+      "baseline,anchor,parent,preload_pair",
+      "--run",
+      "main",
+      "--rounds",
+      "7",
+      "--rep",
+      "20"
+    ],
+    "exit_code": 0
+  },
+  {
+    "stage": "r5",
+    "phase": "repeat",
+    "argv": [
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/run.py",
+      "--stage",
+      "r5",
+      "--names",
+      "baseline,anchor,parent,preload_pair",
+      "--run",
+      "repeat",
+      "--rounds",
+      "5",
+      "--rep",
+      "20",
+      "--seed",
+      "123"
+    ],
+    "exit_code": 0
+  },
+  {
+    "stage": "r5",
+    "phase": "memcheck",
+    "argv": [
+      "compute-sanitizer",
+      "--tool",
+      "memcheck",
+      "--error-exitcode",
+      "99",
+      "--kernel-name",
+      "regex=_weight_int4pack_mm_kernel",
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/run.py",
+      "--stage",
+      "r5",
+      "--names",
+      "baseline,anchor,parent,preload_pair",
+      "--run",
+      "memcheck",
+      "--check-only"
+    ],
+    "exit_code": 0
+  },
+  {
+    "stage": "r5",
+    "phase": "racecheck",
+    "argv": [
+      "compute-sanitizer",
+      "--tool",
+      "racecheck",
+      "--error-exitcode",
+      "99",
+      "--kernel-name",
+      "regex=_weight_int4pack_mm_kernel",
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/run.py",
+      "--stage",
+      "r5",
+      "--names",
+      "baseline,anchor,parent,preload_pair",
+      "--run",
+      "racecheck",
+      "--check-only"
+    ],
+    "exit_code": 0
+  },
+  {
+    "stage": "r5",
+    "phase": "finalize",
+    "argv": [
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/finalize.py",
+      "r5"
+    ],
+    "exit_code": 0
+  },
+  {
+    "stage": "r5",
+    "phase": "combined",
+    "argv": [
+      "/root/venvs/ir-ops-dev/bin/python",
+      "/root/ops-ttir-dev/int4_gemm/multiround/finalize.py",
+      "combined"
+    ],
+    "exit_code": 0
+  }
+]

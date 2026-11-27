@@ -1,5 +1,7 @@
 # logsumexp direct TTIR experiment
 
+当前统一展示见[完整结果](report.md)：每个shape只列基线时间、优化时间、加速比，保留算术/几何平均和方法收益。
+
 Baseline is the user-specified FlagGems `ops/logsumexp.py`, not
 `special_logsumexp.py`. See [optimization_plan.md](optimization_plan.md) for the
 frozen FP16 inner/non-inner contract, 30 performance shapes and 21 extra

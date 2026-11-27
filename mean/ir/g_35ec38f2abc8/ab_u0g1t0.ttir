@@ -1,0 +1,120 @@
+#loc1 = loc("output_ptr")
+#loc2 = loc("input_ptr")
+#loc3 = loc("M")
+#loc4 = loc("N")
+#loc5 = loc("K")
+module {
+  tt.func public @mean_dim_kernel_non_inner_vec(%output_ptr: !tt.ptr<f16> {tt.divisibility = 16 : i32} loc("output_ptr"), %input_ptr: !tt.ptr<f16> {tt.divisibility = 16 : i32} loc("input_ptr"), %M: i32 loc("M"), %N: i32 loc("N"), %K: i32 {tt.divisibility = 16 : i32} loc("K")) attributes {noinline = false} {
+    %min_n = arith.constant 8 : i32
+    %main_take = arith.cmpi sge, %N, %min_n : i32
+    scf.if %main_take {
+
+    %z = arith.constant 0 : i32
+    %one = arith.constant 1 : i32
+    %w = arith.constant 1024 : i32
+    %full = arith.constant 1024 : i32
+    %step = arith.constant 1 : i32
+    %pm = tt.get_program_id x : i32
+    %pk = tt.get_program_id y : i32
+    %kb = arith.muli %pk, %full : i32
+    %mn = arith.muli %pm, %N : i32
+    %base = arith.muli %mn, %K : i32
+    %kr = tt.make_range {end = 1024 : i32, start = 0 : i32} : tensor<1024xi32>
+    %kbase = arith.addi %kb, %z : i32
+    %kbs = tt.splat %kbase : i32 -> tensor<1024xi32>
+    %ko = arith.addi %kr, %kbs : tensor<1024xi32>
+    %ks = tt.splat %K : i32 -> tensor<1024xi32>
+    %km = arith.cmpi slt, %ko, %ks : tensor<1024xi32>
+    %zero = arith.constant dense<0.0> : tensor<1024xf32>
+    %zeroh = arith.constant dense<0.0> : tensor<1024xf16>
+    %ip = tt.splat %input_ptr : !tt.ptr<f16> -> tensor<1024x!tt.ptr<f16>>
+    %acc:1 = scf.for %n = %z to %N step %step iter_args(%s0 = %zero) -> (tensor<1024xf32>) : i32 {
+    %j0 = arith.constant 0 : i32
+    %n0 = arith.addi %n, %j0 : i32
+    %valid0 = arith.cmpi slt, %n0, %N : i32
+    %vm0 = tt.splat %valid0 : i1 -> tensor<1024xi1>
+    %mask0 = arith.andi %vm0, %km : tensor<1024xi1>
+    %nk0 = arith.muli %n0, %K : i32
+    %bas0 = arith.addi %base, %nk0 : i32
+    %bs0 = tt.splat %bas0 : i32 -> tensor<1024xi32>
+    %off0 = arith.addi %bs0, %ko : tensor<1024xi32>
+    %ptr0 = tt.addptr %ip, %off0 : tensor<1024x!tt.ptr<f16>>, tensor<1024xi32>
+    %v0 = tt.load %ptr0, %mask0, %zeroh : tensor<1024x!tt.ptr<f16>>
+    %vf0 = arith.extf %v0 : tensor<1024xf16> to tensor<1024xf32>
+    %a0 = arith.addf %s0, %vf0 : tensor<1024xf32>
+    scf.yield %a0 : tensor<1024xf32>
+    }
+    %nf = arith.sitofp %N : i32 to f32
+    %nfs = tt.splat %nf : f32 -> tensor<1024xf32>
+    %avg = arith.divf %acc#0, %nfs : tensor<1024xf32>
+    %avgh = arith.truncf %avg : tensor<1024xf32> to tensor<1024xf16>
+    %ob = arith.muli %pm, %K : i32
+    %obs = tt.splat %ob : i32 -> tensor<1024xi32>
+    %oo = arith.addi %obs, %ko : tensor<1024xi32>
+    %op = tt.splat %output_ptr : !tt.ptr<f16> -> tensor<1024x!tt.ptr<f16>>
+    %optr = tt.addptr %op, %oo : tensor<1024x!tt.ptr<f16>>, tensor<1024xi32>
+    tt.store %optr, %avgh, %km : tensor<1024x!tt.ptr<f16>>
+
+    } else {
+
+    %zero = arith.constant 0 : i32
+    %step = arith.constant 1 : i32
+    %width = arith.constant 1024 : i32
+    %pm = tt.get_program_id x : i32
+    %pk = tt.get_program_id y : i32
+    %kb = arith.muli %pk, %width : i32
+    %mn = arith.muli %pm, %N : i32
+    %base = arith.muli %mn, %K : i32
+    %kr = tt.make_range {end = 1024 : i32, start = 0 : i32} : tensor<1024xi32>
+    %kbs = tt.splat %kb : i32 -> tensor<1024xi32>
+    %ko = arith.addi %kr, %kbs : tensor<1024xi32>
+    %ks = tt.splat %K : i32 -> tensor<1024xi32>
+    %km = arith.cmpi slt, %ko, %ks : tensor<1024xi32>
+    %nr = tt.make_range {end = 1 : i32, start = 0 : i32} : tensor<1xi32>
+    %ne = tt.expand_dims %nr {axis = 1 : i32} : tensor<1xi32> -> tensor<1x1xi32>
+    %ke = tt.expand_dims %ko {axis = 0 : i32} : tensor<1024xi32> -> tensor<1x1024xi32>
+    %kt = tt.broadcast %ke : tensor<1x1024xi32> -> tensor<1x1024xi32>
+    %ns = tt.splat %N : i32 -> tensor<1x1024xi32>
+    %stride = tt.splat %K : i32 -> tensor<1x1024xi32>
+    %bs = tt.splat %base : i32 -> tensor<1x1024xi32>
+    %zero_f = arith.constant dense<0.0> : tensor<1x1024xf32>
+    %zero_h = arith.constant dense<0.0> : tensor<1x1024xf16>
+    %ip = tt.splat %input_ptr : !tt.ptr<f16> -> tensor<1x1024x!tt.ptr<f16>>
+    %acc = scf.for %n = %zero to %N step %step iter_args(%sum = %zero_f) -> (tensor<1x1024xf32>) : i32 {
+      %nscalar = tt.splat %n : i32 -> tensor<1x1xi32>
+      %ni = arith.addi %nscalar, %ne : tensor<1x1xi32>
+      %nt = tt.broadcast %ni : tensor<1x1xi32> -> tensor<1x1024xi32>
+      %nm = arith.cmpi slt, %nt, %ns : tensor<1x1024xi32>
+      %kmt = arith.cmpi slt, %kt, %stride : tensor<1x1024xi32>
+      %mask = arith.andi %nm, %kmt : tensor<1x1024xi1>
+      %no = arith.muli %nt, %stride : tensor<1x1024xi32>
+      %off0 = arith.addi %no, %kt : tensor<1x1024xi32>
+      %off = arith.addi %off0, %bs : tensor<1x1024xi32>
+      %ptr = tt.addptr %ip, %off : tensor<1x1024x!tt.ptr<f16>>, tensor<1x1024xi32>
+      %v = tt.load %ptr, %mask, %zero_h : tensor<1x1024x!tt.ptr<f16>>
+      %vf = arith.extf %v : tensor<1x1024xf16> to tensor<1x1024xf32>
+      %add = arith.addf %sum, %vf : tensor<1x1024xf32>
+      scf.yield %add : tensor<1x1024xf32>
+    }
+    %reduced = "tt.reduce"(%acc) ({
+    ^bb0(%a: f32, %b: f32):
+      %c = arith.addf %a, %b : f32
+      tt.reduce.return %c : f32
+    }) {axis = 0 : i32} : (tensor<1x1024xf32>) -> tensor<1024xf32>
+    %nf = arith.sitofp %N : i32 to f32
+    %nfs = tt.splat %nf : f32 -> tensor<1024xf32>
+    %avg = arith.divf %reduced, %nfs : tensor<1024xf32>
+    %avg_h = arith.truncf %avg : tensor<1024xf32> to tensor<1024xf16>
+    %ob = arith.muli %pm, %K : i32
+    %obs = tt.splat %ob : i32 -> tensor<1024xi32>
+    %oo = arith.addi %obs, %ko : tensor<1024xi32>
+    %op = tt.splat %output_ptr : !tt.ptr<f16> -> tensor<1024x!tt.ptr<f16>>
+    %optr = tt.addptr %op, %oo : tensor<1024x!tt.ptr<f16>>, tensor<1024xi32>
+    tt.store %optr, %avg_h, %km : tensor<1024x!tt.ptr<f16>>
+
+    }
+    tt.return
+  } loc(#loc)
+} loc(#loc)
+#loc = loc(unknown)
+#loc6 = loc("acc")

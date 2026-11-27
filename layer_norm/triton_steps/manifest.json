@@ -1,0 +1,60 @@
+{
+  "tutorial_sha256": "d2e4ec99aead9bb63073ee62a983a8107c91188648c04a68582d95ac8cb585bc",
+  "purpose": "Readable source witnesses, no TTIR promotion",
+  "variants": {
+    "baseline": {
+      "source": "baseline.py",
+      "sha256": "2d168be7ad1d018f56a34e05d225eda65049e95c807b09fe5ad74e473d0bc70b",
+      "block_size": 8192,
+      "description": "Original algorithm: 8192-wide dynamic loops, divisions, sqrt."
+    },
+    "reciprocal_only": {
+      "source": "reciprocal_only.py",
+      "sha256": "78facb4b4ce3d717155e608ce74db72d11ac9ce1099d9469891e9a779adb2d92",
+      "block_size": 8192,
+      "description": "Only reuse 1/N for the mean and variance."
+    },
+    "rsqrt_only": {
+      "source": "rsqrt_only.py",
+      "sha256": "5284e2e450a3c4930414f19eede35b0a5ccaaa50abef080c731fa379521ec9c6",
+      "block_size": 8192,
+      "description": "Only replace 1/sqrt by rsqrt."
+    },
+    "arithmetic": {
+      "source": "arithmetic.py",
+      "sha256": "8c08aa76b61dc0abeb7b22669d8e328c89c2cc67c8b491bb37754ac2f23d792d",
+      "block_size": 8192,
+      "description": "Step 1: reciprocal reuse plus rsqrt."
+    },
+    "grouped": {
+      "source": "grouped.py",
+      "sha256": "3878df9fbf4b3c7338973c49ae7a01cd192a4fa9962489b63a1eb8a9dda5570d",
+      "block_size": 2048,
+      "description": "Step 2: keep step 1 and use 2048-wide dynamic loops."
+    },
+    "unroll": {
+      "source": "unroll.py",
+      "sha256": "71fca9c890d258870f5aaaaed488c0dd1bf62249bbf5998e4058715632d04883",
+      "block_size": 2048,
+      "description": "Step 3: keep step 2 and statically unroll by runtime N ranges."
+    },
+    "mean_ca": {
+      "source": "mean_ca.py",
+      "sha256": "8a0d58e9c2f36e71552d2382f303d32556be02307a702b7b27dc89050bb21afa",
+      "block_size": 2048,
+      "description": "Step 4: keep step 3 and mark only mean-stage input loads .ca."
+    },
+    "output_cs": {
+      "source": "output_cs.py",
+      "sha256": "6ec5aad0a767cd58f030ecb454eef11f7a94c2a794488b969caf7df74c4b1c22",
+      "block_size": 2048,
+      "description": "Step 5: keep step 4 and mark only output Y stores .cs."
+    },
+    "mixed": {
+      "source": "mixed.py",
+      "sha256": "e06d6447f9a708dfba39cfee086dacff52e1202ca658d55f758213700ab238dd",
+      "block_size": 2048,
+      "description": "Step 6: keep step 5 and use 1024-wide blocks when N <= 3072."
+    }
+  }
+}

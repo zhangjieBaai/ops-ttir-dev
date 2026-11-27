@@ -1,0 +1,112 @@
+{
+  "round": "r6",
+  "commands": [
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/r6_finalize.py",
+        "select",
+        "--round",
+        "r6"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r6/select.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/r6_run.py",
+        "--round",
+        "r6",
+        "--run",
+        "main",
+        "--variants",
+        "batch4",
+        "--rounds",
+        "7",
+        "--rep",
+        "20",
+        "--seed",
+        "42"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r6/main.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/r6_run.py",
+        "--round",
+        "r6",
+        "--run",
+        "repeat",
+        "--variants",
+        "batch4",
+        "--rounds",
+        "5",
+        "--rep",
+        "20",
+        "--seed",
+        "123"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r6/repeat.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "compute-sanitizer",
+        "--tool",
+        "memcheck",
+        "--error-exitcode",
+        "99",
+        "--kernel-name",
+        "regex=topk",
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/r6_run.py",
+        "--round",
+        "r6",
+        "--run",
+        "memcheck",
+        "--variants",
+        "batch4",
+        "--check-only"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r6/memcheck.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "compute-sanitizer",
+        "--tool",
+        "racecheck",
+        "--error-exitcode",
+        "99",
+        "--kernel-name",
+        "regex=topk",
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/r6_run.py",
+        "--round",
+        "r6",
+        "--run",
+        "racecheck",
+        "--variants",
+        "batch4",
+        "--check-only"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r6/racecheck.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/r6_finalize.py",
+        "finish",
+        "--round",
+        "r6"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r6/finalize.log",
+      "exit_code": 0
+    }
+  ],
+  "completed": true
+}

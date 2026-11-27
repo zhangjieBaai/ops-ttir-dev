@@ -12,6 +12,8 @@ tutorial.py ──make_ttir──▶ TTIR ──make_ttgir──▶ TTGIR ──
 
 关键事实（TTIR_EXPERIMENT_REQUIREMENTS.md §4）：Triton 3.7.0 的**文件入口从 `make_ttgir` 继续，不会再次执行 `make_ttir`**。所以 `triton.compile("x.ttir")` 跳过 Python 前端，直接以你给的 TTIR 为输入。
 
+这里的“能用 TTIR 表达”不表示“只有 TTIR 能表达”。公开 Triton 语法也支持本轮大部分算法变换；逐指令属性、区域/SSA 接口与编译截点的具体差异，见 [TTIR 与 Triton 语法的能力对照](ttir-vs-triton.md)。
+
 ## TTIR 里有什么
 
 以 layer_norm baseline 为例（`ir/baseline.ttir`，210 行）：

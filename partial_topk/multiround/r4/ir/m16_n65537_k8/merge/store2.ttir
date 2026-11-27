@@ -1,0 +1,452 @@
+#loc = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":8:0)
+#loc2 = loc(unknown)
+#loc17 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":19:30)
+#loc22 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":21:61)
+#loc37 = loc("X"(#loc))
+#loc38 = loc("I"(#loc))
+#loc39 = loc("V"(#loc))
+#loc40 = loc("O"(#loc))
+#loc55 = loc("best"(#loc17))
+#loc58 = loc("best_id"(#loc22))
+#loc64 = loc(callsite(#loc2 at #loc55))
+#loc66 = loc(callsite(#loc2 at #loc58))
+module {
+  tt.func public @partial_select(%X: !tt.ptr<f32> {tt.divisibility = 16 : i32} loc("X"(#loc)), %I: !tt.ptr<i32> {tt.divisibility = 16 : i32} loc("I"(#loc)), %V: !tt.ptr<f32> {tt.divisibility = 16 : i32} loc("V"(#loc)), %O: !tt.ptr<i32> {tt.divisibility = 16 : i32} loc("O"(#loc))) attributes {noinline = false} {
+    %c1_i32 = arith.constant 1 : i32 loc(#loc1)
+    %c0_i32 = arith.constant 0 : i32 loc(#loc1)
+    %c8_i32 = arith.constant 8 : i32 loc(#loc2)
+    %cst = arith.constant dense<2147483647> : tensor<1024xi32> loc(#loc2)
+    %cst_0 = arith.constant dense<0xFF800000> : tensor<1024xf32> loc(#loc2)
+    %mask = arith.constant dense<520> : tensor<1024xi32> loc(#loc41)
+    %c520_i32 = arith.constant 520 : i32 loc(#loc2)
+    %c1024_i32 = arith.constant 1024 : i32 loc(#loc2)
+    %row = tt.get_program_id x : i32 loc(#loc42)
+    %chunk = tt.get_program_id y : i32 loc(#loc43)
+    %col = arith.muli %chunk, %c1024_i32 : i32 loc(#loc44)
+    %col_1 = tt.make_range {end = 1024 : i32, start = 0 : i32} : tensor<1024xi32> loc(#loc45)
+    %col_2 = tt.splat %col : i32 -> tensor<1024xi32> loc(#loc46)
+    %col_3 = arith.addi %col_2, %col_1 : tensor<1024xi32> loc(#loc46)
+    %mask_4 = arith.cmpi slt, %col_3, %mask : tensor<1024xi32> loc(#loc41)
+    %values = arith.muli %row, %c520_i32 : i32 loc(#loc47)
+    %values_5 = tt.addptr %X, %values : !tt.ptr<f32>, i32 loc(#loc48)
+    %values_6 = tt.splat %values_5 : !tt.ptr<f32> -> tensor<1024x!tt.ptr<f32>> loc(#loc49)
+    %values_7 = tt.addptr %values_6, %col_3 : tensor<1024x!tt.ptr<f32>>, tensor<1024xi32> loc(#loc49)
+    %values_8 = tt.load %values_7, %mask_4, %cst_0 : tensor<1024x!tt.ptr<f32>> loc(#loc50)
+    %ids = tt.addptr %I, %values : !tt.ptr<i32>, i32 loc(#loc51)
+    %ids_9 = tt.splat %ids : !tt.ptr<i32> -> tensor<1024x!tt.ptr<i32>> loc(#loc52)
+    %ids_10 = tt.addptr %ids_9, %col_3 : tensor<1024x!tt.ptr<i32>>, tensor<1024xi32> loc(#loc52)
+    %ids_11 = tt.load %ids_10, %mask_4, %cst : tensor<1024x!tt.ptr<i32>> loc(#loc53)
+    %zerof = arith.constant dense<0.0> : tensor<1024xf32>
+    %iszero = arith.cmpf oeq, %values_8, %zerof : tensor<1024xf32>
+    %normalized_values = arith.select %iszero, %zerof, %values_8 : tensor<1024xi1>, tensor<1024xf32>
+    %sentinel_key = arith.constant dense<8388607> : tensor<1024xi32>
+      %bits = tt.bitcast %normalized_values : tensor<1024xf32> -> tensor<1024xi32>
+      %shift = arith.constant dense<31> : tensor<1024xi32>
+      %signbit = arith.constant dense<-2147483648> : tensor<1024xi32>
+      %sign = arith.shrsi %bits, %shift : tensor<1024xi32>
+      %flip = arith.ori %sign, %signbit : tensor<1024xi32>
+      %init_keys = arith.xori %bits, %flip : tensor<1024xi32>
+    %r2_step0 = arith.constant 0 : i32
+      %r2u0_maxkey = "tt.reduce"(%init_keys) <{axis = 0 : i32}> ({
+      ^bb0(%r2u0_lkey: i32, %r2u0_rkey: i32):
+        %r2u0_mkey = arith.maxui %r2u0_lkey, %r2u0_rkey : i32
+        tt.reduce.return %r2u0_mkey : i32
+      }) : (tensor<1024xi32>) -> i32
+      %r2u0_izero = arith.constant 0 : i32
+      %r2u0_iall = arith.constant -1 : i32
+      %r2u0_isign = arith.constant -2147483648 : i32
+      %r2u0_positive = arith.cmpi slt, %r2u0_maxkey, %r2u0_izero : i32
+      %r2u0_undo = arith.select %r2u0_positive, %r2u0_isign, %r2u0_iall : i32
+      %r2u0_bestbits = arith.xori %r2u0_maxkey, %r2u0_undo : i32
+      %r2u0_best = tt.bitcast %r2u0_bestbits : i32 -> f32
+      %r2u0_matches = tt.splat %r2u0_maxkey : i32 -> tensor<1024xi32> loc(#loc56)
+      %r2u0_matches_15 = arith.cmpi eq, %init_keys, %r2u0_matches : tensor<1024xi32> loc(#loc56)
+      %r2u0_best_id = arith.select %r2u0_matches_15, %ids_11, %cst : tensor<1024xi1>, tensor<1024xi32> loc(#loc57)
+      %r2u0_best_id_16 = "tt.reduce"(%r2u0_best_id) <{axis = 0 : i32}> ({
+      ^bb0(%r2u0_best_id_20: i32 loc(callsite(#loc2 at #loc58)), %best_id_21: i32 loc(callsite(#loc2 at #loc58))):
+        %r2u0_best_id_22 = arith.minsi %r2u0_best_id_20, %best_id_21 : i32 loc(#loc68)
+        tt.reduce.return %r2u0_best_id_22 : i32 loc(#loc65)
+      }) : (tensor<1024xi32>) -> i32 loc(#loc65)
+      %r2u0_r2_infkey = arith.constant 8388607 : i32
+      %r2u0_r2_intmax = arith.constant 2147483647 : i32
+      %r2u0_r2_finite = arith.cmpi ne, %r2u0_maxkey, %r2u0_r2_infkey : i32
+      %r2u0_r2_bid = arith.select %r2u0_r2_finite, %r2u0_best_id_16, %r2u0_r2_intmax : i32
+      %r2u0_0 = arith.addi %row, %chunk : i32 loc(#loc24)
+      %r2u0_1 = arith.muli %r2u0_0, %c8_i32 : i32 loc(#loc25)
+      %r2u0_2 = tt.addptr %V, %r2u0_1 : !tt.ptr<f32>, i32 loc(#loc26)
+      %r2u0_3 = tt.addptr %r2u0_2, %r2_step0 : !tt.ptr<f32>, i32 loc(#loc27)
+      %r2u0_4 = tt.addptr %O, %r2u0_1 : !tt.ptr<i32>, i32 loc(#loc29)
+      %r2u0_5 = tt.addptr %r2u0_4, %r2_step0 : !tt.ptr<i32>, i32 loc(#loc30)
+      %r2u0_selected = tt.splat %r2u0_r2_bid : i32 -> tensor<1024xi32> loc(#loc59)
+      %r2u0_selected_17 = arith.cmpi eq, %ids_11, %r2u0_selected : tensor<1024xi32> loc(#loc59)
+      %r2u0_values_18 = arith.select %r2u0_selected_17, %sentinel_key, %init_keys : tensor<1024xi1>, tensor<1024xi32> loc(#loc60)
+          %r2_step1 = arith.constant 1 : i32
+      %r2u1_maxkey = "tt.reduce"(%r2u0_values_18) <{axis = 0 : i32}> ({
+      ^bb0(%r2u1_lkey: i32, %r2u1_rkey: i32):
+        %r2u1_mkey = arith.maxui %r2u1_lkey, %r2u1_rkey : i32
+        tt.reduce.return %r2u1_mkey : i32
+      }) : (tensor<1024xi32>) -> i32
+      %r2u1_izero = arith.constant 0 : i32
+      %r2u1_iall = arith.constant -1 : i32
+      %r2u1_isign = arith.constant -2147483648 : i32
+      %r2u1_positive = arith.cmpi slt, %r2u1_maxkey, %r2u1_izero : i32
+      %r2u1_undo = arith.select %r2u1_positive, %r2u1_isign, %r2u1_iall : i32
+      %r2u1_bestbits = arith.xori %r2u1_maxkey, %r2u1_undo : i32
+      %r2u1_best = tt.bitcast %r2u1_bestbits : i32 -> f32
+      %r2u1_matches = tt.splat %r2u1_maxkey : i32 -> tensor<1024xi32> loc(#loc56)
+      %r2u1_matches_15 = arith.cmpi eq, %r2u0_values_18, %r2u1_matches : tensor<1024xi32> loc(#loc56)
+      %r2u1_best_id = arith.select %r2u1_matches_15, %ids_11, %cst : tensor<1024xi1>, tensor<1024xi32> loc(#loc57)
+      %r2u1_best_id_16 = "tt.reduce"(%r2u1_best_id) <{axis = 0 : i32}> ({
+      ^bb0(%r2u1_best_id_20: i32 loc(callsite(#loc2 at #loc58)), %best_id_21: i32 loc(callsite(#loc2 at #loc58))):
+        %r2u1_best_id_22 = arith.minsi %r2u1_best_id_20, %best_id_21 : i32 loc(#loc68)
+        tt.reduce.return %r2u1_best_id_22 : i32 loc(#loc65)
+      }) : (tensor<1024xi32>) -> i32 loc(#loc65)
+      %r2u1_r2_infkey = arith.constant 8388607 : i32
+      %r2u1_r2_intmax = arith.constant 2147483647 : i32
+      %r2u1_r2_finite = arith.cmpi ne, %r2u1_maxkey, %r2u1_r2_infkey : i32
+      %r2u1_r2_bid = arith.select %r2u1_r2_finite, %r2u1_best_id_16, %r2u1_r2_intmax : i32
+      %r2u1_0 = arith.addi %row, %chunk : i32 loc(#loc24)
+      %r2u1_1 = arith.muli %r2u1_0, %c8_i32 : i32 loc(#loc25)
+      %r2u1_2 = tt.addptr %V, %r2u1_1 : !tt.ptr<f32>, i32 loc(#loc26)
+      %r2u1_3 = tt.addptr %r2u1_2, %r2_step1 : !tt.ptr<f32>, i32 loc(#loc27)
+      %r2u1_4 = tt.addptr %O, %r2u1_1 : !tt.ptr<i32>, i32 loc(#loc29)
+      %r2u1_5 = tt.addptr %r2u1_4, %r2_step1 : !tt.ptr<i32>, i32 loc(#loc30)
+      %out0_f32_0 = tt.splat %r2u0_best : f32 -> tensor<1xf32>
+      %out0_f32_1 = tt.splat %r2u1_best : f32 -> tensor<1xf32>
+      %out0_f32_w1_p0_join = tt.join %out0_f32_0, %out0_f32_1 : tensor<1xf32> -> tensor<1x2xf32>
+      %out0_f32_w1_p0_trans = tt.trans %out0_f32_w1_p0_join {order = array<i32: 1, 0>} : tensor<1x2xf32> -> tensor<2x1xf32>
+      %out0_f32_w1_p0 = tt.reshape %out0_f32_w1_p0_trans : tensor<2x1xf32> -> tensor<2xf32>
+      %out0_f32_range = tt.make_range {end = 2 : i32, start = 0 : i32} : tensor<2xi32>
+      %out0_f32_ptr = tt.splat %r2u0_3 : !tt.ptr<f32> -> tensor<2x!tt.ptr<f32>>
+      %out0_f32_out = tt.addptr %out0_f32_ptr, %out0_f32_range : tensor<2x!tt.ptr<f32>>, tensor<2xi32>
+      tt.store %out0_f32_out, %out0_f32_w1_p0 : tensor<2x!tt.ptr<f32>>
+      %out0_i32_0 = tt.splat %r2u0_r2_bid : i32 -> tensor<1xi32>
+      %out0_i32_1 = tt.splat %r2u1_r2_bid : i32 -> tensor<1xi32>
+      %out0_i32_w1_p0_join = tt.join %out0_i32_0, %out0_i32_1 : tensor<1xi32> -> tensor<1x2xi32>
+      %out0_i32_w1_p0_trans = tt.trans %out0_i32_w1_p0_join {order = array<i32: 1, 0>} : tensor<1x2xi32> -> tensor<2x1xi32>
+      %out0_i32_w1_p0 = tt.reshape %out0_i32_w1_p0_trans : tensor<2x1xi32> -> tensor<2xi32>
+      %out0_i32_range = tt.make_range {end = 2 : i32, start = 0 : i32} : tensor<2xi32>
+      %out0_i32_ptr = tt.splat %r2u0_5 : !tt.ptr<i32> -> tensor<2x!tt.ptr<i32>>
+      %out0_i32_out = tt.addptr %out0_i32_ptr, %out0_i32_range : tensor<2x!tt.ptr<i32>>, tensor<2xi32>
+      tt.store %out0_i32_out, %out0_i32_w1_p0 : tensor<2x!tt.ptr<i32>>
+      %r2u1_selected = tt.splat %r2u1_r2_bid : i32 -> tensor<1024xi32> loc(#loc59)
+      %r2u1_selected_17 = arith.cmpi eq, %ids_11, %r2u1_selected : tensor<1024xi32> loc(#loc59)
+      %r2u1_values_18 = arith.select %r2u1_selected_17, %sentinel_key, %r2u0_values_18 : tensor<1024xi1>, tensor<1024xi32> loc(#loc60)
+          %r2_step2 = arith.constant 2 : i32
+      %r2u2_maxkey = "tt.reduce"(%r2u1_values_18) <{axis = 0 : i32}> ({
+      ^bb0(%r2u2_lkey: i32, %r2u2_rkey: i32):
+        %r2u2_mkey = arith.maxui %r2u2_lkey, %r2u2_rkey : i32
+        tt.reduce.return %r2u2_mkey : i32
+      }) : (tensor<1024xi32>) -> i32
+      %r2u2_izero = arith.constant 0 : i32
+      %r2u2_iall = arith.constant -1 : i32
+      %r2u2_isign = arith.constant -2147483648 : i32
+      %r2u2_positive = arith.cmpi slt, %r2u2_maxkey, %r2u2_izero : i32
+      %r2u2_undo = arith.select %r2u2_positive, %r2u2_isign, %r2u2_iall : i32
+      %r2u2_bestbits = arith.xori %r2u2_maxkey, %r2u2_undo : i32
+      %r2u2_best = tt.bitcast %r2u2_bestbits : i32 -> f32
+      %r2u2_matches = tt.splat %r2u2_maxkey : i32 -> tensor<1024xi32> loc(#loc56)
+      %r2u2_matches_15 = arith.cmpi eq, %r2u1_values_18, %r2u2_matches : tensor<1024xi32> loc(#loc56)
+      %r2u2_best_id = arith.select %r2u2_matches_15, %ids_11, %cst : tensor<1024xi1>, tensor<1024xi32> loc(#loc57)
+      %r2u2_best_id_16 = "tt.reduce"(%r2u2_best_id) <{axis = 0 : i32}> ({
+      ^bb0(%r2u2_best_id_20: i32 loc(callsite(#loc2 at #loc58)), %best_id_21: i32 loc(callsite(#loc2 at #loc58))):
+        %r2u2_best_id_22 = arith.minsi %r2u2_best_id_20, %best_id_21 : i32 loc(#loc68)
+        tt.reduce.return %r2u2_best_id_22 : i32 loc(#loc65)
+      }) : (tensor<1024xi32>) -> i32 loc(#loc65)
+      %r2u2_r2_infkey = arith.constant 8388607 : i32
+      %r2u2_r2_intmax = arith.constant 2147483647 : i32
+      %r2u2_r2_finite = arith.cmpi ne, %r2u2_maxkey, %r2u2_r2_infkey : i32
+      %r2u2_r2_bid = arith.select %r2u2_r2_finite, %r2u2_best_id_16, %r2u2_r2_intmax : i32
+      %r2u2_0 = arith.addi %row, %chunk : i32 loc(#loc24)
+      %r2u2_1 = arith.muli %r2u2_0, %c8_i32 : i32 loc(#loc25)
+      %r2u2_2 = tt.addptr %V, %r2u2_1 : !tt.ptr<f32>, i32 loc(#loc26)
+      %r2u2_3 = tt.addptr %r2u2_2, %r2_step2 : !tt.ptr<f32>, i32 loc(#loc27)
+      %r2u2_4 = tt.addptr %O, %r2u2_1 : !tt.ptr<i32>, i32 loc(#loc29)
+      %r2u2_5 = tt.addptr %r2u2_4, %r2_step2 : !tt.ptr<i32>, i32 loc(#loc30)
+      %r2u2_selected = tt.splat %r2u2_r2_bid : i32 -> tensor<1024xi32> loc(#loc59)
+      %r2u2_selected_17 = arith.cmpi eq, %ids_11, %r2u2_selected : tensor<1024xi32> loc(#loc59)
+      %r2u2_values_18 = arith.select %r2u2_selected_17, %sentinel_key, %r2u1_values_18 : tensor<1024xi1>, tensor<1024xi32> loc(#loc60)
+          %r2_step3 = arith.constant 3 : i32
+      %r2u3_maxkey = "tt.reduce"(%r2u2_values_18) <{axis = 0 : i32}> ({
+      ^bb0(%r2u3_lkey: i32, %r2u3_rkey: i32):
+        %r2u3_mkey = arith.maxui %r2u3_lkey, %r2u3_rkey : i32
+        tt.reduce.return %r2u3_mkey : i32
+      }) : (tensor<1024xi32>) -> i32
+      %r2u3_izero = arith.constant 0 : i32
+      %r2u3_iall = arith.constant -1 : i32
+      %r2u3_isign = arith.constant -2147483648 : i32
+      %r2u3_positive = arith.cmpi slt, %r2u3_maxkey, %r2u3_izero : i32
+      %r2u3_undo = arith.select %r2u3_positive, %r2u3_isign, %r2u3_iall : i32
+      %r2u3_bestbits = arith.xori %r2u3_maxkey, %r2u3_undo : i32
+      %r2u3_best = tt.bitcast %r2u3_bestbits : i32 -> f32
+      %r2u3_matches = tt.splat %r2u3_maxkey : i32 -> tensor<1024xi32> loc(#loc56)
+      %r2u3_matches_15 = arith.cmpi eq, %r2u2_values_18, %r2u3_matches : tensor<1024xi32> loc(#loc56)
+      %r2u3_best_id = arith.select %r2u3_matches_15, %ids_11, %cst : tensor<1024xi1>, tensor<1024xi32> loc(#loc57)
+      %r2u3_best_id_16 = "tt.reduce"(%r2u3_best_id) <{axis = 0 : i32}> ({
+      ^bb0(%r2u3_best_id_20: i32 loc(callsite(#loc2 at #loc58)), %best_id_21: i32 loc(callsite(#loc2 at #loc58))):
+        %r2u3_best_id_22 = arith.minsi %r2u3_best_id_20, %best_id_21 : i32 loc(#loc68)
+        tt.reduce.return %r2u3_best_id_22 : i32 loc(#loc65)
+      }) : (tensor<1024xi32>) -> i32 loc(#loc65)
+      %r2u3_r2_infkey = arith.constant 8388607 : i32
+      %r2u3_r2_intmax = arith.constant 2147483647 : i32
+      %r2u3_r2_finite = arith.cmpi ne, %r2u3_maxkey, %r2u3_r2_infkey : i32
+      %r2u3_r2_bid = arith.select %r2u3_r2_finite, %r2u3_best_id_16, %r2u3_r2_intmax : i32
+      %r2u3_0 = arith.addi %row, %chunk : i32 loc(#loc24)
+      %r2u3_1 = arith.muli %r2u3_0, %c8_i32 : i32 loc(#loc25)
+      %r2u3_2 = tt.addptr %V, %r2u3_1 : !tt.ptr<f32>, i32 loc(#loc26)
+      %r2u3_3 = tt.addptr %r2u3_2, %r2_step3 : !tt.ptr<f32>, i32 loc(#loc27)
+      %r2u3_4 = tt.addptr %O, %r2u3_1 : !tt.ptr<i32>, i32 loc(#loc29)
+      %r2u3_5 = tt.addptr %r2u3_4, %r2_step3 : !tt.ptr<i32>, i32 loc(#loc30)
+      %out4_f32_0 = tt.splat %r2u2_best : f32 -> tensor<1xf32>
+      %out4_f32_1 = tt.splat %r2u3_best : f32 -> tensor<1xf32>
+      %out4_f32_w1_p0_join = tt.join %out4_f32_0, %out4_f32_1 : tensor<1xf32> -> tensor<1x2xf32>
+      %out4_f32_w1_p0_trans = tt.trans %out4_f32_w1_p0_join {order = array<i32: 1, 0>} : tensor<1x2xf32> -> tensor<2x1xf32>
+      %out4_f32_w1_p0 = tt.reshape %out4_f32_w1_p0_trans : tensor<2x1xf32> -> tensor<2xf32>
+      %out4_f32_range = tt.make_range {end = 2 : i32, start = 0 : i32} : tensor<2xi32>
+      %out4_f32_ptr = tt.splat %r2u2_3 : !tt.ptr<f32> -> tensor<2x!tt.ptr<f32>>
+      %out4_f32_out = tt.addptr %out4_f32_ptr, %out4_f32_range : tensor<2x!tt.ptr<f32>>, tensor<2xi32>
+      tt.store %out4_f32_out, %out4_f32_w1_p0 : tensor<2x!tt.ptr<f32>>
+      %out4_i32_0 = tt.splat %r2u2_r2_bid : i32 -> tensor<1xi32>
+      %out4_i32_1 = tt.splat %r2u3_r2_bid : i32 -> tensor<1xi32>
+      %out4_i32_w1_p0_join = tt.join %out4_i32_0, %out4_i32_1 : tensor<1xi32> -> tensor<1x2xi32>
+      %out4_i32_w1_p0_trans = tt.trans %out4_i32_w1_p0_join {order = array<i32: 1, 0>} : tensor<1x2xi32> -> tensor<2x1xi32>
+      %out4_i32_w1_p0 = tt.reshape %out4_i32_w1_p0_trans : tensor<2x1xi32> -> tensor<2xi32>
+      %out4_i32_range = tt.make_range {end = 2 : i32, start = 0 : i32} : tensor<2xi32>
+      %out4_i32_ptr = tt.splat %r2u2_5 : !tt.ptr<i32> -> tensor<2x!tt.ptr<i32>>
+      %out4_i32_out = tt.addptr %out4_i32_ptr, %out4_i32_range : tensor<2x!tt.ptr<i32>>, tensor<2xi32>
+      tt.store %out4_i32_out, %out4_i32_w1_p0 : tensor<2x!tt.ptr<i32>>
+      %r2u3_selected = tt.splat %r2u3_r2_bid : i32 -> tensor<1024xi32> loc(#loc59)
+      %r2u3_selected_17 = arith.cmpi eq, %ids_11, %r2u3_selected : tensor<1024xi32> loc(#loc59)
+      %r2u3_values_18 = arith.select %r2u3_selected_17, %sentinel_key, %r2u2_values_18 : tensor<1024xi1>, tensor<1024xi32> loc(#loc60)
+          %r2_step4 = arith.constant 4 : i32
+      %r2u4_maxkey = "tt.reduce"(%r2u3_values_18) <{axis = 0 : i32}> ({
+      ^bb0(%r2u4_lkey: i32, %r2u4_rkey: i32):
+        %r2u4_mkey = arith.maxui %r2u4_lkey, %r2u4_rkey : i32
+        tt.reduce.return %r2u4_mkey : i32
+      }) : (tensor<1024xi32>) -> i32
+      %r2u4_izero = arith.constant 0 : i32
+      %r2u4_iall = arith.constant -1 : i32
+      %r2u4_isign = arith.constant -2147483648 : i32
+      %r2u4_positive = arith.cmpi slt, %r2u4_maxkey, %r2u4_izero : i32
+      %r2u4_undo = arith.select %r2u4_positive, %r2u4_isign, %r2u4_iall : i32
+      %r2u4_bestbits = arith.xori %r2u4_maxkey, %r2u4_undo : i32
+      %r2u4_best = tt.bitcast %r2u4_bestbits : i32 -> f32
+      %r2u4_matches = tt.splat %r2u4_maxkey : i32 -> tensor<1024xi32> loc(#loc56)
+      %r2u4_matches_15 = arith.cmpi eq, %r2u3_values_18, %r2u4_matches : tensor<1024xi32> loc(#loc56)
+      %r2u4_best_id = arith.select %r2u4_matches_15, %ids_11, %cst : tensor<1024xi1>, tensor<1024xi32> loc(#loc57)
+      %r2u4_best_id_16 = "tt.reduce"(%r2u4_best_id) <{axis = 0 : i32}> ({
+      ^bb0(%r2u4_best_id_20: i32 loc(callsite(#loc2 at #loc58)), %best_id_21: i32 loc(callsite(#loc2 at #loc58))):
+        %r2u4_best_id_22 = arith.minsi %r2u4_best_id_20, %best_id_21 : i32 loc(#loc68)
+        tt.reduce.return %r2u4_best_id_22 : i32 loc(#loc65)
+      }) : (tensor<1024xi32>) -> i32 loc(#loc65)
+      %r2u4_r2_infkey = arith.constant 8388607 : i32
+      %r2u4_r2_intmax = arith.constant 2147483647 : i32
+      %r2u4_r2_finite = arith.cmpi ne, %r2u4_maxkey, %r2u4_r2_infkey : i32
+      %r2u4_r2_bid = arith.select %r2u4_r2_finite, %r2u4_best_id_16, %r2u4_r2_intmax : i32
+      %r2u4_0 = arith.addi %row, %chunk : i32 loc(#loc24)
+      %r2u4_1 = arith.muli %r2u4_0, %c8_i32 : i32 loc(#loc25)
+      %r2u4_2 = tt.addptr %V, %r2u4_1 : !tt.ptr<f32>, i32 loc(#loc26)
+      %r2u4_3 = tt.addptr %r2u4_2, %r2_step4 : !tt.ptr<f32>, i32 loc(#loc27)
+      %r2u4_4 = tt.addptr %O, %r2u4_1 : !tt.ptr<i32>, i32 loc(#loc29)
+      %r2u4_5 = tt.addptr %r2u4_4, %r2_step4 : !tt.ptr<i32>, i32 loc(#loc30)
+      %r2u4_selected = tt.splat %r2u4_r2_bid : i32 -> tensor<1024xi32> loc(#loc59)
+      %r2u4_selected_17 = arith.cmpi eq, %ids_11, %r2u4_selected : tensor<1024xi32> loc(#loc59)
+      %r2u4_values_18 = arith.select %r2u4_selected_17, %sentinel_key, %r2u3_values_18 : tensor<1024xi1>, tensor<1024xi32> loc(#loc60)
+          %r2_step5 = arith.constant 5 : i32
+      %r2u5_maxkey = "tt.reduce"(%r2u4_values_18) <{axis = 0 : i32}> ({
+      ^bb0(%r2u5_lkey: i32, %r2u5_rkey: i32):
+        %r2u5_mkey = arith.maxui %r2u5_lkey, %r2u5_rkey : i32
+        tt.reduce.return %r2u5_mkey : i32
+      }) : (tensor<1024xi32>) -> i32
+      %r2u5_izero = arith.constant 0 : i32
+      %r2u5_iall = arith.constant -1 : i32
+      %r2u5_isign = arith.constant -2147483648 : i32
+      %r2u5_positive = arith.cmpi slt, %r2u5_maxkey, %r2u5_izero : i32
+      %r2u5_undo = arith.select %r2u5_positive, %r2u5_isign, %r2u5_iall : i32
+      %r2u5_bestbits = arith.xori %r2u5_maxkey, %r2u5_undo : i32
+      %r2u5_best = tt.bitcast %r2u5_bestbits : i32 -> f32
+      %r2u5_matches = tt.splat %r2u5_maxkey : i32 -> tensor<1024xi32> loc(#loc56)
+      %r2u5_matches_15 = arith.cmpi eq, %r2u4_values_18, %r2u5_matches : tensor<1024xi32> loc(#loc56)
+      %r2u5_best_id = arith.select %r2u5_matches_15, %ids_11, %cst : tensor<1024xi1>, tensor<1024xi32> loc(#loc57)
+      %r2u5_best_id_16 = "tt.reduce"(%r2u5_best_id) <{axis = 0 : i32}> ({
+      ^bb0(%r2u5_best_id_20: i32 loc(callsite(#loc2 at #loc58)), %best_id_21: i32 loc(callsite(#loc2 at #loc58))):
+        %r2u5_best_id_22 = arith.minsi %r2u5_best_id_20, %best_id_21 : i32 loc(#loc68)
+        tt.reduce.return %r2u5_best_id_22 : i32 loc(#loc65)
+      }) : (tensor<1024xi32>) -> i32 loc(#loc65)
+      %r2u5_r2_infkey = arith.constant 8388607 : i32
+      %r2u5_r2_intmax = arith.constant 2147483647 : i32
+      %r2u5_r2_finite = arith.cmpi ne, %r2u5_maxkey, %r2u5_r2_infkey : i32
+      %r2u5_r2_bid = arith.select %r2u5_r2_finite, %r2u5_best_id_16, %r2u5_r2_intmax : i32
+      %r2u5_0 = arith.addi %row, %chunk : i32 loc(#loc24)
+      %r2u5_1 = arith.muli %r2u5_0, %c8_i32 : i32 loc(#loc25)
+      %r2u5_2 = tt.addptr %V, %r2u5_1 : !tt.ptr<f32>, i32 loc(#loc26)
+      %r2u5_3 = tt.addptr %r2u5_2, %r2_step5 : !tt.ptr<f32>, i32 loc(#loc27)
+      %r2u5_4 = tt.addptr %O, %r2u5_1 : !tt.ptr<i32>, i32 loc(#loc29)
+      %r2u5_5 = tt.addptr %r2u5_4, %r2_step5 : !tt.ptr<i32>, i32 loc(#loc30)
+      %out8_f32_0 = tt.splat %r2u4_best : f32 -> tensor<1xf32>
+      %out8_f32_1 = tt.splat %r2u5_best : f32 -> tensor<1xf32>
+      %out8_f32_w1_p0_join = tt.join %out8_f32_0, %out8_f32_1 : tensor<1xf32> -> tensor<1x2xf32>
+      %out8_f32_w1_p0_trans = tt.trans %out8_f32_w1_p0_join {order = array<i32: 1, 0>} : tensor<1x2xf32> -> tensor<2x1xf32>
+      %out8_f32_w1_p0 = tt.reshape %out8_f32_w1_p0_trans : tensor<2x1xf32> -> tensor<2xf32>
+      %out8_f32_range = tt.make_range {end = 2 : i32, start = 0 : i32} : tensor<2xi32>
+      %out8_f32_ptr = tt.splat %r2u4_3 : !tt.ptr<f32> -> tensor<2x!tt.ptr<f32>>
+      %out8_f32_out = tt.addptr %out8_f32_ptr, %out8_f32_range : tensor<2x!tt.ptr<f32>>, tensor<2xi32>
+      tt.store %out8_f32_out, %out8_f32_w1_p0 : tensor<2x!tt.ptr<f32>>
+      %out8_i32_0 = tt.splat %r2u4_r2_bid : i32 -> tensor<1xi32>
+      %out8_i32_1 = tt.splat %r2u5_r2_bid : i32 -> tensor<1xi32>
+      %out8_i32_w1_p0_join = tt.join %out8_i32_0, %out8_i32_1 : tensor<1xi32> -> tensor<1x2xi32>
+      %out8_i32_w1_p0_trans = tt.trans %out8_i32_w1_p0_join {order = array<i32: 1, 0>} : tensor<1x2xi32> -> tensor<2x1xi32>
+      %out8_i32_w1_p0 = tt.reshape %out8_i32_w1_p0_trans : tensor<2x1xi32> -> tensor<2xi32>
+      %out8_i32_range = tt.make_range {end = 2 : i32, start = 0 : i32} : tensor<2xi32>
+      %out8_i32_ptr = tt.splat %r2u4_5 : !tt.ptr<i32> -> tensor<2x!tt.ptr<i32>>
+      %out8_i32_out = tt.addptr %out8_i32_ptr, %out8_i32_range : tensor<2x!tt.ptr<i32>>, tensor<2xi32>
+      tt.store %out8_i32_out, %out8_i32_w1_p0 : tensor<2x!tt.ptr<i32>>
+      %r2u5_selected = tt.splat %r2u5_r2_bid : i32 -> tensor<1024xi32> loc(#loc59)
+      %r2u5_selected_17 = arith.cmpi eq, %ids_11, %r2u5_selected : tensor<1024xi32> loc(#loc59)
+      %r2u5_values_18 = arith.select %r2u5_selected_17, %sentinel_key, %r2u4_values_18 : tensor<1024xi1>, tensor<1024xi32> loc(#loc60)
+          %r2_step6 = arith.constant 6 : i32
+      %r2u6_maxkey = "tt.reduce"(%r2u5_values_18) <{axis = 0 : i32}> ({
+      ^bb0(%r2u6_lkey: i32, %r2u6_rkey: i32):
+        %r2u6_mkey = arith.maxui %r2u6_lkey, %r2u6_rkey : i32
+        tt.reduce.return %r2u6_mkey : i32
+      }) : (tensor<1024xi32>) -> i32
+      %r2u6_izero = arith.constant 0 : i32
+      %r2u6_iall = arith.constant -1 : i32
+      %r2u6_isign = arith.constant -2147483648 : i32
+      %r2u6_positive = arith.cmpi slt, %r2u6_maxkey, %r2u6_izero : i32
+      %r2u6_undo = arith.select %r2u6_positive, %r2u6_isign, %r2u6_iall : i32
+      %r2u6_bestbits = arith.xori %r2u6_maxkey, %r2u6_undo : i32
+      %r2u6_best = tt.bitcast %r2u6_bestbits : i32 -> f32
+      %r2u6_matches = tt.splat %r2u6_maxkey : i32 -> tensor<1024xi32> loc(#loc56)
+      %r2u6_matches_15 = arith.cmpi eq, %r2u5_values_18, %r2u6_matches : tensor<1024xi32> loc(#loc56)
+      %r2u6_best_id = arith.select %r2u6_matches_15, %ids_11, %cst : tensor<1024xi1>, tensor<1024xi32> loc(#loc57)
+      %r2u6_best_id_16 = "tt.reduce"(%r2u6_best_id) <{axis = 0 : i32}> ({
+      ^bb0(%r2u6_best_id_20: i32 loc(callsite(#loc2 at #loc58)), %best_id_21: i32 loc(callsite(#loc2 at #loc58))):
+        %r2u6_best_id_22 = arith.minsi %r2u6_best_id_20, %best_id_21 : i32 loc(#loc68)
+        tt.reduce.return %r2u6_best_id_22 : i32 loc(#loc65)
+      }) : (tensor<1024xi32>) -> i32 loc(#loc65)
+      %r2u6_r2_infkey = arith.constant 8388607 : i32
+      %r2u6_r2_intmax = arith.constant 2147483647 : i32
+      %r2u6_r2_finite = arith.cmpi ne, %r2u6_maxkey, %r2u6_r2_infkey : i32
+      %r2u6_r2_bid = arith.select %r2u6_r2_finite, %r2u6_best_id_16, %r2u6_r2_intmax : i32
+      %r2u6_0 = arith.addi %row, %chunk : i32 loc(#loc24)
+      %r2u6_1 = arith.muli %r2u6_0, %c8_i32 : i32 loc(#loc25)
+      %r2u6_2 = tt.addptr %V, %r2u6_1 : !tt.ptr<f32>, i32 loc(#loc26)
+      %r2u6_3 = tt.addptr %r2u6_2, %r2_step6 : !tt.ptr<f32>, i32 loc(#loc27)
+      %r2u6_4 = tt.addptr %O, %r2u6_1 : !tt.ptr<i32>, i32 loc(#loc29)
+      %r2u6_5 = tt.addptr %r2u6_4, %r2_step6 : !tt.ptr<i32>, i32 loc(#loc30)
+      %r2u6_selected = tt.splat %r2u6_r2_bid : i32 -> tensor<1024xi32> loc(#loc59)
+      %r2u6_selected_17 = arith.cmpi eq, %ids_11, %r2u6_selected : tensor<1024xi32> loc(#loc59)
+      %r2u6_values_18 = arith.select %r2u6_selected_17, %sentinel_key, %r2u5_values_18 : tensor<1024xi1>, tensor<1024xi32> loc(#loc60)
+          %r2_step7 = arith.constant 7 : i32
+      %r2u7_maxkey = "tt.reduce"(%r2u6_values_18) <{axis = 0 : i32}> ({
+      ^bb0(%r2u7_lkey: i32, %r2u7_rkey: i32):
+        %r2u7_mkey = arith.maxui %r2u7_lkey, %r2u7_rkey : i32
+        tt.reduce.return %r2u7_mkey : i32
+      }) : (tensor<1024xi32>) -> i32
+      %r2u7_izero = arith.constant 0 : i32
+      %r2u7_iall = arith.constant -1 : i32
+      %r2u7_isign = arith.constant -2147483648 : i32
+      %r2u7_positive = arith.cmpi slt, %r2u7_maxkey, %r2u7_izero : i32
+      %r2u7_undo = arith.select %r2u7_positive, %r2u7_isign, %r2u7_iall : i32
+      %r2u7_bestbits = arith.xori %r2u7_maxkey, %r2u7_undo : i32
+      %r2u7_best = tt.bitcast %r2u7_bestbits : i32 -> f32
+      %r2u7_matches = tt.splat %r2u7_maxkey : i32 -> tensor<1024xi32> loc(#loc56)
+      %r2u7_matches_15 = arith.cmpi eq, %r2u6_values_18, %r2u7_matches : tensor<1024xi32> loc(#loc56)
+      %r2u7_best_id = arith.select %r2u7_matches_15, %ids_11, %cst : tensor<1024xi1>, tensor<1024xi32> loc(#loc57)
+      %r2u7_best_id_16 = "tt.reduce"(%r2u7_best_id) <{axis = 0 : i32}> ({
+      ^bb0(%r2u7_best_id_20: i32 loc(callsite(#loc2 at #loc58)), %best_id_21: i32 loc(callsite(#loc2 at #loc58))):
+        %r2u7_best_id_22 = arith.minsi %r2u7_best_id_20, %best_id_21 : i32 loc(#loc68)
+        tt.reduce.return %r2u7_best_id_22 : i32 loc(#loc65)
+      }) : (tensor<1024xi32>) -> i32 loc(#loc65)
+      %r2u7_r2_infkey = arith.constant 8388607 : i32
+      %r2u7_r2_intmax = arith.constant 2147483647 : i32
+      %r2u7_r2_finite = arith.cmpi ne, %r2u7_maxkey, %r2u7_r2_infkey : i32
+      %r2u7_r2_bid = arith.select %r2u7_r2_finite, %r2u7_best_id_16, %r2u7_r2_intmax : i32
+      %r2u7_0 = arith.addi %row, %chunk : i32 loc(#loc24)
+      %r2u7_1 = arith.muli %r2u7_0, %c8_i32 : i32 loc(#loc25)
+      %r2u7_2 = tt.addptr %V, %r2u7_1 : !tt.ptr<f32>, i32 loc(#loc26)
+      %r2u7_3 = tt.addptr %r2u7_2, %r2_step7 : !tt.ptr<f32>, i32 loc(#loc27)
+      %r2u7_4 = tt.addptr %O, %r2u7_1 : !tt.ptr<i32>, i32 loc(#loc29)
+      %r2u7_5 = tt.addptr %r2u7_4, %r2_step7 : !tt.ptr<i32>, i32 loc(#loc30)
+      %out12_f32_0 = tt.splat %r2u6_best : f32 -> tensor<1xf32>
+      %out12_f32_1 = tt.splat %r2u7_best : f32 -> tensor<1xf32>
+      %out12_f32_w1_p0_join = tt.join %out12_f32_0, %out12_f32_1 : tensor<1xf32> -> tensor<1x2xf32>
+      %out12_f32_w1_p0_trans = tt.trans %out12_f32_w1_p0_join {order = array<i32: 1, 0>} : tensor<1x2xf32> -> tensor<2x1xf32>
+      %out12_f32_w1_p0 = tt.reshape %out12_f32_w1_p0_trans : tensor<2x1xf32> -> tensor<2xf32>
+      %out12_f32_range = tt.make_range {end = 2 : i32, start = 0 : i32} : tensor<2xi32>
+      %out12_f32_ptr = tt.splat %r2u6_3 : !tt.ptr<f32> -> tensor<2x!tt.ptr<f32>>
+      %out12_f32_out = tt.addptr %out12_f32_ptr, %out12_f32_range : tensor<2x!tt.ptr<f32>>, tensor<2xi32>
+      tt.store %out12_f32_out, %out12_f32_w1_p0 : tensor<2x!tt.ptr<f32>>
+      %out12_i32_0 = tt.splat %r2u6_r2_bid : i32 -> tensor<1xi32>
+      %out12_i32_1 = tt.splat %r2u7_r2_bid : i32 -> tensor<1xi32>
+      %out12_i32_w1_p0_join = tt.join %out12_i32_0, %out12_i32_1 : tensor<1xi32> -> tensor<1x2xi32>
+      %out12_i32_w1_p0_trans = tt.trans %out12_i32_w1_p0_join {order = array<i32: 1, 0>} : tensor<1x2xi32> -> tensor<2x1xi32>
+      %out12_i32_w1_p0 = tt.reshape %out12_i32_w1_p0_trans : tensor<2x1xi32> -> tensor<2xi32>
+      %out12_i32_range = tt.make_range {end = 2 : i32, start = 0 : i32} : tensor<2xi32>
+      %out12_i32_ptr = tt.splat %r2u6_5 : !tt.ptr<i32> -> tensor<2x!tt.ptr<i32>>
+      %out12_i32_out = tt.addptr %out12_i32_ptr, %out12_i32_range : tensor<2x!tt.ptr<i32>>, tensor<2xi32>
+      tt.store %out12_i32_out, %out12_i32_w1_p0 : tensor<2x!tt.ptr<i32>>
+      %r2u7_selected = tt.splat %r2u7_r2_bid : i32 -> tensor<1024xi32> loc(#loc59)
+      %r2u7_selected_17 = arith.cmpi eq, %ids_11, %r2u7_selected : tensor<1024xi32> loc(#loc59)
+      %r2u7_values_18 = arith.select %r2u7_selected_17, %sentinel_key, %r2u6_values_18 : tensor<1024xi1>, tensor<1024xi32> loc(#loc60)
+          tt.return loc(#loc36)
+  } loc(#loc)
+} loc(#loc)
+#loc1 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":18:22)
+#loc3 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":12:17)
+#loc4 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":9:24)
+#loc5 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":10:26)
+#loc6 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":11:18)
+#loc7 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":11:35)
+#loc8 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":11:22)
+#loc9 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":13:31)
+#loc10 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":13:25)
+#loc11 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":13:35)
+#loc12 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":13:40)
+#loc13 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":15:26)
+#loc14 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":15:36)
+#loc15 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":15:41)
+#loc16 = loc("/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/language/standard.py":191:40)
+#loc18 = loc("/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/language/standard.py":170:27)
+#loc19 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":20:28)
+#loc20 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":21:48)
+#loc21 = loc("/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/language/standard.py":250:40)
+#loc23 = loc("/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/language/standard.py":229:27)
+#loc24 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":22:37)
+#loc25 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":22:46)
+#loc26 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":22:21)
+#loc27 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":22:50)
+#loc28 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":22:56)
+#loc29 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":23:21)
+#loc30 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":23:50)
+#loc31 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":23:56)
+#loc32 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":24:26)
+#loc33 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":25:51)
+#loc34 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":26:45)
+#loc35 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":26:8)
+#loc36 = loc("/root/ops-ttir-dev/partial_topk/frozen_baseline.py":18:4)
+#loc41 = loc("mask"(#loc3))
+#loc42 = loc("row"(#loc4))
+#loc43 = loc("chunk"(#loc5))
+#loc44 = loc("col"(#loc6))
+#loc45 = loc("col"(#loc7))
+#loc46 = loc("col"(#loc8))
+#loc47 = loc("values"(#loc9))
+#loc48 = loc("values"(#loc10))
+#loc49 = loc("values"(#loc11))
+#loc50 = loc("values"(#loc12))
+#loc51 = loc("ids"(#loc13))
+#loc52 = loc("ids"(#loc14))
+#loc53 = loc("ids"(#loc15))
+#loc54 = loc("values"(#loc1))
+#loc56 = loc("matches"(#loc19))
+#loc57 = loc("best_id"(#loc20))
+#loc59 = loc("selected"(#loc32))
+#loc60 = loc("values"(#loc33))
+#loc61 = loc("ids"(#loc34))
+#loc62 = loc("ids"(#loc54))
+#loc63 = loc(callsite(#loc16 at #loc55))
+#loc65 = loc(callsite(#loc21 at #loc58))
+#loc67 = loc(callsite(#loc18 at #loc63))
+#loc68 = loc(callsite(#loc23 at #loc65))

@@ -1,0 +1,76 @@
+compiled 256 baseline 32 1024
+compiled 256 anchor 31 1024
+compiled 256 parent 31 1024
+loc("/root/ops-ttir-dev/moe_routing/multiround/r3/ir/e256_w4/gather_efficient_s2.ttir":163:23): error: invalid properties {axis = 0 : i32, efficient_layout = true} for op tt.gather: Invalid attribute `efficient_layout` in property conversion: true
+COMPILE FAIL 256 gather_efficient RuntimeError('Parse MLIR file failed.')
+compiled 256 unroll_experts 32 1024
+compiled 256 scalar_indices 32 1024
+compiled 512 baseline 32 2048
+compiled 512 anchor 32 2048
+compiled 512 parent 32 2048
+loc("/root/ops-ttir-dev/moe_routing/multiround/r3/ir/e512_w4/gather_efficient_s2.ttir":163:23): error: invalid properties {axis = 0 : i32, efficient_layout = true} for op tt.gather: Invalid attribute `efficient_layout` in property conversion: true
+COMPILE FAIL 512 gather_efficient RuntimeError('Parse MLIR file failed.')
+compiled 512 unroll_experts 40 2048
+compiled 512 scalar_indices 40 2048
+FAIL {'shape': [16, 256], 'distribution': 'normal', 'variant': 'scalar_indices', 'status': 'FAIL', 'error': "{'g': True, 'w': False}"}
+validated 16 256 failed ['scalar_indices']
+validated 32 256 failed ['scalar_indices']
+validated 64 256 failed ['scalar_indices']
+validated 128 256 failed ['scalar_indices']
+validated 256 256 failed ['scalar_indices']
+validated 384 256 failed ['scalar_indices']
+validated 512 256 failed ['scalar_indices']
+validated 768 256 failed ['scalar_indices']
+validated 1024 256 failed ['scalar_indices']
+validated 1536 256 failed ['scalar_indices']
+validated 2048 256 failed ['scalar_indices']
+validated 3072 256 failed ['scalar_indices']
+validated 4096 256 failed ['scalar_indices']
+validated 6144 256 failed ['scalar_indices']
+validated 8192 256 failed ['scalar_indices']
+validated 16 512 failed ['scalar_indices']
+validated 32 512 failed ['scalar_indices']
+validated 64 512 failed ['scalar_indices']
+validated 128 512 failed ['scalar_indices']
+validated 256 512 failed ['scalar_indices']
+validated 384 512 failed ['scalar_indices']
+validated 512 512 failed ['scalar_indices']
+validated 768 512 failed ['scalar_indices']
+validated 1024 512 failed ['scalar_indices']
+validated 1536 512 failed ['scalar_indices']
+validated 2048 512 failed ['scalar_indices']
+validated 3072 512 failed ['scalar_indices']
+validated 4096 512 failed ['scalar_indices']
+validated 6144 512 failed ['scalar_indices']
+validated 8192 512 failed ['scalar_indices']
+bench 16 256 {'unroll_experts': 1.0039931760770826} AA 1.0000170931862395
+bench 32 256 {'unroll_experts': 1.0009865133958398} AA 1.0000589277192886
+bench 64 256 {'unroll_experts': 1.0039077030204306} AA 1.0016153078588304
+bench 128 256 {'unroll_experts': 1.0034944928936713} AA 0.9993044559896834
+bench 256 256 {'unroll_experts': 1.001555855768184} AA 1.0006963628812415
+bench 384 256 {'unroll_experts': 1.0037404434464796} AA 1.0006318151280698
+bench 512 256 {'unroll_experts': 1.002707099073347} AA 1.001293276848297
+bench 768 256 {'unroll_experts': 0.9999808261631318} AA 1.0002793338201228
+bench 1024 256 {'unroll_experts': 0.9991624836896587} AA 1.0007405135360847
+bench 1536 256 {'unroll_experts': 1.0018423156965677} AA 1.0002911479335612
+bench 2048 256 {'unroll_experts': 1.0056935542479137} AA 0.9999356410027238
+bench 3072 256 {'unroll_experts': 1.0038677385794346} AA 0.9999776145481496
+bench 4096 256 {'unroll_experts': 1.0077649768720562} AA 0.9999486274129195
+bench 6144 256 {'unroll_experts': 1.00704023302826} AA 0.9998543825191036
+bench 8192 256 {'unroll_experts': 1.0082177321222094} AA 0.9999741415947628
+bench 16 512 {'unroll_experts': 1.0021060028230913} AA 1.0045088716348678
+bench 32 512 {'unroll_experts': 0.9997270586898679} AA 1.0003809853242454
+bench 64 512 {'unroll_experts': 1.0015648409965237} AA 0.9964663290151958
+bench 128 512 {'unroll_experts': 1.001843463156899} AA 0.9999484282789382
+bench 256 512 {'unroll_experts': 0.9994150758441561} AA 1.0022261729263489
+bench 384 512 {'unroll_experts': 0.9990869681679415} AA 0.9993415004413206
+bench 512 512 {'unroll_experts': 1.0002275418982338} AA 1.000038664105064
+bench 768 512 {'unroll_experts': 1.002117456694701} AA 0.9992883012282253
+bench 1024 512 {'unroll_experts': 0.9984929292337171} AA 0.9997869256930321
+bench 1536 512 {'unroll_experts': 1.0000679659245826} AA 1.0002452871096525
+bench 2048 512 {'unroll_experts': 0.984405790140809} AA 1.0000106386906404
+bench 3072 512 {'unroll_experts': 0.9945606308786802} AA 0.9985400524321609
+bench 4096 512 {'unroll_experts': 0.9962064409230845} AA 1.0005727987570865
+bench 6144 512 {'unroll_experts': 0.9957327052989589} AA 0.9999505890876546
+bench 8192 512 {'unroll_experts': 0.9967335517136473} AA 1.000045143315488
+{'unroll_experts': {'parent_over_candidate': {'geomean': 1.0008646106232346, 'worst': 0.984405790140809, 'best': 1.0082177321222094}, 'anchor_over_candidate': {'geomean': 1.0007584206696742, 'worst': 0.9845723656211578, 'best': 1.0083459863648372}, 'baseline_over_candidate': {'geomean': 1.4077470613972485, 'worst': 1.321132508696706, 'best': 1.5769017678306725}}} AA_PASS True

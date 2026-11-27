@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/root/ops-ttir-dev/attention_dkdv/source_port/verify_pipeline.py", line 64, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/root/ops-ttir-dev/attention_dkdv/source_port/verify_pipeline.py", line 46, in main
+    launch(kernels['source'],t);torch.cuda.synchronize()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/ops-ttir-dev/attention_dkdv/common.py", line 192, in launch
+    ck[(n // 128, 1, b * h)](*args)
+  File "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/compiler/compiler.py", line 501, in runner
+    self.run(grid[0], grid[1], grid[2], stream, self.function, self.packed_metadata, launch_metadata,
+  File "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/driver.py", line 328, in __call__
+    self.launch(gridX, gridY, gridZ, stream, function, self.launch_cooperative_grid, self.launch_pdl,
+SystemError: ../Objects/longobject.c:473: bad argument to internal function

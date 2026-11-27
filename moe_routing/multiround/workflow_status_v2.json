@@ -1,0 +1,368 @@
+{
+  "rounds": [
+    {
+      "round": "r4",
+      "candidate": "pair_top2_v2",
+      "accepted": false,
+      "repeat": {
+        "incremental": {
+          "geomean": 1.0194147555382234,
+          "worst": 1.0021693758860462,
+          "best": 1.041041763285699,
+          "bootstrap95": [
+            1.0186113284322345,
+            1.0198035759932789
+          ]
+        },
+        "anchor_relative": {
+          "geomean": 1.0190895768148605,
+          "worst": 1.0019245381324815,
+          "best": 1.0431826976486616,
+          "bootstrap95": [
+            1.0182602493236577,
+            1.0198220431621354
+          ]
+        },
+        "cumulative": {
+          "geomean": 1.4335684481562447,
+          "worst": 1.3347389337064905,
+          "best": 1.5992099373987922,
+          "bootstrap95": [
+            1.4325303649425345,
+            1.4357608049779813
+          ]
+        }
+      },
+      "selected_repeat": {
+        "incremental": {
+          "geomean": 1.0,
+          "worst": 1.0,
+          "best": 1.0,
+          "bootstrap95": [
+            1.0,
+            1.0
+          ]
+        },
+        "anchor_relative": {
+          "geomean": 1.0000095451161954,
+          "worst": 0.9972069223097598,
+          "best": 1.0025002470695403,
+          "bootstrap95": [
+            0.9994357640076781,
+            1.0005700308244223
+          ]
+        },
+        "cumulative": {
+          "geomean": 1.406486339595459,
+          "worst": 1.3195621903087056,
+          "best": 1.5817338055317518,
+          "bootstrap95": [
+            1.4058943254234089,
+            1.4085566519175148
+          ]
+        }
+      }
+    },
+    {
+      "round": "r5",
+      "candidate": "pair_integer_constants",
+      "accepted": true,
+      "repeat": {
+        "incremental": {
+          "geomean": 1.0717720761809961,
+          "worst": 1.0103734107221618,
+          "best": 1.1228769273603623,
+          "bootstrap95": [
+            1.0711831372963687,
+            1.0724388444722792
+          ]
+        },
+        "anchor_relative": {
+          "geomean": 1.0716901132577756,
+          "worst": 1.0104591799274525,
+          "best": 1.1215393623325203,
+          "bootstrap95": [
+            1.0709702617427914,
+            1.0721802637075633
+          ]
+        },
+        "cumulative": {
+          "geomean": 1.5077408389630955,
+          "worst": 1.3844275638941392,
+          "best": 1.733471044616482,
+          "bootstrap95": [
+            1.5070690583859532,
+            1.5086318306718645
+          ]
+        }
+      },
+      "selected_repeat": {
+        "incremental": {
+          "geomean": 1.0717720761809961,
+          "worst": 1.0103734107221618,
+          "best": 1.1228769273603623,
+          "bootstrap95": [
+            1.0711831372963687,
+            1.0724388444722792
+          ]
+        },
+        "anchor_relative": {
+          "geomean": 1.0716901132577756,
+          "worst": 1.0104591799274525,
+          "best": 1.1215393623325203,
+          "bootstrap95": [
+            1.0709702617427914,
+            1.0721802637075633
+          ]
+        },
+        "cumulative": {
+          "geomean": 1.5077408389630955,
+          "worst": 1.3844275638941392,
+          "best": 1.733471044616482,
+          "bootstrap95": [
+            1.5070690583859532,
+            1.5086318306718645
+          ]
+        }
+      }
+    }
+  ],
+  "commands": [
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/generate.py",
+        "r4"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r4/generate.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/run.py",
+        "--round",
+        "r4",
+        "--run",
+        "screen_v2",
+        "--variants",
+        "ordered_top2",
+        "pair_top2_v2"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r4/screen_v2.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/finalize.py",
+        "select",
+        "--round",
+        "r4",
+        "--screen",
+        "screen_v2",
+        "--selection",
+        "selection_pre_main_v2.json"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r4/select.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/run.py",
+        "--round",
+        "r4",
+        "--run",
+        "main_v2",
+        "--variants",
+        "pair_top2_v2",
+        "--rounds",
+        "7",
+        "--rep",
+        "20",
+        "--seed",
+        "42"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r4/main_v2.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/run.py",
+        "--round",
+        "r4",
+        "--run",
+        "repeat_v2",
+        "--variants",
+        "pair_top2_v2",
+        "--rounds",
+        "5",
+        "--rep",
+        "20",
+        "--seed",
+        "123"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r4/repeat_v2.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/finalize.py",
+        "finish",
+        "--round",
+        "r4",
+        "--selection",
+        "selection_pre_main_v2.json",
+        "--main",
+        "main_v2",
+        "--repeat",
+        "repeat_v2",
+        "--suffix=_v2"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r4/finalize.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/generate.py",
+        "r5"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r5/generate.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/run.py",
+        "--round",
+        "r5",
+        "--run",
+        "screen"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r5/screen.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/finalize.py",
+        "select",
+        "--round",
+        "r5",
+        "--screen",
+        "screen",
+        "--selection",
+        "selection_pre_main.json"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r5/select.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/run.py",
+        "--round",
+        "r5",
+        "--run",
+        "main",
+        "--variants",
+        "pair_integer_constants",
+        "--rounds",
+        "7",
+        "--rep",
+        "20",
+        "--seed",
+        "42"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r5/main.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/run.py",
+        "--round",
+        "r5",
+        "--run",
+        "repeat",
+        "--variants",
+        "pair_integer_constants",
+        "--rounds",
+        "5",
+        "--rep",
+        "20",
+        "--seed",
+        "123"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r5/repeat.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "compute-sanitizer",
+        "--tool",
+        "memcheck",
+        "--error-exitcode",
+        "99",
+        "--kernel-name",
+        "regex=topk",
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/run.py",
+        "--round",
+        "r5",
+        "--run",
+        "memcheck",
+        "--variants",
+        "pair_integer_constants",
+        "--check-only"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r5/memcheck.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "compute-sanitizer",
+        "--tool",
+        "racecheck",
+        "--error-exitcode",
+        "99",
+        "--kernel-name",
+        "regex=topk",
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/run.py",
+        "--round",
+        "r5",
+        "--run",
+        "racecheck",
+        "--variants",
+        "pair_integer_constants",
+        "--check-only"
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r5/racecheck.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/moe_routing/multiround/finalize.py",
+        "finish",
+        "--round",
+        "r5",
+        "--selection",
+        "selection_pre_main.json",
+        "--main",
+        "main",
+        "--repeat",
+        "repeat",
+        "--suffix="
+      ],
+      "log": "/root/ops-ttir-dev/moe_routing/multiround/r5/finalize.log",
+      "exit_code": 0
+    }
+  ],
+  "completed": true
+}

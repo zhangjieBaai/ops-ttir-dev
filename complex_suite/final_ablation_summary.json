@@ -1,0 +1,62 @@
+{
+  "date": "2026-11-24",
+  "unique_shapes": 152,
+  "operators": [
+    {
+      "operator": "int4_gemm",
+      "label": "INT4\u53cd\u91cf\u5316\uff0bGEMM",
+      "shape_count": 30,
+      "main": 2.5278854759161415,
+      "repeat": 2.5315427691509385,
+      "protocol": "7/5\u8f6e\uff0c20ms\uff0cGPU0/1",
+      "evidence_grade": "A",
+      "summary_path": "int4_gemm/ablation/results/v2_summary.json",
+      "summary_sha256": "c35d0b1ee834d4ad192e863740a69be4ea93bf366b3d34390598b1a8ca6d5bcc"
+    },
+    {
+      "operator": "moe_routing",
+      "label": "Grouped/biased MoE",
+      "shape_count": 30,
+      "main": 1.542132442333604,
+      "repeat": 1.539492372112547,
+      "protocol": "5/3\u8f6e\uff0c10ms\uff0cGPU2/3",
+      "evidence_grade": "A",
+      "summary_path": "moe_routing/ablation_v1/summary.json",
+      "summary_sha256": "e1c94042643ae028a29c9936e5e4f1918091bf0b431e94005da79926ab51795c"
+    },
+    {
+      "operator": "norm_quant",
+      "label": "Residual RMSNorm\uff0bINT8",
+      "shape_count": 30,
+      "main": 1.4337418763194696,
+      "repeat": 1.4368162404270395,
+      "protocol": "7/5\u8f6e\uff0c20ms\uff0cGPU6\u4e32\u884c",
+      "evidence_grade": "A",
+      "summary_path": "norm_quant/ablation_v1/summary.json",
+      "summary_sha256": "7e9335f7d172ba15b6b79a42d5187ec170de614cb27a3202ce8b386745a07052"
+    },
+    {
+      "operator": "attention_dkdv",
+      "label": "Attention dK/dV",
+      "shape_count": 32,
+      "main": 1.8002240694807017,
+      "repeat": 1.7971487553601577,
+      "protocol": "7/5\u8f6e\uff0c20ms\uff0cGPU4/5\uff0c1200MHz",
+      "evidence_grade": "A",
+      "summary_path": "attention_dkdv/results/ablation_v2/summary/summary.json",
+      "summary_sha256": "58734a487ff439f57b9fc0c4d025e3c67922c8f66c20145917494e98aced78b4"
+    },
+    {
+      "operator": "partial_topk",
+      "label": "Partial Top-K",
+      "shape_count": 30,
+      "main": 1.2757965704368983,
+      "repeat": 1.2714974836613,
+      "protocol": "7/5\u8f6e\uff0c20ms\uff0cGPU7/1",
+      "evidence_grade": "A",
+      "summary_path": "partial_topk/ablation_v1/summary.json",
+      "summary_sha256": "3b139699bf687c1e7c15a64c70ec494a90e71e890f510663554f92d7fe1adf66"
+    }
+  ],
+  "metric": "geomean of per-shape median within-round baseline/final ratios"
+}

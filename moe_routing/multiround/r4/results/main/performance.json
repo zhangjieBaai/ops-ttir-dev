@@ -1,0 +1,5402 @@
+{
+  "environment": {
+    "python": "/root/venvs/ir-ops-dev/bin/python",
+    "prefix": "/root/venvs/ir-ops-dev",
+    "triton": "3.7.0",
+    "triton_path": "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/__init__.py",
+    "libtriton_path": "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/_C/libtriton.so",
+    "include_system_site_packages": false,
+    "sys_path": [
+      "/root/ops-ttir-dev",
+      "/root/ops-ttir-dev/moe_routing",
+      "/root/ops-ttir-dev/moe_routing/multiround",
+      "/usr/lib/python312.zip",
+      "/usr/lib/python3.12",
+      "/usr/lib/python3.12/lib-dynload",
+      "/root/venvs/ir-ops-dev/lib/python3.12/site-packages"
+    ],
+    "flagtree_flagprism_distributions": [],
+    "flagtree_flagprism_source_markers": [],
+    "installer": "pip\n",
+    "direct_url": null,
+    "verified_record_entries": 362,
+    "torch": "2.12.0+cu130",
+    "device": "2",
+    "gpu": "index, uuid, name, driver_version, clocks.current.sm [MHz], power.draw [W], temperature.gpu\n0, GPU-cc248ebf-79d0-42d7-da65-99d1ef6f4ed1, NVIDIA H100 80GB HBM3, 580.126.20, 1830 MHz, 150.46 W, 33\n1, GPU-2256da5a-8ff3-e27c-c9f0-11578c10fe28, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 72.91 W, 29\n2, GPU-1b49d645-5a41-1372-f736-40978ddba030, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 71.24 W, 32\n3, GPU-891abe27-275f-e39b-79ec-dbc9bc3ba6b2, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 74.58 W, 32\n4, GPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 1200 MHz, 257.75 W, 37\n5, GPU-8b3add97-9c35-553e-695d-14cac5a9ea51, NVIDIA H100 80GB HBM3, 580.126.20, 345 MHz, 71.64 W, 29\n6, GPU-c93dcf8b-2363-d1c2-02b4-4572cef79c41, NVIDIA H100 80GB HBM3, 580.126.20, 1830 MHz, 526.53 W, 50\n7, GPU-b024aea2-2ffa-7211-b551-8e5575887423, NVIDIA H100 80GB HBM3, 580.126.20, 1830 MHz, 560.85 W, 49\n",
+    "toolchain": {
+      "libtriton": "a9c01e1f31c128b18f7adb9b2d383de0fae051c851658886da22d4915f60b8f5",
+      "backend": "d012f2a7e705592e590630a0df58099ceeb9ef71517c561fc81644c0c9399658",
+      "ptxas": "c960a4f238b17d5c5d3c01ad2bbc1ebd2c5aecc459cb4d223bff10b45f9b8fca"
+    },
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "2",
+      "CUDA_ARCH_LIST": "7.5 8.0 8.6 9.0 10.0 12.0",
+      "CUDA_VERSION": "12.9.0.043",
+      "PYTHONIOENCODING": "utf-8",
+      "LD_LIBRARY_PATH": "/usr/local/lib/python3.12/dist-packages/torch/lib:/usr/local/lib/python3.12/dist-packages/torch_tensorrt/lib:/usr/local/cuda/compat/lib:/usr/local/nvidia/lib:/usr/local/nvidia/lib64",
+      "CUDA_DRIVER_VERSION": "575.51.03",
+      "CUDA_HOME": "/usr/local/cuda",
+      "CUDA_MODULE_LOADING": "LAZY"
+    },
+    "clocks_locked": false,
+    "cache_flushed": false
+  },
+  "manifest_sha256": "8a4505156c7c697cde0d2d88eb1c1268d6800cac7f85ad400f501f3bb9469fe6",
+  "seed": 42,
+  "rounds": 7,
+  "rep_ms": 20,
+  "names": [
+    "baseline",
+    "anchor",
+    "parent",
+    "ordered_top2"
+  ],
+  "kernels": {
+    "e256/baseline": [
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/multiround/r4/ir/e256_w4/baseline_s1.ttir",
+        "ir_sha256": "480213e9b84efb96c2b1d0fd3335c21a845329a0eb614882e0c5a59a744950ad",
+        "stage_sha256": {
+          "ttir": "480213e9b84efb96c2b1d0fd3335c21a845329a0eb614882e0c5a59a744950ad",
+          "ttgir": "0eb3783e528310bffaf7dc4f80f7cbf3c0a1c2785d4015c60a8d08eb7a235de7",
+          "llir": "a8d84973ebe91b9e97eff8324a632c1365a37af6aa45988068ba897e7ce9ba33",
+          "ptx": "f154a565566de4a2d688d0ed1a38cb3b8db767da4d41a72d1a94c0897457c999",
+          "cubin": "cec3824f9952b0c33f6eef744b33a4e7376e910bebb185c7e933327ab16bd241"
+        },
+        "n_regs": 18,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "57e6c7ac759e120a3a8a968c7fbc6618a410b216f5bae10b9799d7271237ec5c",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "topk_with_k2_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 0,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.topk_with_k2_triton": "cccbd97ed065f5bbfeaea90aee4fb0312c76595fd47b2476de5479bc17271d4f"
+        }
+      },
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/multiround/r4/ir/e256_w4/baseline_s2.ttir",
+        "ir_sha256": "87a63d0028a80309710a4c91eb5a094f0f22b3627eb4019f2f89b646251e685c",
+        "stage_sha256": {
+          "ttir": "614e8b7cfeaacfadcd6f39d27f6982c5305dcbef0d7c02ee8c8b9a65ed459a37",
+          "ttgir": "b70b6a6fa7d931e5906f3391ca5e0e85e5846627ed380846265138e5bede8676",
+          "llir": "51d87bd8e6b0de103dc6ee5767d161356cf41f1b81ea8dea4ea2eccb26043a58",
+          "ptx": "8c450a40034720b2d72c694c9e81f742a5cb99114b1a249bd7926d1aa41e3c36",
+          "cubin": "57422cf996c28c05a3f12972248e30a4903e5cc38c8a3b34b85279af49ffa6ae"
+        },
+        "n_regs": 32,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "fe0da4f4c92d4ebffe3a530420a3d2659bb00ea57b508cf4ef4a3c28dd151d62",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "group_idx_and_topk_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 1024,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.group_idx_and_topk_triton": "3114c3ded4031142ad606ab4b1c4861a0fc460e5bc2cd1a25979cad247343713"
+        }
+      }
+    ],
+    "e256/anchor": [
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/multiround/r4/ir/e256_w4/anchor_s1.ttir",
+        "ir_sha256": "480213e9b84efb96c2b1d0fd3335c21a845329a0eb614882e0c5a59a744950ad",
+        "stage_sha256": {
+          "ttir": "480213e9b84efb96c2b1d0fd3335c21a845329a0eb614882e0c5a59a744950ad",
+          "ttgir": "0eb3783e528310bffaf7dc4f80f7cbf3c0a1c2785d4015c60a8d08eb7a235de7",
+          "llir": "a8d84973ebe91b9e97eff8324a632c1365a37af6aa45988068ba897e7ce9ba33",
+          "ptx": "f154a565566de4a2d688d0ed1a38cb3b8db767da4d41a72d1a94c0897457c999",
+          "cubin": "cec3824f9952b0c33f6eef744b33a4e7376e910bebb185c7e933327ab16bd241"
+        },
+        "n_regs": 18,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "57e6c7ac759e120a3a8a968c7fbc6618a410b216f5bae10b9799d7271237ec5c",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "topk_with_k2_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 0,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.topk_with_k2_triton": "cccbd97ed065f5bbfeaea90aee4fb0312c76595fd47b2476de5479bc17271d4f"
+        }
+      },
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/multiround/r4/ir/e256_w4/anchor_s2.ttir",
+        "ir_sha256": "4adc0f60fc21178d08f8cb5b6afc46d6c4a4e01eb149e5d161f5e8dab8c262d0",
+        "stage_sha256": {
+          "ttir": "df1d2a9c25f2c1a041dbe5c7d9fc957be4b3f65fc4ae17777d6f069d9caddb05",
+          "ttgir": "b6c31695f8d98851a41789896c431fee05ef66f525b3508b07291eac6f2558d2",
+          "llir": "b6e5b32d3cdec19bd011ccbc89852713c431b84b97ee44e47633a414a46da646",
+          "ptx": "794228dc9402dd9d42bc7c7de21b844fa1b4448f2b28ec642cc1e9eebb2fb8e3",
+          "cubin": "f4357a21b98ad15720101d76d402087ef13ee2f6861514a9c9e3df12147ac3d4"
+        },
+        "n_regs": 31,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "1655ba7dde5d0447b119706a01957735ebe6bbdfbd500f0dcf37409aa533f160",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "group_idx_and_topk_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 1024,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.group_idx_and_topk_triton": "f26b50f8fe8f7f5554b5f8466016d102b3f54c96d5c0f03d1f079f65e433a799"
+        }
+      }
+    ],
+    "e256/parent": [
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/multiround/r4/ir/e256_w4/parent_s1.ttir",
+        "ir_sha256": "480213e9b84efb96c2b1d0fd3335c21a845329a0eb614882e0c5a59a744950ad",
+        "stage_sha256": {
+          "ttir": "480213e9b84efb96c2b1d0fd3335c21a845329a0eb614882e0c5a59a744950ad",
+          "ttgir": "0eb3783e528310bffaf7dc4f80f7cbf3c0a1c2785d4015c60a8d08eb7a235de7",
+          "llir": "a8d84973ebe91b9e97eff8324a632c1365a37af6aa45988068ba897e7ce9ba33",
+          "ptx": "f154a565566de4a2d688d0ed1a38cb3b8db767da4d41a72d1a94c0897457c999",
+          "cubin": "cec3824f9952b0c33f6eef744b33a4e7376e910bebb185c7e933327ab16bd241"
+        },
+        "n_regs": 18,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "57e6c7ac759e120a3a8a968c7fbc6618a410b216f5bae10b9799d7271237ec5c",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "topk_with_k2_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 0,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.topk_with_k2_triton": "cccbd97ed065f5bbfeaea90aee4fb0312c76595fd47b2476de5479bc17271d4f"
+        }
+      },
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/multiround/r4/ir/e256_w4/parent_s2.ttir",
+        "ir_sha256": "4adc0f60fc21178d08f8cb5b6afc46d6c4a4e01eb149e5d161f5e8dab8c262d0",
+        "stage_sha256": {
+          "ttir": "df1d2a9c25f2c1a041dbe5c7d9fc957be4b3f65fc4ae17777d6f069d9caddb05",
+          "ttgir": "b6c31695f8d98851a41789896c431fee05ef66f525b3508b07291eac6f2558d2",
+          "llir": "b6e5b32d3cdec19bd011ccbc89852713c431b84b97ee44e47633a414a46da646",
+          "ptx": "794228dc9402dd9d42bc7c7de21b844fa1b4448f2b28ec642cc1e9eebb2fb8e3",
+          "cubin": "f4357a21b98ad15720101d76d402087ef13ee2f6861514a9c9e3df12147ac3d4"
+        },
+        "n_regs": 31,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "1655ba7dde5d0447b119706a01957735ebe6bbdfbd500f0dcf37409aa533f160",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "group_idx_and_topk_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 1024,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.group_idx_and_topk_triton": "f26b50f8fe8f7f5554b5f8466016d102b3f54c96d5c0f03d1f079f65e433a799"
+        }
+      }
+    ],
+    "e256/ordered_top2": [
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/multiround/r4/ir/e256_w4/ordered_top2_s1.ttir",
+        "ir_sha256": "be7d8ab82177838e402722197dcb06bcc8732c3ed15019bfc12cdb08c018004c",
+        "stage_sha256": {
+          "ttir": "867b27854a496598a1d2ff5c2bc668f24c4a2e9b8e4bed66062ae7ac379d9b6f",
+          "ttgir": "1956983c3f86270b9212b5072b7de84a6409508dc912203bcabcddcdce92efab",
+          "llir": "55178bc704906259aca088b3206886d39e26c2550618d0370e6d96fc139489bb",
+          "ptx": "c79ba0d563edc11cda16afd1e3b945cf7e6875c74db16dfc4e8bf827123b8b11",
+          "cubin": "b7cdbbc866886e5a6467b3cae621a74d3b5ef5811d0f5de1252ce26a2fb72c9e"
+        },
+        "n_regs": 18,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "39ac18e1ebf00812f1304dabcf2674e78f080aa248493fc1e621f4a00e716fe6",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "topk_with_k2_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 0,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.topk_with_k2_triton": "0af9020a2ab4547a0c8e75c8efa67fa13fabcb79c5c554fa417841fa518c65b8"
+        }
+      },
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/multiround/r4/ir/e256_w4/ordered_top2_s2.ttir",
+        "ir_sha256": "4adc0f60fc21178d08f8cb5b6afc46d6c4a4e01eb149e5d161f5e8dab8c262d0",
+        "stage_sha256": {
+          "ttir": "df1d2a9c25f2c1a041dbe5c7d9fc957be4b3f65fc4ae17777d6f069d9caddb05",
+          "ttgir": "b6c31695f8d98851a41789896c431fee05ef66f525b3508b07291eac6f2558d2",
+          "llir": "b6e5b32d3cdec19bd011ccbc89852713c431b84b97ee44e47633a414a46da646",
+          "ptx": "794228dc9402dd9d42bc7c7de21b844fa1b4448f2b28ec642cc1e9eebb2fb8e3",
+          "cubin": "f4357a21b98ad15720101d76d402087ef13ee2f6861514a9c9e3df12147ac3d4"
+        },
+        "n_regs": 31,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "1655ba7dde5d0447b119706a01957735ebe6bbdfbd500f0dcf37409aa533f160",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "group_idx_and_topk_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 1024,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.group_idx_and_topk_triton": "f26b50f8fe8f7f5554b5f8466016d102b3f54c96d5c0f03d1f079f65e433a799"
+        }
+      }
+    ],
+    "e512/baseline": [
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/multiround/r4/ir/e512_w4/baseline_s1.ttir",
+        "ir_sha256": "44437b2e9b16bdc93722071a1ee39e2511ffe90620ed009200bad00bb2b588ff",
+        "stage_sha256": {
+          "ttir": "44437b2e9b16bdc93722071a1ee39e2511ffe90620ed009200bad00bb2b588ff",
+          "ttgir": "36ff30ab322b47ffd41688a76f44b4ef1b521bd94fc993755d3e58871e605637",
+          "llir": "b5a5cbacb4b94039fa97dd434fd8633ec7691493cfa70cebd0a1d0417f01edd7",
+          "ptx": "4161d210c39948e0115736950a64d8d878696e63c58b7dc5f9735f8c5d3ef74f",
+          "cubin": "525a6388661767630dd2e998690448feed00313684ef1ca9355ded24ef46fc2c"
+        },
+        "n_regs": 20,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "e3689039ce9f3a5070cf2d23e19c3b2abe28cb2e8b7d9c1403b314cd32915869",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "topk_with_k2_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 8,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.topk_with_k2_triton": "7bd26f608ef03479a434a08496697150b22e4dd939fa0b185cc80113a4ef5c16"
+        }
+      },
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/multiround/r4/ir/e512_w4/baseline_s2.ttir",
+        "ir_sha256": "122b02ce8916c48ee764572494c73e6f192d2b4fd626f383f1589a4949864fa5",
+        "stage_sha256": {
+          "ttir": "fa37397877596e25defbd3001b7a1464cf1ddf327e8f55ffdac5c0089b8b3932",
+          "ttgir": "743d05cfdffc99f390eb6f6f8c24a46b4d02a280bc0cc0a7ec10e6a92a7ddb75",
+          "llir": "d1493d1779460529c0af8dc5f968ee44da60eaed2f89ca20e864fda7d5c9d461",
+          "ptx": "d7a7c49d2ba940d6ab68378c48eaa471e67753749fdb425d3ee1639b95bc9521",
+          "cubin": "8c9f10e5aa69dced8bf488ba076f8c1a2cdbdc4d49e052c84bb138f2e541791c"
+        },
+        "n_regs": 32,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "058fb4093a6df1a660c81a5da2119f7fc5ff14ffe5bfc3ccd2804828670486e7",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "group_idx_and_topk_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 2048,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.group_idx_and_topk_triton": "df1c8940a153af35806a3ae117c9e464c0ee599095a90825e48e984c5ef2a2c6"
+        }
+      }
+    ],
+    "e512/anchor": [
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/multiround/r4/ir/e512_w4/anchor_s1.ttir",
+        "ir_sha256": "44437b2e9b16bdc93722071a1ee39e2511ffe90620ed009200bad00bb2b588ff",
+        "stage_sha256": {
+          "ttir": "44437b2e9b16bdc93722071a1ee39e2511ffe90620ed009200bad00bb2b588ff",
+          "ttgir": "36ff30ab322b47ffd41688a76f44b4ef1b521bd94fc993755d3e58871e605637",
+          "llir": "b5a5cbacb4b94039fa97dd434fd8633ec7691493cfa70cebd0a1d0417f01edd7",
+          "ptx": "4161d210c39948e0115736950a64d8d878696e63c58b7dc5f9735f8c5d3ef74f",
+          "cubin": "525a6388661767630dd2e998690448feed00313684ef1ca9355ded24ef46fc2c"
+        },
+        "n_regs": 20,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "e3689039ce9f3a5070cf2d23e19c3b2abe28cb2e8b7d9c1403b314cd32915869",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "topk_with_k2_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 8,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.topk_with_k2_triton": "7bd26f608ef03479a434a08496697150b22e4dd939fa0b185cc80113a4ef5c16"
+        }
+      },
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/multiround/r4/ir/e512_w4/anchor_s2.ttir",
+        "ir_sha256": "97ff16f5ee480b5ae069b06e07650aea917aa5f8950f727bbd369de74de2c667",
+        "stage_sha256": {
+          "ttir": "8b05033ff3f03cce9306d996ac48cfc612ad5cae82555840eadf6cdf085d784c",
+          "ttgir": "c3a870075ef9763b4bde1e45bcc8824e8bd01da3a78b5cff7c7c97c796b5b7ed",
+          "llir": "50dc3707db9506d17cddf6525ea328299d8f789ab8bd83d77d11f2d7f226c083",
+          "ptx": "61cbb36f756e20962f0fa022dc639579f23c5942a31ad345e8543f9a6268a632",
+          "cubin": "9bd1a7a4dbfc6e5e7d5bdd47ce2fe26c79f5efe24b0073b8b969a2af836ab484"
+        },
+        "n_regs": 32,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "bfb3d3bf1dec01f5a7f8e0cd5bc2328e55265a60c2bd9a553cb39581f13172a9",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "group_idx_and_topk_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 2048,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.group_idx_and_topk_triton": "40552e66b09901b2a9a341ce54eefcbf1ad06c77f161bf616db86a2c8118ce68"
+        }
+      }
+    ],
+    "e512/parent": [
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/multiround/r4/ir/e512_w4/parent_s1.ttir",
+        "ir_sha256": "44437b2e9b16bdc93722071a1ee39e2511ffe90620ed009200bad00bb2b588ff",
+        "stage_sha256": {
+          "ttir": "44437b2e9b16bdc93722071a1ee39e2511ffe90620ed009200bad00bb2b588ff",
+          "ttgir": "36ff30ab322b47ffd41688a76f44b4ef1b521bd94fc993755d3e58871e605637",
+          "llir": "b5a5cbacb4b94039fa97dd434fd8633ec7691493cfa70cebd0a1d0417f01edd7",
+          "ptx": "4161d210c39948e0115736950a64d8d878696e63c58b7dc5f9735f8c5d3ef74f",
+          "cubin": "525a6388661767630dd2e998690448feed00313684ef1ca9355ded24ef46fc2c"
+        },
+        "n_regs": 20,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "e3689039ce9f3a5070cf2d23e19c3b2abe28cb2e8b7d9c1403b314cd32915869",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "topk_with_k2_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 8,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.topk_with_k2_triton": "7bd26f608ef03479a434a08496697150b22e4dd939fa0b185cc80113a4ef5c16"
+        }
+      },
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/multiround/r4/ir/e512_w4/parent_s2.ttir",
+        "ir_sha256": "97ff16f5ee480b5ae069b06e07650aea917aa5f8950f727bbd369de74de2c667",
+        "stage_sha256": {
+          "ttir": "8b05033ff3f03cce9306d996ac48cfc612ad5cae82555840eadf6cdf085d784c",
+          "ttgir": "c3a870075ef9763b4bde1e45bcc8824e8bd01da3a78b5cff7c7c97c796b5b7ed",
+          "llir": "50dc3707db9506d17cddf6525ea328299d8f789ab8bd83d77d11f2d7f226c083",
+          "ptx": "61cbb36f756e20962f0fa022dc639579f23c5942a31ad345e8543f9a6268a632",
+          "cubin": "9bd1a7a4dbfc6e5e7d5bdd47ce2fe26c79f5efe24b0073b8b969a2af836ab484"
+        },
+        "n_regs": 32,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "bfb3d3bf1dec01f5a7f8e0cd5bc2328e55265a60c2bd9a553cb39581f13172a9",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "group_idx_and_topk_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 2048,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.group_idx_and_topk_triton": "40552e66b09901b2a9a341ce54eefcbf1ad06c77f161bf616db86a2c8118ce68"
+        }
+      }
+    ],
+    "e512/ordered_top2": [
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/multiround/r4/ir/e512_w4/ordered_top2_s1.ttir",
+        "ir_sha256": "45a5fd259cfe2d0371156e1a49772648c8d607d952011d6a451e2f2817d71d03",
+        "stage_sha256": {
+          "ttir": "5743d3b0709f5bd227ac963a1d41b835d7bbe2fd108214f4e8e520aa893025bb",
+          "ttgir": "6d5351c56e826fd8f2b95dfc8773c81feaa9491c08b657ff901a606c3616001c",
+          "llir": "03cf5b2c32d21b2a50fa5a41ed80a42942d5e34cd166d013037ac1b81505597d",
+          "ptx": "4eac9b5c57a597cb1655cfe49ac8e25fbb55765b84074a7ef50858baa4e6a5c7",
+          "cubin": "2ffd0f86e5129aa1b9fde0f42ccbc017cd9dd19d9445a54531ce71a17ddf253c"
+        },
+        "n_regs": 20,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "eae6c4c4dc63ec7b8c51bf7d0481cec990f10697c1e72ae9026dd31d1d3e4644",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "topk_with_k2_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 8,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.topk_with_k2_triton": "cca765cb6aa73a8ad2cb1b757ab0339dd67cf850f84e5fc2ba0f0a985e5d43a9"
+        }
+      },
+      {
+        "ir_path": "/root/ops-ttir-dev/moe_routing/multiround/r4/ir/e512_w4/ordered_top2_s2.ttir",
+        "ir_sha256": "97ff16f5ee480b5ae069b06e07650aea917aa5f8950f727bbd369de74de2c667",
+        "stage_sha256": {
+          "ttir": "8b05033ff3f03cce9306d996ac48cfc612ad5cae82555840eadf6cdf085d784c",
+          "ttgir": "c3a870075ef9763b4bde1e45bcc8824e8bd01da3a78b5cff7c7c97c796b5b7ed",
+          "llir": "50dc3707db9506d17cddf6525ea328299d8f789ab8bd83d77d11f2d7f226c083",
+          "ptx": "61cbb36f756e20962f0fa022dc639579f23c5942a31ad345e8543f9a6268a632",
+          "cubin": "9bd1a7a4dbfc6e5e7d5bdd47ce2fe26c79f5efe24b0073b8b969a2af836ab484"
+        },
+        "n_regs": 32,
+        "n_spills": 0,
+        "metadata": {
+          "allowed_dot_input_precisions": [
+            "tf32",
+            "tf32x3",
+            "ieee",
+            "bf16x3",
+            "bf16x6"
+          ],
+          "arch": "sm90",
+          "backend_name": "cuda",
+          "debug": false,
+          "default_dot_input_precision": "tf32",
+          "deprecated_fp8_dot_operand_dtypes": [
+            "fp8e4b15"
+          ],
+          "enable_fp_fusion": true,
+          "enable_reflect_ftz": true,
+          "extern_libs": [
+            [
+              "libdevice",
+              "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+            ]
+          ],
+          "global_scratch_align": 1,
+          "global_scratch_size": 0,
+          "hash": "bfb3d3bf1dec01f5a7f8e0cd5bc2328e55265a60c2bd9a553cb39581f13172a9",
+          "instrumentation_mode": "",
+          "ir_override": null,
+          "launch_cooperative_grid": false,
+          "launch_pdl": false,
+          "max_num_imprecise_acc_default": 1073741824,
+          "maxnreg": null,
+          "name": "group_idx_and_topk_triton",
+          "num_ctas": 1,
+          "num_stages": 3,
+          "num_warps": 4,
+          "profile_scratch_align": 1,
+          "profile_scratch_size": 0,
+          "ptx_options": null,
+          "ptx_version": null,
+          "sanitize_overflow": true,
+          "shared": 2048,
+          "supported_fp8_dtypes": [
+            "fp8e4b15",
+            "fp8e4nv",
+            "fp8e5"
+          ],
+          "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+          "tensordesc_meta": [],
+          "tmem_size": 0,
+          "triton_version": "3.7.0",
+          "warp_size": 32
+        },
+        "text_sha256": {
+          ".text.group_idx_and_topk_triton": "40552e66b09901b2a9a341ce54eefcbf1ad06c77f161bf616db86a2c8118ce68"
+        }
+      }
+    ]
+  },
+  "records": [
+    {
+      "shape": [
+        16,
+        256
+      ],
+      "input_seed": 16000346,
+      "input_sha256": {
+        "x": "885d1e57bb8e8d3d29eb4d061dff8afe73067889ebea4418907ccfd70c7388e2",
+        "b": "10b1cd04d002147b158c63b03706e9701f13cb60d49e272de46884a03e355a2c"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "parent",
+              "baseline",
+              "ordered_top2",
+              "anchor"
+            ],
+            "us": {
+              "parent": 5.4163889766954085,
+              "baseline": 7.211526302010366,
+              "ordered_top2": 5.291938685472368,
+              "anchor": 5.394926741103496
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0235169563783282
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3627380683392503
+            },
+            "baseline_over_parent": 1.3314269586321676,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0194613093144587
+            }
+          },
+          {
+            "round": 1,
+            "order": [
+              "anchor",
+              "parent",
+              "baseline",
+              "ordered_top2"
+            ],
+            "us": {
+              "anchor": 5.40215005832059,
+              "parent": 5.408279752470756,
+              "baseline": 7.218663635772325,
+              "ordered_top2": 5.292081045159159
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0219570914201868
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3640500918585656
+            },
+            "baseline_over_parent": 1.3347430174029922,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0207988147237683
+            }
+          },
+          {
+            "round": 2,
+            "order": [
+              "anchor",
+              "parent",
+              "ordered_top2",
+              "baseline"
+            ],
+            "us": {
+              "anchor": 5.369526836087761,
+              "parent": 5.339505015939906,
+              "ordered_top2": 5.232844513921207,
+              "baseline": 7.145082357242636
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0203828915105244
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3654298992133636
+            },
+            "baseline_over_parent": 1.3381544423898057,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0261200809240425
+            }
+          },
+          {
+            "round": 3,
+            "order": [
+              "ordered_top2",
+              "parent",
+              "baseline",
+              "anchor"
+            ],
+            "us": {
+              "ordered_top2": 5.262665306067442,
+              "parent": 5.356906799284551,
+              "baseline": 7.1841889111083725,
+              "anchor": 5.360703312886876
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0179075597128429
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3651236575553387
+            },
+            "baseline_over_parent": 1.3411076914886528,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0186289648149207
+            }
+          },
+          {
+            "round": 4,
+            "order": [
+              "parent",
+              "ordered_top2",
+              "anchor",
+              "baseline"
+            ],
+            "us": {
+              "parent": 5.361668150475685,
+              "ordered_top2": 5.2595924373408955,
+              "anchor": 5.352818393508179,
+              "baseline": 7.13888323214216
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0194075328746188
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3573073041665908
+            },
+            "baseline_over_parent": 1.331466818122416,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0177249391997407
+            }
+          },
+          {
+            "round": 5,
+            "order": [
+              "parent",
+              "ordered_top2",
+              "anchor",
+              "baseline"
+            ],
+            "us": {
+              "parent": 5.332752116426022,
+              "ordered_top2": 5.232124719568478,
+              "anchor": 5.324668434539758,
+              "baseline": 7.182719369814631
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0192326066848503
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3728111913981724
+            },
+            "baseline_over_parent": 1.3469066652639474,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0176875972824502
+            }
+          },
+          {
+            "round": 6,
+            "order": [
+              "baseline",
+              "parent",
+              "anchor",
+              "ordered_top2"
+            ],
+            "us": {
+              "baseline": 7.1789753183405445,
+              "parent": 5.365780553510112,
+              "anchor": 5.31883537093528,
+              "ordered_top2": 5.241196589954829
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0237701374899881
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3697206725845052
+            },
+            "baseline_over_parent": 1.3379181736465724,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0148131785648435
+            }
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              5.416460768703786,
+              5.416427635596597
+            ],
+            "ratio": 1.0000061171512697
+          },
+          {
+            "round": 1,
+            "us": [
+              5.405937921926841,
+              5.384865340653
+            ],
+            "ratio": 1.0039132977225549
+          },
+          {
+            "round": 2,
+            "us": [
+              5.357614690046094,
+              5.322496274027961
+            ],
+            "ratio": 1.006598110023956
+          },
+          {
+            "round": 3,
+            "us": [
+              5.328574387923531,
+              5.359692663140984
+            ],
+            "ratio": 0.9941940187295709
+          },
+          {
+            "round": 4,
+            "us": [
+              5.35951917133634,
+              5.3658194039735605
+            ],
+            "ratio": 0.9988258582402988
+          },
+          {
+            "round": 5,
+            "us": [
+              5.35739472700399,
+              5.338096719357129
+            ],
+            "ratio": 1.003615147619353
+          },
+          {
+            "round": 6,
+            "us": [
+              5.358044459269597,
+              5.36741196599781
+            ],
+            "ratio": 0.9982547442254189
+          }
+        ],
+        "aa_median": 1.0000061171512697,
+        "median_us": {
+          "baseline": 7.182719369814631,
+          "anchor": 5.360703312886876,
+          "parent": 5.361668150475685,
+          "ordered_top2": 5.2595924373408955
+        },
+        "anchor_over_candidate": {
+          "ordered_top2": 1.0186289648149207
+        },
+        "parent_over_candidate": {
+          "ordered_top2": 1.0203828915105244
+        },
+        "baseline_over_candidate": {
+          "ordered_top2": 1.3651236575553387
+        }
+      }
+    },
+    {
+      "shape": [
+        32,
+        256
+      ],
+      "input_seed": 32000394,
+      "input_sha256": {
+        "x": "d76b96f4205f1b66e2cb51f1a607e9523cf543bc43146ef80b19bc857e8a5ab8",
+        "b": "087c6ccaaf29993f3bfaa6cb8e1f1a0f0e69ecc44db33d71e91d4ec117fe7523"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "anchor",
+              "parent",
+              "baseline",
+              "ordered_top2"
+            ],
+            "us": {
+              "anchor": 5.3775743681528825,
+              "parent": 5.3958962153191345,
+              "baseline": 7.229086671915647,
+              "ordered_top2": 5.322518584354693
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0137862611095678
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3582078779706332
+            },
+            "baseline_over_parent": 1.3397379014429562,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.010343934535057
+            }
+          },
+          {
+            "round": 1,
+            "order": [
+              "ordered_top2",
+              "parent",
+              "baseline",
+              "anchor"
+            ],
+            "us": {
+              "ordered_top2": 5.274239270023117,
+              "parent": 5.376257884412329,
+              "baseline": 7.238813542199197,
+              "anchor": 5.408821274748946
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0193428111934641
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.37248485925582
+            },
+            "baseline_over_parent": 1.3464409070083998,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.025516856144685
+            }
+          },
+          {
+            "round": 2,
+            "order": [
+              "anchor",
+              "parent",
+              "baseline",
+              "ordered_top2"
+            ],
+            "us": {
+              "anchor": 5.41479082151492,
+              "parent": 5.409067817356275,
+              "baseline": 7.238797441157099,
+              "ordered_top2": 5.30129666129748
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0203292067854997
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3654767698635868
+            },
+            "baseline_over_parent": 1.3382707863136238,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0214087547761688
+            }
+          },
+          {
+            "round": 3,
+            "order": [
+              "anchor",
+              "baseline",
+              "ordered_top2",
+              "parent"
+            ],
+            "us": {
+              "anchor": 5.425729965552305,
+              "baseline": 7.229450806677027,
+              "ordered_top2": 5.324786020134782,
+              "parent": 5.358343511014371
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0063021294663665
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3576979017260178
+            },
+            "baseline_over_parent": 1.349195099533371,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.018957371251318
+            }
+          },
+          {
+            "round": 4,
+            "order": [
+              "baseline",
+              "ordered_top2",
+              "anchor",
+              "parent"
+            ],
+            "us": {
+              "baseline": 7.234957772332269,
+              "ordered_top2": 5.334451939922758,
+              "anchor": 5.416604767092876,
+              "parent": 5.390518133118159
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0105102068266478
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3562701199323262
+            },
+            "baseline_over_parent": 1.3421637018308643,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0154004250287252
+            }
+          },
+          {
+            "round": 5,
+            "order": [
+              "ordered_top2",
+              "anchor",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "ordered_top2": 5.31961352138196,
+              "anchor": 5.40198109046928,
+              "parent": 5.3787442295147985,
+              "baseline": 7.208575901232268
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.01111560226982
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.355093912792293
+            },
+            "baseline_over_parent": 1.3401968180001251,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.015483750606364
+            }
+          },
+          {
+            "round": 6,
+            "order": [
+              "baseline",
+              "parent",
+              "ordered_top2",
+              "anchor"
+            ],
+            "us": {
+              "baseline": 7.234282740231218,
+              "parent": 5.3602075975809145,
+              "ordered_top2": 5.295134209967279,
+              "anchor": 5.405705533129104
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0122892801264876
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.366213291933902
+            },
+            "baseline_over_parent": 1.349627343443952,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0208816847274034
+            }
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              5.4148959137542905,
+              5.367006638021431
+            ],
+            "ratio": 1.008922902273606
+          },
+          {
+            "round": 1,
+            "us": [
+              5.355423495756182,
+              5.362806870387151
+            ],
+            "ratio": 0.9986232257082128
+          },
+          {
+            "round": 2,
+            "us": [
+              5.411634685108497,
+              5.36772239596811
+            ],
+            "ratio": 1.0081808047996987
+          },
+          {
+            "round": 3,
+            "us": [
+              5.388593933988346,
+              5.422464279191835
+            ],
+            "ratio": 0.9937536987871985
+          },
+          {
+            "round": 4,
+            "us": [
+              5.351255414805887,
+              5.4075717423562635
+            ],
+            "ratio": 0.9895856531852801
+          },
+          {
+            "round": 5,
+            "us": [
+              5.410540682598225,
+              5.411192096105896
+            ],
+            "ratio": 0.9998796173752287
+          },
+          {
+            "round": 6,
+            "us": [
+              5.404651253125231,
+              5.384578281666809
+            ],
+            "ratio": 1.003727863243583
+          }
+        ],
+        "aa_median": 0.9998796173752287,
+        "median_us": {
+          "baseline": 7.234282740231218,
+          "anchor": 5.408821274748946,
+          "parent": 5.3787442295147985,
+          "ordered_top2": 5.31961352138196
+        },
+        "anchor_over_candidate": {
+          "ordered_top2": 1.018957371251318
+        },
+        "parent_over_candidate": {
+          "ordered_top2": 1.0122892801264876
+        },
+        "baseline_over_candidate": {
+          "ordered_top2": 1.3582078779706332
+        }
+      }
+    },
+    {
+      "shape": [
+        64,
+        256
+      ],
+      "input_seed": 64000490,
+      "input_sha256": {
+        "x": "4500f9b9f20434889942f49b3f0624f50d86d573077f970e640cb1d4046252db",
+        "b": "863112c66815a96b5e205bd88bc3b7841d31cc8dabe9025c92cf3831d0218645"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "baseline",
+              "anchor",
+              "ordered_top2",
+              "parent"
+            ],
+            "us": {
+              "baseline": 7.379640777254365,
+              "anchor": 5.543373432834592,
+              "ordered_top2": 5.43111259872849,
+              "parent": 5.506563341295397
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0138923178621948
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3587714566960105
+            },
+            "baseline_over_parent": 1.3401536166690737,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.020669951518292
+            }
+          },
+          {
+            "round": 1,
+            "order": [
+              "anchor",
+              "parent",
+              "ordered_top2",
+              "baseline"
+            ],
+            "us": {
+              "anchor": 5.552445545753053,
+              "parent": 5.493248348058773,
+              "ordered_top2": 5.474382862050265,
+              "baseline": 7.381592942982116
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0034461393154082
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.348388143283344
+            },
+            "baseline_over_parent": 1.3437573681864672,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.014259631755743
+            }
+          },
+          {
+            "round": 2,
+            "order": [
+              "ordered_top2",
+              "parent",
+              "anchor",
+              "baseline"
+            ],
+            "us": {
+              "ordered_top2": 5.460486895796182,
+              "parent": 5.537994821020897,
+              "anchor": 5.489692869256895,
+              "baseline": 7.3674194241188005
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0141943249208025
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3492238997571246
+            },
+            "baseline_over_parent": 1.3303406128430904,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0053486024264975
+            }
+          },
+          {
+            "round": 3,
+            "order": [
+              "anchor",
+              "ordered_top2",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "anchor": 5.4948203417719625,
+              "ordered_top2": 5.463980577636996,
+              "parent": 5.546798852398572,
+              "baseline": 7.336191985071922
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0151571319818622
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3426460582780109
+            },
+            "baseline_over_parent": 1.3225992469331338,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.005644193586849
+            }
+          },
+          {
+            "round": 4,
+            "order": [
+              "ordered_top2",
+              "parent",
+              "anchor",
+              "baseline"
+            ],
+            "us": {
+              "ordered_top2": 5.406148486406856,
+              "parent": 5.544548602456427,
+              "anchor": 5.553685917573817,
+              "baseline": 7.376430240063381
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0256005021685146
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.364452023212195
+            },
+            "baseline_over_parent": 1.3303932869837893,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0272906731174563
+            }
+          },
+          {
+            "round": 5,
+            "order": [
+              "baseline",
+              "ordered_top2",
+              "parent",
+              "anchor"
+            ],
+            "us": {
+              "baseline": 7.324242228256591,
+              "ordered_top2": 5.4514502113611165,
+              "parent": 5.535774331343801,
+              "anchor": 5.535202536353453
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0154681996007133
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.343540148819937
+            },
+            "baseline_over_parent": 1.3230745673259123,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0153633109989324
+            }
+          },
+          {
+            "round": 6,
+            "order": [
+              "parent",
+              "ordered_top2",
+              "anchor",
+              "baseline"
+            ],
+            "us": {
+              "parent": 5.488591032169934,
+              "ordered_top2": 5.449838916976731,
+              "anchor": 5.498473385488271,
+              "baseline": 7.312340432025017
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0071106900192017
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.341753498300001
+            },
+            "baseline_over_parent": 1.3322800677196853,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0089240194531328
+            }
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              5.552116993495396,
+              5.551541479010331
+            ],
+            "ratio": 1.0001036675105897
+          },
+          {
+            "round": 1,
+            "us": [
+              5.521949890848005,
+              5.502575036570512
+            ],
+            "ratio": 1.0035210522616642
+          },
+          {
+            "round": 2,
+            "us": [
+              5.5648000186925195,
+              5.564217057547474
+            ],
+            "ratio": 1.0001047696628325
+          },
+          {
+            "round": 3,
+            "us": [
+              5.5023798882711885,
+              5.49673123601783
+            ],
+            "ratio": 1.0010276384292442
+          },
+          {
+            "round": 4,
+            "us": [
+              5.5026582283491825,
+              5.5041934124900225
+            ],
+            "ratio": 0.9997210882638397
+          },
+          {
+            "round": 5,
+            "us": [
+              5.551192193355375,
+              5.5547299660069385
+            ],
+            "ratio": 0.9993631062764142
+          },
+          {
+            "round": 6,
+            "us": [
+              5.502333918576518,
+              5.513482872956718
+            ],
+            "ratio": 0.9979778744874886
+          }
+        ],
+        "aa_median": 1.0001036675105897,
+        "median_us": {
+          "baseline": 7.3674194241188005,
+          "anchor": 5.535202536353453,
+          "parent": 5.535774331343801,
+          "ordered_top2": 5.4514502113611165
+        },
+        "anchor_over_candidate": {
+          "ordered_top2": 1.014259631755743
+        },
+        "parent_over_candidate": {
+          "ordered_top2": 1.0141943249208025
+        },
+        "baseline_over_candidate": {
+          "ordered_top2": 1.348388143283344
+        }
+      }
+    },
+    {
+      "shape": [
+        128,
+        256
+      ],
+      "input_seed": 128000682,
+      "input_sha256": {
+        "x": "195330f0308542da4bb9a455b215fc216b1616a0ea546c35f05c27665488bf61",
+        "b": "6b5d5ee7a8262ac0bf17706194c9e071af697a8ff39549bc38cb508da659d487"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "parent",
+              "ordered_top2",
+              "anchor",
+              "baseline"
+            ],
+            "us": {
+              "parent": 5.741748160358826,
+              "ordered_top2": 5.66902328501158,
+              "anchor": 5.682684677339871,
+              "baseline": 7.584977181210899
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.012828466508424
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3379689586502388
+            },
+            "baseline_over_parent": 1.3210222687190938,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0024098317543362
+            }
+          },
+          {
+            "round": 1,
+            "order": [
+              "parent",
+              "baseline",
+              "anchor",
+              "ordered_top2"
+            ],
+            "us": {
+              "parent": 5.729027534957198,
+              "baseline": 7.518593934707311,
+              "anchor": 5.688032800454281,
+              "ordered_top2": 5.63181213710619
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0172618325122187
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3350221476973148
+            },
+            "baseline_over_parent": 1.3123682664868677,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0099826950863064
+            }
+          },
+          {
+            "round": 2,
+            "order": [
+              "baseline",
+              "ordered_top2",
+              "parent",
+              "anchor"
+            ],
+            "us": {
+              "baseline": 7.519423311889105,
+              "ordered_top2": 5.6487818108063355,
+              "parent": 5.730155167997358,
+              "anchor": 5.737140136729937
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0144054700493745
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3311583919747372
+            },
+            "baseline_over_parent": 1.312254745540701,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0156420143108675
+            }
+          },
+          {
+            "round": 3,
+            "order": [
+              "anchor",
+              "ordered_top2",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "anchor": 5.705708265304565,
+              "ordered_top2": 5.6127684904136075,
+              "parent": 5.766414856725885,
+              "baseline": 7.530568250969274
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0273744350180662
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3416851708441557
+            },
+            "baseline_over_parent": 1.3059359130544865,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0165586332394958
+            }
+          },
+          {
+            "round": 4,
+            "order": [
+              "baseline",
+              "anchor",
+              "ordered_top2",
+              "parent"
+            ],
+            "us": {
+              "baseline": 7.507743736906523,
+              "anchor": 5.7247717296127725,
+              "ordered_top2": 5.603548144246195,
+              "parent": 5.726471268263495
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0219366588548935
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3398196185064606
+            },
+            "baseline_over_parent": 1.311059356660875,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0216333619781695
+            }
+          },
+          {
+            "round": 5,
+            "order": [
+              "parent",
+              "baseline",
+              "anchor",
+              "ordered_top2"
+            ],
+            "us": {
+              "parent": 5.698724398537288,
+              "baseline": 7.580051711874877,
+              "anchor": 5.753712630966335,
+              "ordered_top2": 5.6771473103995
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0038006919598974
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3351867227383027
+            },
+            "baseline_over_parent": 1.3301313033879085,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0134865833808084
+            }
+          },
+          {
+            "round": 6,
+            "order": [
+              "anchor",
+              "baseline",
+              "ordered_top2",
+              "parent"
+            ],
+            "us": {
+              "anchor": 5.726257073027747,
+              "baseline": 7.508313504257643,
+              "ordered_top2": 5.659162397480759,
+              "parent": 5.679613307198101
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0036137697208418
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3267534975847406
+            },
+            "baseline_over_parent": 1.3219761800934449,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.01185593747528
+            }
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              5.744423850216849,
+              5.736372241504507
+            ],
+            "ratio": 1.0014036063862952
+          },
+          {
+            "round": 1,
+            "us": [
+              5.741579314015998,
+              5.706521893335768
+            ],
+            "ratio": 1.0061433954579533
+          },
+          {
+            "round": 2,
+            "us": [
+              5.7243717303878485,
+              5.7300685650735925
+            ],
+            "ratio": 0.999005799909539
+          },
+          {
+            "round": 3,
+            "us": [
+              5.736717762607383,
+              5.742951194312394
+            ],
+            "ratio": 0.9989145943445968
+          },
+          {
+            "round": 4,
+            "us": [
+              5.7693188221877,
+              5.724862816702686
+            ],
+            "ratio": 1.0077654272090697
+          },
+          {
+            "round": 5,
+            "us": [
+              5.684136390686035,
+              5.737395616836878
+            ],
+            "ratio": 0.9907171773209174
+          },
+          {
+            "round": 6,
+            "us": [
+              5.708640877918531,
+              5.734295625714944
+            ],
+            "ratio": 0.9955260855960465
+          }
+        ],
+        "aa_median": 0.999005799909539,
+        "median_us": {
+          "baseline": 7.519423311889105,
+          "anchor": 5.7247717296127725,
+          "parent": 5.729027534957198,
+          "ordered_top2": 5.6487818108063355
+        },
+        "anchor_over_candidate": {
+          "ordered_top2": 1.0134865833808084
+        },
+        "parent_over_candidate": {
+          "ordered_top2": 1.0144054700493745
+        },
+        "baseline_over_candidate": {
+          "ordered_top2": 1.3351867227383027
+        }
+      }
+    },
+    {
+      "shape": [
+        256,
+        256
+      ],
+      "input_seed": 256001066,
+      "input_sha256": {
+        "x": "8e383a66377e1c7e3df1a237132daf556b3dac24efe505fe0b816acf73a78666",
+        "b": "2a93191882e9cfa28437018e1df586d192fb79663c644bd727b6eb562407c3a5"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "anchor",
+              "ordered_top2",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "anchor": 6.377989214819831,
+              "ordered_top2": 6.2716878811632375,
+              "parent": 6.407761284000966,
+              "baseline": 8.446527911433776
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.021696456427052
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3467710880196355
+            },
+            "baseline_over_parent": 1.3181714388335979,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0169493979405233
+            }
+          },
+          {
+            "round": 1,
+            "order": [
+              "ordered_top2",
+              "anchor",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "ordered_top2": 6.2429163700495005,
+              "anchor": 6.3533176460223775,
+              "parent": 6.435487846382777,
+              "baseline": 8.479047828996686
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0308463969271064
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3581869956924404
+            },
+            "baseline_over_parent": 1.317545465300279,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0176842471416931
+            }
+          },
+          {
+            "round": 2,
+            "order": [
+              "baseline",
+              "anchor",
+              "parent",
+              "ordered_top2"
+            ],
+            "us": {
+              "baseline": 8.47997739281453,
+              "anchor": 6.418144702911376,
+              "parent": 6.3936724382288315,
+              "ordered_top2": 6.2926664766135545
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0160513769465873
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3475968294728522
+            },
+            "baseline_over_parent": 1.3263077636119318,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0199403904154394
+            }
+          },
+          {
+            "round": 3,
+            "order": [
+              "baseline",
+              "ordered_top2",
+              "parent",
+              "anchor"
+            ],
+            "us": {
+              "baseline": 8.403243077710071,
+              "ordered_top2": 6.249418102326941,
+              "parent": 6.357175542727461,
+              "anchor": 6.411761698928783
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0172427958309265
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3446440836757527
+            },
+            "baseline_over_parent": 1.3218516652923464,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0259773940459183
+            }
+          },
+          {
+            "round": 4,
+            "order": [
+              "anchor",
+              "parent",
+              "ordered_top2",
+              "baseline"
+            ],
+            "us": {
+              "anchor": 6.409447646774022,
+              "parent": 6.410997578705278,
+              "ordered_top2": 6.25026442787864,
+              "baseline": 8.404541484133127
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0257162161187463
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3446697465543318
+            },
+            "baseline_over_parent": 1.310956895702096,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0254682375013386
+            }
+          },
+          {
+            "round": 5,
+            "order": [
+              "ordered_top2",
+              "baseline",
+              "anchor",
+              "parent"
+            ],
+            "us": {
+              "ordered_top2": 6.271090631629795,
+              "baseline": 8.457960654661484,
+              "anchor": 6.391559835390751,
+              "parent": 6.412085714694968
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.022483343224866
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3487224394432558
+            },
+            "baseline_over_parent": 1.3190654384544267,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0192102476008464
+            }
+          },
+          {
+            "round": 6,
+            "order": [
+              "parent",
+              "anchor",
+              "baseline",
+              "ordered_top2"
+            ],
+            "us": {
+              "parent": 6.394837366138954,
+              "anchor": 6.424076901117177,
+              "baseline": 8.476591563127743,
+              "ordered_top2": 6.298927767523404
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0152263372680743
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3457197599299582
+            },
+            "baseline_over_parent": 1.3255366912084117,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0198683233421135
+            }
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              6.390744398984987,
+              6.4322981771943875
+            ],
+            "ratio": 0.9935398240155083
+          },
+          {
+            "round": 1,
+            "us": [
+              6.374714492979112,
+              6.3493762368941224
+            ],
+            "ratio": 1.003990668553827
+          },
+          {
+            "round": 2,
+            "us": [
+              6.369713574279974,
+              6.421707022903312
+            ],
+            "ratio": 0.9919034847840456
+          },
+          {
+            "round": 3,
+            "us": [
+              6.360901555707378,
+              6.379488159938411
+            ],
+            "ratio": 0.9970865054115544
+          },
+          {
+            "round": 4,
+            "us": [
+              6.411373373078977,
+              6.412508060885944
+            ],
+            "ratio": 0.9998230508568264
+          },
+          {
+            "round": 5,
+            "us": [
+              6.399302221394507,
+              6.403262201121967
+            ],
+            "ratio": 0.999381568393878
+          },
+          {
+            "round": 6,
+            "us": [
+              6.354423463021688,
+              6.412591354623025
+            ],
+            "ratio": 0.9909291129927682
+          }
+        ],
+        "aa_median": 0.9970865054115544,
+        "median_us": {
+          "baseline": 8.457960654661484,
+          "anchor": 6.409447646774022,
+          "parent": 6.407761284000966,
+          "ordered_top2": 6.271090631629795
+        },
+        "anchor_over_candidate": {
+          "ordered_top2": 1.0198683233421135
+        },
+        "parent_over_candidate": {
+          "ordered_top2": 1.021696456427052
+        },
+        "baseline_over_candidate": {
+          "ordered_top2": 1.3467710880196355
+        }
+      }
+    },
+    {
+      "shape": [
+        384,
+        256
+      ],
+      "input_seed": 384001450,
+      "input_sha256": {
+        "x": "dbb855a5a56bf331c5ac54b77541fa000120826819f53adee48fdce1109f812e",
+        "b": "66bc418bd4aeaa29ab9b44d6591861f204834f8f6ce1970af566ec0c56831eb2"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "anchor",
+              "baseline",
+              "ordered_top2",
+              "parent"
+            ],
+            "us": {
+              "anchor": 7.105746760643758,
+              "baseline": 9.521819552859744,
+              "ordered_top2": 6.994545498243317,
+              "parent": 7.15511683190223
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0229566501067497
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3613206969989906
+            },
+            "baseline_over_parent": 1.330770660571913,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0158982828017016
+            }
+          },
+          {
+            "round": 1,
+            "order": [
+              "parent",
+              "baseline",
+              "anchor",
+              "ordered_top2"
+            ],
+            "us": {
+              "parent": 7.134621881717686,
+              "baseline": 9.520443516595922,
+              "anchor": 7.151589092455412,
+              "ordered_top2": 7.035963072781906
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.014022075999437
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.353111637755042
+            },
+            "baseline_over_parent": 1.3344005715273928,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0164335739794879
+            }
+          },
+          {
+            "round": 2,
+            "order": [
+              "baseline",
+              "parent",
+              "ordered_top2",
+              "anchor"
+            ],
+            "us": {
+              "baseline": 9.543961073366528,
+              "parent": 7.112765372861129,
+              "ordered_top2": 7.040868479099634,
+              "anchor": 7.165744649358542
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0102113672446682
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3555090684760216
+            },
+            "baseline_over_parent": 1.3418073805417041,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.017735904402929
+            }
+          },
+          {
+            "round": 3,
+            "order": [
+              "anchor",
+              "baseline",
+              "parent",
+              "ordered_top2"
+            ],
+            "us": {
+              "anchor": 7.157395697654562,
+              "baseline": 9.518721937730957,
+              "parent": 7.106412206968361,
+              "ordered_top2": 7.039590445897913
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.009492279640982
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3521698472213928
+            },
+            "baseline_over_parent": 1.3394553623553034,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0167346740782763
+            }
+          },
+          {
+            "round": 4,
+            "order": [
+              "parent",
+              "anchor",
+              "baseline",
+              "ordered_top2"
+            ],
+            "us": {
+              "parent": 7.181189276955344,
+              "anchor": 7.175930244870682,
+              "baseline": 9.54574540298504,
+              "ordered_top2": 7.001786755751691
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0256223914640474
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3633299236289347
+            },
+            "baseline_over_parent": 1.3292708261593422,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0248712928847683
+            }
+          },
+          {
+            "round": 5,
+            "order": [
+              "ordered_top2",
+              "parent",
+              "baseline",
+              "anchor"
+            ],
+            "us": {
+              "ordered_top2": 6.987668217892731,
+              "parent": 7.12809923695465,
+              "baseline": 9.471733588621964,
+              "anchor": 7.174681593931796
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0200969786605394
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3554927471182014
+            },
+            "baseline_over_parent": 1.3287881206138465,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0267633451113485
+            }
+          },
+          {
+            "round": 6,
+            "order": [
+              "anchor",
+              "parent",
+              "ordered_top2",
+              "baseline"
+            ],
+            "us": {
+              "anchor": 7.10675609725167,
+              "parent": 7.14795550447254,
+              "ordered_top2": 7.027410323141995,
+              "baseline": 9.46703070440766
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0171535709155302
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3471578104997999
+            },
+            "baseline_over_parent": 1.3244389529962874,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0112908981347484
+            }
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              7.157753436708829,
+              7.159777786041358
+            ],
+            "ratio": 0.9997172608713533
+          },
+          {
+            "round": 1,
+            "us": [
+              7.1542313549969645,
+              7.154392988785453
+            ],
+            "ratio": 0.9999774077565012
+          },
+          {
+            "round": 2,
+            "us": [
+              7.10214467758828,
+              7.115898343080974
+            ],
+            "ratio": 0.9980671919651484
+          },
+          {
+            "round": 3,
+            "us": [
+              7.141711604582098,
+              7.149850524012523
+            ],
+            "ratio": 0.99886166579244
+          },
+          {
+            "round": 4,
+            "us": [
+              7.166205840612037,
+              7.146799451443436
+            ],
+            "ratio": 1.0027153957936628
+          },
+          {
+            "round": 5,
+            "us": [
+              7.148714686406969,
+              7.097987375761334
+            ],
+            "ratio": 1.0071467175073967
+          },
+          {
+            "round": 6,
+            "us": [
+              7.110149307823999,
+              7.15882799081635
+            ],
+            "ratio": 0.9932001882075113
+          }
+        ],
+        "aa_median": 0.9997172608713533,
+        "median_us": {
+          "baseline": 9.520443516595922,
+          "anchor": 7.157395697654562,
+          "parent": 7.134621881717686,
+          "ordered_top2": 7.027410323141995
+        },
+        "anchor_over_candidate": {
+          "ordered_top2": 1.0167346740782763
+        },
+        "parent_over_candidate": {
+          "ordered_top2": 1.0171535709155302
+        },
+        "baseline_over_candidate": {
+          "ordered_top2": 1.3554927471182014
+        }
+      }
+    },
+    {
+      "shape": [
+        512,
+        256
+      ],
+      "input_seed": 512001834,
+      "input_sha256": {
+        "x": "409cbdefa0a9b0bcde489b9c7f2b8dd6758ef1ad68f3e6752ac3043dfb686617",
+        "b": "d194bb4ca8f39e2aeaf7a781c1b275dd003832c5e64a8c0c38c11f5053d60845"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "ordered_top2",
+              "anchor",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "ordered_top2": 7.802063599637782,
+              "anchor": 7.917903090771013,
+              "parent": 7.862560323514681,
+              "baseline": 10.57791234097098
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.007753938827121
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3557839161247123
+            },
+            "baseline_over_parent": 1.3453521379461413,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0148472887530178
+            }
+          },
+          {
+            "round": 1,
+            "order": [
+              "anchor",
+              "ordered_top2",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "anchor": 7.8669536742507065,
+              "ordered_top2": 7.805066087835467,
+              "baseline": 10.611315022886188,
+              "parent": 7.917607039736029
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0144189620733592
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3595419825367503
+            },
+            "baseline_over_parent": 1.3402174381263516,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0079291559762311
+            }
+          },
+          {
+            "round": 2,
+            "order": [
+              "baseline",
+              "anchor",
+              "ordered_top2",
+              "parent"
+            ],
+            "us": {
+              "baseline": 10.62268380631041,
+              "anchor": 7.892027420875353,
+              "ordered_top2": 7.798708855717922,
+              "parent": 7.888146549170774
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0114682693132309
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3621080108051455
+            },
+            "baseline_over_parent": 1.3466641041839036,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0119658993410185
+            }
+          },
+          {
+            "round": 3,
+            "order": [
+              "parent",
+              "baseline",
+              "anchor",
+              "ordered_top2"
+            ],
+            "us": {
+              "parent": 7.927209576275628,
+              "baseline": 10.592633981843292,
+              "anchor": 7.898559058523927,
+              "ordered_top2": 7.825281752301166
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0130254509934404
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3536425035083672
+            },
+            "baseline_over_parent": 1.3362374086266984,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.009364174804468
+            }
+          },
+          {
+            "round": 4,
+            "order": [
+              "anchor",
+              "baseline",
+              "ordered_top2",
+              "parent"
+            ],
+            "us": {
+              "anchor": 7.912082084908045,
+              "baseline": 10.622436486241101,
+              "ordered_top2": 7.753279040456447,
+              "parent": 7.863493735117012
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0142152364290602
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3700572919939358
+            },
+            "baseline_over_parent": 1.3508545748314296,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.020482049417152
+            }
+          },
+          {
+            "round": 5,
+            "order": [
+              "anchor",
+              "ordered_top2",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "anchor": 7.8988053121996815,
+              "ordered_top2": 7.828038223046441,
+              "parent": 7.94751672630766,
+              "baseline": 10.624319998066078
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0152628921649185
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3572136077193817
+            },
+            "baseline_over_parent": 1.3368100205310338,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.009040207410446
+            }
+          },
+          {
+            "round": 6,
+            "order": [
+              "ordered_top2",
+              "baseline",
+              "anchor",
+              "parent"
+            ],
+            "us": {
+              "ordered_top2": 7.776945333268411,
+              "baseline": 10.618095096788908,
+              "anchor": 7.88364746426576,
+              "parent": 7.911930113968879
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.017357043789806
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3653297846092034
+            },
+            "baseline_over_parent": 1.3420360068704562,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0137203138796536
+            }
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              7.95010952591207,
+              7.900590852859917
+            ],
+            "ratio": 1.0062677176902823
+          },
+          {
+            "round": 1,
+            "us": [
+              7.882972990065615,
+              7.871571509414982
+            ],
+            "ratio": 1.0014484376641941
+          },
+          {
+            "round": 2,
+            "us": [
+              7.872723429987735,
+              7.912299166554989
+            ],
+            "ratio": 0.9949982001774478
+          },
+          {
+            "round": 3,
+            "us": [
+              7.918871902837986,
+              7.923047761659364
+            ],
+            "ratio": 0.9994729479176453
+          },
+          {
+            "round": 4,
+            "us": [
+              7.876143817660174,
+              7.955226291616055
+            ],
+            "ratio": 0.9900590541290792
+          },
+          {
+            "round": 5,
+            "us": [
+              7.873015189144666,
+              7.912816144107432
+            ],
+            "ratio": 0.9949700644829963
+          },
+          {
+            "round": 6,
+            "us": [
+              7.91598774932928,
+              7.874630123094211
+            ],
+            "ratio": 1.0052520087405474
+          }
+        ],
+        "aa_median": 0.9994729479176453,
+        "median_us": {
+          "baseline": 10.618095096788908,
+          "anchor": 7.898559058523927,
+          "parent": 7.911930113968879,
+          "ordered_top2": 7.802063599637782
+        },
+        "anchor_over_candidate": {
+          "ordered_top2": 1.0119658993410185
+        },
+        "parent_over_candidate": {
+          "ordered_top2": 1.0142152364290602
+        },
+        "baseline_over_candidate": {
+          "ordered_top2": 1.3595419825367503
+        }
+      }
+    },
+    {
+      "shape": [
+        768,
+        256
+      ],
+      "input_seed": 768002602,
+      "input_sha256": {
+        "x": "c09f45d20f6e0e63c00542409ac56edc93958b7a42a51ac82a26d6bf8a54c9ac",
+        "b": "b2f25a7df4b5817cb471e5c8797071003989e380d7751b9eb4b947e811867ffe"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "baseline",
+              "anchor",
+              "parent",
+              "ordered_top2"
+            ],
+            "us": {
+              "baseline": 12.964297339829484,
+              "anchor": 9.594513040728273,
+              "parent": 9.592606913822085,
+              "ordered_top2": 9.437419078389151
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0164438851495214
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3737121592402917
+            },
+            "baseline_over_parent": 1.3514884385754509,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.016645860593269
+            }
+          },
+          {
+            "round": 1,
+            "order": [
+              "baseline",
+              "ordered_top2",
+              "parent",
+              "anchor"
+            ],
+            "us": {
+              "baseline": 13.022734911776332,
+              "ordered_top2": 9.487903769550428,
+              "parent": 9.579954496244104,
+              "anchor": 9.59259559368265
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0097019034899042
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3725618669921857
+            },
+            "baseline_over_parent": 1.3593733578674092,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0110342417751128
+            }
+          },
+          {
+            "round": 2,
+            "order": [
+              "baseline",
+              "parent",
+              "anchor",
+              "ordered_top2"
+            ],
+            "us": {
+              "baseline": 12.956814066847253,
+              "parent": 9.603638454231191,
+              "anchor": 9.607790113152584,
+              "ordered_top2": 9.428739856962409
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0185495198639545
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3741830046652128
+            },
+            "baseline_over_parent": 1.349156793916863,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0189898394596135
+            }
+          },
+          {
+            "round": 3,
+            "order": [
+              "parent",
+              "anchor",
+              "ordered_top2",
+              "baseline"
+            ],
+            "us": {
+              "parent": 9.53973625801705,
+              "anchor": 9.549013705089175,
+              "ordered_top2": 9.475317886610071,
+              "baseline": 12.973440046141134
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0067985446164305
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3691825647849125
+            },
+            "baseline_over_parent": 1.3599369726011503,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0077776618537777
+            }
+          },
+          {
+            "round": 4,
+            "order": [
+              "ordered_top2",
+              "parent",
+              "baseline",
+              "anchor"
+            ],
+            "us": {
+              "ordered_top2": 9.458356908618601,
+              "parent": 9.60225647701806,
+              "baseline": 13.019076860868013,
+              "anchor": 9.608838792046136
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0152140133629695
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3764628451485934
+            },
+            "baseline_over_parent": 1.3558351510426467,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0159099392084066
+            }
+          },
+          {
+            "round": 5,
+            "order": [
+              "parent",
+              "anchor",
+              "baseline",
+              "ordered_top2"
+            ],
+            "us": {
+              "parent": 9.550314004080636,
+              "anchor": 9.55340915972048,
+              "baseline": 13.069646446793167,
+              "ordered_top2": 9.500484212239584
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0052449739116303
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3756821394382603
+            },
+            "baseline_over_parent": 1.368504369721121,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0055707631630726
+            }
+          },
+          {
+            "round": 6,
+            "order": [
+              "anchor",
+              "ordered_top2",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "anchor": 9.63622270659967,
+              "ordered_top2": 9.430399967303739,
+              "baseline": 13.041295782477492,
+              "parent": 9.612983759636872
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.019361192840831
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.382899540602004
+            },
+            "baseline_over_parent": 1.3566334978360688,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0218254517315852
+            }
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              9.587864484943326,
+              9.586309848871446
+            ],
+            "ratio": 1.0001621725248182
+          },
+          {
+            "round": 1,
+            "us": [
+              9.594469329518148,
+              9.584460351766186
+            ],
+            "ratio": 1.0010442922589917
+          },
+          {
+            "round": 2,
+            "us": [
+              9.54362926993853,
+              9.589103645861531
+            ],
+            "ratio": 0.9952577031594995
+          },
+          {
+            "round": 3,
+            "us": [
+              9.544809933366446,
+              9.58963217479842
+            ],
+            "ratio": 0.995325968648749
+          },
+          {
+            "round": 4,
+            "us": [
+              9.6158200330695,
+              9.619109415010563
+            ],
+            "ratio": 0.9996580367475674
+          },
+          {
+            "round": 5,
+            "us": [
+              9.573828261302408,
+              9.718687223875719
+            ],
+            "ratio": 0.985094801464807
+          },
+          {
+            "round": 6,
+            "us": [
+              9.56351846011717,
+              9.594156354817036
+            ],
+            "ratio": 0.9968066087765514
+          }
+        ],
+        "aa_median": 0.9968066087765514,
+        "median_us": {
+          "baseline": 13.019076860868013,
+          "anchor": 9.594513040728273,
+          "parent": 9.592606913822085,
+          "ordered_top2": 9.458356908618601
+        },
+        "anchor_over_candidate": {
+          "ordered_top2": 1.0159099392084066
+        },
+        "parent_over_candidate": {
+          "ordered_top2": 1.0152140133629695
+        },
+        "baseline_over_candidate": {
+          "ordered_top2": 1.3741830046652128
+        }
+      }
+    },
+    {
+      "shape": [
+        1024,
+        256
+      ],
+      "input_seed": 1024003370,
+      "input_sha256": {
+        "x": "077102e8371cc230abc585ca7800ea7bf31a64f3ea4346df7dcade4c5b87b51e",
+        "b": "a5a02e2d9f6739e7ba70df746383d1228ab80621fa9d6a52001851cddc314b2d"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "baseline",
+              "ordered_top2",
+              "parent",
+              "anchor"
+            ],
+            "us": {
+              "baseline": 15.576239249535968,
+              "ordered_top2": 11.317149249376326,
+              "parent": 11.390333613516368,
+              "anchor": 11.415177068266265
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0064666783593117
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3763394743949635
+            },
+            "baseline_over_parent": 1.3674963155646631,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0086618826640765
+            }
+          },
+          {
+            "round": 1,
+            "order": [
+              "anchor",
+              "baseline",
+              "ordered_top2",
+              "parent"
+            ],
+            "us": {
+              "anchor": 11.429672891443426,
+              "baseline": 15.575145748879413,
+              "ordered_top2": 11.316974957784018,
+              "parent": 11.39214713131462
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0066424264267633
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.376264046441717
+            },
+            "baseline_over_parent": 1.3671826363676967,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0099583090074695
+            }
+          },
+          {
+            "round": 2,
+            "order": [
+              "ordered_top2",
+              "parent",
+              "baseline",
+              "anchor"
+            ],
+            "us": {
+              "ordered_top2": 11.34671131769816,
+              "parent": 11.43347811536724,
+              "baseline": 15.567951798439026,
+              "anchor": 11.392915662313472
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0076468674702022
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3720232552454859
+            },
+            "baseline_over_parent": 1.3616111948922016,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0040720472497828
+            }
+          },
+          {
+            "round": 3,
+            "order": [
+              "parent",
+              "anchor",
+              "baseline",
+              "ordered_top2"
+            ],
+            "us": {
+              "parent": 11.374740498040312,
+              "anchor": 11.412124010735242,
+              "baseline": 15.527065769019208,
+              "ordered_top2": 11.270804651419153
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0092216882321772
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3776359584995674
+            },
+            "baseline_over_parent": 1.3650479122309889,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0125385332890402
+            }
+          },
+          {
+            "round": 4,
+            "order": [
+              "anchor",
+              "ordered_top2",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "anchor": 11.423508554532383,
+              "ordered_top2": 11.282381305970393,
+              "baseline": 15.554693809103759,
+              "parent": 11.43550581851248
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0135720029654605
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.378671167661436
+            },
+            "baseline_over_parent": 1.3602103882386112,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.012508640218294
+            }
+          },
+          {
+            "round": 5,
+            "order": [
+              "parent",
+              "baseline",
+              "anchor",
+              "ordered_top2"
+            ],
+            "us": {
+              "parent": 11.39930891392253,
+              "baseline": 15.552723114389167,
+              "anchor": 11.477977951611477,
+              "ordered_top2": 11.33026316388593
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0060939228893357
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3726709511886628
+            },
+            "baseline_over_parent": 1.364356666867223,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0130371894799737
+            }
+          },
+          {
+            "round": 6,
+            "order": [
+              "baseline",
+              "ordered_top2",
+              "anchor",
+              "parent"
+            ],
+            "us": {
+              "baseline": 15.515308847927065,
+              "ordered_top2": 11.257951102166805,
+              "anchor": 11.433008738926478,
+              "parent": 11.379019594982841
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0107540432284108
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3781645263089526
+            },
+            "baseline_over_parent": 1.3635013735953112,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0155496888528837
+            }
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              11.40583645213734,
+              11.380014060872846
+            ],
+            "ratio": 1.002269100119417
+          },
+          {
+            "round": 1,
+            "us": [
+              11.395823358682883,
+              11.42337256615315
+            ],
+            "ratio": 0.997588347284418
+          },
+          {
+            "round": 2,
+            "us": [
+              11.394090378027167,
+              11.422567857664708
+            ],
+            "ratio": 0.9975069108809511
+          },
+          {
+            "round": 3,
+            "us": [
+              11.380815165383474,
+              11.42720411704185
+            ],
+            "ratio": 0.995940481050024
+          },
+          {
+            "round": 4,
+            "us": [
+              11.457569708400017,
+              11.435202255989742
+            ],
+            "ratio": 1.0019560172098014
+          },
+          {
+            "round": 5,
+            "us": [
+              11.42755401867062,
+              11.432564596205236
+            ],
+            "ratio": 0.9995617275990482
+          },
+          {
+            "round": 6,
+            "us": [
+              11.44273401241153,
+              11.45320386739466
+            ],
+            "ratio": 0.9990858579743843
+          }
+        ],
+        "aa_median": 0.9990858579743843,
+        "median_us": {
+          "baseline": 15.554693809103759,
+          "anchor": 11.423508554532383,
+          "parent": 11.39214713131462,
+          "ordered_top2": 11.316974957784018
+        },
+        "anchor_over_candidate": {
+          "ordered_top2": 1.012508640218294
+        },
+        "parent_over_candidate": {
+          "ordered_top2": 1.0076468674702022
+        },
+        "baseline_over_candidate": {
+          "ordered_top2": 1.3763394743949635
+        }
+      }
+    },
+    {
+      "shape": [
+        1536,
+        256
+      ],
+      "input_seed": 1536004906,
+      "input_sha256": {
+        "x": "e3490aa71e56997aa4aaaaa34e30e8004bd961a2c8b0616f7f2227e2c4b5ccce",
+        "b": "c3ad457d009f56ec24b3401a4ca6491f3087aed6118cd54299c4d834414894a8"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "anchor",
+              "baseline",
+              "parent",
+              "ordered_top2"
+            ],
+            "us": {
+              "anchor": 15.41077281049599,
+              "baseline": 21.04656161223433,
+              "parent": 15.474146984993144,
+              "ordered_top2": 15.353162685492364
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0078800897234745
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3708290626088278
+            },
+            "baseline_over_parent": 1.360111263816049,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0037523294831014
+            }
+          },
+          {
+            "round": 1,
+            "order": [
+              "parent",
+              "anchor",
+              "baseline",
+              "ordered_top2"
+            ],
+            "us": {
+              "parent": 15.406718588246653,
+              "anchor": 15.41309940788422,
+              "baseline": 21.047966792665676,
+              "ordered_top2": 15.344279074887618
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0040692373394866
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3717142845187618
+            },
+            "baseline_over_parent": 1.3661550752749239,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0044850808995798
+            }
+          },
+          {
+            "round": 2,
+            "order": [
+              "parent",
+              "baseline",
+              "ordered_top2",
+              "anchor"
+            ],
+            "us": {
+              "parent": 15.477951532122733,
+              "baseline": 21.211565078411557,
+              "ordered_top2": 15.383883500347165,
+              "anchor": 15.504970103502272
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0061147129574561
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3788173238527761
+            },
+            "baseline_over_parent": 1.3704374919632847,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0078710036482255
+            }
+          },
+          {
+            "round": 3,
+            "order": [
+              "parent",
+              "baseline",
+              "ordered_top2",
+              "anchor"
+            ],
+            "us": {
+              "parent": 15.494394302368164,
+              "baseline": 21.082412902433397,
+              "ordered_top2": 15.372077241001358,
+              "anchor": 15.428566151962471
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0079570938559008
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.371474562084627
+            },
+            "baseline_over_parent": 1.360647760152274,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.003674774077406
+            }
+          },
+          {
+            "round": 4,
+            "order": [
+              "baseline",
+              "parent",
+              "anchor",
+              "ordered_top2"
+            ],
+            "us": {
+              "baseline": 21.082252578626516,
+              "parent": 15.507123458898809,
+              "anchor": 15.475049839589538,
+              "ordered_top2": 15.356989333423945
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0097762733446785
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3728115661799503
+            },
+            "baseline_over_parent": 1.3595205219397672,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0076877377200906
+            }
+          },
+          {
+            "round": 5,
+            "order": [
+              "ordered_top2",
+              "anchor",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "ordered_top2": 15.356405331085995,
+              "anchor": 15.526700290766628,
+              "parent": 15.491743087768555,
+              "baseline": 21.072848239949245
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0088131143822179
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3722513690942661
+            },
+            "baseline_over_parent": 1.360263213801114,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0110895066917716
+            }
+          },
+          {
+            "round": 6,
+            "order": [
+              "ordered_top2",
+              "anchor",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "ordered_top2": 15.428282411408361,
+              "anchor": 15.447218800490758,
+              "baseline": 21.03385716153864,
+              "parent": 15.476344449676736
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0031151904655853
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.36333109549416
+            },
+            "baseline_over_parent": 1.3590972487031967,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0012273815436767
+            }
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              15.465407090324678,
+              15.474211933848622
+            ],
+            "ratio": 0.9994309989056901
+          },
+          {
+            "round": 1,
+            "us": [
+              15.425411597861446,
+              15.461683706803754
+            ],
+            "ratio": 0.9976540647428749
+          },
+          {
+            "round": 2,
+            "us": [
+              15.432495955187035,
+              15.444580313815678
+            ],
+            "ratio": 0.9992175663965545
+          },
+          {
+            "round": 3,
+            "us": [
+              15.449384026721896,
+              15.45135657247724
+            ],
+            "ratio": 0.9998723383447861
+          },
+          {
+            "round": 4,
+            "us": [
+              15.41809781999575,
+              15.426092898404157
+            ],
+            "ratio": 0.9994817172137455
+          },
+          {
+            "round": 5,
+            "us": [
+              15.449269783081382,
+              15.500468840524464
+            ],
+            "ratio": 0.9966969349140442
+          },
+          {
+            "round": 6,
+            "us": [
+              15.44889690010411,
+              15.465794543484199
+            ],
+            "ratio": 0.9989074183461717
+          }
+        ],
+        "aa_median": 0.9992175663965545,
+        "median_us": {
+          "baseline": 21.072848239949245,
+          "anchor": 15.447218800490758,
+          "parent": 15.477951532122733,
+          "ordered_top2": 15.356989333423945
+        },
+        "anchor_over_candidate": {
+          "ordered_top2": 1.0044850808995798
+        },
+        "parent_over_candidate": {
+          "ordered_top2": 1.0078800897234745
+        },
+        "baseline_over_candidate": {
+          "ordered_top2": 1.3717142845187618
+        }
+      }
+    },
+    {
+      "shape": [
+        2048,
+        256
+      ],
+      "input_seed": 2048006442,
+      "input_sha256": {
+        "x": "91cd46652c91e33f120f6a1e5ccf5217913773a09684a16ba256a321b66ddcba",
+        "b": "4670062a274bec9e84aaf0b57ab082d8d4e3bf2ef1f253a28844cecbbdf03fed"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "ordered_top2",
+              "baseline",
+              "parent",
+              "anchor"
+            ],
+            "us": {
+              "ordered_top2": 19.564270403604866,
+              "baseline": 26.683274068330462,
+              "parent": 19.724014785392153,
+              "anchor": 19.609799189705047
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.008165108051147
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3638777995735463
+            },
+            "baseline_over_parent": 1.352831781899313,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0023271394823796
+            }
+          },
+          {
+            "round": 1,
+            "order": [
+              "baseline",
+              "ordered_top2",
+              "parent",
+              "anchor"
+            ],
+            "us": {
+              "baseline": 26.675987874180816,
+              "ordered_top2": 19.60684636823174,
+              "parent": 19.61403674092786,
+              "anchor": 19.6710079738072
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.000366727650183
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3605445451647415
+            },
+            "baseline_over_parent": 1.360045778772151,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0032724082379418
+            }
+          },
+          {
+            "round": 2,
+            "order": [
+              "parent",
+              "baseline",
+              "anchor",
+              "ordered_top2"
+            ],
+            "us": {
+              "parent": 19.68018363933174,
+              "baseline": 26.629864872562504,
+              "anchor": 19.737418895329164,
+              "ordered_top2": 19.59083518805054
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0045607270146246
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3593021745599407
+            },
+            "baseline_over_parent": 1.3531309138468357,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0074822592233348
+            }
+          },
+          {
+            "round": 3,
+            "order": [
+              "anchor",
+              "baseline",
+              "ordered_top2",
+              "parent"
+            ],
+            "us": {
+              "anchor": 19.69460264036927,
+              "baseline": 26.578485309884773,
+              "ordered_top2": 19.50709969250124,
+              "parent": 19.715069678136175
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.010661245849627
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.362503177245865
+            },
+            "baseline_over_parent": 1.3481304273228139,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0096120361726613
+            }
+          },
+          {
+            "round": 4,
+            "order": [
+              "ordered_top2",
+              "parent",
+              "anchor",
+              "baseline"
+            ],
+            "us": {
+              "ordered_top2": 19.593652230721933,
+              "parent": 19.679797027871334,
+              "anchor": 19.67694732835827,
+              "baseline": 26.65450691157936
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.004396566609176
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3603643974953448
+            },
+            "baseline_over_parent": 1.354409645273788,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.004251126673859
+            }
+          },
+          {
+            "round": 5,
+            "order": [
+              "ordered_top2",
+              "baseline",
+              "anchor",
+              "parent"
+            ],
+            "us": {
+              "ordered_top2": 19.797323708755197,
+              "baseline": 26.6697639942976,
+              "anchor": 19.722350656169738,
+              "parent": 19.716535700429784
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 0.9959192459792086
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3471398652992235
+            },
+            "baseline_over_parent": 1.352659736959584,
+            "anchor_over_candidate": {
+              "ordered_top2": 0.9962129703141489
+            }
+          },
+          {
+            "round": 6,
+            "order": [
+              "baseline",
+              "anchor",
+              "ordered_top2",
+              "parent"
+            ],
+            "us": {
+              "baseline": 26.59276453021352,
+              "anchor": 19.650799887520925,
+              "ordered_top2": 19.573695267667237,
+              "parent": 19.7257312014699
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0077673598022037
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.358597043969552
+            },
+            "baseline_over_parent": 1.348125666856492,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0039391958850536
+            }
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              19.62906891510735,
+              19.615653355916344
+            ],
+            "ratio": 1.0006839210985017
+          },
+          {
+            "round": 1,
+            "us": [
+              19.5994767550431,
+              19.6913089212681
+            ],
+            "ratio": 0.9953364112770678
+          },
+          {
+            "round": 2,
+            "us": [
+              19.667315125107407,
+              19.729990264592896
+            ],
+            "ratio": 0.9968233567961783
+          },
+          {
+            "round": 3,
+            "us": [
+              19.731061301682963,
+              19.65598379854205
+            ],
+            "ratio": 1.0038195749401504
+          },
+          {
+            "round": 4,
+            "us": [
+              19.719082989343782,
+              19.722295946501426
+            ],
+            "ratio": 0.9998370901052109
+          },
+          {
+            "round": 5,
+            "us": [
+              19.71425895058012,
+              19.697912658254307
+            ],
+            "ratio": 1.0008298489596035
+          },
+          {
+            "round": 6,
+            "us": [
+              19.649973191841294,
+              19.715696667867995
+            ],
+            "ratio": 0.9966664390747189
+          }
+        ],
+        "aa_median": 0.9998370901052109,
+        "median_us": {
+          "baseline": 26.65450691157936,
+          "anchor": 19.67694732835827,
+          "parent": 19.715069678136175,
+          "ordered_top2": 19.59083518805054
+        },
+        "anchor_over_candidate": {
+          "ordered_top2": 1.0039391958850536
+        },
+        "parent_over_candidate": {
+          "ordered_top2": 1.0045607270146246
+        },
+        "baseline_over_candidate": {
+          "ordered_top2": 1.3603643974953448
+        }
+      }
+    },
+    {
+      "shape": [
+        3072,
+        256
+      ],
+      "input_seed": 3072009514,
+      "input_sha256": {
+        "x": "cf724cbbe7883e992ff14b1de373bb3ca3a7caa1abec97c0b83c82f7571bfafb",
+        "b": "082f515c5ce03509388b404850560a5f5088700cbe1dd8027515075a2d27b5e2"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "parent",
+              "ordered_top2",
+              "baseline",
+              "anchor"
+            ],
+            "us": {
+              "parent": 27.554972809140043,
+              "ordered_top2": 27.399356377144688,
+              "baseline": 37.743904438424615,
+              "anchor": 27.564119054644152
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0056795652369837
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3775471189501693
+            },
+            "baseline_over_parent": 1.369767435441086,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.006013377658641
+            }
+          },
+          {
+            "round": 1,
+            "order": [
+              "parent",
+              "ordered_top2",
+              "baseline",
+              "anchor"
+            ],
+            "us": {
+              "parent": 27.561984934170518,
+              "ordered_top2": 27.44789469753555,
+              "baseline": 37.74261556294541,
+              "anchor": 27.559025869720358
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0041566115686538
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3750641343845649
+            },
+            "baseline_over_parent": 1.369372186113971,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0040488049597038
+            }
+          },
+          {
+            "round": 2,
+            "order": [
+              "anchor",
+              "baseline",
+              "parent",
+              "ordered_top2"
+            ],
+            "us": {
+              "anchor": 27.564959003500743,
+              "baseline": 37.7525169237525,
+              "parent": 27.55881334772173,
+              "ordered_top2": 27.441214570904723
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0042854800217806
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.375759692640595
+            },
+            "baseline_over_parent": 1.3698890604400236,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0045094371561536
+            }
+          },
+          {
+            "round": 3,
+            "order": [
+              "ordered_top2",
+              "anchor",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "ordered_top2": 27.48191889503068,
+              "anchor": 27.59092327748396,
+              "baseline": 37.75073166551261,
+              "parent": 27.591278787063874
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0039793397415553
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3736570510125024
+            },
+            "baseline_over_parent": 1.3682124687606716,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0039664036150324
+            }
+          },
+          {
+            "round": 4,
+            "order": [
+              "parent",
+              "baseline",
+              "ordered_top2",
+              "anchor"
+            ],
+            "us": {
+              "parent": 27.563395731812545,
+              "baseline": 37.72882843017578,
+              "ordered_top2": 27.426585388183593,
+              "anchor": 27.575573898093573
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0049882382984465
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3756298094049573
+            },
+            "baseline_over_parent": 1.368801899347645,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0054322660951505
+            }
+          },
+          {
+            "round": 5,
+            "order": [
+              "anchor",
+              "baseline",
+              "ordered_top2",
+              "parent"
+            ],
+            "us": {
+              "anchor": 27.591624035931275,
+              "baseline": 37.78667533790672,
+              "ordered_top2": 27.47825462277196,
+              "parent": 27.652246406279414
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.006331980902574
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3751483075126576
+            },
+            "baseline_over_parent": 1.3664956829448016,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0041257865434206
+            }
+          },
+          {
+            "round": 6,
+            "order": [
+              "baseline",
+              "anchor",
+              "ordered_top2",
+              "parent"
+            ],
+            "us": {
+              "baseline": 37.76056206744651,
+              "anchor": 27.619114273556914,
+              "ordered_top2": 27.55433694401778,
+              "parent": 27.53107301772587
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 0.9991557072725366
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3704035827160255
+            },
+            "baseline_over_parent": 1.3715615821851326,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0023508941503743
+            }
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              27.52990031360205,
+              27.501384980203294
+            ],
+            "ratio": 1.0010368689947535
+          },
+          {
+            "round": 1,
+            "us": [
+              27.534621011794307,
+              27.51980548225992
+            ],
+            "ratio": 1.0005383588028607
+          },
+          {
+            "round": 2,
+            "us": [
+              27.521623570735034,
+              27.564161415868156
+            ],
+            "ratio": 0.99845676984359
+          },
+          {
+            "round": 3,
+            "us": [
+              27.57264804216771,
+              27.577446492513022
+            ],
+            "ratio": 0.9998260009190258
+          },
+          {
+            "round": 4,
+            "us": [
+              27.560526183354185,
+              27.59737747394486
+            ],
+            "ratio": 0.9986646814312169
+          },
+          {
+            "round": 5,
+            "us": [
+              27.579561341244517,
+              27.545131955827987
+            ],
+            "ratio": 1.0012499263198935
+          },
+          {
+            "round": 6,
+            "us": [
+              27.543441319869736,
+              27.548512285838704
+            ],
+            "ratio": 0.9998159259594002
+          }
+        ],
+        "aa_median": 0.9998260009190258,
+        "median_us": {
+          "baseline": 37.75073166551261,
+          "anchor": 27.575573898093573,
+          "parent": 27.561984934170518,
+          "ordered_top2": 27.44789469753555
+        },
+        "anchor_over_candidate": {
+          "ordered_top2": 1.0041257865434206
+        },
+        "parent_over_candidate": {
+          "ordered_top2": 1.0042854800217806
+        },
+        "baseline_over_candidate": {
+          "ordered_top2": 1.3751483075126576
+        }
+      }
+    },
+    {
+      "shape": [
+        4096,
+        256
+      ],
+      "input_seed": 4096012586,
+      "input_sha256": {
+        "x": "782f9ce66bbf311d0412d9153cf439947aac3724112764b72e3fe27c084f8ef3",
+        "b": "ca8e46f4469a4b5390cd2e539f744d6c97ac2b760b7650697ed85ccab117ab20"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "anchor",
+              "parent",
+              "ordered_top2",
+              "baseline"
+            ],
+            "us": {
+              "anchor": 35.52125360547882,
+              "parent": 35.576727370585296,
+              "ordered_top2": 35.41796338002048,
+              "baseline": 48.67397497097651
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0044825838476747
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3742736827841953
+            },
+            "baseline_over_parent": 1.3681408765894518,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.002916323119714
+            }
+          },
+          {
+            "round": 1,
+            "order": [
+              "ordered_top2",
+              "anchor",
+              "baseline",
+              "parent"
+            ],
+            "us": {
+              "ordered_top2": 35.39769464609574,
+              "anchor": 35.55486344799553,
+              "baseline": 48.694663859428246,
+              "parent": 35.52122686327118
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0034898379233594
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.37564506237694
+            },
+            "baseline_over_parent": 1.370860979742182,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0044400858155074
+            }
+          },
+          {
+            "round": 2,
+            "order": [
+              "baseline",
+              "ordered_top2",
+              "anchor",
+              "parent"
+            ],
+            "us": {
+              "baseline": 48.67080248319186,
+              "ordered_top2": 35.44341534984355,
+              "anchor": 35.51714229387914,
+              "parent": 35.52658834671052
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0023466417117541
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3731973062637346
+            },
+            "baseline_over_parent": 1.3699824483061682,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0020801309159366
+            }
+          },
+          {
+            "round": 3,
+            "order": [
+              "anchor",
+              "baseline",
+              "parent",
+              "ordered_top2"
+            ],
+            "us": {
+              "anchor": 35.50833910090442,
+              "baseline": 48.69303065825274,
+              "parent": 35.543976378391896,
+              "ordered_top2": 35.424561403235614
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.00337096552296
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3745556396304517
+            },
+            "baseline_over_parent": 1.369937627120822,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0023649607602807
+            }
+          },
+          {
+            "round": 4,
+            "order": [
+              "anchor",
+              "parent",
+              "baseline",
+              "ordered_top2"
+            ],
+            "us": {
+              "anchor": 35.52756873928771,
+              "parent": 35.54040693467663,
+              "baseline": 48.65951488800443,
+              "ordered_top2": 35.41980689244144
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0034048757691258
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3737939067755993
+            },
+            "baseline_over_parent": 1.369132181785109,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0030424176837978
+            }
+          },
+          {
+            "round": 5,
+            "order": [
+              "anchor",
+              "parent",
+              "ordered_top2",
+              "baseline"
+            ],
+            "us": {
+              "anchor": 35.51825267893161,
+              "parent": 35.486931292343904,
+              "ordered_top2": 35.38652690284306,
+              "baseline": 48.66170074149085
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0028373620778472
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.375147690393465
+            },
+            "baseline_over_parent": 1.371256937958716,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0037224838834908
+            }
+          },
+          {
+            "round": 6,
+            "order": [
+              "parent",
+              "ordered_top2",
+              "baseline",
+              "anchor"
+            ],
+            "us": {
+              "parent": 35.516204759332766,
+              "ordered_top2": 35.37894329392766,
+              "baseline": 48.669981648447596,
+              "anchor": 35.50868696370115
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0038797502871903
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3756765215992521
+            },
+            "baseline_over_parent": 1.3703598675097273,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0036672567830978
+            }
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              35.55291048030263,
+              35.524043763829646
+            ],
+            "ratio": 1.0008125965800767
+          },
+          {
+            "round": 1,
+            "us": [
+              35.542858192034316,
+              35.52922296129968
+            ],
+            "ratio": 1.00038377508986
+          },
+          {
+            "round": 2,
+            "us": [
+              35.540744897091024,
+              35.50902438212118
+            ],
+            "ratio": 1.0008933085468215
+          },
+          {
+            "round": 3,
+            "us": [
+              35.5652646899718,
+              35.53416174162859
+            ],
+            "ratio": 1.0008752970893013
+          },
+          {
+            "round": 4,
+            "us": [
+              35.54103717882447,
+              35.54231616812692
+            ],
+            "ratio": 0.9999640150265839
+          },
+          {
+            "round": 5,
+            "us": [
+              35.5370730338012,
+              35.51903244871531
+            ],
+            "ratio": 1.0005079131902577
+          },
+          {
+            "round": 6,
+            "us": [
+              35.53668682969462,
+              35.52262485027313
+            ],
+            "ratio": 1.000395859807116
+          }
+        ],
+        "aa_median": 1.0005079131902577,
+        "median_us": {
+          "baseline": 48.67080248319186,
+          "anchor": 35.51825267893161,
+          "parent": 35.52658834671052,
+          "ordered_top2": 35.41796338002048
+        },
+        "anchor_over_candidate": {
+          "ordered_top2": 1.0030424176837978
+        },
+        "parent_over_candidate": {
+          "ordered_top2": 1.0034048757691258
+        },
+        "baseline_over_candidate": {
+          "ordered_top2": 1.3745556396304517
+        }
+      }
+    },
+    {
+      "shape": [
+        6144,
+        256
+      ],
+      "input_seed": 6144018730,
+      "input_sha256": {
+        "x": "8e1d00eba75eb66a855ef900e02c7743ab35284f94ca4e9f84eef6cc0bae42a8",
+        "b": "6d2ea187e0177a66468eba9ccf83479e96c045d8c8b4f051c7c00f00c051d42c"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "baseline",
+              "ordered_top2",
+              "anchor",
+              "parent"
+            ],
+            "us": {
+              "baseline": 70.06541273019609,
+              "ordered_top2": 51.096549598119594,
+              "anchor": 51.17866309913429,
+              "parent": 51.1740532024766
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.001516807004907
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3712356955854914
+            },
+            "baseline_over_parent": 1.3691589457058138,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0016070263385792
+            }
+          },
+          {
+            "round": 1,
+            "order": [
+              "anchor",
+              "baseline",
+              "parent",
+              "ordered_top2"
+            ],
+            "us": {
+              "anchor": 51.21240124792911,
+              "baseline": 70.09200141543434,
+              "parent": 51.21115242562643,
+              "ordered_top2": 51.06939765495982
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0027757282673344
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3724853754688264
+            },
+            "baseline_over_parent": 1.3686862742881722,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0028001817044223
+            }
+          },
+          {
+            "round": 2,
+            "order": [
+              "ordered_top2",
+              "parent",
+              "anchor",
+              "baseline"
+            ],
+            "us": {
+              "ordered_top2": 51.093732115375964,
+              "parent": 51.21643355868373,
+              "anchor": 51.208834544472076,
+              "baseline": 70.07432595277443
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0024014969787427
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3714857586550526
+            },
+            "baseline_over_parent": 1.3682000304156936,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.00225277004303
+            }
+          },
+          {
+            "round": 3,
+            "order": [
+              "parent",
+              "baseline",
+              "ordered_top2",
+              "anchor"
+            ],
+            "us": {
+              "parent": 51.2100668211241,
+              "baseline": 70.09261333159286,
+              "ordered_top2": 51.09035686780047,
+              "anchor": 51.21122617979307
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.002343102703968
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3719343067609007
+            },
+            "baseline_over_parent": 1.3687272382679205,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0023657950228329
+            }
+          },
+          {
+            "round": 4,
+            "order": [
+              "baseline",
+              "anchor",
+              "parent",
+              "ordered_top2"
+            ],
+            "us": {
+              "baseline": 70.09085491026715,
+              "anchor": 51.19605051399252,
+              "parent": 51.21669298981967,
+              "ordered_top2": 51.093405646246836
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0024129795619112
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3718180266853246
+            },
+            "baseline_over_parent": 1.3685158259671137,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0020089650796888
+            }
+          },
+          {
+            "round": 5,
+            "order": [
+              "ordered_top2",
+              "parent",
+              "baseline",
+              "anchor"
+            ],
+            "us": {
+              "ordered_top2": 51.10067511003329,
+              "parent": 51.21464934400333,
+              "baseline": 70.09202020818536,
+              "anchor": 51.21251592096293
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0022303860707245
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3716456789907114
+            },
+            "baseline_over_parent": 1.3685931878081357,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0021886366606472
+            }
+          },
+          {
+            "round": 6,
+            "order": [
+              "baseline",
+              "ordered_top2",
+              "parent",
+              "anchor"
+            ],
+            "us": {
+              "baseline": 70.08486457796761,
+              "ordered_top2": 51.07640292193438,
+              "parent": 51.17173920507016,
+              "anchor": 51.211577314671466
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0018665426240272
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3721574067203974
+            },
+            "baseline_over_parent": 1.3696009880982023,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0026465135562441
+            }
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              51.1806107638927,
+              51.21690801672033
+            ],
+            "ratio": 0.9992913033169479
+          },
+          {
+            "round": 1,
+            "us": [
+              51.211083161475536,
+              51.21128766433052
+            ],
+            "ratio": 0.9999960066839888
+          },
+          {
+            "round": 2,
+            "us": [
+              51.21104354443758,
+              51.21353916499926
+            ],
+            "ratio": 0.9999512702968322
+          },
+          {
+            "round": 3,
+            "us": [
+              51.183122137318485,
+              51.210206504759746
+            ],
+            "ratio": 0.9994711138796376
+          },
+          {
+            "round": 4,
+            "us": [
+              51.17218295197602,
+              51.214842692665435
+            ],
+            "ratio": 0.9991670434107274
+          },
+          {
+            "round": 5,
+            "us": [
+              51.21173036066348,
+              51.21866519239071
+            ],
+            "ratio": 0.9998646034272627
+          },
+          {
+            "round": 6,
+            "us": [
+              51.20935776046298,
+              51.20499566964664
+            ],
+            "ratio": 1.0000851887742455
+          }
+        ],
+        "aa_median": 0.9998646034272627,
+        "median_us": {
+          "baseline": 70.09085491026715,
+          "anchor": 51.21122617979307,
+          "parent": 51.21115242562643,
+          "ordered_top2": 51.093405646246836
+        },
+        "anchor_over_candidate": {
+          "ordered_top2": 1.00225277004303
+        },
+        "parent_over_candidate": {
+          "ordered_top2": 1.002343102703968
+        },
+        "baseline_over_candidate": {
+          "ordered_top2": 1.3718180266853246
+        }
+      }
+    },
+    {
+      "shape": [
+        8192,
+        256
+      ],
+      "input_seed": 8192024874,
+      "input_sha256": {
+        "x": "330277f6edb83274a361e2c83a2177d20dc9fd45488802a5b5cd49d68096c8fc",
+        "b": "62b893950c8e3f32f030fce159101b81b16a5eba1ce563521978bb410da78d03"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "baseline",
+              "ordered_top2",
+              "parent",
+              "anchor"
+            ],
+            "us": {
+              "baseline": 91.94300969441733,
+              "ordered_top2": 66.97784289979099,
+              "parent": 67.09290688497978,
+              "anchor": 67.09125719572368
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0017179410415016
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3727376952401709
+            },
+            "baseline_over_parent": 1.3703834572563554,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0016933106684607
+            }
+          },
+          {
+            "round": 1,
+            "order": [
+              "baseline",
+              "anchor",
+              "ordered_top2",
+              "parent"
+            ],
+            "us": {
+              "baseline": 91.94226468343871,
+              "anchor": 67.10444563752289,
+              "ordered_top2": 66.97372542856462,
+              "parent": 67.08063359846149
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0015962703166468
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.372810965719773
+            },
+            "baseline_over_parent": 1.370623080780612,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0019518133136807
+            }
+          },
+          {
+            "round": 2,
+            "order": [
+              "anchor",
+              "baseline",
+              "parent",
+              "ordered_top2"
+            ],
+            "us": {
+              "anchor": 67.06394931726288,
+              "baseline": 91.93932124546596,
+              "parent": 67.06493258060894,
+              "ordered_top2": 66.96744779261148
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.00145570409521
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3728957019564008
+            },
+            "baseline_over_parent": 1.3709000771000428,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0014410213892315
+            }
+          },
+          {
+            "round": 3,
+            "order": [
+              "parent",
+              "anchor",
+              "baseline",
+              "ordered_top2"
+            ],
+            "us": {
+              "parent": 67.09209136431225,
+              "anchor": 67.09067514133785,
+              "baseline": 91.93722874067406,
+              "ordered_top2": 66.96974637215597
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0018268695759487
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.372817335006346
+            },
+            "baseline_over_parent": 1.3703139501413348,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0018057223706638
+            }
+          },
+          {
+            "round": 4,
+            "order": [
+              "ordered_top2",
+              "anchor",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "ordered_top2": 66.97285658829696,
+              "anchor": 67.06156814307496,
+              "parent": 67.07414459763912,
+              "baseline": 91.94193021946045
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0015123740348244
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3728237812022288
+            },
+            "baseline_over_parent": 1.370750693445245,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0013245896815084
+            }
+          },
+          {
+            "round": 5,
+            "order": [
+              "baseline",
+              "parent",
+              "ordered_top2",
+              "anchor"
+            ],
+            "us": {
+              "baseline": 91.9346437000093,
+              "parent": 67.08920127467105,
+              "ordered_top2": 66.97198031241433,
+              "anchor": 67.091323450992
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.001750298583227
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3727329440035647
+            },
+            "baseline_over_parent": 1.3703344495579564,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0017819861085329
+            }
+          },
+          {
+            "round": 6,
+            "order": [
+              "parent",
+              "anchor",
+              "baseline",
+              "ordered_top2"
+            ],
+            "us": {
+              "parent": 67.09197184422632,
+              "anchor": 67.09494757485557,
+              "baseline": 91.93897337710123,
+              "ordered_top2": 66.9733246859773
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.001771558434725
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.3727700365508535
+            },
+            "baseline_over_parent": 1.370342394922667,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0018159900146593
+            }
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              67.09264855635794,
+              67.09384985137403
+            ],
+            "ratio": 0.9999820953035375
+          },
+          {
+            "round": 1,
+            "us": [
+              67.08890948379249,
+              67.11817588005867
+            ],
+            "ratio": 0.9995639572160233
+          },
+          {
+            "round": 2,
+            "us": [
+              67.09662253396553,
+              67.08857285348994
+            ],
+            "ratio": 1.0001199858654495
+          },
+          {
+            "round": 3,
+            "us": [
+              67.06043801656583,
+              67.091234718881
+            ],
+            "ratio": 0.9995409727896019
+          },
+          {
+            "round": 4,
+            "us": [
+              67.09051634136,
+              67.09406267132675
+            ],
+            "ratio": 0.9999471439077385
+          },
+          {
+            "round": 5,
+            "us": [
+              67.09218811570553,
+              67.09210914477967
+            ],
+            "ratio": 1.0000011770523667
+          },
+          {
+            "round": 6,
+            "us": [
+              67.0927041037041,
+              67.090974774277
+            ],
+            "ratio": 1.0000257758876347
+          }
+        ],
+        "aa_median": 0.9999820953035375,
+        "median_us": {
+          "baseline": 91.93932124546596,
+          "anchor": 67.09125719572368,
+          "parent": 67.08920127467105,
+          "ordered_top2": 66.97285658829696
+        },
+        "anchor_over_candidate": {
+          "ordered_top2": 1.0017819861085329
+        },
+        "parent_over_candidate": {
+          "ordered_top2": 1.0017179410415016
+        },
+        "baseline_over_candidate": {
+          "ordered_top2": 1.372810965719773
+        }
+      }
+    },
+    {
+      "shape": [
+        16,
+        512
+      ],
+      "input_seed": 16000602,
+      "input_sha256": {
+        "x": "9e67d2f79c8913c0aa50068903eb40af743f3c820ddec30c526599cd4eb28061",
+        "b": "831e89521a821123906cf7c3d52db78842fb2a598d6d40994101efd75acff086"
+      },
+      "timing": {
+        "samples": [
+          {
+            "round": 0,
+            "order": [
+              "parent",
+              "anchor",
+              "baseline",
+              "ordered_top2"
+            ],
+            "us": {
+              "parent": 5.797932916189756,
+              "anchor": 5.804160067909643,
+              "baseline": 8.046418360052815,
+              "ordered_top2": 5.698050444437333
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0175292361354806
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.4121353326922637
+            },
+            "baseline_over_parent": 1.387808116507271,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0186220926801197
+            }
+          },
+          {
+            "round": 1,
+            "order": [
+              "baseline",
+              "parent",
+              "anchor",
+              "ordered_top2"
+            ],
+            "us": {
+              "baseline": 8.08240498994526,
+              "parent": 5.8045894477018125,
+              "anchor": 5.780519989110759,
+              "ordered_top2": 5.6732951774799005
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.023142506447238
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.4246403081631116
+            },
+            "baseline_over_parent": 1.3924163048508615,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0188999176451254
+            }
+          },
+          {
+            "round": 2,
+            "order": [
+              "anchor",
+              "parent",
+              "ordered_top2",
+              "baseline"
+            ],
+            "us": {
+              "anchor": 5.804548473478113,
+              "parent": 5.794967088282975,
+              "ordered_top2": 5.708351916791988,
+              "baseline": 8.067844895755544
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.015173411302165
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.4133404901023616
+            },
+            "baseline_over_parent": 1.392215826741824,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0168518966749664
+            }
+          },
+          {
+            "round": 3,
+            "order": [
+              "ordered_top2",
+              "anchor",
+              "parent",
+              "baseline"
+            ],
+            "us": {
+              "ordered_top2": 5.716741572427487,
+              "anchor": 5.807636599125629,
+              "parent": 5.77907627029977,
+              "baseline": 8.083666857906929
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0109038859081774
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.4140339834312958
+            },
+            "baseline_over_parent": 1.398781825990266,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.0158997963344258
+            }
+          },
+          {
+            "round": 4,
+            "order": [
+              "baseline",
+              "anchor",
+              "ordered_top2",
+              "parent"
+            ],
+            "us": {
+              "baseline": 8.05342476693772,
+              "anchor": 5.80639304158994,
+              "ordered_top2": 5.676943001776872,
+              "parent": 5.799641918437751
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0216135544469047
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.4186199798759676
+            },
+            "baseline_over_parent": 1.3886072416531312,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.02280277250847
+            }
+          },
+          {
+            "round": 5,
+            "order": [
+              "anchor",
+              "parent",
+              "ordered_top2",
+              "baseline"
+            ],
+            "us": {
+              "anchor": 5.79755014403727,
+              "parent": 5.78237283508236,
+              "ordered_top2": 5.711441461220148,
+              "baseline": 8.076987221696909
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.0124191719977917
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.4141766621506096
+            },
+            "baseline_over_parent": 1.3968292000634832,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.015076523746551
+            }
+          },
+          {
+            "round": 6,
+            "order": [
+              "baseline",
+              "parent",
+              "ordered_top2",
+              "anchor"
+            ],
+            "us": {
+              "baseline": 8.053326263512224,
+              "parent": 5.809754171514409,
+              "ordered_top2": 5.708239651933501,
+              "anchor": 5.801932314103266
+            },
+            "parent_over_candidate": {
+              "ordered_top2": 1.017783857330959
+            },
+            "baseline_over_candidate": {
+              "ordered_top2": 1.4108248347254293
+            },
+            "baseline_over_parent": 1.3861733260588185,
+            "anchor_over_candidate": {
+              "ordered_top2": 1.016413582449719
+            }
+          }
+        ],
+        "aa": [
+          {
+            "round": 0,
+            "us": [
+              5.794382859499026,
+              5.786227827836693
+            ],
+            "ratio": 1.0014093865476745
+          },
+          {
+            "round": 1,
+            "us": [
+              5.781066672414796,
+              5.801991190372704
+            ],
+            "ratio": 0.9963935626112931
+          },
+          {
+            "round": 2,
+            "us": [
+              5.776846065442749,
+              5.80570881981585
+            ],
+            "ratio": 0.9950285563281115
+          },
+          {
+            "round": 3,
+            "us": [
+              5.811136550345848,
+              5.800209741007702
+            ],
+            "ratio": 1.001883864519742
+          },
+          {
+            "round": 4,
+            "us": [
+              5.801756081120965,
+              5.8117473857444635
+            ],
+            "ratio": 0.9982808432713359
+          },
+          {
+            "round": 5,
+            "us": [
+              5.813116648840525,
+              5.792061006179964
+            ],
+            "ratio": 1.0036352591310926
+          },
+          {
+            "round": 6,
+            "us": [
+              5.803921013002675,
+              5.804954743410385
+            ],
+            "ratio": 0.9998219227447237
+          }
+        ],
+        "aa_median": 0.9998219227447237,
+        "median_us": {
+          "baseline": 8.067844895755544,
+          "anchor": 5.804160067909643,
+          "parent": 5.797932916189756,
+          "ordered_top2": 5.708239651933501
+        },
+        "anchor_over_candidate": {
+          "ordered_top2": 1.0168518966749664
+        },
+        "parent_over_candidate": {
+          "ordered_top2": 1.0175292361354806
+        },
+        "baseline_over_candidate": {
+          "ordered_top2": 1.4140339834312958
+        }
+      }
+    }
+  ]
+}

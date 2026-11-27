@@ -1,5 +1,7 @@
 # LayerNorm backward dX TTIR
 
+当前统一展示见[完整结果](report.md)：每个shape只列基线时间、优化时间、加速比，保留算术/几何平均和方法收益。
+
 本目录独立于上一轮前向实验。baseline来自官方Triton3.7.0教程`_layer_norm_bwd_dx_fused`的**dX计算段提取**：保留该段的加载、两次规约和dX写出语句，双方均不计算dW/dB、不使用梯度累加锁。不是完整原版fused backward的性能测试。
 
 - [首轮结果报告](report.md)：有限组级收益，中间两组保留baseline。

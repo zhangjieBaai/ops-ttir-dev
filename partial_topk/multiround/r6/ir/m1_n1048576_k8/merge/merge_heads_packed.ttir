@@ -1,0 +1,417 @@
+module {
+  tt.func public @partial_select(%X: !tt.ptr<f32> {tt.divisibility = 16 : i32}, %I: !tt.ptr<i32> {tt.divisibility = 16 : i32}, %V: !tt.ptr<f32> {tt.divisibility = 16 : i32}, %O: !tt.ptr<i32> {tt.divisibility = 16 : i32}) attributes {noinline = false} {
+    %row = tt.get_program_id x : i32
+    %stride = arith.constant 8192 : i32
+    %k = arith.constant 8 : i32
+    %rowoff = arith.muli %row, %stride : i32
+    %outoff = arith.muli %row, %k : i32
+    %xbase = tt.addptr %X, %rowoff : !tt.ptr<f32>, i32
+    %ibase = tt.addptr %I, %rowoff : !tt.ptr<i32>, i32
+    %vbase = tt.addptr %V, %outoff : !tt.ptr<f32>, i32
+    %obase = tt.addptr %O, %outoff : !tt.ptr<i32>, i32
+    %xvec = tt.splat %xbase : !tt.ptr<f32> -> tensor<1024x!tt.ptr<f32>>
+    %ivec = tt.splat %ibase : !tt.ptr<i32> -> tensor<1024x!tt.ptr<i32>>
+    %chunkids = tt.make_range {end = 1024 : i32, start = 0 : i32} : tensor<1024xi32>
+    %nchunks = arith.constant dense<1024> : tensor<1024xi32>
+    %kvec = arith.constant dense<8> : tensor<1024xi32>
+    %validchunk = arith.cmpi slt, %chunkids, %nchunks : tensor<1024xi32>
+    %offsets = arith.muli %chunkids, %kvec : tensor<1024xi32>
+    %xp = tt.addptr %xvec, %offsets : tensor<1024x!tt.ptr<f32>>, tensor<1024xi32>
+    %ip = tt.addptr %ivec, %offsets : tensor<1024x!tt.ptr<i32>>, tensor<1024xi32>
+    %neginf = arith.constant dense<0xFF800000> : tensor<1024xf32>
+    %intmax = arith.constant dense<2147483647> : tensor<1024xi32>
+    %zero = arith.constant dense<0.0> : tensor<1024xf32>
+    %izero = arith.constant dense<0> : tensor<1024xi32>
+    %one = arith.constant dense<1> : tensor<1024xi32>
+    %shift31 = arith.constant dense<31> : tensor<1024xi32>
+    %signbit = arith.constant dense<-2147483648> : tensor<1024xi32>
+    %values0 = tt.load %xp, %validchunk, %neginf : tensor<1024x!tt.ptr<f32>>
+    %ids0 = tt.load %ip, %validchunk, %intmax : tensor<1024x!tt.ptr<i32>>
+    %szero = arith.constant 0 : i32
+    %sall = arith.constant -1 : i32
+    %ssign = arith.constant -2147483648 : i32
+    %smax = arith.constant 2147483647 : i32
+
+    %shift32v = arith.constant dense<32> : tensor<1024xi64>
+    %shift32 = arith.constant 32 : i64
+
+    %init_iszero = arith.cmpf oeq, %values0, %zero : tensor<1024xf32>
+    %init_normal = arith.select %init_iszero, %zero, %values0 : tensor<1024xi1>, tensor<1024xf32>
+    %init_bits = tt.bitcast %init_normal : tensor<1024xf32> -> tensor<1024xi32>
+    %init_sign = arith.shrsi %init_bits, %shift31 : tensor<1024xi32>
+    %init_flip = arith.ori %init_sign, %signbit : tensor<1024xi32>
+    %init_keys = arith.xori %init_bits, %init_flip : tensor<1024xi32>
+
+    %init_reverse = arith.subi %intmax, %ids0 : tensor<1024xi32>
+    %init_high = arith.extui %init_keys : tensor<1024xi32> to tensor<1024xi64>
+    %init_low = arith.extui %init_reverse : tensor<1024xi32> to tensor<1024xi64>
+    %init_shifted = arith.shli %init_high, %shift32v : tensor<1024xi64>
+    %init_packed = arith.ori %init_shifted, %init_low : tensor<1024xi64>
+
+    %h0_maximum = "tt.reduce"(%init_packed) <{axis = 0 : i32}> ({
+    ^bb0(%h0_a: i64, %h0_b: i64):
+      %h0_m = arith.maxui %h0_a, %h0_b : i64
+      tt.reduce.return %h0_m : i64
+    }) : (tensor<1024xi64>) -> i64
+
+    %h0_high = arith.shrui %h0_maximum, %shift32 : i64
+    %h0_maxkey = arith.trunci %h0_high : i64 to i32
+    %h0_low = arith.trunci %h0_maximum : i64 to i32
+    %h0_bestid = arith.subi %smax, %h0_low : i32
+
+    %h0_positive = arith.cmpi slt, %h0_maxkey, %szero : i32
+    %h0_undo = arith.select %h0_positive, %ssign, %sall : i32
+    %h0_valuebits = arith.xori %h0_maxkey, %h0_undo : i32
+    %h0_value = tt.bitcast %h0_valuebits : i32 -> f32
+    %h0_outidx = arith.constant 0 : i32
+    %h0_vp = tt.addptr %vbase, %h0_outidx : !tt.ptr<f32>, i32
+    %h0_op = tt.addptr %obase, %h0_outidx : !tt.ptr<i32>, i32
+    tt.store %h0_vp, %h0_value : !tt.ptr<f32>
+    tt.store %h0_op, %h0_bestid : !tt.ptr<i32>
+
+    %h0_idvec = tt.splat %h0_bestid : i32 -> tensor<1024xi32>
+    %h0_chosen = arith.cmpi eq, %ids0, %h0_idvec : tensor<1024xi32>
+    %h0_advance = arith.select %h0_chosen, %one, %izero : tensor<1024xi1>, tensor<1024xi32>
+    %h0_cursor = arith.addi %izero, %h0_advance : tensor<1024xi32>
+    %h0_remains = arith.cmpi slt, %h0_cursor, %kvec : tensor<1024xi32>
+    %h0_valid = arith.andi %validchunk, %h0_remains : tensor<1024xi1>
+    %h0_read = arith.andi %h0_chosen, %h0_valid : tensor<1024xi1>
+    %h0_offset = arith.addi %offsets, %h0_cursor : tensor<1024xi32>
+    %h0_xp = tt.addptr %xvec, %h0_offset : tensor<1024x!tt.ptr<f32>>, tensor<1024xi32>
+    %h0_ip = tt.addptr %ivec, %h0_offset : tensor<1024x!tt.ptr<i32>>, tensor<1024xi32>
+    %h0_loaded = tt.load %h0_xp, %h0_read, %neginf : tensor<1024x!tt.ptr<f32>>
+    %h0_loadedid = tt.load %h0_ip, %h0_read, %intmax : tensor<1024x!tt.ptr<i32>>
+    %h0_ids = arith.select %h0_chosen, %h0_loadedid, %ids0 : tensor<1024xi1>, tensor<1024xi32>
+
+    %h0_iszero = arith.cmpf oeq, %h0_loaded, %zero : tensor<1024xf32>
+    %h0_normal = arith.select %h0_iszero, %zero, %h0_loaded : tensor<1024xi1>, tensor<1024xf32>
+    %h0_bits = tt.bitcast %h0_normal : tensor<1024xf32> -> tensor<1024xi32>
+    %h0_sign = arith.shrsi %h0_bits, %shift31 : tensor<1024xi32>
+    %h0_flip = arith.ori %h0_sign, %signbit : tensor<1024xi32>
+    %h0_keys = arith.xori %h0_bits, %h0_flip : tensor<1024xi32>
+
+    %h0_reverse = arith.subi %intmax, %h0_loadedid : tensor<1024xi32>
+    %h0_high = arith.extui %h0_keys : tensor<1024xi32> to tensor<1024xi64>
+    %h0_low = arith.extui %h0_reverse : tensor<1024xi32> to tensor<1024xi64>
+    %h0_shifted = arith.shli %h0_high, %shift32v : tensor<1024xi64>
+    %h0_packed = arith.ori %h0_shifted, %h0_low : tensor<1024xi64>
+
+    %h0_state = arith.select %h0_chosen, %h0_packed, %init_packed : tensor<1024xi1>, tensor<1024xi64>
+    %h1_maximum = "tt.reduce"(%h0_state) <{axis = 0 : i32}> ({
+    ^bb0(%h1_a: i64, %h1_b: i64):
+      %h1_m = arith.maxui %h1_a, %h1_b : i64
+      tt.reduce.return %h1_m : i64
+    }) : (tensor<1024xi64>) -> i64
+
+    %h1_high = arith.shrui %h1_maximum, %shift32 : i64
+    %h1_maxkey = arith.trunci %h1_high : i64 to i32
+    %h1_low = arith.trunci %h1_maximum : i64 to i32
+    %h1_bestid = arith.subi %smax, %h1_low : i32
+
+    %h1_positive = arith.cmpi slt, %h1_maxkey, %szero : i32
+    %h1_undo = arith.select %h1_positive, %ssign, %sall : i32
+    %h1_valuebits = arith.xori %h1_maxkey, %h1_undo : i32
+    %h1_value = tt.bitcast %h1_valuebits : i32 -> f32
+    %h1_outidx = arith.constant 1 : i32
+    %h1_vp = tt.addptr %vbase, %h1_outidx : !tt.ptr<f32>, i32
+    %h1_op = tt.addptr %obase, %h1_outidx : !tt.ptr<i32>, i32
+    tt.store %h1_vp, %h1_value : !tt.ptr<f32>
+    tt.store %h1_op, %h1_bestid : !tt.ptr<i32>
+
+    %h1_idvec = tt.splat %h1_bestid : i32 -> tensor<1024xi32>
+    %h1_chosen = arith.cmpi eq, %h0_ids, %h1_idvec : tensor<1024xi32>
+    %h1_advance = arith.select %h1_chosen, %one, %izero : tensor<1024xi1>, tensor<1024xi32>
+    %h1_cursor = arith.addi %h0_cursor, %h1_advance : tensor<1024xi32>
+    %h1_remains = arith.cmpi slt, %h1_cursor, %kvec : tensor<1024xi32>
+    %h1_valid = arith.andi %validchunk, %h1_remains : tensor<1024xi1>
+    %h1_read = arith.andi %h1_chosen, %h1_valid : tensor<1024xi1>
+    %h1_offset = arith.addi %offsets, %h1_cursor : tensor<1024xi32>
+    %h1_xp = tt.addptr %xvec, %h1_offset : tensor<1024x!tt.ptr<f32>>, tensor<1024xi32>
+    %h1_ip = tt.addptr %ivec, %h1_offset : tensor<1024x!tt.ptr<i32>>, tensor<1024xi32>
+    %h1_loaded = tt.load %h1_xp, %h1_read, %neginf : tensor<1024x!tt.ptr<f32>>
+    %h1_loadedid = tt.load %h1_ip, %h1_read, %intmax : tensor<1024x!tt.ptr<i32>>
+    %h1_ids = arith.select %h1_chosen, %h1_loadedid, %h0_ids : tensor<1024xi1>, tensor<1024xi32>
+
+    %h1_iszero = arith.cmpf oeq, %h1_loaded, %zero : tensor<1024xf32>
+    %h1_normal = arith.select %h1_iszero, %zero, %h1_loaded : tensor<1024xi1>, tensor<1024xf32>
+    %h1_bits = tt.bitcast %h1_normal : tensor<1024xf32> -> tensor<1024xi32>
+    %h1_sign = arith.shrsi %h1_bits, %shift31 : tensor<1024xi32>
+    %h1_flip = arith.ori %h1_sign, %signbit : tensor<1024xi32>
+    %h1_keys = arith.xori %h1_bits, %h1_flip : tensor<1024xi32>
+
+    %h1_reverse = arith.subi %intmax, %h1_loadedid : tensor<1024xi32>
+    %h1_high = arith.extui %h1_keys : tensor<1024xi32> to tensor<1024xi64>
+    %h1_low = arith.extui %h1_reverse : tensor<1024xi32> to tensor<1024xi64>
+    %h1_shifted = arith.shli %h1_high, %shift32v : tensor<1024xi64>
+    %h1_packed = arith.ori %h1_shifted, %h1_low : tensor<1024xi64>
+
+    %h1_state = arith.select %h1_chosen, %h1_packed, %h0_state : tensor<1024xi1>, tensor<1024xi64>
+    %h2_maximum = "tt.reduce"(%h1_state) <{axis = 0 : i32}> ({
+    ^bb0(%h2_a: i64, %h2_b: i64):
+      %h2_m = arith.maxui %h2_a, %h2_b : i64
+      tt.reduce.return %h2_m : i64
+    }) : (tensor<1024xi64>) -> i64
+
+    %h2_high = arith.shrui %h2_maximum, %shift32 : i64
+    %h2_maxkey = arith.trunci %h2_high : i64 to i32
+    %h2_low = arith.trunci %h2_maximum : i64 to i32
+    %h2_bestid = arith.subi %smax, %h2_low : i32
+
+    %h2_positive = arith.cmpi slt, %h2_maxkey, %szero : i32
+    %h2_undo = arith.select %h2_positive, %ssign, %sall : i32
+    %h2_valuebits = arith.xori %h2_maxkey, %h2_undo : i32
+    %h2_value = tt.bitcast %h2_valuebits : i32 -> f32
+    %h2_outidx = arith.constant 2 : i32
+    %h2_vp = tt.addptr %vbase, %h2_outidx : !tt.ptr<f32>, i32
+    %h2_op = tt.addptr %obase, %h2_outidx : !tt.ptr<i32>, i32
+    tt.store %h2_vp, %h2_value : !tt.ptr<f32>
+    tt.store %h2_op, %h2_bestid : !tt.ptr<i32>
+
+    %h2_idvec = tt.splat %h2_bestid : i32 -> tensor<1024xi32>
+    %h2_chosen = arith.cmpi eq, %h1_ids, %h2_idvec : tensor<1024xi32>
+    %h2_advance = arith.select %h2_chosen, %one, %izero : tensor<1024xi1>, tensor<1024xi32>
+    %h2_cursor = arith.addi %h1_cursor, %h2_advance : tensor<1024xi32>
+    %h2_remains = arith.cmpi slt, %h2_cursor, %kvec : tensor<1024xi32>
+    %h2_valid = arith.andi %validchunk, %h2_remains : tensor<1024xi1>
+    %h2_read = arith.andi %h2_chosen, %h2_valid : tensor<1024xi1>
+    %h2_offset = arith.addi %offsets, %h2_cursor : tensor<1024xi32>
+    %h2_xp = tt.addptr %xvec, %h2_offset : tensor<1024x!tt.ptr<f32>>, tensor<1024xi32>
+    %h2_ip = tt.addptr %ivec, %h2_offset : tensor<1024x!tt.ptr<i32>>, tensor<1024xi32>
+    %h2_loaded = tt.load %h2_xp, %h2_read, %neginf : tensor<1024x!tt.ptr<f32>>
+    %h2_loadedid = tt.load %h2_ip, %h2_read, %intmax : tensor<1024x!tt.ptr<i32>>
+    %h2_ids = arith.select %h2_chosen, %h2_loadedid, %h1_ids : tensor<1024xi1>, tensor<1024xi32>
+
+    %h2_iszero = arith.cmpf oeq, %h2_loaded, %zero : tensor<1024xf32>
+    %h2_normal = arith.select %h2_iszero, %zero, %h2_loaded : tensor<1024xi1>, tensor<1024xf32>
+    %h2_bits = tt.bitcast %h2_normal : tensor<1024xf32> -> tensor<1024xi32>
+    %h2_sign = arith.shrsi %h2_bits, %shift31 : tensor<1024xi32>
+    %h2_flip = arith.ori %h2_sign, %signbit : tensor<1024xi32>
+    %h2_keys = arith.xori %h2_bits, %h2_flip : tensor<1024xi32>
+
+    %h2_reverse = arith.subi %intmax, %h2_loadedid : tensor<1024xi32>
+    %h2_high = arith.extui %h2_keys : tensor<1024xi32> to tensor<1024xi64>
+    %h2_low = arith.extui %h2_reverse : tensor<1024xi32> to tensor<1024xi64>
+    %h2_shifted = arith.shli %h2_high, %shift32v : tensor<1024xi64>
+    %h2_packed = arith.ori %h2_shifted, %h2_low : tensor<1024xi64>
+
+    %h2_state = arith.select %h2_chosen, %h2_packed, %h1_state : tensor<1024xi1>, tensor<1024xi64>
+    %h3_maximum = "tt.reduce"(%h2_state) <{axis = 0 : i32}> ({
+    ^bb0(%h3_a: i64, %h3_b: i64):
+      %h3_m = arith.maxui %h3_a, %h3_b : i64
+      tt.reduce.return %h3_m : i64
+    }) : (tensor<1024xi64>) -> i64
+
+    %h3_high = arith.shrui %h3_maximum, %shift32 : i64
+    %h3_maxkey = arith.trunci %h3_high : i64 to i32
+    %h3_low = arith.trunci %h3_maximum : i64 to i32
+    %h3_bestid = arith.subi %smax, %h3_low : i32
+
+    %h3_positive = arith.cmpi slt, %h3_maxkey, %szero : i32
+    %h3_undo = arith.select %h3_positive, %ssign, %sall : i32
+    %h3_valuebits = arith.xori %h3_maxkey, %h3_undo : i32
+    %h3_value = tt.bitcast %h3_valuebits : i32 -> f32
+    %h3_outidx = arith.constant 3 : i32
+    %h3_vp = tt.addptr %vbase, %h3_outidx : !tt.ptr<f32>, i32
+    %h3_op = tt.addptr %obase, %h3_outidx : !tt.ptr<i32>, i32
+    tt.store %h3_vp, %h3_value : !tt.ptr<f32>
+    tt.store %h3_op, %h3_bestid : !tt.ptr<i32>
+
+    %h3_idvec = tt.splat %h3_bestid : i32 -> tensor<1024xi32>
+    %h3_chosen = arith.cmpi eq, %h2_ids, %h3_idvec : tensor<1024xi32>
+    %h3_advance = arith.select %h3_chosen, %one, %izero : tensor<1024xi1>, tensor<1024xi32>
+    %h3_cursor = arith.addi %h2_cursor, %h3_advance : tensor<1024xi32>
+    %h3_remains = arith.cmpi slt, %h3_cursor, %kvec : tensor<1024xi32>
+    %h3_valid = arith.andi %validchunk, %h3_remains : tensor<1024xi1>
+    %h3_read = arith.andi %h3_chosen, %h3_valid : tensor<1024xi1>
+    %h3_offset = arith.addi %offsets, %h3_cursor : tensor<1024xi32>
+    %h3_xp = tt.addptr %xvec, %h3_offset : tensor<1024x!tt.ptr<f32>>, tensor<1024xi32>
+    %h3_ip = tt.addptr %ivec, %h3_offset : tensor<1024x!tt.ptr<i32>>, tensor<1024xi32>
+    %h3_loaded = tt.load %h3_xp, %h3_read, %neginf : tensor<1024x!tt.ptr<f32>>
+    %h3_loadedid = tt.load %h3_ip, %h3_read, %intmax : tensor<1024x!tt.ptr<i32>>
+    %h3_ids = arith.select %h3_chosen, %h3_loadedid, %h2_ids : tensor<1024xi1>, tensor<1024xi32>
+
+    %h3_iszero = arith.cmpf oeq, %h3_loaded, %zero : tensor<1024xf32>
+    %h3_normal = arith.select %h3_iszero, %zero, %h3_loaded : tensor<1024xi1>, tensor<1024xf32>
+    %h3_bits = tt.bitcast %h3_normal : tensor<1024xf32> -> tensor<1024xi32>
+    %h3_sign = arith.shrsi %h3_bits, %shift31 : tensor<1024xi32>
+    %h3_flip = arith.ori %h3_sign, %signbit : tensor<1024xi32>
+    %h3_keys = arith.xori %h3_bits, %h3_flip : tensor<1024xi32>
+
+    %h3_reverse = arith.subi %intmax, %h3_loadedid : tensor<1024xi32>
+    %h3_high = arith.extui %h3_keys : tensor<1024xi32> to tensor<1024xi64>
+    %h3_low = arith.extui %h3_reverse : tensor<1024xi32> to tensor<1024xi64>
+    %h3_shifted = arith.shli %h3_high, %shift32v : tensor<1024xi64>
+    %h3_packed = arith.ori %h3_shifted, %h3_low : tensor<1024xi64>
+
+    %h3_state = arith.select %h3_chosen, %h3_packed, %h2_state : tensor<1024xi1>, tensor<1024xi64>
+    %h4_maximum = "tt.reduce"(%h3_state) <{axis = 0 : i32}> ({
+    ^bb0(%h4_a: i64, %h4_b: i64):
+      %h4_m = arith.maxui %h4_a, %h4_b : i64
+      tt.reduce.return %h4_m : i64
+    }) : (tensor<1024xi64>) -> i64
+
+    %h4_high = arith.shrui %h4_maximum, %shift32 : i64
+    %h4_maxkey = arith.trunci %h4_high : i64 to i32
+    %h4_low = arith.trunci %h4_maximum : i64 to i32
+    %h4_bestid = arith.subi %smax, %h4_low : i32
+
+    %h4_positive = arith.cmpi slt, %h4_maxkey, %szero : i32
+    %h4_undo = arith.select %h4_positive, %ssign, %sall : i32
+    %h4_valuebits = arith.xori %h4_maxkey, %h4_undo : i32
+    %h4_value = tt.bitcast %h4_valuebits : i32 -> f32
+    %h4_outidx = arith.constant 4 : i32
+    %h4_vp = tt.addptr %vbase, %h4_outidx : !tt.ptr<f32>, i32
+    %h4_op = tt.addptr %obase, %h4_outidx : !tt.ptr<i32>, i32
+    tt.store %h4_vp, %h4_value : !tt.ptr<f32>
+    tt.store %h4_op, %h4_bestid : !tt.ptr<i32>
+
+    %h4_idvec = tt.splat %h4_bestid : i32 -> tensor<1024xi32>
+    %h4_chosen = arith.cmpi eq, %h3_ids, %h4_idvec : tensor<1024xi32>
+    %h4_advance = arith.select %h4_chosen, %one, %izero : tensor<1024xi1>, tensor<1024xi32>
+    %h4_cursor = arith.addi %h3_cursor, %h4_advance : tensor<1024xi32>
+    %h4_remains = arith.cmpi slt, %h4_cursor, %kvec : tensor<1024xi32>
+    %h4_valid = arith.andi %validchunk, %h4_remains : tensor<1024xi1>
+    %h4_read = arith.andi %h4_chosen, %h4_valid : tensor<1024xi1>
+    %h4_offset = arith.addi %offsets, %h4_cursor : tensor<1024xi32>
+    %h4_xp = tt.addptr %xvec, %h4_offset : tensor<1024x!tt.ptr<f32>>, tensor<1024xi32>
+    %h4_ip = tt.addptr %ivec, %h4_offset : tensor<1024x!tt.ptr<i32>>, tensor<1024xi32>
+    %h4_loaded = tt.load %h4_xp, %h4_read, %neginf : tensor<1024x!tt.ptr<f32>>
+    %h4_loadedid = tt.load %h4_ip, %h4_read, %intmax : tensor<1024x!tt.ptr<i32>>
+    %h4_ids = arith.select %h4_chosen, %h4_loadedid, %h3_ids : tensor<1024xi1>, tensor<1024xi32>
+
+    %h4_iszero = arith.cmpf oeq, %h4_loaded, %zero : tensor<1024xf32>
+    %h4_normal = arith.select %h4_iszero, %zero, %h4_loaded : tensor<1024xi1>, tensor<1024xf32>
+    %h4_bits = tt.bitcast %h4_normal : tensor<1024xf32> -> tensor<1024xi32>
+    %h4_sign = arith.shrsi %h4_bits, %shift31 : tensor<1024xi32>
+    %h4_flip = arith.ori %h4_sign, %signbit : tensor<1024xi32>
+    %h4_keys = arith.xori %h4_bits, %h4_flip : tensor<1024xi32>
+
+    %h4_reverse = arith.subi %intmax, %h4_loadedid : tensor<1024xi32>
+    %h4_high = arith.extui %h4_keys : tensor<1024xi32> to tensor<1024xi64>
+    %h4_low = arith.extui %h4_reverse : tensor<1024xi32> to tensor<1024xi64>
+    %h4_shifted = arith.shli %h4_high, %shift32v : tensor<1024xi64>
+    %h4_packed = arith.ori %h4_shifted, %h4_low : tensor<1024xi64>
+
+    %h4_state = arith.select %h4_chosen, %h4_packed, %h3_state : tensor<1024xi1>, tensor<1024xi64>
+    %h5_maximum = "tt.reduce"(%h4_state) <{axis = 0 : i32}> ({
+    ^bb0(%h5_a: i64, %h5_b: i64):
+      %h5_m = arith.maxui %h5_a, %h5_b : i64
+      tt.reduce.return %h5_m : i64
+    }) : (tensor<1024xi64>) -> i64
+
+    %h5_high = arith.shrui %h5_maximum, %shift32 : i64
+    %h5_maxkey = arith.trunci %h5_high : i64 to i32
+    %h5_low = arith.trunci %h5_maximum : i64 to i32
+    %h5_bestid = arith.subi %smax, %h5_low : i32
+
+    %h5_positive = arith.cmpi slt, %h5_maxkey, %szero : i32
+    %h5_undo = arith.select %h5_positive, %ssign, %sall : i32
+    %h5_valuebits = arith.xori %h5_maxkey, %h5_undo : i32
+    %h5_value = tt.bitcast %h5_valuebits : i32 -> f32
+    %h5_outidx = arith.constant 5 : i32
+    %h5_vp = tt.addptr %vbase, %h5_outidx : !tt.ptr<f32>, i32
+    %h5_op = tt.addptr %obase, %h5_outidx : !tt.ptr<i32>, i32
+    tt.store %h5_vp, %h5_value : !tt.ptr<f32>
+    tt.store %h5_op, %h5_bestid : !tt.ptr<i32>
+
+    %h5_idvec = tt.splat %h5_bestid : i32 -> tensor<1024xi32>
+    %h5_chosen = arith.cmpi eq, %h4_ids, %h5_idvec : tensor<1024xi32>
+    %h5_advance = arith.select %h5_chosen, %one, %izero : tensor<1024xi1>, tensor<1024xi32>
+    %h5_cursor = arith.addi %h4_cursor, %h5_advance : tensor<1024xi32>
+    %h5_remains = arith.cmpi slt, %h5_cursor, %kvec : tensor<1024xi32>
+    %h5_valid = arith.andi %validchunk, %h5_remains : tensor<1024xi1>
+    %h5_read = arith.andi %h5_chosen, %h5_valid : tensor<1024xi1>
+    %h5_offset = arith.addi %offsets, %h5_cursor : tensor<1024xi32>
+    %h5_xp = tt.addptr %xvec, %h5_offset : tensor<1024x!tt.ptr<f32>>, tensor<1024xi32>
+    %h5_ip = tt.addptr %ivec, %h5_offset : tensor<1024x!tt.ptr<i32>>, tensor<1024xi32>
+    %h5_loaded = tt.load %h5_xp, %h5_read, %neginf : tensor<1024x!tt.ptr<f32>>
+    %h5_loadedid = tt.load %h5_ip, %h5_read, %intmax : tensor<1024x!tt.ptr<i32>>
+    %h5_ids = arith.select %h5_chosen, %h5_loadedid, %h4_ids : tensor<1024xi1>, tensor<1024xi32>
+
+    %h5_iszero = arith.cmpf oeq, %h5_loaded, %zero : tensor<1024xf32>
+    %h5_normal = arith.select %h5_iszero, %zero, %h5_loaded : tensor<1024xi1>, tensor<1024xf32>
+    %h5_bits = tt.bitcast %h5_normal : tensor<1024xf32> -> tensor<1024xi32>
+    %h5_sign = arith.shrsi %h5_bits, %shift31 : tensor<1024xi32>
+    %h5_flip = arith.ori %h5_sign, %signbit : tensor<1024xi32>
+    %h5_keys = arith.xori %h5_bits, %h5_flip : tensor<1024xi32>
+
+    %h5_reverse = arith.subi %intmax, %h5_loadedid : tensor<1024xi32>
+    %h5_high = arith.extui %h5_keys : tensor<1024xi32> to tensor<1024xi64>
+    %h5_low = arith.extui %h5_reverse : tensor<1024xi32> to tensor<1024xi64>
+    %h5_shifted = arith.shli %h5_high, %shift32v : tensor<1024xi64>
+    %h5_packed = arith.ori %h5_shifted, %h5_low : tensor<1024xi64>
+
+    %h5_state = arith.select %h5_chosen, %h5_packed, %h4_state : tensor<1024xi1>, tensor<1024xi64>
+    %h6_maximum = "tt.reduce"(%h5_state) <{axis = 0 : i32}> ({
+    ^bb0(%h6_a: i64, %h6_b: i64):
+      %h6_m = arith.maxui %h6_a, %h6_b : i64
+      tt.reduce.return %h6_m : i64
+    }) : (tensor<1024xi64>) -> i64
+
+    %h6_high = arith.shrui %h6_maximum, %shift32 : i64
+    %h6_maxkey = arith.trunci %h6_high : i64 to i32
+    %h6_low = arith.trunci %h6_maximum : i64 to i32
+    %h6_bestid = arith.subi %smax, %h6_low : i32
+
+    %h6_positive = arith.cmpi slt, %h6_maxkey, %szero : i32
+    %h6_undo = arith.select %h6_positive, %ssign, %sall : i32
+    %h6_valuebits = arith.xori %h6_maxkey, %h6_undo : i32
+    %h6_value = tt.bitcast %h6_valuebits : i32 -> f32
+    %h6_outidx = arith.constant 6 : i32
+    %h6_vp = tt.addptr %vbase, %h6_outidx : !tt.ptr<f32>, i32
+    %h6_op = tt.addptr %obase, %h6_outidx : !tt.ptr<i32>, i32
+    tt.store %h6_vp, %h6_value : !tt.ptr<f32>
+    tt.store %h6_op, %h6_bestid : !tt.ptr<i32>
+
+    %h6_idvec = tt.splat %h6_bestid : i32 -> tensor<1024xi32>
+    %h6_chosen = arith.cmpi eq, %h5_ids, %h6_idvec : tensor<1024xi32>
+    %h6_advance = arith.select %h6_chosen, %one, %izero : tensor<1024xi1>, tensor<1024xi32>
+    %h6_cursor = arith.addi %h5_cursor, %h6_advance : tensor<1024xi32>
+    %h6_remains = arith.cmpi slt, %h6_cursor, %kvec : tensor<1024xi32>
+    %h6_valid = arith.andi %validchunk, %h6_remains : tensor<1024xi1>
+    %h6_read = arith.andi %h6_chosen, %h6_valid : tensor<1024xi1>
+    %h6_offset = arith.addi %offsets, %h6_cursor : tensor<1024xi32>
+    %h6_xp = tt.addptr %xvec, %h6_offset : tensor<1024x!tt.ptr<f32>>, tensor<1024xi32>
+    %h6_ip = tt.addptr %ivec, %h6_offset : tensor<1024x!tt.ptr<i32>>, tensor<1024xi32>
+    %h6_loaded = tt.load %h6_xp, %h6_read, %neginf : tensor<1024x!tt.ptr<f32>>
+    %h6_loadedid = tt.load %h6_ip, %h6_read, %intmax : tensor<1024x!tt.ptr<i32>>
+    %h6_ids = arith.select %h6_chosen, %h6_loadedid, %h5_ids : tensor<1024xi1>, tensor<1024xi32>
+
+    %h6_iszero = arith.cmpf oeq, %h6_loaded, %zero : tensor<1024xf32>
+    %h6_normal = arith.select %h6_iszero, %zero, %h6_loaded : tensor<1024xi1>, tensor<1024xf32>
+    %h6_bits = tt.bitcast %h6_normal : tensor<1024xf32> -> tensor<1024xi32>
+    %h6_sign = arith.shrsi %h6_bits, %shift31 : tensor<1024xi32>
+    %h6_flip = arith.ori %h6_sign, %signbit : tensor<1024xi32>
+    %h6_keys = arith.xori %h6_bits, %h6_flip : tensor<1024xi32>
+
+    %h6_reverse = arith.subi %intmax, %h6_loadedid : tensor<1024xi32>
+    %h6_high = arith.extui %h6_keys : tensor<1024xi32> to tensor<1024xi64>
+    %h6_low = arith.extui %h6_reverse : tensor<1024xi32> to tensor<1024xi64>
+    %h6_shifted = arith.shli %h6_high, %shift32v : tensor<1024xi64>
+    %h6_packed = arith.ori %h6_shifted, %h6_low : tensor<1024xi64>
+
+    %h6_state = arith.select %h6_chosen, %h6_packed, %h5_state : tensor<1024xi1>, tensor<1024xi64>
+    %h7_maximum = "tt.reduce"(%h6_state) <{axis = 0 : i32}> ({
+    ^bb0(%h7_a: i64, %h7_b: i64):
+      %h7_m = arith.maxui %h7_a, %h7_b : i64
+      tt.reduce.return %h7_m : i64
+    }) : (tensor<1024xi64>) -> i64
+
+    %h7_high = arith.shrui %h7_maximum, %shift32 : i64
+    %h7_maxkey = arith.trunci %h7_high : i64 to i32
+    %h7_low = arith.trunci %h7_maximum : i64 to i32
+    %h7_bestid = arith.subi %smax, %h7_low : i32
+
+    %h7_positive = arith.cmpi slt, %h7_maxkey, %szero : i32
+    %h7_undo = arith.select %h7_positive, %ssign, %sall : i32
+    %h7_valuebits = arith.xori %h7_maxkey, %h7_undo : i32
+    %h7_value = tt.bitcast %h7_valuebits : i32 -> f32
+    %h7_outidx = arith.constant 7 : i32
+    %h7_vp = tt.addptr %vbase, %h7_outidx : !tt.ptr<f32>, i32
+    %h7_op = tt.addptr %obase, %h7_outidx : !tt.ptr<i32>, i32
+    tt.store %h7_vp, %h7_value : !tt.ptr<f32>
+    tt.store %h7_op, %h7_bestid : !tt.ptr<i32>
+
+    tt.return
+  }
+}

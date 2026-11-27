@@ -1,5 +1,9 @@
 # MM：六组 autotune baseline
 
+当前统一展示见[完整结果](report.md)：每个shape只列基线时间、优化时间、加速比，保留算术/几何平均和方法收益。
+
+已新增 [host TMA 全31点扩展](host_allshape_v1/report.md)：全部六组候选经数值和性能验证，逐组采用或回退，旧入口与冻结选择不覆盖。
+
 当前使用官方31个方阵点逐shape autotune实测选出的 **6份不同baseline TTIR**。已冻结选择，不在正常验证或性能测试中重新调参。
 
 TTIR首轮优化已完成六组各8个候选的尝试：仅128×32×64组保留无符号索引改写，所属3点主测/独立复测几何平均约1.0510×/1.0507×；其他五组继续baseline。大组部分A/A控制无效，因此没有31点整体可靠加速结论。完整结果、负结果与限制见 [report_round1.md](report_round1.md)，冻结选择见 [round1_selection.json](results/round1_selection.json)。`ir/<family>/optimized.ttir` 对应最终选择，baseline副本均明确标记fallback。

@@ -1,0 +1,9 @@
+# MoE r6: batched stage1 tuple-top2
+
+Predeclared before any candidate timing on 2026-11-24. Parent is the accepted r5 pair_integer_constants; anchor remains accepted round2. Keep all30 frozen M/E shapes, FP32, G8/top4/top8, two kernels, exact raw-bit group/weight and stable-index contract, grid/ABI/workspace and4warps/3stages unchanged.
+
+Three candidates batch2/batch4/batch8 combine2/4/8 contiguous stage1 groups inside one active CTA. Original stage1 grid M*8 remains unchanged. Only original group IDs divisible by batch compute; the other CTAs return. Active CTAs load a [batch, experts_per_group] tensor, perform the same tanh sigmoid plus bias and the same top2 tuple combiner along axis1, then store batch group scores. Every original output group is written exactly once. Stage2 is byte-identical to r5 parent. This explores fuller warp utilization against inactive CTA dispatch overhead, without predicting improvement from utilization alone.
+
+Pipeline source/file baseline checks cover all30 mappings. Validate all30 x8 distributions before screening3 rounds rep10ms; freeze whole-matrix finalist. Main7 rounds rep20ms and independent seed123 repeat5 rounds; same-run baseline/anchor/parent/candidate paired ratios. A/A per-point median in[.97,1.03]. Promotion requires incremental geo>=1.02 and worst>=.95 in both formal runs plus clean memcheck/racecheck. Failed/negative candidates retained; identities can be recorded as static C evidence. Original frozen source, prior rounds and configurations are immutable.
+
+GPU2 exclusive, automatic clocks, official/root/venvs/ir-ops-dev/bin/python and Triton3.7.0. No source port, autotune, inline assembly or downstream IR edits. Public Triton can express this with program_id, a uniform branch, arange/broadcast and tuple tl.reduce; this is not a source-performance claim.

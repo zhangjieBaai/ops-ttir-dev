@@ -1,0 +1,341 @@
+{
+  "op": "norm_quant",
+  "round": 6,
+  "commands": [
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/complex_suite/round6_runner.py",
+        "--op",
+        "norm_quant",
+        "--names",
+        "integer_clamp",
+        "--run",
+        "main",
+        "--rounds",
+        "7",
+        "--rep",
+        "20",
+        "--seed",
+        "42"
+      ],
+      "log": "/root/ops-ttir-dev/norm_quant/multiround/r6/main.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/complex_suite/round6_runner.py",
+        "--op",
+        "norm_quant",
+        "--names",
+        "integer_clamp",
+        "--run",
+        "repeat",
+        "--rounds",
+        "5",
+        "--rep",
+        "20",
+        "--seed",
+        "123"
+      ],
+      "log": "/root/ops-ttir-dev/norm_quant/multiround/r6/repeat.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/norm_quant/multiround/stress.py",
+        "--round",
+        "6",
+        "--name",
+        "integer_clamp"
+      ],
+      "log": "/root/ops-ttir-dev/norm_quant/multiround/r6/stress.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "compute-sanitizer",
+        "--tool",
+        "memcheck",
+        "--error-exitcode",
+        "99",
+        "--kernel-name",
+        "regex=residual_rms_int8",
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/complex_suite/round6_runner.py",
+        "--op",
+        "norm_quant",
+        "--names",
+        "integer_clamp",
+        "--run",
+        "memcheck",
+        "--check-only"
+      ],
+      "log": "/root/ops-ttir-dev/norm_quant/multiround/r6/memcheck.log",
+      "exit_code": 0
+    },
+    {
+      "argv": [
+        "compute-sanitizer",
+        "--tool",
+        "racecheck",
+        "--error-exitcode",
+        "99",
+        "--kernel-name",
+        "regex=residual_rms_int8",
+        "/root/venvs/ir-ops-dev/bin/python",
+        "/root/ops-ttir-dev/complex_suite/round6_runner.py",
+        "--op",
+        "norm_quant",
+        "--names",
+        "integer_clamp",
+        "--run",
+        "racecheck",
+        "--check-only"
+      ],
+      "log": "/root/ops-ttir-dev/norm_quant/multiround/r6/racecheck.log",
+      "exit_code": 0
+    }
+  ],
+  "passed": true,
+  "selection": {
+    "round": 6,
+    "shape_count": 30,
+    "candidate_tested": "integer_clamp",
+    "accepted": false,
+    "selected": "parent",
+    "screen_run": "screen",
+    "main": {
+      "parent_over": {
+        "geomean": 1.0023777866815489,
+        "worst": 0.9886824084522887,
+        "best": 1.016930045813842
+      },
+      "anchor_over": {
+        "geomean": 1.0021452273811742,
+        "worst": 0.9887933287758043,
+        "best": 1.0169841025840527
+      },
+      "baseline_over": {
+        "geomean": 1.4390501488372367,
+        "worst": 1.0839702713656187,
+        "best": 2.928697192842345
+      }
+    },
+    "repeat": {
+      "parent_over": {
+        "geomean": 1.0024042767268337,
+        "worst": 0.9887158872740396,
+        "best": 1.0193946763526918
+      },
+      "anchor_over": {
+        "geomean": 1.0023102853464239,
+        "worst": 0.9893521405008294,
+        "best": 1.0193415435075912
+      },
+      "baseline_over": {
+        "geomean": 1.4419784301902743,
+        "worst": 1.0911377277983776,
+        "best": 2.885829871046695
+      }
+    },
+    "selected_main": {
+      "parent_over": {
+        "geomean": 1.0,
+        "worst": 1.0,
+        "best": 1.0
+      },
+      "anchor_over": {
+        "geomean": 0.999678935414629,
+        "worst": 0.991798653663617,
+        "best": 1.0017463223093976
+      },
+      "baseline_over": {
+        "geomean": 1.434824803265488,
+        "worst": 1.0832909727954656,
+        "best": 2.91612336716248
+      }
+    },
+    "selected_repeat": {
+      "parent_over": {
+        "geomean": 1.0,
+        "worst": 1.0,
+        "best": 1.0
+      },
+      "anchor_over": {
+        "geomean": 0.9999755516866919,
+        "worst": 0.9915715298864849,
+        "best": 1.004438186312428
+      },
+      "baseline_over": {
+        "geomean": 1.4378921086652923,
+        "worst": 1.090915665250875,
+        "best": 2.8873160740800277
+      }
+    },
+    "mapping": [
+      {
+        "group": "m1_n257_w8",
+        "stage": "kernel",
+        "selected_sha256": "2171b583f800373729225569ecbca0bd486c5dc1c9b3d6745ff71384344fd2db"
+      },
+      {
+        "group": "m64_n257_w8",
+        "stage": "kernel",
+        "selected_sha256": "2171b583f800373729225569ecbca0bd486c5dc1c9b3d6745ff71384344fd2db"
+      },
+      {
+        "group": "m128_n257_w8",
+        "stage": "kernel",
+        "selected_sha256": "2171b583f800373729225569ecbca0bd486c5dc1c9b3d6745ff71384344fd2db"
+      },
+      {
+        "group": "m512_n257_w8",
+        "stage": "kernel",
+        "selected_sha256": "2171b583f800373729225569ecbca0bd486c5dc1c9b3d6745ff71384344fd2db"
+      },
+      {
+        "group": "m2048_n257_w8",
+        "stage": "kernel",
+        "selected_sha256": "2171b583f800373729225569ecbca0bd486c5dc1c9b3d6745ff71384344fd2db"
+      },
+      {
+        "group": "m1_n1024_w8",
+        "stage": "kernel",
+        "selected_sha256": "2eda6bf94f1f7b7e0cf7877675281a5e918444c5819dcb78ed64f7b6c532719c"
+      },
+      {
+        "group": "m32_n1024_w8",
+        "stage": "kernel",
+        "selected_sha256": "2eda6bf94f1f7b7e0cf7877675281a5e918444c5819dcb78ed64f7b6c532719c"
+      },
+      {
+        "group": "m128_n1024_w8",
+        "stage": "kernel",
+        "selected_sha256": "2eda6bf94f1f7b7e0cf7877675281a5e918444c5819dcb78ed64f7b6c532719c"
+      },
+      {
+        "group": "m512_n1024_w8",
+        "stage": "kernel",
+        "selected_sha256": "2eda6bf94f1f7b7e0cf7877675281a5e918444c5819dcb78ed64f7b6c532719c"
+      },
+      {
+        "group": "m2048_n1024_w8",
+        "stage": "kernel",
+        "selected_sha256": "2eda6bf94f1f7b7e0cf7877675281a5e918444c5819dcb78ed64f7b6c532719c"
+      },
+      {
+        "group": "m1_n4096_w8",
+        "stage": "kernel",
+        "selected_sha256": "596ef691d9e8c3385af32db9a54d558158f5d86a46a72d827e05d74a56bcabc0"
+      },
+      {
+        "group": "m32_n4096_w8",
+        "stage": "kernel",
+        "selected_sha256": "596ef691d9e8c3385af32db9a54d558158f5d86a46a72d827e05d74a56bcabc0"
+      },
+      {
+        "group": "m128_n4096_w8",
+        "stage": "kernel",
+        "selected_sha256": "596ef691d9e8c3385af32db9a54d558158f5d86a46a72d827e05d74a56bcabc0"
+      },
+      {
+        "group": "m512_n4096_w8",
+        "stage": "kernel",
+        "selected_sha256": "596ef691d9e8c3385af32db9a54d558158f5d86a46a72d827e05d74a56bcabc0"
+      },
+      {
+        "group": "m2048_n4096_w8",
+        "stage": "kernel",
+        "selected_sha256": "596ef691d9e8c3385af32db9a54d558158f5d86a46a72d827e05d74a56bcabc0"
+      },
+      {
+        "group": "m1_n4097_w4",
+        "stage": "kernel",
+        "selected_sha256": "d150a035ad0cb76bfe5ad26b0dfa09bc1bcfb6e0e6aa2c9732a3727a3861723b"
+      },
+      {
+        "group": "m32_n4097_w4",
+        "stage": "kernel",
+        "selected_sha256": "d150a035ad0cb76bfe5ad26b0dfa09bc1bcfb6e0e6aa2c9732a3727a3861723b"
+      },
+      {
+        "group": "m128_n4097_w4",
+        "stage": "kernel",
+        "selected_sha256": "d150a035ad0cb76bfe5ad26b0dfa09bc1bcfb6e0e6aa2c9732a3727a3861723b"
+      },
+      {
+        "group": "m513_n4097_w4",
+        "stage": "kernel",
+        "selected_sha256": "d150a035ad0cb76bfe5ad26b0dfa09bc1bcfb6e0e6aa2c9732a3727a3861723b"
+      },
+      {
+        "group": "m2048_n4097_w4",
+        "stage": "kernel",
+        "selected_sha256": "d150a035ad0cb76bfe5ad26b0dfa09bc1bcfb6e0e6aa2c9732a3727a3861723b"
+      },
+      {
+        "group": "m1_n8192_w8",
+        "stage": "kernel",
+        "selected_sha256": "7905ff2377cf92fbce55ad9ae405890891a350f068034a5fef4293a8f1ac26fd"
+      },
+      {
+        "group": "m32_n8192_w8",
+        "stage": "kernel",
+        "selected_sha256": "7905ff2377cf92fbce55ad9ae405890891a350f068034a5fef4293a8f1ac26fd"
+      },
+      {
+        "group": "m128_n8192_w8",
+        "stage": "kernel",
+        "selected_sha256": "7905ff2377cf92fbce55ad9ae405890891a350f068034a5fef4293a8f1ac26fd"
+      },
+      {
+        "group": "m512_n8192_w8",
+        "stage": "kernel",
+        "selected_sha256": "7905ff2377cf92fbce55ad9ae405890891a350f068034a5fef4293a8f1ac26fd"
+      },
+      {
+        "group": "m2048_n8192_w8",
+        "stage": "kernel",
+        "selected_sha256": "7905ff2377cf92fbce55ad9ae405890891a350f068034a5fef4293a8f1ac26fd"
+      },
+      {
+        "group": "m1_n16384_w8",
+        "stage": "kernel",
+        "selected_sha256": "867a639185b56316b1288b27a643fa88d291d01a0a4d739952f4fc00b45283ec"
+      },
+      {
+        "group": "m32_n16384_w8",
+        "stage": "kernel",
+        "selected_sha256": "867a639185b56316b1288b27a643fa88d291d01a0a4d739952f4fc00b45283ec"
+      },
+      {
+        "group": "m128_n16384_w8",
+        "stage": "kernel",
+        "selected_sha256": "867a639185b56316b1288b27a643fa88d291d01a0a4d739952f4fc00b45283ec"
+      },
+      {
+        "group": "m512_n16384_w8",
+        "stage": "kernel",
+        "selected_sha256": "867a639185b56316b1288b27a643fa88d291d01a0a4d739952f4fc00b45283ec"
+      },
+      {
+        "group": "m2048_n16384_w8",
+        "stage": "kernel",
+        "selected_sha256": "867a639185b56316b1288b27a643fa88d291d01a0a4d739952f4fc00b45283ec"
+      }
+    ],
+    "sanitizer": {
+      "memcheck": "0 errors",
+      "racecheck": "0 errors, 0 warnings"
+    },
+    "evidence": {
+      "main": "8a0faa05e4e6505225322408c091e38fbff38192331b6fd134db15ab439f1e55",
+      "repeat": "b52c7733e642f96927dfa0a27ac7954b0c2a99445ccaa344f78cff23e5eef2cf",
+      "memcheck": "a6fa3fea1586c4c63f142d7fb2f05763d5fcd7aa76d94f44e847b6467d74930b",
+      "racecheck": "6bcba5dc9ae6fe6e3bef640c91f491f4b45eae714cf18cefb92f91717411894a"
+    }
+  }
+}

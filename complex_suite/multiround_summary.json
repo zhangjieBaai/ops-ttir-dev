@@ -1,0 +1,434 @@
+{
+  "report_date": "2026-11-24",
+  "round_ids": [
+    "r3",
+    "r4",
+    "r5"
+  ],
+  "unique_shapes": 152,
+  "shape_round_evaluations": 456,
+  "metric": "Geomean of per-shape medians of same-round paired time ratios",
+  "final_measurement": "Actual selected routes in each operator's r5 main/repeat",
+  "source_port_measured": false,
+  "operators": {
+    "int4_gemm": {
+      "label": "INT4 反量化＋GEMM",
+      "shape_count": 30,
+      "selected": "r3/group128",
+      "final": {
+        "main": {
+          "anchor_over_final": 1.0302866552111005,
+          "baseline_over_final": 2.5182821746680766
+        },
+        "repeat": {
+          "anchor_over_final": 1.0302678942991454,
+          "baseline_over_final": 2.5173801522414587
+        }
+      },
+      "report": "int4_gemm/multiround/report.md"
+    },
+    "moe_routing": {
+      "label": "Grouped／biased MoE",
+      "shape_count": 30,
+      "selected": "r5/pair_integer_constants",
+      "final": {
+        "main": {
+          "anchor_over_final": 1.072442085965153,
+          "baseline_over_final": 1.5075315733397527
+        },
+        "repeat": {
+          "anchor_over_final": 1.0716901132577756,
+          "baseline_over_final": 1.5077408389630955
+        }
+      },
+      "report": "moe_routing/multiround/report.md"
+    },
+    "norm_quant": {
+      "label": "Norm＋动态 INT8",
+      "shape_count": 30,
+      "selected": "第二轮版本",
+      "final": {
+        "main": {
+          "anchor_over_final": 1.0000440612165615,
+          "baseline_over_final": 1.4338236301363072
+        },
+        "repeat": {
+          "anchor_over_final": 1.0002040445189069,
+          "baseline_over_final": 1.4357245808377375
+        }
+      },
+      "report": "norm_quant/multiround/report.md"
+    },
+    "attention_dkdv": {
+      "label": "Attention dK／dV",
+      "shape_count": 32,
+      "selected": "保留第二轮分组选择",
+      "final": {
+        "main": {
+          "anchor_over_final": 1.000197388437604,
+          "baseline_over_final": 1.7592918923197365
+        },
+        "repeat": {
+          "anchor_over_final": 1.000009941393882,
+          "baseline_over_final": 1.75958965251742
+        }
+      },
+      "report": "attention_dkdv/multiround/report.md"
+    },
+    "partial_topk": {
+      "label": "大 N partial Top-K",
+      "shape_count": 30,
+      "selected": "r5/contract",
+      "final": {
+        "main": {
+          "anchor_over_final": 1.0224193260830665,
+          "baseline_over_final": 1.2327207072523059
+        },
+        "repeat": {
+          "anchor_over_final": 1.0223466202152958,
+          "baseline_over_final": 1.2323064634304193
+        }
+      },
+      "report": "partial_topk/multiround/report.md"
+    }
+  },
+  "round_decisions": [
+    {
+      "operator": "int4_gemm",
+      "round": "r3",
+      "candidate": "group128",
+      "main_incremental": 1.0306439941454766,
+      "repeat_incremental": 1.0302334016765302,
+      "accepted": true
+    },
+    {
+      "operator": "int4_gemm",
+      "round": "r4",
+      "candidate": "pid_g4",
+      "main_incremental": 0.9941024573894038,
+      "repeat_incremental": 0.9940363305448795,
+      "accepted": false
+    },
+    {
+      "operator": "int4_gemm",
+      "round": "r5",
+      "candidate": "preload_pair",
+      "main_incremental": 0.988765441387825,
+      "repeat_incremental": 0.9888837474302447,
+      "accepted": false
+    },
+    {
+      "operator": "moe_routing",
+      "round": "r3",
+      "candidate": "unroll_experts",
+      "main_incremental": 1.0011014381118228,
+      "repeat_incremental": 1.0008575649652944,
+      "accepted": false
+    },
+    {
+      "operator": "moe_routing",
+      "round": "r4",
+      "candidate": "pair_top2_v2",
+      "main_incremental": 1.0185837645210507,
+      "repeat_incremental": 1.0194147555382234,
+      "accepted": false
+    },
+    {
+      "operator": "moe_routing",
+      "round": "r5",
+      "candidate": "pair_integer_constants",
+      "main_incremental": 1.0724535698581816,
+      "repeat_incremental": 1.0717720761809961,
+      "accepted": true
+    },
+    {
+      "operator": "norm_quant",
+      "round": "r3",
+      "candidate": "gain_cancel",
+      "main_incremental": 1.0040725952603122,
+      "repeat_incremental": 1.004586869793174,
+      "accepted": false
+    },
+    {
+      "operator": "norm_quant",
+      "round": "r4",
+      "candidate": "joint_uint",
+      "main_incremental": 0.9806652559585699,
+      "repeat_incremental": 0.9816269582454664,
+      "accepted": false
+    },
+    {
+      "operator": "norm_quant",
+      "round": "r5",
+      "candidate": "stream1024_large",
+      "main_incremental": 0.9515285683218422,
+      "repeat_incremental": 0.9515807571463097,
+      "accepted": false
+    },
+    {
+      "operator": "attention_dkdv",
+      "round": "r3",
+      "group": "d64_c0",
+      "candidate": "r3_structure",
+      "main_incremental": 0.9311916006033297,
+      "repeat_incremental": 0.9323820618568409,
+      "accepted": false
+    },
+    {
+      "operator": "attention_dkdv",
+      "round": "r3",
+      "group": "d64_c1",
+      "candidate": "r3_structure",
+      "main_incremental": 0.9562639644348775,
+      "repeat_incremental": 0.9550996136880532,
+      "accepted": false
+    },
+    {
+      "operator": "attention_dkdv",
+      "round": "r3",
+      "group": "d128_c0",
+      "candidate": "r3_structure",
+      "main_incremental": 0.9919115159845755,
+      "repeat_incremental": 0.9920973943478967,
+      "accepted": false
+    },
+    {
+      "operator": "attention_dkdv",
+      "round": "r3",
+      "group": "d128_c1",
+      "candidate": "r3_structure",
+      "main_incremental": 1.0076808298882656,
+      "repeat_incremental": 1.007960039419364,
+      "accepted": false
+    },
+    {
+      "operator": "attention_dkdv",
+      "round": "r4",
+      "group": "d64_c0",
+      "candidate": "r4_qdo_cg",
+      "main_incremental": 0.9998668535990066,
+      "repeat_incremental": 1.000223805027847,
+      "accepted": false
+    },
+    {
+      "operator": "attention_dkdv",
+      "round": "r4",
+      "group": "d64_c1",
+      "candidate": "r4_delta_early",
+      "main_incremental": 1.0018912698610674,
+      "repeat_incremental": 1.0020599728904669,
+      "accepted": false
+    },
+    {
+      "operator": "attention_dkdv",
+      "round": "r4",
+      "group": "d128_c0",
+      "candidate": "r4_qdo_cg",
+      "main_incremental": 0.9999232855897316,
+      "repeat_incremental": 1.0009654230012166,
+      "accepted": false
+    },
+    {
+      "operator": "attention_dkdv",
+      "round": "r4",
+      "group": "d128_c1",
+      "candidate": "r4_delta_early",
+      "main_incremental": 1.000954161106339,
+      "repeat_incremental": 1.0017377101957479,
+      "accepted": false
+    },
+    {
+      "operator": "attention_dkdv",
+      "round": "r5",
+      "group": "d64_c0",
+      "candidate": "r5_store_cs",
+      "main_incremental": 0.9998459419292295,
+      "repeat_incremental": 1.0004017054099381,
+      "accepted": false
+    },
+    {
+      "operator": "attention_dkdv",
+      "round": "r5",
+      "group": "d64_c1",
+      "candidate": "r5_store_cs",
+      "main_incremental": 1.0003910235228235,
+      "repeat_incremental": 1.0001457355157104,
+      "accepted": false
+    },
+    {
+      "operator": "attention_dkdv",
+      "round": "r5",
+      "group": "d128_c0",
+      "candidate": "r5_qdo_keep",
+      "main_incremental": 0.999922520682794,
+      "repeat_incremental": 1.000189381711302,
+      "accepted": false
+    },
+    {
+      "operator": "attention_dkdv",
+      "round": "r5",
+      "group": "d128_c1",
+      "candidate": "r5_store_cs",
+      "main_incremental": 1.0003008075636468,
+      "repeat_incremental": 1.000388452256551,
+      "accepted": false
+    },
+    {
+      "operator": "partial_topk",
+      "round": "r3",
+      "candidate": "hier8",
+      "main_incremental": 0.8040954136183124,
+      "repeat_incremental": 0.8039502000211061,
+      "accepted": false
+    },
+    {
+      "operator": "partial_topk",
+      "round": "r4",
+      "candidate": "store2",
+      "main_incremental": 0.9678036032336443,
+      "repeat_incremental": 0.9676306267033647,
+      "accepted": false
+    },
+    {
+      "operator": "partial_topk",
+      "round": "r5",
+      "candidate": "contract",
+      "main_incremental": 1.0222281138974145,
+      "repeat_incremental": 1.0221500145994504,
+      "accepted": true
+    }
+  ],
+  "attention_subsets": {
+    "d64": {
+      "points": 16,
+      "main": {
+        "anchor_over_final": {
+          "geomean": 1.0002474297288615,
+          "worst": 0.9989831077511396,
+          "best": 1.0057884588463657
+        },
+        "baseline_over_final": {
+          "geomean": 1.1257146919228922,
+          "worst": 1.0443456342677537,
+          "best": 1.1891694885988116
+        }
+      },
+      "repeat": {
+        "anchor_over_final": {
+          "geomean": 1.000086347524219,
+          "worst": 0.9995158546827728,
+          "best": 1.0013205041316149
+        },
+        "baseline_over_final": {
+          "geomean": 1.1268787371083357,
+          "worst": 1.0433083411040396,
+          "best": 1.1902609055633033
+        }
+      }
+    },
+    "d128": {
+      "points": 16,
+      "main": {
+        "anchor_over_final": {
+          "geomean": 1.000147349649858,
+          "worst": 0.9991690548066569,
+          "best": 1.0016374456690633
+        },
+        "baseline_over_final": {
+          "geomean": 2.7494603957731445,
+          "worst": 2.127085708460974,
+          "best": 3.779029268099262
+        }
+      },
+      "repeat": {
+        "anchor_over_final": {
+          "geomean": 0.9999335411009379,
+          "worst": 0.9981792920781086,
+          "best": 1.0005734046534318
+        },
+        "baseline_over_final": {
+          "geomean": 2.7475500630985077,
+          "worst": 2.141772888207992,
+          "best": 3.7761856670190403
+        }
+      }
+    }
+  },
+  "sources": [
+    {
+      "path": "int4_gemm/multiround/summary.json",
+      "sha256": "acd4ee9afa6bbf3e0b255baaf58bd872e7adb39586c176b9878cb63846568845"
+    },
+    {
+      "path": "int4_gemm/multiround/r3/selection.json",
+      "sha256": "47d339516c8d72bbd2d01159145086baab2d47d467ca7c15a93c5e27afca6dc2"
+    },
+    {
+      "path": "int4_gemm/multiround/r4/selection.json",
+      "sha256": "d0b54747c8c4a216e653c75629aee688525c7bb5eca2ab3eea72641e3a62cf2e"
+    },
+    {
+      "path": "int4_gemm/multiround/r5/selection.json",
+      "sha256": "a284e3bda6f5ceed32849436007d9e1864bbb74bf1aec21b9db439f34a3eba09"
+    },
+    {
+      "path": "moe_routing/multiround/summary.json",
+      "sha256": "cb5d2be6cc049aef7975ba9fd2fd38f780c9ddfcd0f94d46cb5e16dcb3a6d8d3"
+    },
+    {
+      "path": "moe_routing/multiround/r3/selection.json",
+      "sha256": "221034ce9a45685c73ee66875d95076477a8afb066bd975d7a1236d12af1c215"
+    },
+    {
+      "path": "moe_routing/multiround/r4/selection.json",
+      "sha256": "63f2d537344d08867b99d8b4506a9d7664d42c7af732eb59aca44c00fa38e55f"
+    },
+    {
+      "path": "moe_routing/multiround/r5/selection.json",
+      "sha256": "f8c8d30cc22c7db4e5b8b76ff60d20f731dbb536d0e9752b066f35589d0b6c58"
+    },
+    {
+      "path": "norm_quant/multiround/summary.json",
+      "sha256": "02f5eede307be1832af0e2bf59bf95c18f2f88e7b15ed550a7ff3421b631cdfe"
+    },
+    {
+      "path": "norm_quant/multiround/r3/selection.json",
+      "sha256": "22aec7b0c49a58d70d2a589d3a1dd3de292be1c34da355dd3bdf5860c1fa175f"
+    },
+    {
+      "path": "norm_quant/multiround/r4/selection.json",
+      "sha256": "a81ee19d3f30721ad210f4d144c4c1696318f23cfdce5dbec65fc98398e63c9e"
+    },
+    {
+      "path": "norm_quant/multiround/r5/selection.json",
+      "sha256": "4beb8d3ed12c509c5a1bebf8c91085b20de12bbf471235c467c56fcd1c8a3377"
+    },
+    {
+      "path": "attention_dkdv/multiround/summary.json",
+      "sha256": "023866bbd0a0a446b5d6cfb54b914dddd2b83f069c6e66a7e4f706f7c8770d36"
+    },
+    {
+      "path": "partial_topk/multiround/summary.json",
+      "sha256": "9eabeb6b32dd5954eda76933dd8f3d8325b673f9ad4cbd634390a26f4a24e360"
+    },
+    {
+      "path": "partial_topk/multiround/r3/selection.json",
+      "sha256": "9d6154b225ad3a38c5a5852e71bfa7e567c73e746b848a09c6f67375b3becba6"
+    },
+    {
+      "path": "partial_topk/multiround/r4/selection.json",
+      "sha256": "67734bc6690faaba20ad11c0c329d369355446fa62f6cafcb1e6241d45755ea2"
+    },
+    {
+      "path": "partial_topk/multiround/r5/selection.json",
+      "sha256": "b2de88fa221a5a5207046747ae26a27cb53d0b766d902d8e993f050e36732f09"
+    }
+  ],
+  "limitations": [
+    "Fixed shapes, dtype, ABI, grid and compiler configuration; no new autotune.",
+    "Attention measured at locked1200MHz; automatic clocks restored.",
+    "MoE rejected r3/r4 finalists lack fresh sanitizer runs; accepted r5 is sanitized.",
+    "Norm/TopK sanitizer checks cover all30 mappings with reduced row counts.",
+    "No source-port performance or executable equivalence claim for r2-r5 changes."
+  ]
+}

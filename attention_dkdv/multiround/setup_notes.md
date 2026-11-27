@@ -1,0 +1,3 @@
+初次候选生成在导入旧辅助函数时因Python模块路径不包含父算子目录而报`ModuleNotFoundError: common`，发生在任何候选写出、编译或GPU执行之前。修正为本目录自含的纯文本变换后生成r3候选；没有同名候选被覆盖，没有性能样本来自失败尝试。
+
+其后所有候选C0与原44输入精度通过。三轮全程固定原global和loop-local pipeline配置，没有使用stage-depth调参。115712B共享内存仅被记录为静态资源，未根据不完整的per-SM容量/保留粒度推断occupancy。

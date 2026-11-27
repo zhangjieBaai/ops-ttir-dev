@@ -1,5 +1,6 @@
 # TTIR experiments
 
+- 跨算子复用的优化知识在 `knowledge/`：动手前读 `knowledge/ttir-model.md`（TTIR 能控制什么），选候选查 `knowledge/techniques.md`，失败时查 `knowledge/failure-patterns.md`，引用数字前核对 `knowledge/evidence-index.md`。已有结论必须标证据等级（A/B/C/D），B 级初筛数字不可写成最终加速比。
 - 当前实验文档是 `layer_norm/optimization_plan.md`。先读契约，再运行实验。
 - 不修改 `layer_norm/tutorial.py`、上游快照或 `ir/baseline.ttir`；新优化只能直接改 TTIR。
 - 同名候选不可静默重写。失败候选和结果保留，用新版本名修正。

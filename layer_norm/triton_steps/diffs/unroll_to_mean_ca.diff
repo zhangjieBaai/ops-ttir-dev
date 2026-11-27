@@ -1,0 +1,30 @@
+--- unroll.py
++++ mean_ca.py
+@@ -1,4 +1,4 @@
+-"""Step 3: keep step 2 and statically unroll by runtime N ranges."""
++"""Step 4: keep step 3 and mark only mean-stage input loads .ca."""
+ 
+ import triton
+ import triton.language as tl
+@@ -15,7 +15,9 @@
+     _mean = tl.zeros([BLOCK_SIZE], dtype=tl.float32)
+     for off in range(0, N, BLOCK_SIZE):
+         cols = off + tl.arange(0, BLOCK_SIZE)
+-        a = tl.load(X + cols, mask=cols < N, other=0.0).to(tl.float32)
++        a = tl.load(X + cols, mask=cols < N, other=0.0, cache_modifier=".ca").to(
++            tl.float32
++        )
+         _mean += a
+     inv_n = 1.0 / N
+     mean = tl.sum(_mean, axis=0) * inv_n
+@@ -51,7 +53,9 @@
+     _mean = tl.zeros([BLOCK_SIZE], dtype=tl.float32)
+     for block in tl.static_range(K):
+         cols = block * BLOCK_SIZE + tl.arange(0, BLOCK_SIZE)
+-        a = tl.load(X + cols, mask=cols < N, other=0.0).to(tl.float32)
++        a = tl.load(X + cols, mask=cols < N, other=0.0, cache_modifier=".ca").to(
++            tl.float32
++        )
+         _mean += a
+     inv_n = 1.0 / N
+     mean = tl.sum(_mean, axis=0) * inv_n

@@ -1,0 +1,1664 @@
+{
+  "environment": {
+    "python": "/root/venvs/ir-ops-dev/bin/python",
+    "prefix": "/root/venvs/ir-ops-dev",
+    "triton": "3.7.0",
+    "triton_path": "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/__init__.py",
+    "libtriton_path": "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/_C/libtriton.so",
+    "include_system_site_packages": false,
+    "sys_path": [
+      "/root/ops-ttir-dev/attention_dkdv",
+      "/usr/lib/python312.zip",
+      "/usr/lib/python3.12",
+      "/usr/lib/python3.12/lib-dynload",
+      "/root/venvs/ir-ops-dev/lib/python3.12/site-packages"
+    ],
+    "flagtree_flagprism_distributions": [],
+    "flagtree_flagprism_source_markers": [],
+    "installer": "pip\n",
+    "direct_url": null,
+    "verified_record_entries": 362,
+    "torch": "2.12.0+cu130",
+    "gpu": "uuid, name, driver_version, clocks.current.sm [MHz], clocks.current.memory [MHz], power.draw [W], temperature.gpu\nGPU-7f7377cd-12e4-c549-c539-32bdeb268511, NVIDIA H100 80GB HBM3, 580.126.20, 360 MHz, 2619 MHz, 75.53 W, 30\n",
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "4",
+      "CUDA_ARCH_LIST": "7.5 8.0 8.6 9.0 10.0 12.0",
+      "CUDA_VERSION": "12.9.0.043",
+      "PYTHONIOENCODING": "utf-8",
+      "LD_LIBRARY_PATH": "/usr/local/lib/python3.12/dist-packages/torch/lib:/usr/local/lib/python3.12/dist-packages/torch_tensorrt/lib:/usr/local/cuda/compat/lib:/usr/local/nvidia/lib:/usr/local/nvidia/lib64",
+      "CUDA_DRIVER_VERSION": "575.51.03",
+      "CUDA_HOME": "/usr/local/cuda",
+      "CUDA_MODULE_LOADING": "LAZY"
+    },
+    "clocks_locked": false,
+    "cache_policy": "Repeated graph warm cache; no flush"
+  },
+  "seed": 123,
+  "rtol": 0.03,
+  "atol": 0.008,
+  "compile": {
+    "('baseline', 64, False)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "696cd75ea2a6f2265660dfb86c46249ba98b8ddc17800356bc92799276d6d8e0",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 74752,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 0,
+        "ttir_sha256": "e960abc19050f47c9e9349fa64e6b8f01e35321956bc1fe8d99535308f56df47",
+        "hashes": {
+          "ttir": "85c41651061cc695aee13a53810b5d596426bd07654b8cc0f6c8884b8d6be3f8",
+          "ttgir": "48d0bdb645de21686a0c3f4ec73babed52c6f6cba8e870c23d6e7bb6c87c5765",
+          "llir": "d570ff070f85c4813e1540c62ca55600bc36606aeaf9ea595dcb930e44da449f",
+          "ptx": "fac2c0ccf04ada424f80d4e9701b11a9b829c1dcba5af99397a0cd0e77df5b56",
+          "cubin": "abc3d12d26008328af8edbd41316826e1fbb6032f0b2707b3642aa0b9bdd089d"
+        }
+      }
+    },
+    "('r1_dv_late', 64, False)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "e66a8439a3fb1ca297266589230f273a351f4a41ebbab1c476a4aee98d9e9bf9",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 74752,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 250,
+        "n_spills": 0,
+        "ttir_sha256": "a287ce9b82495cc8c0d99aa48d11878cea89a0b2eba1a6eede1afa99c27bd3b7",
+        "hashes": {
+          "ttir": "5e87d66d62a6112550ea38f2f3f864c70bd724550453867a658ddec6fd5e9664",
+          "ttgir": "c8a95086b68fe4b4ad71f0d46f2536d14a3b82e1d634ea94cb2e2a12f945eb66",
+          "llir": "97203e10516f0df9dbe96a31ba5e35c5dd70598488fb0f4b324ea72bfd39ecdc",
+          "ptx": "d5176d670717cd4e2223424c8c4642d35942d0b5406f0484ac6ef980f2e9a086",
+          "cubin": "659dfa801d30870381e7dd43f0c54fadf3b9a5f9b69f418c383bcc3659609d06"
+        }
+      }
+    },
+    "('baseline', 64, True)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "955ed8119fb4df451661d05d2a85007f34380851c5d65a15fa8feb196e109b9c",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 74752,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 0,
+        "ttir_sha256": "e1b59e7da5f68c072d7742df7679037933ba5d364ffe709e61453d30faf204cc",
+        "hashes": {
+          "ttir": "c610d77b9c7a53edf2a43e5b2a38af1732b26ec76a7f6b174125a60282ff17b7",
+          "ttgir": "5d5b1944f307c678850fc0a6f548696217a37f4808cb7a01bca93b4ce2d19020",
+          "llir": "ff022249ef26c15cb2b460e028a88590ce1f6aa35f66e9fd092c0fd00c835fe1",
+          "ptx": "df83d19648bd0bcb4deb681fdc9a0e87e7fc5ed80e9b6cd91c293a94f9c523c4",
+          "cubin": "a83c0e13191b73520c8da5d76f556c1855217f897b40f97e96165924a1130696"
+        }
+      }
+    },
+    "('r1_dv_late', 64, True)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "58a2cf10bff794b99e7d649bf5c51b83a6db552295a094990a2f117ad9b4219d",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 74752,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 0,
+        "ttir_sha256": "415fcc81a77b7ca5555a8294576ad1b03105a1364c1180506e7e02b75b839520",
+        "hashes": {
+          "ttir": "57cf9501d6ddc48c9b6f35cfa827bb658b6ff89952d9a204958d9952a0028078",
+          "ttgir": "a4b820619b6ab14e18b95091a62996c4214c7341514dd22d15ea000eea27935b",
+          "llir": "b9e91621803a10be217f950a8ca3ad96705e48d1c9e1f4fb151b4af2d327117f",
+          "ptx": "225b9d91a98ed3f0eb800d77df6cd84e7845ce2c8ccd38cf403dfe03255a1ba9",
+          "cubin": "527f5e9fc0af2204a8a867c3234cb8196aa32dcc9acc61f41dd87d180835b390"
+        }
+      }
+    },
+    "('baseline', 128, False)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "ec5bbd7cbf29cc33582618029a92d0faaa6448b2475545433b597bcad73ce14b",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 148480,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 178,
+        "ttir_sha256": "2be2ea80163d9f30f875edfc7b5a059312fe8447d475c3741a8bc053f00bec24",
+        "hashes": {
+          "ttir": "d8f82e0c2a2b8aa6ee23751b998209bb35859f501f84e31b4265b31a2bd74e57",
+          "ttgir": "1eaa15e9a7ebe597520bbe9d94c954fdf8c93c4b1b37012b4bbf2707946b864a",
+          "llir": "c7589de962ffb4e9183e6c4028b350a089d29f6ccc2fa20a7be221ba651fa26c",
+          "ptx": "0761848e07a1409be6571a421c658b291675be2ced1d207d717e6841415f0b70",
+          "cubin": "b8a807c3362f9f7e08cdda40cfead22543bee7690969f1d86757cf0162054694"
+        }
+      }
+    },
+    "('r1_dv_late', 128, False)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "b65f8ed80394d7ed597ed5b39c2a827042ea726a20bcc883a64198217dce82f7",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 148480,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 204,
+        "ttir_sha256": "40070a51990dd8d619643a43d77d9c3332dfbd11c98ff64feb020b31de5e2492",
+        "hashes": {
+          "ttir": "d58d90db39ee26443e1511f349e17c909afec9d7e1a1169d5008c73f9951fe1c",
+          "ttgir": "c588c61cd0d963184069b354046b87c1b9662ff45adc07ae761183307ff0fb49",
+          "llir": "fa9d26979a9719d2e9c82bdb51fb01d7d51eb9008874f9336a736fb6e1792a13",
+          "ptx": "5d9bfebbc87284052ab5685ca7abf4f6f3167ec36e1f10fcb7f226af7c9ef3e3",
+          "cubin": "fb097938aaaad8ff12e071ca109e267a355f901714c5c8b6edea636e8ecd8710"
+        }
+      }
+    },
+    "('baseline', 128, True)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "957845c126702d1f35168910757bbad1f96490b00e6c7945d2518772b76a98e8",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 148480,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 182,
+        "ttir_sha256": "eed216548c86494a7c8ad2ad4c801ca88702e7230be30822da6ef0a6012eb242",
+        "hashes": {
+          "ttir": "004e28565098529b62b22e04cf2cbeb9bd24076a22cc02f38f0df81b1646f50d",
+          "ttgir": "f0882852e5663d7dee19ddb2f1df82ae254f01e3b8361177a727b1dceff75cb2",
+          "llir": "dd976865c4637d68aa82cb7f72caf57724b7a349ef730e0d27f5fb03e7e9dea7",
+          "ptx": "2fbc1f7a5cc9b96b113c9d310639ce92796131f50c49fb440ad3418f2812dc34",
+          "cubin": "957594d2075ad815d264d5bcdaad6cbc452fb341807802a0e792fe9caf88a4d8"
+        }
+      }
+    },
+    "('r1_dv_late', 128, True)": {
+      "status": "PASS",
+      "metadata": {
+        "allowed_dot_input_precisions": [
+          "tf32",
+          "tf32x3",
+          "ieee",
+          "bf16x3",
+          "bf16x6"
+        ],
+        "arch": "sm90",
+        "backend_name": "cuda",
+        "debug": false,
+        "default_dot_input_precision": "tf32",
+        "deprecated_fp8_dot_operand_dtypes": [
+          "fp8e4b15"
+        ],
+        "enable_fp_fusion": true,
+        "enable_reflect_ftz": true,
+        "extern_libs": [
+          [
+            "libdevice",
+            "/root/venvs/ir-ops-dev/lib/python3.12/site-packages/triton/backends/nvidia/lib/libdevice.10.bc"
+          ]
+        ],
+        "global_scratch_align": 1,
+        "global_scratch_size": 0,
+        "hash": "964dfe3a93a9f678eedddac4433f82a0394bc34368bd952a0022d8593e463b96",
+        "instrumentation_mode": "",
+        "ir_override": null,
+        "launch_cooperative_grid": false,
+        "launch_pdl": false,
+        "max_num_imprecise_acc_default": 1073741824,
+        "maxnreg": null,
+        "name": "_attn_bwd_dkdv_only",
+        "num_ctas": 1,
+        "num_stages": 5,
+        "num_warps": 4,
+        "profile_scratch_align": 1,
+        "profile_scratch_size": 0,
+        "ptx_options": null,
+        "ptx_version": null,
+        "sanitize_overflow": true,
+        "shared": 148480,
+        "supported_fp8_dtypes": [
+          "fp8e4b15",
+          "fp8e4nv",
+          "fp8e5"
+        ],
+        "target": "GPUTarget(backend='cuda', arch=90, warp_size=32)",
+        "tensordesc_meta": [],
+        "tmem_size": 0,
+        "triton_version": "3.7.0",
+        "warp_size": 32,
+        "n_regs": 255,
+        "n_spills": 160,
+        "ttir_sha256": "ffbd838ef1336e705227eab05618c51ac0a8f01fdaf79e73a7a49a20976828c8",
+        "hashes": {
+          "ttir": "13a7084a84d00d5296cb78bf65cb35e12855e397857e0a87f063fbbd02ba89ce",
+          "ttgir": "e93459a5299c2df8ec1bb2c1fb1453e8a7076bd52945b166b9375fddc07cbe54",
+          "llir": "5a103e8dc4571ce019b598294b4dda043dfbf53d169846cd88fc01575027be82",
+          "ptx": "a9e5e6f41e3613aab5d19de56353fc5f1f5ffce8e1caa6b8eff0ede83354054c",
+          "cubin": "7d082cfbdb66f1a160c95e9fbe21dccbeabdf26e88d28783c7e82c5fca3cef3f"
+        }
+      }
+    }
+  },
+  "checks": [
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.8571826424271243e-05,
+        "dv": 5.706476164415997e-05
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.8571826424271243e-05,
+        "dv": 5.706476164415997e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.679797051197897e-06,
+        "dv": 3.4088879989013776e-05
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.679797051197897e-06,
+        "dv": 3.4088879989013776e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.302582192002637e-06,
+        "dv": 2.344858054433019e-05
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.302582192002637e-06,
+        "dv": 2.344858054433019e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.366295881216291e-05,
+        "dv": 0.0005445312389014134
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.366295881216291e-05,
+        "dv": 0.0005445312389014134
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.25261519643672e-05,
+        "dv": 0.0006516314221904906
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.25261519643672e-05,
+        "dv": 0.0006516314221904906
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00015906935655063403,
+        "dv": 0.0007886174184288386
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00015906935655063403,
+        "dv": 0.0007886174184288386
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.9238881538652386e-05,
+        "dv": 4.976576832664559e-05
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 1.9238881538652386e-05,
+        "dv": 4.976576832664559e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 8.334322894931745e-06,
+        "dv": 2.6797504518574766e-05
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 8.334322894931745e-06,
+        "dv": 2.6797504518574766e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.324037517782544e-06,
+        "dv": 2.3483292388937205e-05
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 6.324037517782544e-06,
+        "dv": 2.3483292388937205e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00011837758003219179,
+        "dv": 0.0007804067374048707
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        256,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00011837758003219179,
+        "dv": 0.0007804067374048707
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00020248921560783728,
+        "dv": 0.0007565499085782079
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        1024,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00020248921560783728,
+        "dv": 0.0007565499085782079
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00017108604702426033,
+        "dv": 0.000928747585314138
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        2,
+        8,
+        2048,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00017108604702426033,
+        "dv": 0.000928747585314138
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 2.1337101295156036e-05,
+        "dv": 7.412816398552624e-05
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 2.1337101295156036e-05,
+        "dv": 7.412816398552624e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "zero_do",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "zero_do",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "constant",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 7.683759083540465e-06,
+        "dv": 5.9723854064941406e-05
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "constant",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 7.683759083540465e-06,
+        "dv": 5.9723854064941406e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "large",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0006759056968880794,
+        "dv": 0.001342302330392453
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        false
+      ],
+      "distribution": "large",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0006759056968880794,
+        "dv": 0.001342302330392453
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00010789680763362286,
+        "dv": 0.0005627189067937688
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00010789680763362286,
+        "dv": 0.0005627189067937688
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "zero_do",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "zero_do",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "constant",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 2.3011807058007094e-05,
+        "dv": 0.0005407374927395292
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "constant",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 2.3011807058007094e-05,
+        "dv": 0.0005407374927395292
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "large",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0008591825956701937,
+        "dv": 0.0020196542581865096
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        64,
+        true
+      ],
+      "distribution": "large",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0008591825956701937,
+        "dv": 0.0020196542581865096
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 2.007581080903237e-05,
+        "dv": 7.987043931120819e-05
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 2.007581080903237e-05,
+        "dv": 7.987043931120819e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "zero_do",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "zero_do",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "constant",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.374030536000305e-06,
+        "dv": 5.537271499633789e-05
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "constant",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 9.374030536000305e-06,
+        "dv": 5.537271499633789e-05
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "large",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0017638189941051596,
+        "dv": 0.0018328516774945847
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        false
+      ],
+      "distribution": "large",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0017638189941051596,
+        "dv": 0.0018328516774945847
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00010448673457064128,
+        "dv": 0.0006198481763759478
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "normal",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.00010448673457064128,
+        "dv": 0.0006198481763759478
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "zero_do",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "zero_do",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0,
+        "dv": 0.0
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "constant",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 7.323816011328699e-05,
+        "dv": 0.0006295265144506956
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "constant",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 7.323816011328699e-05,
+        "dv": 0.0006295265144506956
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "large",
+      "name": "baseline",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009979034340121817,
+        "dv": 0.0026291602623440546
+      },
+      "bitwise_baseline": {}
+    },
+    {
+      "shape": [
+        1,
+        4,
+        128,
+        128,
+        true
+      ],
+      "distribution": "large",
+      "name": "r1_dv_late",
+      "status": "PASS",
+      "errors": [],
+      "max_abs": {
+        "dk": 0.0009979034340121817,
+        "dv": 0.0026291602623440546
+      },
+      "bitwise_baseline": {
+        "dk": true,
+        "dv": true
+      }
+    }
+  ],
+  "passed": true
+}
